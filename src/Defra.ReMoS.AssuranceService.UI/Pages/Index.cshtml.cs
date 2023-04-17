@@ -6,6 +6,8 @@ namespace Defra.ReMoS.AssuranceService.UI.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
+    public string? Message { get; set; }
+    public string ErrorMessage { get; set; } = string.Empty;
 
     public IndexModel(ILogger<IndexModel> logger)
     {
@@ -14,6 +16,14 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
+        Message = "Hello World!";
+    }
 
+    public void OnPost()
+    {
+        if (!ModelState.IsValid) 
+        {
+            ErrorMessage = "There is an error";
+        }
     }
 }
