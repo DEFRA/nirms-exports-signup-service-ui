@@ -1,4 +1,5 @@
 ﻿using Defra.ReMoS.AssuranceService.UI.Pages;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -11,46 +12,44 @@ namespace Defra.ReMoS.AssuranceService.UI.UnitTests.Pages;
 
 public class IndexTests
 {
-    [Fact]
-    public void OnGet_SetMessageToHelloWorld()
+    private readonly IndexModel _pageModel;
+
+    public IndexTests()
     {
-        //Arrange
-        var mockLogger = new Mock<ILogger<IndexModel>>();
-        var indexModel = new IndexModel(mockLogger.Object);
-
-        //Act
-        indexModel.OnGet();
-
-        //Assert
-        Assert.Equal("Hello World!", indexModel.Message);
+        var _mockLogger = new Mock<ILogger<IndexModel>>();
+        _pageModel = new IndexModel(_mockLogger.Object);
     }
 
     [Fact]
-    public void OnPost_WhenModelStatisIsvalid_SetErrorMessageToEmpty()
+    public void OnGet_SetMessageToHelloWorld()
     {
-        //Arrange
-        var mockLogger = new Mock<ILogger<IndexModel>>();
-        var indexModel = new IndexModel(mockLogger.Object);
-
         //Act
-        indexModel.OnPost();
+        _pageModel.OnGet();
 
         //Assert
-        Assert.Equal(string.Empty, indexModel.ErrorMessage);
+        _pageModel.Message.Should().Be("Hello World!");
+    }
+
+    [Fact]
+    public void OnPost_WhenModelStatisIsValid_SetErrorMessageToEmpty()
+    {
+        //Act
+        _pageModel.OnPost();
+
+        //Assert
+        _pageModel.ErrorMessage.Should().Be(string.Empty);
     }
 
     [Fact]
     public void OnPost_WhenModelStatisIsInvalid_SetErrorMessageToError()
     {
         //Arrange
-        var mockLogger = new Mock<ILogger<IndexModel>>();
-        var indexModel = new IndexModel(mockLogger.Object);
-        indexModel.ModelState.AddModelError("Message.Text", "The Text field is required.");
+        _pageModel.ModelState.AddModelError("Message", "The message is required.");
 
         //Act
-        indexModel.OnPost();
+        _pageModel.OnPost();
 
         //Assert
-        Assert.Equal("There is an error", indexModel.ErrorMessage);
+        _pageModel.ErrorMessage.Should().Be("There is an error");
     }
 }

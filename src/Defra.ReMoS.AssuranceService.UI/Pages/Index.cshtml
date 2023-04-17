@@ -5,5 +5,13 @@
 }
 
 <div class="text-center">
-    <h1>@Model.Message</h1>
+    @if (String.IsNullOrEmpty(Model.Message))
+    {
+        <h1 class="display-4">Welcome</h1>
+    }
+    else
+    {
+        <h1 class="display-4">@Model.Message</h1>
+    }
+
 </div>

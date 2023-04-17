@@ -6,7 +6,7 @@ namespace Defra.ReMoS.AssuranceService.UI.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    public string? Message { get; set; }
+    public string Message { get; set; } = string.Empty;
     public string ErrorMessage { get; set; } = string.Empty;
 
     public IndexModel(ILogger<IndexModel> logger)
