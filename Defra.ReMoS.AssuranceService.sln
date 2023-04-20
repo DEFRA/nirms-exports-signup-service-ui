@@ -21,6 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline", "pipeline", "{CF
 		pipeline-ui.yaml = pipeline-ui.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Defra.ReMoS.AssuranceService.UI.Hosting", "src\Defra.ReMoS.AssuranceService.UI.Hosting\Defra.ReMoS.AssuranceService.UI.Hosting.csproj", "{3453BF91-EDE3-4ACC-A939-AFBBF4642C49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Defra.ReMoS.AssuranceService.UI.Domain", "src\Defra.ReMoS.AssuranceService.UI.Domain\Defra.ReMoS.AssuranceService.UI.Domain.csproj", "{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Defra.ReMoS.AssuranceService.UI.Core", "Defra.ReMoS.AssuranceService.UI.Core\Defra.ReMoS.AssuranceService.UI.Core.csproj", "{2E231CAB-FC5A-4DCF-9C53-370786CF7666}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Defra.ReMoS.AssuranceService.UI.Data", "src\Defra.ReMoS.AssuranceService.UI.Data\Defra.ReMoS.AssuranceService.UI.Data.csproj", "{0C124FA7-8ED0-4EBD-8982-799669BDFEE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +43,22 @@ Global
 		{E06D392E-994F-4F25-AA32-CC835995AA66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E06D392E-994F-4F25-AA32-CC835995AA66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E06D392E-994F-4F25-AA32-CC835995AA66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3453BF91-EDE3-4ACC-A939-AFBBF4642C49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3453BF91-EDE3-4ACC-A939-AFBBF4642C49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3453BF91-EDE3-4ACC-A939-AFBBF4642C49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3453BF91-EDE3-4ACC-A939-AFBBF4642C49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E231CAB-FC5A-4DCF-9C53-370786CF7666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E231CAB-FC5A-4DCF-9C53-370786CF7666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E231CAB-FC5A-4DCF-9C53-370786CF7666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E231CAB-FC5A-4DCF-9C53-370786CF7666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C124FA7-8ED0-4EBD-8982-799669BDFEE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C124FA7-8ED0-4EBD-8982-799669BDFEE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C124FA7-8ED0-4EBD-8982-799669BDFEE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C124FA7-8ED0-4EBD-8982-799669BDFEE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +66,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{85126CFA-3068-4074-9E43-3B2880C4C4E3} = {42A7CC2B-6479-4AF2-9498-6B194F6EA96E}
 		{E06D392E-994F-4F25-AA32-CC835995AA66} = {B59E33B1-C013-4FBB-BB7C-17B27CD350B0}
+		{3453BF91-EDE3-4ACC-A939-AFBBF4642C49} = {42A7CC2B-6479-4AF2-9498-6B194F6EA96E}
+		{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1} = {42A7CC2B-6479-4AF2-9498-6B194F6EA96E}
+		{2E231CAB-FC5A-4DCF-9C53-370786CF7666} = {42A7CC2B-6479-4AF2-9498-6B194F6EA96E}
+		{0C124FA7-8ED0-4EBD-8982-799669BDFEE4} = {42A7CC2B-6479-4AF2-9498-6B194F6EA96E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E36E832E-682B-46DA-B1FF-F54625E48E5E}
