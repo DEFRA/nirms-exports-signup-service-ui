@@ -1,4 +1,4 @@
-﻿using Defra.ReMoS.AssuranceService.UI.Pages;
+﻿using Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;

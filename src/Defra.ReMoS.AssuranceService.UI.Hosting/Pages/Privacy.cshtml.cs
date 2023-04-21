@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Defra.ReMoS.AssuranceService.UI.Pages;
+namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
 public class PrivacyModel : PageModel
 {

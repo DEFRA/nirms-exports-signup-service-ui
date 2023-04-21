@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Defra.ReMoS.AssuranceService.UI\Defra.ReMoS.AssuranceService.UI.csproj" />
+    <ProjectReference Include="..\..\src\Defra.ReMoS.AssuranceService.UI.Hosting\Defra.ReMoS.AssuranceService.UI.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\Defra.ReMoS.AssuranceService.UI\Defra.ReMoS.AssuranceService.UI.Hosting.csproj" />
   </ItemGroup>
 
 </Project>
