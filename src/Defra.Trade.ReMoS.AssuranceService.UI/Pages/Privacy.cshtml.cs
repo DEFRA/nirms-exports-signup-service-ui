@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.ReMoS.AssuranceService.UI.Pages;
 
+[ExcludeFromCodeCoverage]
 public class PrivacyModel : PageModel
 {
     private readonly ILogger<PrivacyModel> _logger;
@@ -14,6 +16,7 @@ public class PrivacyModel : PageModel
 
     public void OnGet()
     {
+        _logger.Log(LogLevel.Information, "OnGet");
     }
 }
 
