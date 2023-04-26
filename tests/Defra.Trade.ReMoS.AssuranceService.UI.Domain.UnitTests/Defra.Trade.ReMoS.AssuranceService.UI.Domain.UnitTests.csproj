@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Defra.ReMoS.AssuranceService.UI.Core\Defra.ReMoS.AssuranceService.UI.Core.csproj" />
+    <ProjectReference Include="..\..\src\Defra.Trade.ReMoS.AssuranceService.UI.Domain\Defra.Trade.ReMoS.AssuranceService.UI.Domain.csproj" />
   </ItemGroup>
 
 </Project>
