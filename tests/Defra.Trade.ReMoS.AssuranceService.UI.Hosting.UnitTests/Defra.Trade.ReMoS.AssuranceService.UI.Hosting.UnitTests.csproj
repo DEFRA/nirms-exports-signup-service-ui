@@ -25,11 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<<< HEAD:tests/Defra.ReMoS.AssuranceService.UI.Hosting.UnitTests/Defra.ReMoS.AssuranceService.UI.Hosting.UnitTests.csproj
-    <ProjectReference Include="..\..\src\Defra.ReMoS.AssuranceService.UI.Hosting\Defra.ReMoS.AssuranceService.UI.Hosting.csproj" />
-========
-    <ProjectReference Include="..\..\src\Defra.Trade.ReMoS.AssuranceService.UI\Defra.Trade.ReMoS.AssuranceService.UI.csproj" />
->>>>>>>> 0041eb7cdc4aa3f9adb6731977afe664b75da9b8:tests/Defra.Trade.ReMoS.AssuranceService.UI.UnitTests/Defra.Trade.ReMoS.AssuranceService.UI.UnitTests.csproj
+    <ProjectReference Include="..\..\src\Defra.Trade.ReMoS.AssuranceService.UI.Hosting\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\Defra.Trade.ReMoS.AssuranceService.UI.Hosting\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.csproj" />
   </ItemGroup>
 
 </Project>

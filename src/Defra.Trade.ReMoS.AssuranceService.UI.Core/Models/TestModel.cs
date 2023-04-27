@@ -8,6 +8,6 @@ namespace Defra.ReMoS.AssuranceService.UI.Core.Models
 {
     public class TestModel
     {
-        public string TestModelString { get; set; }
+        public string TestModelString { get; set; } = default!;
     }
 }

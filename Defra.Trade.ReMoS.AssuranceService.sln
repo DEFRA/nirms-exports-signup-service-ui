@@ -5,22 +5,14 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{42A7CC2B-6479-4AF2-9498-6B194F6EA96E}"
 EndProject
-<<<<<<< HEAD:Defra.ReMoS.AssuranceService.sln
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.ReMoS.AssuranceService.UI.Hosting", "src\Defra.ReMoS.AssuranceService.UI.Hosting\Defra.ReMoS.AssuranceService.UI.Hosting.csproj", "{85126CFA-3068-4074-9E43-3B2880C4C4E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Hosting", "src\Defra.Trade.ReMoS.AssuranceService.UI.Hosting\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.csproj", "{85126CFA-3068-4074-9E43-3B2880C4C4E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B59E33B1-C013-4FBB-BB7C-17B27CD350B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.ReMoS.AssuranceService.UI.Hosting.UnitTests", "tests\Defra.ReMoS.AssuranceService.UI.Hosting.UnitTests\Defra.ReMoS.AssuranceService.UI.Hosting.UnitTests.csproj", "{E06D392E-994F-4F25-AA32-CC835995AA66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests", "tests\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.csproj", "{E06D392E-994F-4F25-AA32-CC835995AA66}"
 	ProjectSection(ProjectDependencies) = postProject
 		{85126CFA-3068-4074-9E43-3B2880C4C4E3} = {85126CFA-3068-4074-9E43-3B2880C4C4E3}
 	EndProjectSection
-=======
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI", "src\Defra.Trade.ReMoS.AssuranceService.UI\Defra.Trade.ReMoS.AssuranceService.UI.csproj", "{85126CFA-3068-4074-9E43-3B2880C4C4E3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B59E33B1-C013-4FBB-BB7C-17B27CD350B0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.UnitTests", "tests\Defra.Trade.ReMoS.AssuranceService.UI.UnitTests\Defra.Trade.ReMoS.AssuranceService.UI.UnitTests.csproj", "{E06D392E-994F-4F25-AA32-CC835995AA66}"
->>>>>>> 0041eb7cdc4aa3f9adb6731977afe664b75da9b8:Defra.Trade.ReMoS.AssuranceService.sln
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".azuredevops", ".azuredevops", "{44304A6C-ED3E-46DA-B8D0-9A5802654666}"
 	ProjectSection(SolutionItems) = preProject
@@ -32,13 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline", "pipeline", "{CF
 		pipeline-ui.yaml = pipeline-ui.yaml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.ReMoS.AssuranceService.UI.Domain", "src\Defra.ReMoS.AssuranceService.UI.Domain\Defra.ReMoS.AssuranceService.UI.Domain.csproj", "{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Domain", "src\Defra.Trade.ReMoS.AssuranceService.UI.Domain\Defra.Trade.ReMoS.AssuranceService.UI.Domain.csproj", "{E07ACEBC-2DCB-4C51-B7CA-81075E7DB9E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.ReMoS.AssuranceService.UI.Core", "src\Defra.ReMoS.AssuranceService.UI.Core\Defra.ReMoS.AssuranceService.UI.Core.csproj", "{484CDB8E-3F5F-4C09-A3A4-265AD5F7FEB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Core", "src\Defra.Trade.ReMoS.AssuranceService.UI.Core\Defra.Trade.ReMoS.AssuranceService.UI.Core.csproj", "{484CDB8E-3F5F-4C09-A3A4-265AD5F7FEB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Defra.ReMoS.AssuranceService.UI.Core.UnitTests", "tests\Defra.ReMoS.AssuranceService.UI.Core.UnitTests\Defra.ReMoS.AssuranceService.UI.Core.UnitTests.csproj", "{8B2A1E80-9DC1-4A12-A202-916823DD8904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests", "tests\Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests\Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.csproj", "{8B2A1E80-9DC1-4A12-A202-916823DD8904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Defra.ReMoS.AssuranceService.UI.Domain.UnitTests", "tests\Defra.ReMoS.AssuranceService.UI.Domain.UnitTests\Defra.ReMoS.AssuranceService.UI.Domain.UnitTests.csproj", "{68C8EE5C-0F32-4003-97F8-4BEB26EF389C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests", "tests\Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests\Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests.csproj", "{68C8EE5C-0F32-4003-97F8-4BEB26EF389C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

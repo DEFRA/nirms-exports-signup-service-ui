@@ -60,7 +60,6 @@ resources:
       name: DEFRA-TRD/Defra.TRD.Pipeline.Common
       type: git
       ref: features/update-quality-gate-parameters-jb
-<<<<<<< HEAD
     - repository: EEHCAutomation
       name: DEFRA-EEHC/Defra.Trade.EEHC.Automation
       type: git
