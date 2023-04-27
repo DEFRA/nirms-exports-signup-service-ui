@@ -66,7 +66,7 @@ resources:
       ref: dev
 
 variables:
-  APIName: Defra.Trade.ReMoS.AssuranceService.UI.Hosting
+  APIName: Defra.Trade.ReMoS.AssuranceService.UI
   UseProductionData: $[ne(variables['environment'], 'dev')]
 
 extends:
