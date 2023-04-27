@@ -36,7 +36,7 @@ trigger:
     - 'dev'
   paths:
     include:
-    - src/Defra.ReMoS.AssuranceService.UI/*
+    - src/Defra.Trade.ReMoS.AssuranceService.UI/*
     - test/*
 
 resources:
@@ -49,18 +49,9 @@ resources:
       name: DEFRA-EEHC/Defra.Trade.EEHC.Automation
       type: git
       ref: dev
-  pipelines:
-    - pipeline: INFRA
-      source: Defra.EEHC.Infra EUCerts UI WebApp
-      trigger:
-        branches:
-          include:
-            - '*'
-        stages:
-          - DEV
 
 variables:
-  APIName: Defra.ReMoS.AssuranceService.UI
+  APIName: Defra.Trade.ReMoS.AssuranceService.UI.Hosting
   UseProductionData: $[ne(variables['environment'], 'dev')]
 
 extends:
@@ -69,8 +60,8 @@ extends:
     forceDevDeploy: ${{ parameters.forceDevDeploy }}
     deployToSecondary: ${{ parameters.deployToSecondary }}
     appName: $(APIName)
-    appProject: TRS
-    appInstanceNumber: $(nc-region-id)29
+    appProject: GC
+    appInstanceNumber: $(nc-region-id)01
     buildProjects: 'src\$(APIName)\$(APIName).csproj'
     publishProject: 'src\$(APIName)\$(APIName).csproj'
     publishArguments: '--configuration Release'
@@ -79,20 +70,8 @@ extends:
     deployDevSlot: ${{ parameters.deployDevSlot }}
     appSettingsEnv:
       dev: >-
-       -AzureAdB2C:Instance "https://$(b2cTenant2Name).b2clogin.com"
-       -AzureAdB2C:SignUpSignInPolicyId "B2C_1A_EUCerts_SUSI"
-       -AzureAdB2C:ResetPasswordPolicyId "B2c_1_Reset_std"
-       -AzureAdB2C:Domain "$(b2cTenant2Name).onmicrosoft.com"
-       -AzureAdB2C:TenantId "$(b2cTenant2Name).onmicrosoft.com"
-       -AzureAdB2C:CallbackPath "/signin-oidc"
-       -AzureAdB2C:SignedOutCallbackPath "/signout-oidc"
-       -ApimSettings:Authority "$(internalAPIMAudience)"
-       -AphaContactDetails:Email "exports@apha.gov.uk"
-       -AphaContactDetails:Phone "03000 200 301"      
-       -SocSettings:Environment "$(environment)"
-       -AphaAdminTrusted:ContactEmails "cheryl.day@defra.gov.uk,colin.rogers1@defra.gov.uk,aphadevtst@gmail.com"
     runSonarScan: true
     runVulnerabilityScan: false
-    sonarExclusionPaths: 'src/*.Api*/**,src/Defra.Trade.EUCerts.UI.Vue/ClientApp/coverage/**,src/Defra.Trade.EUCerts.UI.Vue/ClientApp/public/**,src/Defra.Trade.EUCerts.UI.Vue/ClientApp/node_modules/**'
+    sonarExclusionPaths: 'src/*.Api*/**'
     skipBuildTests: true
     qualityGate: ${{ parameters.qualityGate }}
