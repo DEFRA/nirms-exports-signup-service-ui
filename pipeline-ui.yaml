@@ -51,7 +51,7 @@ trigger:
     - 'dev'
   paths:
     include:
-    - src/Defra.Trade.ReMoS.AssuranceService.UI/*
+    - src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/*
     - test/*
 
 resources:
@@ -66,7 +66,7 @@ resources:
       ref: dev
 
 variables:
-  APIName: Defra.Trade.ReMoS.AssuranceService.UI
+  APIName: Defra.Trade.ReMoS.AssuranceService.UI.Hosting
   UseProductionData: $[ne(variables['environment'], 'dev')]
 
 extends:
