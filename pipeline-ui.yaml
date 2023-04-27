@@ -12,8 +12,23 @@ parameters:
     values:
       - None
       - DEV
+      - TST
+      - PRE
+      - PRD
   - name: deployDevSlot
     displayName: "Deploy to DEV Staging Slot?"
+    type: boolean
+    default: false
+  - name: deployTstSlot
+    displayName: "Deploy to TST Staging Slot?"
+    type: boolean
+    default: false
+  - name: deployPreSlot
+    displayName: "Deploy to Pre-Prod Staging Slot?"
+    type: boolean
+    default: false
+  - name: deployPrdSlot
+    displayName: "Deploy to Production Staging Slot?"
     type: boolean
     default: false
   - name: qualityGate
@@ -45,6 +60,7 @@ resources:
       name: DEFRA-TRD/Defra.TRD.Pipeline.Common
       type: git
       ref: features/update-quality-gate-parameters-jb
+<<<<<<< HEAD
     - repository: EEHCAutomation
       name: DEFRA-EEHC/Defra.Trade.EEHC.Automation
       type: git
@@ -52,6 +68,11 @@ resources:
 
 variables:
   APIName: Defra.Trade.ReMoS.AssuranceService.UI.Hosting
+=======
+
+variables:
+  APIName: Defra.Trade.ReMoS.AssuranceService.UI
+>>>>>>> 0041eb7cdc4aa3f9adb6731977afe664b75da9b8
   UseProductionData: $[ne(variables['environment'], 'dev')]
 
 extends:
@@ -72,6 +93,10 @@ extends:
       dev: >-
     runSonarScan: true
     runVulnerabilityScan: false
+<<<<<<< HEAD
     sonarExclusionPaths: 'src/*.Api*/**'
+=======
+    sonarExclusionPaths: 'src/*.Api*/** src\Defra.Trade.ReMoS.AssuranceService.UI\wwwroot\**'
+>>>>>>> 0041eb7cdc4aa3f9adb6731977afe664b75da9b8
     skipBuildTests: true
     qualityGate: ${{ parameters.qualityGate }}
