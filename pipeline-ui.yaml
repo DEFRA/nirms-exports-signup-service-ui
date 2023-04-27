@@ -67,11 +67,6 @@ resources:
 
 variables:
   APIName: Defra.Trade.ReMoS.AssuranceService.UI.Hosting
-=======
-
-variables:
-  APIName: Defra.Trade.ReMoS.AssuranceService.UI
->>>>>>> 0041eb7cdc4aa3f9adb6731977afe664b75da9b8
   UseProductionData: $[ne(variables['environment'], 'dev')]
 
 extends:
@@ -92,10 +87,6 @@ extends:
       dev: >-
     runSonarScan: true
     runVulnerabilityScan: false
-<<<<<<< HEAD
-    sonarExclusionPaths: 'src/*.Api*/**'
-=======
-    sonarExclusionPaths: 'src/*.Api*/** src\Defra.Trade.ReMoS.AssuranceService.UI\wwwroot\**'
->>>>>>> 0041eb7cdc4aa3f9adb6731977afe664b75da9b8
+    sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs'
     skipBuildTests: true
     qualityGate: ${{ parameters.qualityGate }}
