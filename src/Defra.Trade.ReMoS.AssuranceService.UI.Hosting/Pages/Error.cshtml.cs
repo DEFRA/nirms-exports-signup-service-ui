@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Defra.ReMoS.AssuranceService.UI.Pages;
+namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
 [ExcludeFromCodeCoverage]
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

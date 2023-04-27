@@ -1,12 +1,7 @@
-﻿using Defra.ReMoS.AssuranceService.UI.Pages;
+﻿using Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.ReMoS.AssuranceService.UI.UnitTests.Pages;
 

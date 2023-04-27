@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Defra.ReMoS.AssuranceService.UI.Pages;
+namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
 [ExcludeFromCodeCoverage]
 public class PrivacyModel : PageModel

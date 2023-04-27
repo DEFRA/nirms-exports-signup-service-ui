@@ -51,7 +51,7 @@ trigger:
     - 'dev'
   paths:
     include:
-    - src/Defra.Trade.ReMoS.AssuranceService.UI/*
+    - src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/*
     - test/*
 
 resources:
@@ -60,9 +60,13 @@ resources:
       name: DEFRA-TRD/Defra.TRD.Pipeline.Common
       type: git
       ref: features/update-quality-gate-parameters-jb
+    - repository: EEHCAutomation
+      name: DEFRA-EEHC/Defra.Trade.EEHC.Automation
+      type: git
+      ref: dev
 
 variables:
-  APIName: Defra.Trade.ReMoS.AssuranceService.UI
+  APIName: Defra.Trade.ReMoS.AssuranceService.UI.Hosting
   UseProductionData: $[ne(variables['environment'], 'dev')]
 
 extends:
@@ -83,6 +87,6 @@ extends:
       dev: >-
     runSonarScan: true
     runVulnerabilityScan: false
-    sonarExclusionPaths: 'src/*.Api*/** src\Defra.Trade.ReMoS.AssuranceService.UI\wwwroot\**'
+    sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs'
     skipBuildTests: true
     qualityGate: ${{ parameters.qualityGate }}
