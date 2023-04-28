@@ -10,9 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B59E33B1-C013-4FBB-BB7C-17B27CD350B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests", "tests\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.csproj", "{E06D392E-994F-4F25-AA32-CC835995AA66}"
-	ProjectSection(ProjectDependencies) = postProject
-		{85126CFA-3068-4074-9E43-3B2880C4C4E3} = {85126CFA-3068-4074-9E43-3B2880C4C4E3}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".azuredevops", ".azuredevops", "{44304A6C-ED3E-46DA-B8D0-9A5802654666}"
 	ProjectSection(SolutionItems) = preProject

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/Defra.ReMoS.AssuranceService.UI.Hosting.styles.css" asp-append-version="true" />
 </head>
 <body>
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -47,5 +48,9 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/govuk.js"></script>
+    <script>
+        window.GOVUKFrontend.initAll()
+    </script>
 </body>
 </html>
