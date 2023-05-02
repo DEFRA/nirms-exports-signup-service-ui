@@ -23,4 +23,8 @@
     <Folder Include="wwwroot\assets\fonts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Defra.Trade.ReMoS.AssuranceService.UI.Domain\Defra.Trade.ReMoS.AssuranceService.UI.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

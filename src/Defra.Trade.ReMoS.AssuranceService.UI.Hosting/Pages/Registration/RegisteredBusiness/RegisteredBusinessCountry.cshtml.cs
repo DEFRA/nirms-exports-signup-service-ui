@@ -1,17 +1,39 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
+
+[ExcludeFromCodeCoverage]
+public class RegisteredBusinessCountryModel : BasePageModel
 {
-    [ExcludeFromCodeCoverage]
-    public class RegisteredBusinessCountryModel : PageModel
+    #region ui model variables
+    [BindProperty]
+    [Required(ErrorMessage = "Enter a country.")]
+    public string? Country { get; set; }
+    #endregion
+
+    public async Task<IActionResult> OnGetAsync()
     {
-        [BindProperty]
-        public string? Country { get; set; }
-        public void OnGet()
+        //Country = getCurrentCountry();
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostSubmitAsync()
+    {
+        if (checkModelState())
         {
-            Country = "United Kingdom";
+            return RedirectToPage();
         }
+
+        return await OnGetAsync();
+    }
+
+    public string getCurrentCountry()
+    {
+        //add if statement here when API built to check if one exists
+        return "";
     }
 }
