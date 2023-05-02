@@ -6,4 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="sassconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="sassconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="sassconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\images\" />
+    <Folder Include="wwwroot\assets\fonts\" />
+  </ItemGroup>
+
 </Project>
