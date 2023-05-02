@@ -87,6 +87,6 @@ extends:
       dev: >-
     runSonarScan: true
     runVulnerabilityScan: false
-    sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs'
+    sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/www**,src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Node**'
     skipBuildTests: true
     qualityGate: ${{ parameters.qualityGate }}
