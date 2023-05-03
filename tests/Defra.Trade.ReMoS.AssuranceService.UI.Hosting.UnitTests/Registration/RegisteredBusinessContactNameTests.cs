@@ -4,14 +4,14 @@ using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
-public class RegisteredBusinessNameTests : PageModelTestsBase
+public class RegisteredBusinessContactNameTests : PageModelTestsBase
 {
-    private RegisteredBusinessNameModel _systemUnderTest;
-    protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();
+    private RegisteredBusinessContactNameModel _systemUnderTest;
+    protected Mock<ILogger<RegisteredBusinessContactNameModel>> _mockLogger = new();
 
-    public RegisteredBusinessNameTests()
+    public RegisteredBusinessContactNameTests()
     {
-        _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object);
+        _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object);
     }
 
     [Fact]

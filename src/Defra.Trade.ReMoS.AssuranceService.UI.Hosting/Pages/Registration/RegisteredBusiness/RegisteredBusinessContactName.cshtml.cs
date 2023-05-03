@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
-public class RegisteredBusinessNameModel : PageModel
+public class RegisteredBusinessContactNameModel : PageModel
 {
     #region ui model variables
     [BindProperty]
@@ -13,14 +13,14 @@ public class RegisteredBusinessNameModel : PageModel
     public string Name { get; set; } = string.Empty;
     #endregion
 
-    private readonly ILogger<RegisteredBusinessNameModel> _logger;
+    private readonly ILogger<RegisteredBusinessContactNameModel> _logger;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="logger"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    public RegisteredBusinessNameModel(ILogger<RegisteredBusinessNameModel> logger)
+    public RegisteredBusinessContactNameModel(ILogger<RegisteredBusinessContactNameModel> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
