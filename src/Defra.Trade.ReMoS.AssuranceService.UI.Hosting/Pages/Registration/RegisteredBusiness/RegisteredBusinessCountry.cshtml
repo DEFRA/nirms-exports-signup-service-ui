@@ -48,10 +48,11 @@
                 </fieldset>
             
                 <br />
-                <div class="govuk-button-group">
-                    <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Continue</button>
-                    <button class="govuk-button --secondary" asp-page-handler="Save" id="button-rbCountrySave">Save and continue</button>
-                </div>
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>
+                <p>
+                    <a class="govuk-link" asp-page-handler="Save" id="button-rbCountrySave">Save and continue later</a>
+                </p>
+                
             </div>
         </form>
     </div>
