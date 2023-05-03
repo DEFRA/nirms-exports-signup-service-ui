@@ -16,12 +16,10 @@
                         What is the name of your business?
                     </h1>
                 </label>
-
-                <div>
-                    <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
-
-                    <input class="govuk-input" id="business-name" name="business-name" type="text">
-                </div>
+                               
+                <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
+                <input class="govuk-input" asp-for="Name" id="business-name" type="text">
+                
             </div>
             <div class="govuk-form-group">
                 <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>
