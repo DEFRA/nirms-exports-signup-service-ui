@@ -1,39 +1,44 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
-[ExcludeFromCodeCoverage]
-public class RegisteredBusinessCountryModel : BasePageModel
+public class RegisteredBusinessCountryModel : PageModel
 {
     #region ui model variables
     [BindProperty]
     [Required(ErrorMessage = "Enter a country.")]
-    public string? Country { get; set; }
+    public string Country { get; set; } = string.Empty;
     #endregion
+
+    private readonly ILogger<RegisteredBusinessCountryModel> _logger;
+
+    /// <summary>
+    /// Constructor. 
+    /// </summary>
+    /// <param name="logger">Application logging.</param>
+    /// <exception cref="ArgumentNullException">Guard statement reaction.</exception>
+    public RegisteredBusinessCountryModel(ILogger<RegisteredBusinessCountryModel> logger)
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
     public async Task<IActionResult> OnGetAsync()
     {
-        //Country = getCurrentCountry();
+        _logger.LogInformation("Country OnGet");
         return Page();
     }
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        if (checkModelState())
+        _logger.LogInformation("Country OnPostSubmit");
+
+        if (!ModelState.IsValid)
         {
-            return RedirectToPage();
+            return await OnGetAsync();
         }
 
         return await OnGetAsync();
-    }
-
-    public string getCurrentCountry()
-    {
-        //add if statement here when API built to check if one exists
-        return "";
     }
 }
