@@ -29,10 +29,25 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
         }
 
         [Fact]
-        public async Task OnPostSubmit_SubmitValidInformation()
+        public async Task OnPostSubmit_SubmitValidName()
+        {
+            //Arrange
+            _systemUnderTest.Name = "Business-Name1";            
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);            
+        }
+
+        [Fact]
+        public async Task OnPostSubmit_SubmitInValidNameNotPresent()
         {
             //Arrange
             _systemUnderTest.Name = "";
+            var expectedResult = "Enter your business name";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -40,6 +55,39 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert
             validation.Count.Should().Be(1);
+            Assert.Equal(expectedResult, validation[0].ErrorMessage);
+        }
+
+        [Fact]
+        public async Task OnPostSubmit_SubmitInvalidRegex()
+        {
+            //Arrange
+            _systemUnderTest.Name = "Business/Name1";
+            var expectedResult = "Enter your business name using only letters, numbers, hyphens (-) and apostrophes (')";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
+            Assert.Equal(expectedResult, validation[0].ErrorMessage);
+        }
+
+        [Fact]
+        public async Task OnPostSubmit_SubmitInvalidLength()
+        {
+            //Arrange
+            _systemUnderTest.Name = new string('a', 101);
+            var expectedResult = "Business name is too long";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
+            Assert.Equal(expectedResult, validation[0].ErrorMessage);
         }
     }
 }
