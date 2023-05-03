@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness
 {
-    [ExcludeFromCodeCoverage]
     public class RegisteredBusinessNameModel : PageModel
     {
         [BindProperty]
