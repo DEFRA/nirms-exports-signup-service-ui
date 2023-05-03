@@ -1,0 +1,34 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessNameModel
+@{
+    ViewData["Title"] = "Enter Business Name";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="post" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
+                <label for="business-name">
+                    <h1 class="govuk-heading-l">
+                        <span class="govuk-caption-l">Business details</span>
+                        What is the name of your business?
+                    </h1>
+                </label>
+
+                <div>
+                    <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
+
+                    <input class="govuk-input" id="business-name" name="business-name" type="text">
+                </div>
+            </div>
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>
+                <p>
+                    <a class="govuk-link" asp-page-handler="Save" id="button-rbCountrySave">Save and continue later</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
