@@ -1,26 +1,27 @@
 ﻿@page
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessNameModel
 @{
+    ViewData["Title"] = "Enter Business Name";
 }
-<div class="govuk-width-container">
-    <a href="javascript:window.history.back()" class="govuk-back-link">Back</a>
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <form class="form" method="post">
-                    <div class="govuk-form-group">
-                        <label for="business-name">
-                            <h1 class="govuk-heading-l">
-                                <span class="govuk-caption-l">Business details</span>
-                                What is the name of your business?
-                            </h1>
-                        </label>
-                        <input class="govuk-input" id="business-name" name="business-name" type="text"/>
-                    </div>
-                    <button class="govuk-button" data-module="govuk-button">Save and continue</button>
-                    <p><a href="">Save and continue later</a></p>
-                </form>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="post" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
+                <label for="business-name">
+                    <h1 class="govuk-heading-l">
+                        <span class="govuk-caption-l">Business details</span>
+                        What is the name of your business?
+                    </h1>
+                </label>
+                <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
+                <input class="govuk-input" id="business-name" name="business-name" asp-for="Name" type="text"/>
             </div>
-        </div>
-    </main>
+            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+            <p>
+                <a class="govuk-link" asp-page-handler="Save">Save and continue later</a>
+            </p>
+        </form>
+    </div>
 </div>
