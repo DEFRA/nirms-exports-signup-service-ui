@@ -102,13 +102,13 @@ public class ErrorMessageTagHelperTests
         }
     }
 
-    private ModelExpression CreateModelExpression(string name)
+    private static ModelExpression CreateModelExpression(string name)
     {
         var metadataProvider = new EmptyModelMetadataProvider();
         return new ModelExpression(name, metadataProvider.GetModelExplorerForType(typeof(object), null));
     }
 
-    private ViewContext CreateViewContext(ModelStateDictionary modelState)
+    private static ViewContext CreateViewContext(ModelStateDictionary modelState)
     {
         var actionContext = new ActionContext(new DefaultHttpContext(),
                                               new RouteData(),

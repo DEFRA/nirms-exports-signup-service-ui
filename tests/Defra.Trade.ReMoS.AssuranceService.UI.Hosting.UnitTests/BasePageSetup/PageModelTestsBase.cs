@@ -4,7 +4,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 
 public abstract class PageModelTestsBase
 {
-    protected IList<ValidationResult> ValidateModel(object model)
+    protected static IList<ValidationResult> ValidateModel(object model)
     {
         var validationResults = new List<ValidationResult>();
         var ctx = new ValidationContext(model, null, null);
