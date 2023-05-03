@@ -10,7 +10,7 @@
 
         <form method="POST" novalidate>
             <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)">
-                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("FuelType") ? "Country_Error": null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Country") ? "Country_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             Which country is your business based in?
