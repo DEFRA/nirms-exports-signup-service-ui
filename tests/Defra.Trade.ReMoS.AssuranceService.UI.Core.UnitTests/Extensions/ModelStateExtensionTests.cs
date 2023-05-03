@@ -1,18 +1,13 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Microsoft.Extensions.Logging;
+using NUnit.Framework;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Extensions;
 
+[TestFixture]
 public class ModelStateExtensionsTests
 {
-    [Fact]
+    [Test]
     public void HasError_Returns_True_If_Error_Exists()
     {
         // Arrange
@@ -26,7 +21,7 @@ public class ModelStateExtensionsTests
         isValid.Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void HasError_Returns_False_If_Error_Doesnt_Exist()
     {
         // Arrange
@@ -42,7 +37,7 @@ public class ModelStateExtensionsTests
         isValid.Should().BeFalse();
     }
 
-    [Fact]
+    [Test]
     public void HasError_Returns_False_If_ModelState_Empty()
     {
         // Arrange

@@ -1,6 +1,7 @@
-﻿@if (!ViewContext.RouteData.Values.Any(p => p.Value!.ToString()!.Contains("Index"))){
-    <a href="/Index" class="govuk-back-link">Back</a>
+﻿@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
+@if (!ViewContext.RouteData.Values.Any(p => p.Value!.ToString()!.Contains("Index"))){
+    <a asp-page=@Routes.Pages.Path.RegistrationTaskListPath class="govuk-back-link">Back</a>
 }
 
 <!-- TODO -- CHANGE TO TASKLIST WHEN IT EXISTS -->

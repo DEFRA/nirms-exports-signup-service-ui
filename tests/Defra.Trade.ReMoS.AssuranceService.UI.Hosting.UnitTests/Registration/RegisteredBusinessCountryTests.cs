@@ -4,17 +4,19 @@ using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
+[TestFixture]
 public class RegisteredBusinessCountryTests : PageModelTestsBase
 {
-    private RegisteredBusinessCountryModel _systemUnderTest;
+    private RegisteredBusinessCountryModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
 
-    public RegisteredBusinessCountryTests()
+    [SetUp]
+    public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object);
     }
 
-    [Fact]
+    [Test]
     public async Task OnGet_NoCountryPresentIfNoSavedData()
     {
         //Arrange
@@ -27,7 +29,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         _systemUnderTest.Country.Should().Be("");
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
