@@ -24,7 +24,10 @@ public class RegisteredBusinessCountryModel : PageModel
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    //Remove warning when API integration added (has to be async for OnPost functionality but throws this error)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async Task<IActionResult> OnGetAsync()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         _logger.LogInformation("Country OnGet");
         return Page();
