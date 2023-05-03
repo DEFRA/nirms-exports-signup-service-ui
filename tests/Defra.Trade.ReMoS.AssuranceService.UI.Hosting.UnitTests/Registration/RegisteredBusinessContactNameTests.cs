@@ -15,7 +15,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     }
 
     [Fact]
-    public async Task OnGet_NoNAmePresentIfNoSavedData()
+    public async Task OnGet_NoNamePresentIfNoSavedData()
     {
         // arrange
         // TODO add setup for returning values when api referenced
@@ -28,10 +28,38 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     }
 
     [Fact]
-    public async Task OnPostSubmit_SubmitValudInformation()
+    public async Task OnPostSubmit_SubmitValidInformation()
     {
         // arrange
-        _systemUnderTest.Name = "";
+        _systemUnderTest.Name = "John Doe";
+
+        // act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // asser
+        validation.Count.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task OnPostSubmit_SubmitInvalidCharacterInformation()
+    {
+        // arrange
+        _systemUnderTest.Name = "*";
+
+        // act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // asser
+        validation.Count.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task OnPostSubmit_SubmitTooManyCharactersInformation()
+    {
+        // arrange
+        _systemUnderTest.Name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
         // act
         await _systemUnderTest.OnPostSubmitAsync();
