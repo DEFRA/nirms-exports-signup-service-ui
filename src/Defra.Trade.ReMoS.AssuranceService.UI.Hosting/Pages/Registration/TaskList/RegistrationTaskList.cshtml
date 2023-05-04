@@ -24,12 +24,12 @@
                                 Check eligibility
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-country">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a href="#" aria-describedby="business-name">
+                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" aria-describedby="business-name">
                                 Business name
                             </a>
                         </span>
@@ -42,7 +42,7 @@
                                 Business type
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-type">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                     <li class="app-task-list__item">
@@ -51,7 +51,7 @@
                                 Registered address
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-address">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
 
                     </li>
@@ -65,20 +65,20 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a href="#" aria-describedby="name">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath aria-describedby="name">
                                 Full name
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-name">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a href="#" aria-describedby="position">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPositionPath aria-describedby="position">
                                 Position
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-position">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                     <li class="app-task-list__item">
@@ -87,7 +87,7 @@
                                 Email address
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-email">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                     <li class="app-task-list__item">
@@ -96,7 +96,7 @@
                                 Telephone number
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-phone">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                 </ul>
@@ -111,7 +111,7 @@
                         <span class="app-task-list__task-name">
                             <a aria-describedby="points-of-departure" href="points-of-departure">Points of departure</a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="establistment-departure">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
 
@@ -119,7 +119,7 @@
                         <span class="app-task-list__task-name">
                             <a aria-describedby="points-of-destination" href="points-of-destination">Points of destination</a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="establistment-destination">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                 </ul>
@@ -136,7 +136,7 @@
                                 SPS goods categories
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-goods">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                     <li class="app-task-list__item">
@@ -145,7 +145,7 @@
                                 SPS assurance commitment
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-commitment">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
                     </li>
                 </ul>
@@ -161,7 +161,7 @@
                             <span class="app-task-list__task-name">
                                 Check answers and submit sign up
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="not-complete_submit">@TaskListStatus.NOTSTART</strong>
                             <!--Add Status-->
                         </span>
                         <span id="checkComplete" style="display:none;">
@@ -170,7 +170,7 @@
                                     Check answers and submit sign up
                                 </a>
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.CANNOTSTART</strong>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="complete-submit">@TaskListStatus.CANNOTSTART</strong>
                             <!--Add Status-->
                         </span>
                     </li>
