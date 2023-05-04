@@ -28,7 +28,7 @@ public static class Routes
         public static class Path
         {
             public const string RegisteredBusinessCompanyPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCompany}";
-            public const string RegistrationTaskListPath = $"/TaskList/{Names.RegistrationTasklist}";
+            public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklist}";
         }
     }
 }
