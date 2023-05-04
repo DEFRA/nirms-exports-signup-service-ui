@@ -62,8 +62,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
         public async Task OnPostSubmit_SubmitInvalidRegex()
         {
             //Arrange
-            _systemUnderTest.Name = "Business/Name1";
-            var expectedResult = "Enter your business name using only letters, numbers, hyphens (-) and apostrophes (')";
+            _systemUnderTest.Name = "Business%%Name1";
+            var expectedResult = "Enter your business name using only letters, numbers, and special characters -_./()&";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

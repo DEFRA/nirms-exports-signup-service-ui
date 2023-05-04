@@ -9,7 +9,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     {
         [BindProperty]
         [Required(ErrorMessage = "Enter your business name")]
-        [RegularExpression(@"^[a-zA-Z0-9' -]*$", ErrorMessage = "Enter your business name using only letters, numbers, hyphens (-) and apostrophes (')")]
+        [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter your business name using only letters, numbers, and special characters -_./()&")]
         [MaxLength(100, ErrorMessage = "Business name is too long")]
         public string Name { get; set; } = string.Empty;
 
