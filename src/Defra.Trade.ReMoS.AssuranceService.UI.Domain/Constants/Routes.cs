@@ -21,14 +21,14 @@ public static class Routes
     {
         public static class Names
         {
-            public const string RegisteredBusinessCompany = "RegisteredBusinessCountry";
-            public const string RegistrationTasklist = "RegistrationTaskList";
+            public const string RegisteredBusinessCompanyName = "RegisteredBusinessCountry";
+            public const string RegistrationTasklistName = "RegistrationTaskList";
         }
 
         public static class Path
         {
-            public const string RegisteredBusinessCompanyPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCompany}";
-            public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklist}";
+            public const string RegisteredBusinessCompanyPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCompanyName}";
+            public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklistName}";
         }
     }
 }

@@ -2,13 +2,14 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
-
+using NUnit.Framework;
+#pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
 [TestFixture]
 public class RegisteredBusinessContactNameTests : PageModelTestsBase
 {
-    private RegisteredBusinessContactNameModel _systemUnderTest;
+    private RegisteredBusinessContactNameModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactNameModel>> _mockLogger = new();
 
     [SetUp]

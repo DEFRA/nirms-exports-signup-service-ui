@@ -29,10 +29,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //TODO: Add setup for returning values when API referenced
 
             //Act
-            await _systemUnderTest.OnGetAsync();
+            if (_systemUnderTest != null)
+            {
+                _ = await _systemUnderTest.OnGetAsync();
+            }
 
             //Assert
-            _systemUnderTest.RegistrationID.Should().NotBeNull();
+            if (_systemUnderTest != null)
+            {
+                _ = _systemUnderTest.RegistrationID.Should().NotBeNull();
+            }
         }
     }
 }

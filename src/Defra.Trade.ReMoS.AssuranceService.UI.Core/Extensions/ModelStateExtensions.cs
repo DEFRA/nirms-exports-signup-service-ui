@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+#pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 
 /// <summary>
@@ -24,7 +24,6 @@ public static class ModelStateExtensions
         {
             return true;
         }
-
         return false;
     }
 }
