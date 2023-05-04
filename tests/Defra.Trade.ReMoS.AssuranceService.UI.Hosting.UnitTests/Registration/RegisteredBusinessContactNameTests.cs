@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -38,7 +39,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         var validation = ValidateModel(_systemUnderTest);
 
         // asser
-        validation.Count.Should().Be(1);
+        validation.Count.Should().Be(0);
     }
 
     [Fact]

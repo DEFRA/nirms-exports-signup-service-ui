@@ -9,7 +9,7 @@ public class RegisteredBusinessContactNameModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9-_./()&]*$", ErrorMessage = "Name must only include letters, numbers, and special characters -_./()&")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Name must only include letters, numbers, and special characters -_./()&")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter a name.")]
     public string Name { get; set; } = string.Empty;
