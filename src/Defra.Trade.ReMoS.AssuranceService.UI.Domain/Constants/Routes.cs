@@ -34,11 +34,12 @@ public static class Routes
             public const string RegisteredBusinessContactName = "RegisteredBusinessContactName";
             public const string RegisteredBusinessContactPosition = "RegisteredBusinessContactPosition";
             public const string RegisteredBusinessName = "RegisteredBusinessName";
+            public const string RegisteredBusinessContactEmail = "RegisteredBusinessContactEmail";
         }
 
         public static class Path
         {
-            public const string RegisteredBusinessCompanyPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCompany}";
+            public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCountryName}";
             public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklist}";
             public const string RegisteredBusinessContactNamePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactName}";
             public const string RegisteredBusinessContactPositionPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPosition}";
