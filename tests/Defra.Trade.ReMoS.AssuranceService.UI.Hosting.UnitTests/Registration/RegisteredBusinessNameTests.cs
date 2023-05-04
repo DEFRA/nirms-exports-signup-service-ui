@@ -5,17 +5,19 @@ using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 {
+    [TestFixture]
     public class RegisteredBusinessNameTests : PageModelTestsBase
     {
         private RegisteredBusinessNameModel _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();
 
-        public RegisteredBusinessNameTests()
+        [SetUp]
+        public void TestCaseSetup()
         {
             _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object);
         }
 
-        [Fact]
+        [Test]
         public async Task OnGet_NoNamePresentIfNoSavedData()
         {
             //Arrange
@@ -28,7 +30,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
             _systemUnderTest.Name.Should().Be("");
         }
 
-        [Fact]
+        [Test]
         public async Task OnPostSubmit_SubmitValidName()
         {
             //Arrange
@@ -42,7 +44,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
             validation.Count.Should().Be(0);            
         }
 
-        [Fact]
+        [Test]
         public async Task OnPostSubmit_SubmitInValidNameNotPresent()
         {
             //Arrange
@@ -55,10 +57,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert
             validation.Count.Should().Be(1);
-            Assert.Equal(expectedResult, validation[0].ErrorMessage);
+            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
         }
 
-        [Fact]
+        [Test]
         public async Task OnPostSubmit_SubmitInvalidRegex()
         {
             //Arrange
@@ -71,10 +73,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert            
             validation.Count.Should().Be(1);
-            Assert.Equal(expectedResult, validation[0].ErrorMessage);
+            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
         }
 
-        [Fact]
+        [Test]
         public async Task OnPostSubmit_SubmitInvalidLength()
         {
             //Arrange
@@ -87,7 +89,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert            
             validation.Count.Should().Be(1);
-            Assert.Equal(expectedResult, validation[0].ErrorMessage);
+            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
         }
     }
 }

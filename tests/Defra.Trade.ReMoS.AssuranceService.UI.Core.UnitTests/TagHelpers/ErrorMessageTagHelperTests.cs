@@ -16,15 +16,17 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moq;
+using NUnit.Framework;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.TagHelpers;
 
 /// <remarks>
 /// See https://github.com/aspnet/Mvc/blob/release/2.2/test/Microsoft.AspNetCore.Mvc.TagHelpers.Test/ValidationMessageTagHelperTest.cs
 /// </remarks>
+[TestFixture]
 public class ErrorMessageTagHelperTests
 {
-    [Fact]
+    [Test]
     public void Process_Creates_Output_When_ModelState_Invalid()
     {
         // Arrange
@@ -64,7 +66,7 @@ public class ErrorMessageTagHelperTests
         }
     }
 
-    [Fact]
+    [Test]
     public void Process_Creates_Empty_Output_When_ModelState_Valid()
     {
         // Arrange

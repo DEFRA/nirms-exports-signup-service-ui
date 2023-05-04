@@ -5,17 +5,19 @@ using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
+[TestFixture]
 public class RegisteredBusinessContactNameTests : PageModelTestsBase
 {
     private RegisteredBusinessContactNameModel _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactNameModel>> _mockLogger = new();
 
-    public RegisteredBusinessContactNameTests()
+    [SetUp]
+    public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object);
     }
 
-    [Fact]
+    [Test]
     public async Task OnGet_NoNamePresentIfNoSavedData()
     {
         // arrange
@@ -28,7 +30,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         _systemUnderTest.Name.Should().Be("");
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         // arrange
@@ -38,11 +40,11 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         await _systemUnderTest.OnPostSubmitAsync();
         var validation = ValidateModel(_systemUnderTest);
 
-        // asser
+        // assert
         validation.Count.Should().Be(0);
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitInvalidCharacterInformation()
     {
         // arrange
@@ -56,7 +58,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         validation.Count.Should().Be(1);
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitTooManyCharactersInformation()
     {
         // arrange
@@ -66,7 +68,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         await _systemUnderTest.OnPostSubmitAsync();
         var validation = ValidateModel(_systemUnderTest);
 
-        // asser
+        // assert
         validation.Count.Should().Be(1);
     }
 }

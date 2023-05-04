@@ -1,0 +1,183 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList.RegistrationTaskListModel
+@{
+}
+
+<div class="govuk-grid-row" id="signUpTaskList">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Sign up for the Northern Ireland Retail Movement Scheme
+        </h1>
+
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2" id="signUpStatus">Sign up incomplete</h2>
+
+        <ol class="app-task-list">
+            <li>
+                <h2 class="app-task-list__section">
+                    <span class="app-task-list__section-number">1. </span> Business details
+                </h2>
+                <ul class="app-task-list__items">
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCompanyPath aria-describedby="check-eligibility">
+                                Check eligibility
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="#" aria-describedby="business-name">
+                                Business name
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="#" aria-describedby="business-type">
+                                Business type
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="#" aria-describedby="business-address">
+                                Registered address
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <h2 class="app-task-list__section">
+                    <span class="app-task-list__section-number">2. </span> Contact details
+                </h2>
+                <ul class="app-task-list__items">
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="#" aria-describedby="name">
+                                Full name
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="#" aria-describedby="position">
+                                Position
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="email" aria-describedby="email">
+                                Email address
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="#" aria-describedby="phone">
+                                Telephone number
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <h2 class="app-task-list__section">
+                    <span class="app-task-list__section-number">3. </span> Establishments
+                </h2>
+                <ul class="app-task-list__items">
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a aria-describedby="points-of-departure" href="points-of-departure">Points of departure</a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a aria-describedby="points-of-destination" href="points-of-destination">Points of destination</a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <h2 class="app-task-list__section">
+                    <span class="app-task-list__section-number">4. </span> Sanitary and phytosanitary (SPS) details
+                </h2>
+                <ul class="app-task-list__items">
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="sps-food-categories" aria-describedby="sps-food-categories">
+                                SPS goods categories
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="sps-assurance-commitment" aria-describedby="sps-commitment">
+                                SPS assurance commitment
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <h2 class="app-task-list__section">
+                    <span class="app-task-list__section-number">5. </span> Check and submit sign up
+                </h2>
+                <ul class="app-task-list__items">
+                    <li class="app-task-list__item">
+                        <span id="checkNotComplete">
+                            <span class="app-task-list__task-name">
+                                Check answers and submit sign up
+                            </span>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
+                            <!--Add Status-->
+                        </span>
+                        <span id="checkComplete" style="display:none;">
+                            <span class="app-task-list__task-name">
+                                <a href="check-and-submit" aria-describedby="check-answers">
+                                    Check answers and submit sign up
+                                </a>
+                            </span>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.CANNOTSTART</strong>
+                            <!--Add Status-->
+                        </span>
+                    </li>
+                </ul>
+            </li>
+
+
+        </ol>
+    </div>
+</div>
