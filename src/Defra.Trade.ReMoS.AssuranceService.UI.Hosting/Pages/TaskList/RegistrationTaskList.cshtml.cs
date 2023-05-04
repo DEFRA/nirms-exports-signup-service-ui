@@ -5,10 +5,25 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 {
     public class RegistrationTaskListModel : PageModel
     {
+        #region ui model variables
+        [BindProperty]
         public Guid? RegistrationID { get; set; }
-        public void OnGet()
+        #endregion
+
+        private readonly ILogger<RegistrationTaskListModel> _logger;
+
+        public RegistrationTaskListModel(ILogger<RegistrationTaskListModel> logger)
         {
+            _logger = logger;
+        }
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<IActionResult> OnGetAsync()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            _logger.LogInformation("OnGet");
+
             RegistrationID = Guid.NewGuid();
+            return Page();
         }
     }
 }
