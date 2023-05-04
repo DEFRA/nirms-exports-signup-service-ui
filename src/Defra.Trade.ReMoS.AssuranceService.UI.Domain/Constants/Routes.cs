@@ -8,8 +8,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 public static class Routes
 {
-    public const string RegisteredBusinessCompany = "registered-business-country";
-    public const string RegistrationTasklist = "registration-tasklist";
+    public const string RegisteredBusinessCompany = "/registered-business-country";
+    public const string RegistrationTasklist = "/registration-tasklist";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {

@@ -1,11 +1,12 @@
 ﻿@page
 @model IndexModel
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @{
     ViewData["Title"] = "Home page";
 }
 
 <container class="govuk-width-container">
     <div>
-        <p>Testing Gov UK Fonts</p>
+        <a href="@Routes.RegistrationTasklist" class="govuk-button">Tasklist</a>
     </div>
 </container>

@@ -1,5 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Utilities;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -31,9 +30,6 @@ public static class RoutingExtensions
 
         builder.Services.Configure(new Action<RazorPagesOptions>(options =>
         {
-            options.Conventions.Add(new DefaultRouteRemovalPageRouteModelConvention(string.Empty));
-            options.Conventions.AddPageRoute("/Index", "");
-
             foreach (var (page, route) in Routes.RouteList)
             {
                 options.Conventions.AddPageRoute(page, route);

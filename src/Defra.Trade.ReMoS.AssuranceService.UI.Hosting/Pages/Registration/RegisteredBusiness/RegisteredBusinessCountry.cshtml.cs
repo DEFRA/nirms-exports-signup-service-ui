@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -42,6 +43,6 @@ public class RegisteredBusinessCountryModel : PageModel
             return await OnGetAsync();
         }
 
-        return await OnGetAsync();
+        return Redirect(Routes.RegistrationTasklist);
     }
 }
