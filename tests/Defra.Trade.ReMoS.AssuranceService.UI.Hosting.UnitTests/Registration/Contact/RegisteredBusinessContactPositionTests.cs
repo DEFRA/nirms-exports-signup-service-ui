@@ -2,13 +2,13 @@
 using Moq;
 using Microsoft.Extensions.Logging;
 using FluentAssertions;
-
+#pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
 [TestFixture]
 public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 {
-    private RegisteredBusinessContactPositionModel _systemUnderTest;
+    private RegisteredBusinessContactPositionModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactPositionModel>> _mockLogger = new();
 
     [SetUp]
