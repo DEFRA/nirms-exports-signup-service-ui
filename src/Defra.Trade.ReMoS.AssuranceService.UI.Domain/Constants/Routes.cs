@@ -21,6 +21,7 @@ public static class Routes
         (Pages.Path.RegistrationTaskListPath, RegistrationTasklist),
         (Pages.Path.RegisteredBusinessContactNamePath, RegisteredBusinessContactName),
         (Pages.Path.RegisteredBusinessContactPositionPath, RegisteredBusinessContactPosition),
+        (Pages.Path.RegisteredBusinessNamePath, RegisteredBusinessName),
         (Pages.Path.RegisteredBusinessContactEmailPath, RegisteredBusinessEmail)
     };
 

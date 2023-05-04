@@ -8,7 +8,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     [TestFixture]
     public class RegisteredBusinessContactEmailTests : PageModelTestsBase
     {
-        private RegisteredBusinessContactEmailModel _systemUnderTest;
+        private RegisteredBusinessContactEmailModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactEmailModel>> _mockLogger = new();
 
         [SetUp]
