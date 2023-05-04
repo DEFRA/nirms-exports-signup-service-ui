@@ -1,27 +1,23 @@
-﻿using Castle.Core.Logging;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using FluentAssertions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
+[TestFixture]
 public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 {
     private RegisteredBusinessContactPositionModel _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactPositionModel>> _mockLogger = new();
 
-    public RegisteredBusinessContactPositionTests()
+    [SetUp]
+    public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessContactPositionModel(_mockLogger.Object);
     }
 
-    [Fact]
+    [Test]
     public async Task OnGet_NoPositionPresentIfNoSavedData()
     {
         // arrange
@@ -34,7 +30,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _systemUnderTest.Position.Should().Be("");
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         // arrange
@@ -48,7 +44,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         validation.Count.Should().Be(0);
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitInvalidCharacterInformation()
     {
         // arrange
@@ -62,7 +58,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         validation.Count.Should().Be(1);
     }
 
-    [Fact]
+    [Test]
     public async Task OnPostSubmit_SubmitTooManyCharactersInformation()
     {
         // arrange
