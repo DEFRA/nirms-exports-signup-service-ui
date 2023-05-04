@@ -1,5 +1,4 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 
