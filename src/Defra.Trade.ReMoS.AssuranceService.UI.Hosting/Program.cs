@@ -7,7 +7,9 @@ internal sealed class Program
     private Program()
     {
     }
+#pragma warning disable CS1998
     private static async Task Main(string[] args)
+#pragma warning restore CS1998
     {
         var builder = WebApplication.CreateBuilder(args);
 

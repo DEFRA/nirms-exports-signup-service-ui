@@ -8,7 +8,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 public static class Routes
 {
-    public const string RegisteredBusinessCompany = "/registered-business-country";
+    public const string RegisteredBusinessCountry = "/registered-business-country";
     public const string RegistrationTasklist = "/registration-tasklist";
     public const string RegisteredBusinessContactName = "/registered-business-contact-name";
     public const string RegisteredBusinessContactPosition = "/registered-business-contact-position";
@@ -17,7 +17,7 @@ public static class Routes
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
-        (Pages.Path.RegisteredBusinessCompanyPath, RegisteredBusinessCompany),
+        (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
         (Pages.Path.RegistrationTaskListPath, RegistrationTasklist),
         (Pages.Path.RegisteredBusinessContactNamePath, RegisteredBusinessContactName),
         (Pages.Path.RegisteredBusinessContactPositionPath, RegisteredBusinessContactPosition),
@@ -29,12 +29,11 @@ public static class Routes
     {
         public static class Names
         {
-            public const string RegisteredBusinessCompany = "RegisteredBusinessCountry";
+            public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
             public const string RegistrationTasklist = "RegistrationTaskList";
             public const string RegisteredBusinessContactName = "RegisteredBusinessContactName";
             public const string RegisteredBusinessContactPosition = "RegisteredBusinessContactPosition";
             public const string RegisteredBusinessName = "RegisteredBusinessName";
-            public const string RegisteredBusinessContactEmail = "RegisteredBusinessContactEmail";
         }
 
         public static class Path

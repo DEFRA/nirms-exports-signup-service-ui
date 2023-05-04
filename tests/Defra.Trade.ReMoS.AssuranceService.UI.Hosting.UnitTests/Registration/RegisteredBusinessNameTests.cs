@@ -2,13 +2,13 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
 using Moq;
-
+#pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 {
     [TestFixture]
     public class RegisteredBusinessNameTests : PageModelTestsBase
     {
-        private RegisteredBusinessNameModel _systemUnderTest;
+        private RegisteredBusinessNameModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();
 
         [SetUp]

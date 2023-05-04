@@ -7,32 +7,28 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 [TestFixture]
 public class RegisteredBusinessCountryTests : PageModelTestsBase
 {
-    private RegisteredBusinessCountryModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
-
-    [SetUp]
-    public void TestCaseSetup()
-    {
-        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object);
-    }
+    private RegisteredBusinessCountryModel? _systemUnderTest;
 
     [Test]
     public async Task OnGet_NoCountryPresentIfNoSavedData()
     {
         //Arrange
         //TODO: Add setup for returning values when API referenced
+        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object);
 
         //Act
-        await _systemUnderTest.OnGetAsync();
+        _ = await _systemUnderTest.OnGetAsync();
 
         //Assert
-        _systemUnderTest.Country.Should().Be("");
+        _ = _systemUnderTest.Country.Should().Be("");
     }
 
     [Test]
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
+        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object);
         _systemUnderTest.Country = "";
 
         //Act
@@ -40,7 +36,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
-        validation.Count.Should().Be(1);
+        _ = validation.Count.Should().Be(1);
     }
 }
 
