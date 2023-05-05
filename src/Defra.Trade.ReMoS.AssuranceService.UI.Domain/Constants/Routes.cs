@@ -30,21 +30,21 @@ public static class Routes
         public static class Names
         {
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
-            public const string RegistrationTasklist = "RegistrationTaskList";
-            public const string RegisteredBusinessContactName = "RegisteredBusinessContactName";
-            public const string RegisteredBusinessContactPosition = "RegisteredBusinessContactPosition";
-            public const string RegisteredBusinessName = "RegisteredBusinessName";
-            public const string RegisteredBusinessContactEmail = "RegisteredBusinessContactEmail";
+            public const string RegistrationTasklistName = "RegistrationTaskList";
+            public const string RegisteredBusinessContactNameName = "RegisteredBusinessContactName";
+            public const string RegisteredBusinessContactPositionName = "RegisteredBusinessContactPosition";
+            public const string RegisteredBusinessNameName = "RegisteredBusinessName";
+            public const string RegisteredBusinessContactEmailName = "RegisteredBusinessContactEmail";
         }
 
         public static class Path
         {
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCountryName}";
-            public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklist}";
-            public const string RegisteredBusinessContactNamePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactName}";
-            public const string RegisteredBusinessContactPositionPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPosition}";
-            public const string RegisteredBusinessNamePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessName}";
-            public const string RegisteredBusinessContactEmailPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactEmail}";
+            public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklistName}";
+            public const string RegisteredBusinessContactNamePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactNameName}";
+            public const string RegisteredBusinessContactPositionPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPositionName}";
+            public const string RegisteredBusinessNamePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessNameName}";
+            public const string RegisteredBusinessContactEmailPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactEmailName}";
         }
     }
 }
