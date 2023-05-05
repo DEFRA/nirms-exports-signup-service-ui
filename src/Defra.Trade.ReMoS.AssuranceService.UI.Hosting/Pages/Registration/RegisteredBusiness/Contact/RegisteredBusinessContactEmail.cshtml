@@ -9,7 +9,7 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="post" novalidate>
-            <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
+            <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
                 <label for="business-email">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact Details</span>
