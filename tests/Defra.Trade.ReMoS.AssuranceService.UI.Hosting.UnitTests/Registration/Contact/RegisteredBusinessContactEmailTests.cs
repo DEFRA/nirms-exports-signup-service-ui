@@ -24,7 +24,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             //TODO: Add setup for returning values when API referenced
 
             //Act
-            await _systemUnderTest.OnGetAsync();
+            await _systemUnderTest!.OnGetAsync();
 
             //Assert
             _systemUnderTest.Email.Should().Be("");
@@ -34,7 +34,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnPostSubmit_SubmitValidEmail()
         {
             //Arrange
-            _systemUnderTest.Email = "Business-test@email.com";
+            _systemUnderTest!.Email = "Business-test@email.com";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -48,7 +48,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnPostSubmit_SubmitInValidEmailNotPresent()
         {
             //Arrange
-            _systemUnderTest.Email = "";
+            _systemUnderTest!.Email = "";
             var expectedResult = "Enter the email address of the contact person";
 
             //Act
@@ -64,7 +64,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnPostSubmit_SubmitInvalidRegex()
         {
             //Arrange
-            _systemUnderTest.Email = "test at email.com";
+            _systemUnderTest!.Email = "test at email.com";
             var expectedResult = "Enter an email address in the correct format, like name@example.com";
 
             //Act
@@ -80,7 +80,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnPostSubmit_SubmitInvalidLength()
         {
             //Arrange
-            _systemUnderTest.Email = $"{new string('a', 100)}@email.com";
+            _systemUnderTest!.Email = $"{new string('a', 100)}@email.com";
             var expectedResult = "Email is too long";
 
             //Act
