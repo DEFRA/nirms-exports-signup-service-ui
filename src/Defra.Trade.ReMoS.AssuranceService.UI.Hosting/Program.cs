@@ -24,7 +24,7 @@ internal sealed class Program
             builder.Configuration["GraphQLURI"], 
             new NewtonsoftJsonSerializer())
         );
-        builder.Services.AddScoped<DataConsumer>();
+        builder.Services.AddScoped<IDataConsumer, DataConsumer>();
 
 
 

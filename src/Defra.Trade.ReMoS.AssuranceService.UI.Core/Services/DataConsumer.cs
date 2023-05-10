@@ -5,7 +5,7 @@ using GraphQL.Client.Abstractions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
-public class DataConsumer
+public class DataConsumer : IDataConsumer
 {
     private readonly IGraphQLClient _client;
 
