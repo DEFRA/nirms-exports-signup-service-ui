@@ -25,8 +25,7 @@ public static class Routes
         (Pages.Path.RegisteredBusinessContactPositionPath, RegisteredBusinessContactPosition),
         (Pages.Path.RegisteredBusinessNamePath, RegisteredBusinessName),
         (Pages.Path.RegisteredBusinessContactEmailPath, RegisteredBusinessEmail),
-        (Pages.Path.RegisteredBusinessContactPhonePath, RegisteredBusinessContactPhoneNumber)
-        (Pages.Path.RegisteredBusinessContactEmailPath, RegisteredBusinessEmail),
+        (Pages.Path.RegisteredBusinessContactPhonePath, RegisteredBusinessContactPhoneNumber),
         (Pages.Path.RegisteredBusinessTypePath, RegisteredBusinessType)
     };
 
