@@ -45,7 +45,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = new TradePartyForCreation();
             tradeParty.Name = Name;
 
-            await _data.RegisterTradePartyAsync(tradeParty);
+            var sss = await _data.RegisterTradePartyAsync(tradeParty);
 
             return Redirect(Routes.RegisteredBusinessType);
 
