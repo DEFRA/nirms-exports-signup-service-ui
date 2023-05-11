@@ -1,3 +1,6 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -14,10 +17,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public string Name { get; set; } = string.Empty;
 
         private readonly ILogger<RegisteredBusinessNameModel> _logger;
+        private readonly IGraphqlConsumer _data;
 
-        public RegisteredBusinessNameModel(ILogger<RegisteredBusinessNameModel> logger)
+        public RegisteredBusinessNameModel(ILogger<RegisteredBusinessNameModel> logger, IGraphqlConsumer data)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _data = data;
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -37,7 +42,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync();
             }
 
-            return await OnGetAsync();
+            var tradeParty = new TradePartyForCreation();
+            tradeParty.Name = Name;
+
+            var sss = await _data.RegisterTradePartyAsync(tradeParty);
+
+            return Redirect(Routes.RegisteredBusinessType);
+
         }
     }
 }
