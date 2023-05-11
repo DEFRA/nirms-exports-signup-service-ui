@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Models;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Models;
+public class TradePartyCollectionResponse
+{
+    public List<TradeParty> TradeParties { get; set; } = default!;
+}
+public class RegisterTradePartyResponse
+{
+    public TradeParty RegisterTradeParty { get; set; } = default!;
 
+}
 public class TradeParty
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
-
-    //Also in LDM
-    //Role Code
 }
 
-public record AddTradePartyContract(
-    string? Name);
+public class TradePartyForCreation
+{
+    public string? Name { get; set; }
+}

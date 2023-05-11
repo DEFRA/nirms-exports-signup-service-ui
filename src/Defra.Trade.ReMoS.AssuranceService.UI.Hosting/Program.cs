@@ -2,7 +2,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
-using GraphQL.Client.Serializer.Newtonsoft;
+using GraphQL.Client.Serializer.SystemTextJson;
 using System.Diagnostics.CodeAnalysis;
 
 [ExcludeFromCodeCoverage]
@@ -21,13 +21,11 @@ internal sealed class Program
         builder.Services.AddRazorPages();
         builder.Services.AddMvc().AddCustomRouting();
         builder.Services.AddScoped<IGraphQLClient>(s => new GraphQLHttpClient(
-            builder.Configuration["GraphQLURI"], 
-            new NewtonsoftJsonSerializer())
+            builder.Configuration["GraphQLURI"],
+            new SystemTextJsonSerializer())
         );
-        builder.Services.AddScoped<IDataConsumer, DataConsumer>();
-
-
-
+        builder.Services.AddScoped<IGraphqlConsumer, GraphqlConsumer>();
+        
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -40,13 +38,10 @@ internal sealed class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
-
         app.UseAuthorization();
-
         app.MapRazorPages();
-
+        
         app.Run();
     }
 }
