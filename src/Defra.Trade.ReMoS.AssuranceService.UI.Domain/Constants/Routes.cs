@@ -15,6 +15,7 @@ public static class Routes
     public const string RegisteredBusinessName = "/registered-business-name";
     public const string RegisteredBusinessEmail = "/registered-business-contact-email";
     public const string RegisteredBusinessContactPhoneNumber = "/registered-business-contact-phone";
+    public const string RegisteredBusinessAddress = "/registered-business-address";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -24,7 +25,8 @@ public static class Routes
         (Pages.Path.RegisteredBusinessContactPositionPath, RegisteredBusinessContactPosition),
         (Pages.Path.RegisteredBusinessNamePath, RegisteredBusinessName),
         (Pages.Path.RegisteredBusinessContactEmailPath, RegisteredBusinessEmail),
-        (Pages.Path.RegisteredBusinessContactPhonePath, RegisteredBusinessContactPhoneNumber)
+        (Pages.Path.RegisteredBusinessContactPhonePath, RegisteredBusinessContactPhoneNumber),
+        (Pages.Path.RegisteredBusinessAddressPath, RegisteredBusinessAddress)
     };
 
     public static class Pages
@@ -38,6 +40,7 @@ public static class Routes
             public const string RegisteredBusinessNameName = "RegisteredBusinessName";
             public const string RegisteredBusinessContactEmailName = "RegisteredBusinessContactEmail";
             public const string RegisteredBusinessContactPhoneName = "RegisteredBusinessContactPhone";
+            public const string RegisteredBusinessAddress = "RegisteredBusinessAddress";
         }
 
         public static class Path
@@ -49,6 +52,7 @@ public static class Routes
             public const string RegisteredBusinessNamePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessNameName}";
             public const string RegisteredBusinessContactEmailPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactEmailName}";
             public const string RegisteredBusinessContactPhonePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPhoneName}";
+            public const string RegisteredBusinessAddressPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAddress}";
         }
     }
 }
