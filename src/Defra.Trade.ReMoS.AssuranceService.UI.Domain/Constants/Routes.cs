@@ -43,7 +43,7 @@ public static class Routes
             public const string RegisteredBusinessContactEmailName = "RegisteredBusinessContactEmail";
             public const string RegisteredBusinessContactPhoneName = "RegisteredBusinessContactPhone";
             public const string RegisteredBusinessTypeName = "RegisteredBusinessType";
-            public const string RegisteredBusinessAddress = "RegisteredBusinessAddress";
+            public const string RegisteredBusinessAddressName = "RegisteredBusinessAddress";
         }
 
         public static class Path
@@ -56,7 +56,7 @@ public static class Routes
             public const string RegisteredBusinessContactEmailPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactEmailName}";
             public const string RegisteredBusinessContactPhonePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPhoneName}";
             public const string RegisteredBusinessTypePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessTypeName}";
-            public const string RegisteredBusinessAddressPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAddress}";
+            public const string RegisteredBusinessAddressPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAddressName}";
         }
     }
 }
