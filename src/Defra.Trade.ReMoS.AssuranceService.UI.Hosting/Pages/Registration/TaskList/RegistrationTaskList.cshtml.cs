@@ -17,12 +17,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             _logger = logger;
         }
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(Guid Id)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _logger.LogInformation("OnGet");
 
-            RegistrationID = Guid.NewGuid();
+            RegistrationID = Id;
             return Page();
         }
     }

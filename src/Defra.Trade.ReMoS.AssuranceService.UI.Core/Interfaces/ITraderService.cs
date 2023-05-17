@@ -10,7 +10,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
 {
     public interface ITraderService
     {
-        public Task<TradeParty> CreateTradePartyAsync(TraderDTO tradePartyDTO);
+        public Task<Guid> CreateTradePartyAsync(TraderDTO tradePartyDTO);
         public Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyDTO);
+        public Task<TradeParty> GetTradePartyByIdAsync(Guid Id);
     }
 }
