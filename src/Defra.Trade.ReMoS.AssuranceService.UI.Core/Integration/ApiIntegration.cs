@@ -27,7 +27,7 @@ public class ApiIntegration : IAPIIntegration
     {
         List<TradeParty>? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.GetAsync("/Parties");
+        var httpResponseMessage = await httpClient.GetAsync("/TradeParties/Parties");
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
@@ -76,7 +76,7 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PutAsync($"/Party/{guid}", requestBody);
+        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/{guid}", requestBody);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
