@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics.CodeAnalysis;
+#pragma warning disable CS1998
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
@@ -8,25 +10,20 @@ namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 [ExcludeFromCodeCoverage]
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
-    public string Message { get; set; } = string.Empty;
-    public string ErrorMessage { get; set; } = string.Empty;
-
-    public IndexModel(ILogger<IndexModel> logger)
-    {
-        _logger = logger;
-    }
+    [BindProperty]
+    public Guid? Id { get; set; }
 
     public void OnGet()
     {
-        Message = "Hello World!";
     }
 
-    public void OnPost()
+    public async Task<IActionResult> OnPostSubmitAsync()
     {
-        if (!ModelState.IsValid) 
+        if (Id == Guid.Empty)
         {
-            ErrorMessage = "There is an error";
+            Id = Guid.NewGuid();
         }
+
+        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = Id }); ;
     }
 }

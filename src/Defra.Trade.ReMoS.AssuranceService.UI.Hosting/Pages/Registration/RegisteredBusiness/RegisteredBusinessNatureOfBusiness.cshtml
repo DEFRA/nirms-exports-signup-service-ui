@@ -1,0 +1,84 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessNatureOfBusinessModel
+@{
+    ViewData["Title"] = "Enter nature of business";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="POST" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("NatureOfBusiness") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("NatureOfBusiness") ? "NatureOfBusiness_Error": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            <span class="govuk-caption-l">Business details</span>
+                            What is the primary nature of the business?
+                        </h1>
+                    </legend>
+
+                    <p id="NatureOfBusiness_Error" class="govuk-error-message" gds-validation-for="NatureOfBusiness"></p>
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type" asp-for="NatureOfBusiness" type="radio" value="retailer">
+                            <label class="govuk-label govuk-radios__label" for="business-type">
+                                Retailer
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-2" asp-for="NatureOfBusiness" type="radio" value="supermarket">
+                            <label class="govuk-label govuk-radios__label" for="business-type-2">
+                                Supermarket
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-3" asp-for="NatureOfBusiness" type="radio" value="wholesaler">
+                            <label class="govuk-label govuk-radios__label" for="business-type-3">
+                                Wholesaler
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-4" asp-for="NatureOfBusiness" type="radio" value="catering">
+                            <label class="govuk-label govuk-radios__label" for="business-type-4">
+                                Catering
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-5" asp-for="NatureOfBusiness" type="radio" value="haulier">
+                            <label class="govuk-label govuk-radios__label" for="business-type-5">
+                                Haulier
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-6" asp-for="NatureOfBusiness" type="radio" value="agent">
+                            <label class="govuk-label govuk-radios__label" for="business-type-6">
+                                Agent
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-7" type="radio" asp-for="NatureOfBusiness" value="other" aria-controls="conditional-other" aria-expanded="false">
+                            <label class="govuk-label govuk-radios__label" for="business-type-7">
+                                Other
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional" id="conditional-other">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="other-specify">
+                                    Specify nature of business
+                                </label>
+                                <input class="govuk-input govuk-!-width-two-thirds" id="other-specify" asp-for="NatureOfBusiness" type="text" spellcheck="false">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit" id="button-rbNatureSubmit">Save and continue</button>
+            <p>
+                <a class="govuk-link" asp-page-handler="Save" id="button-rbNatureSave">Save and continue later</a>
+            </p>
+        </form>
+    </div>
+</div>

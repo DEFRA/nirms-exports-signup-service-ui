@@ -9,15 +9,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs
 {
     public class TraderDTO
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
 
         public string? PartyName { get; set; }
 
         public string? CountryName { get; set; }
         public string? NatureOfBusiness { get; set; }
 
-        public IEnumerable<TradeAddress>? Addresses { get; set; }
+        public TradeAddress? Address { get; set; }
 
-        public IEnumerable<TradeContact>? Contacts { get; set; }
+        public TradeContact? Contact { get; set; }
     }
 }

@@ -9,10 +9,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities
     public class TradeParty
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
-        public ICollection<TradeAddress>? TradeAddresses { get; set; } = new List<TradeAddress>();
-        public ICollection<TradeContact>? TradeContacts { get; set; } = new List<TradeContact>();
-
+        public string? PartyName { get; set; }
         public string? NatureOfBusiness { get; set; }
+        public TradeContact? TradeContact { get; set; }
+        public TradeAddress? TradeAddress { get; set; }
     }
 }
