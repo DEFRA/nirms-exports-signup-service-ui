@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -8,6 +9,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 public class RegisteredBusinessCountryTests : PageModelTestsBase
 {
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
+    private Mock<ITraderService> traderService = new();
     private RegisteredBusinessCountryModel? _systemUnderTest;
 
     [Test]
@@ -15,7 +17,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         //Arrange
         //TODO: Add setup for returning values when API referenced
-        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object);
+        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
 
         //Act
         _ = await _systemUnderTest.OnGetAsync();
@@ -28,7 +30,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
-        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object);
+        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
         _systemUnderTest.Country = "";
 
         //Act
