@@ -1,6 +1,6 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.API.Domain.DTO;
-using Defra.Trade.ReMoS.AssuranceService.API.Domain.Entities;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +12,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class TraderService : ITraderService
     {
-        private IAPIIntegration _apiIntegration;
+        private readonly IAPIIntegration _apiIntegration;
 
         public TraderService(IAPIIntegration apiIntegration)
         {
             _apiIntegration = apiIntegration;
         }
 
-        public async Task<TradeParty> CreateTradePartyAsync(TradePartyDTO tradePartyDTO)
+        public async Task<TradeParty> CreateTradePartyAsync(TraderDTO tradePartyDTO)
         {
             return await _apiIntegration.AddTradePartyAsync(tradePartyDTO);
         }
 
-        public async Task<TradeParty> UpdateTradePartyAsync(TradePartyDTO tradePartyDTO)
+        public async Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyDTO)
         {
             return await _apiIntegration.UpdateTradePartyAsync(tradePartyDTO);
         }

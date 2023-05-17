@@ -1,5 +1,4 @@
-using Defra.Trade.ReMoS.AssuranceService.API.Domain.DTO;
-using Defra.Trade.ReMoS.AssuranceService.API.Domain.Entities;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -49,15 +48,15 @@ public class RegisteredBusinessCountryModel : PageModel
             return await OnGetAsync();
         }
 
-        TradePartyDTO traderDTO = CreateDTO();
+        TraderDTO traderDTO = CreateDTO();
         await _traderService.CreateTradePartyAsync(traderDTO);
 
         return Redirect(Routes.RegistrationTasklist);
     }
 
-    private TradePartyDTO CreateDTO()
+    private TraderDTO CreateDTO()
     {
-        TradePartyDTO DTO = new()
+        TraderDTO DTO = new()
         {
             CountryName = Country
         };

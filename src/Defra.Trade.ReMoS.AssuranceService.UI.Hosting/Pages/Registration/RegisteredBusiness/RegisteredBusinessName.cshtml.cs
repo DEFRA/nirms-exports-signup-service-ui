@@ -1,4 +1,4 @@
-using Defra.Trade.ReMoS.AssuranceService.API.Domain.DTO;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -46,7 +46,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync();
             }
 
-            TradePartyDTO tradeParty = new()
+            TraderDTO tradeParty = new()
             {
                 PartyName = Name
             };

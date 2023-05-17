@@ -1,7 +1,7 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.API.Domain.DTO;
-using Defra.Trade.ReMoS.AssuranceService.API.Domain.Entities;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using GraphQL;
 using GraphQL.Client.Abstractions;
 using Microsoft.AspNetCore.Http;
@@ -40,7 +40,7 @@ public class ApiIntegration : IAPIIntegration
         return results;
     }
 
-    public async Task<TradeParty> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
+    public async Task<TradeParty> AddTradePartyAsync(TraderDTO tradePartyToCreate)
     {
         TradeParty? results = new();
         var requestBody = new StringContent(
@@ -66,7 +66,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<TradeParty> UpdateTradePartyAsync(TradePartyDTO tradePartyToCreate)
+    public async Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyToCreate)
     {
         TradeParty? results = new();
         var guid = Guid.NewGuid();

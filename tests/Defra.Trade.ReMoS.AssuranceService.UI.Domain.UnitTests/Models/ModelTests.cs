@@ -1,4 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.API.Domain.DTO;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Models;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests.Models;
@@ -29,7 +29,7 @@ public class TradePartyForCreationTests
     public void GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeParty = new TradePartyDTO();
+        var tradeParty = new TraderDTO();
 
         //Act
         tradeParty.PartyName = "Trade party Ltd";
@@ -46,7 +46,7 @@ public class RegisterTradePartyResponseTests
     public void GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var registerTradeParty = new TradePartyDTO
+        var registerTradeParty = new TraderDTO
         {
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
             PartyName = "Trade party Ltd"
