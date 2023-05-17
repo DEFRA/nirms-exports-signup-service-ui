@@ -14,12 +14,12 @@ public class TradePartyTests
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
-            Name = "Trade party Ltd"
+            PartyName = "Trade party Ltd"
         };
 
         //Assert
         tradeParty.Id.Should().Be(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"));
-        tradeParty.Name.Should().Be("Trade party Ltd");
+        tradeParty.PartyName.Should().Be("Trade party Ltd");
     }
 }
 

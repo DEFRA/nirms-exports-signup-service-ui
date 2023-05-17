@@ -12,6 +12,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
     {
         public Task<Guid> CreateTradePartyAsync(TraderDTO tradePartyDTO);
         public Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyDTO);
-        public Task<TradeParty> GetTradePartyByIdAsync(Guid Id);
+        public Task<TradeParty?> GetTradePartyByIdAsync(Guid Id);
     }
 }

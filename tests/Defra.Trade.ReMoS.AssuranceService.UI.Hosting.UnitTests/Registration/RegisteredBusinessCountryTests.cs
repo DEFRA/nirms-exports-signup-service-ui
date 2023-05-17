@@ -18,9 +18,10 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         //TODO: Add setup for returning values when API referenced
         _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
+        Guid guid = Guid.NewGuid();
 
         //Act
-        _ = await _systemUnderTest.OnGetAsync();
+        _ = await _systemUnderTest.OnGetAsync(guid);
 
         //Assert
         _ = _systemUnderTest.Country.Should().Be("");
@@ -32,6 +33,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
         _systemUnderTest.Country = "";
+        Guid guid = Guid.NewGuid();
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();

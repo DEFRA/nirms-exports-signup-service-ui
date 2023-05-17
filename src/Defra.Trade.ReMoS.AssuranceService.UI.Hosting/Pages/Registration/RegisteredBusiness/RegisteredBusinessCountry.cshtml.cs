@@ -65,10 +65,10 @@ public class RegisteredBusinessCountryModel : PageModel
      return DTO;
     }
 
-    private async Task<string> GetCountry()
+    private async Task<string?> GetCountry()
     {
-        TradeParty tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp.TradeAddress != null)
+        TradeParty? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tp != null && tp.TradeAddress != null)
         {
             return tp.TradeAddress.TradeCountry;
         }

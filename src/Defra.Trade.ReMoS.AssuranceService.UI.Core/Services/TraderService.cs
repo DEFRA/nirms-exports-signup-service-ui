@@ -29,7 +29,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return await _apiIntegration.UpdateTradePartyAsync(tradePartyDTO);
         }
 
-        public async Task<TradeParty> GetTradePartyByIdAsync(Guid Id)
+        public async Task<TradeParty?> GetTradePartyByIdAsync(Guid Id)
         {
             if(Id != Guid.Empty)
             {

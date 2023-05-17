@@ -40,7 +40,7 @@ public class ApiIntegration : IAPIIntegration
         return results;
     }
 
-    public async Task<TradeParty>? GetTradePartyByIdAsync(Guid id)
+    public async Task<TradeParty?> GetTradePartyByIdAsync(Guid id)
     {
         TradeParty? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");

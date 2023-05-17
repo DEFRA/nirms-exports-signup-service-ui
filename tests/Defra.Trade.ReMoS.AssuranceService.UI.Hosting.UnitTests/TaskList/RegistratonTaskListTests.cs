@@ -27,11 +27,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         {
             //Arrange
             //TODO: Add setup for returning values when API referenced
+            Guid guid = Guid.NewGuid();
 
             //Act
             if (_systemUnderTest != null)
             {
-                _ = await _systemUnderTest.OnGetAsync();
+                _ = await _systemUnderTest.OnGetAsync(guid);
             }
 
             //Assert

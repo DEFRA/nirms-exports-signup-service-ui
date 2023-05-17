@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-#pragma warning disable CS1998
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
@@ -67,14 +66,13 @@ public class RegisteredBusinessNatureOfBusinessModel : PageModel
         return dto;
     }
 
-    private async Task<string> GetNatureOfBusiness()
+    private async Task<string?> GetNatureOfBusiness()
     {
-        TradeParty tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp.TradeAddress != null)
+        TradeParty? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tp != null && tp.TradeAddress != null)
         {
             return tp.NatureOfBusiness;
         }
         return "";
     }
 }
-#pragma warning restore CS1998
