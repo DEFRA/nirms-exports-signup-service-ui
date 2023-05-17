@@ -41,9 +41,26 @@ public class ApiIntegration : IAPIIntegration
         return results;
     }
 
-    public async Task<TradeParty> AddTradePartyAsync(TraderDTO tradePartyToCreate)
+    public async Task<TradeParty?> GetTradePartyByIdAsync(Guid id)
     {
         TradeParty? results = new();
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.GetAsync($"/TradeParties/Parties{id}");
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<TradeParty>(contentStream);
+            }
+        }
+        return results;
+    }
+
+    public async Task<Guid> AddTradePartyAsync(TraderDTO tradePartyToCreate)
+    {
+        Guid results = new();
         var requestBody = new StringContent(
             JsonSerializer.Serialize(tradePartyToCreate),
             Encoding.UTF8,
@@ -57,10 +74,10 @@ public class ApiIntegration : IAPIIntegration
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                results = await JsonSerializer.DeserializeAsync<TradeParty>(contentStream);
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
             }
         }
-        if (results != null)
+        if (results != Guid.Empty)
         {
             return results;
         }

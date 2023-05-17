@@ -19,7 +19,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             _apiIntegration = apiIntegration;
         }
 
-        public async Task<TradeParty> CreateTradePartyAsync(TraderDTO tradePartyDTO)
+        public async Task<Guid> CreateTradePartyAsync(TraderDTO tradePartyDTO)
         {
             return await _apiIntegration.AddTradePartyAsync(tradePartyDTO);
         }
@@ -27,6 +27,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         public async Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyDTO)
         {
             return await _apiIntegration.UpdateTradePartyAsync(tradePartyDTO);
+        }
+
+        public async Task<TradeParty?> GetTradePartyByIdAsync(Guid Id)
+        {
+            if(Id != Guid.Empty)
+            {
+                return await _apiIntegration.GetTradePartyByIdAsync(Id);
+            }
+            return new TradeParty();
         }
 
         public async Task<TradeAddressDTO> AddTradeAddressForPartyAsync(Guid partyId, TradeAddressAddUpdateDTO tradeAddressAddUpdateDTO)

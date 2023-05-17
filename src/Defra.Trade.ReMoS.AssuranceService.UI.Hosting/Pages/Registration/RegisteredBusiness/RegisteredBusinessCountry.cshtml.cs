@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -14,28 +15,26 @@ public class RegisteredBusinessCountryModel : PageModel
     [BindProperty]
     [Required(ErrorMessage = "Enter a country")]
     public string Country { get; set; } = string.Empty;
+
+    public Guid TraderId { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessCountryModel> _logger;
-    private ITraderService _traderService;
+    private readonly ITraderService _traderService;
 
-    /// <summary>
-    /// Constructor. 
-    /// </summary>
-    /// <param name="logger">Application logging.</param>
-    /// <exception cref="ArgumentNullException">Guard statement reaction.</exception>
     public RegisteredBusinessCountryModel(ILogger<RegisteredBusinessCountryModel> logger, ITraderService traderService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
-    //Remove warning when API integration added (has to be async for OnPost functionality but throws this error)
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IActionResult> OnGetAsync()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IActionResult> OnGetAsync(Guid Id)
     {
         _logger.LogInformation("Country OnGet");
+        TraderId = Id;
+
+        await GetCountry();
+
         return Page();
     }
 
@@ -45,21 +44,34 @@ public class RegisteredBusinessCountryModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return await OnGetAsync(TraderId);
         }
 
         TraderDTO traderDTO = CreateDTO();
-        await _traderService.CreateTradePartyAsync(traderDTO);
+        Guid tp = await _traderService.CreateTradePartyAsync(traderDTO);
 
-        return Redirect(Routes.RegistrationTasklist);
+        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new {id = tp });
     }
 
     private TraderDTO CreateDTO()
     {
         TraderDTO DTO = new()
         {
-            CountryName = Country
+            Address = new TradeAddress()
+            {
+                TradeCountry = Country
+            }
         };
      return DTO;
+    }
+
+    private async Task<string?> GetCountry()
+    {
+        TradeParty? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tp != null && tp.TradeAddress != null)
+        {
+            return tp.TradeAddress.TradeCountry;
+        }
+        return "";
     }
 }

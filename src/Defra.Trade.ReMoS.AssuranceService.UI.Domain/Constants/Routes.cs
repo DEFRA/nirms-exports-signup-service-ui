@@ -17,6 +17,7 @@ public static class Routes
     public const string RegisteredBusinessContactPhoneNumber = "/registered-business-contact-phone";
     public const string RegisteredBusinessType = "/registered-business-type";
     public const string RegisteredBusinessAddress = "/registered-business-address";
+    public const string RegisteredBusinessNatureOfBusiness = "/registered-business-nature-of-business";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -28,7 +29,8 @@ public static class Routes
         (Pages.Path.RegisteredBusinessContactEmailPath, RegisteredBusinessEmail),
         (Pages.Path.RegisteredBusinessContactPhonePath, RegisteredBusinessContactPhoneNumber),
         (Pages.Path.RegisteredBusinessTypePath, RegisteredBusinessType),
-        (Pages.Path.RegisteredBusinessAddressPath, RegisteredBusinessAddress)
+        (Pages.Path.RegisteredBusinessAddressPath, RegisteredBusinessAddress),
+        (Pages.Path.RegisteredBusinessNatureOfBusinessPath, RegisteredBusinessNatureOfBusiness)
     };
 
     public static class Pages
@@ -44,6 +46,7 @@ public static class Routes
             public const string RegisteredBusinessContactPhoneName = "RegisteredBusinessContactPhone";
             public const string RegisteredBusinessTypeName = "RegisteredBusinessType";
             public const string RegisteredBusinessAddressName = "RegisteredBusinessAddress";
+            public const string RegisteredBusinessNatureOfBusinessName = "RegisteredBusinessNatureOfBusiness";
         }
 
         public static class Path
@@ -57,6 +60,7 @@ public static class Routes
             public const string RegisteredBusinessContactPhonePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPhoneName}";
             public const string RegisteredBusinessTypePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessTypeName}";
             public const string RegisteredBusinessAddressPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAddressName}";
+            public const string RegisteredBusinessNatureOfBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessNatureOfBusinessName}";
         }
     }
 }

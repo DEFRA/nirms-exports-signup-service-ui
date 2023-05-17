@@ -29,7 +29,7 @@
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" aria-describedby="business-name">
+                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-name">
                                 Business name
                             </a>
                         </span>
@@ -38,7 +38,7 @@
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a href="#" aria-describedby="business-type">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessNatureOfBusinessPath asp-route-id="@Model.RegistrationID" aria-describedby="business-type">
                                 Business type
                             </a>
                         </span>
@@ -180,4 +180,5 @@
 
         </ol>
     </div>
+    <input type="hidden" asp-for="RegistrationID" />
 </div>

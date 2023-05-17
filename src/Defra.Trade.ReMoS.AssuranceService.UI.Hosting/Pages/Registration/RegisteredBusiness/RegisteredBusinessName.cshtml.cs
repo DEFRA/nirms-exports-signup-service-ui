@@ -2,7 +2,6 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +11,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 {
     public class RegisteredBusinessNameModel : PageModel
     {
-        private ITraderService _traderService;
+        private readonly ITraderService _traderService;
         private readonly ILogger<RegisteredBusinessNameModel> _logger;
 
         #region UI Model
@@ -51,7 +50,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 PartyName = Name
             };
 
-            var sss = await _traderService.UpdateTradePartyAsync(tradeParty);
+            await _traderService.UpdateTradePartyAsync(tradeParty);
 
             return Redirect(Routes.RegistrationTasklist);
 
