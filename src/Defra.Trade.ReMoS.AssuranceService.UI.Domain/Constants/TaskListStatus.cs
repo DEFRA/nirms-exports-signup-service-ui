@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
+[ExcludeFromCodeCoverage]
 public class TaskListStatus
 {
     public static readonly string NOTSTART = "Not Started";

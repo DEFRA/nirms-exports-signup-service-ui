@@ -14,8 +14,3 @@ public class TradeParty
     public Guid Id { get; set; }
     public string? Name { get; set; }
 }
-
-public class TradePartyForCreation
-{
-    public string? Name { get; set; }
-}

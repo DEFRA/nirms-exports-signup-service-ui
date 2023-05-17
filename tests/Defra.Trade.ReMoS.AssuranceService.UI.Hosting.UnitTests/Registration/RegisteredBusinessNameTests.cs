@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
@@ -10,13 +11,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
     public class RegisteredBusinessNameTests : PageModelTestsBase
     {
         private RegisteredBusinessNameModel? _systemUnderTest;
+        private Mock<ITraderService> _traderService= new();
         protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();
-        protected Mock<IGraphqlConsumer> _mockGraphqlConsumer = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object, _mockGraphqlConsumer.Object);
+            _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object, _traderService.Object);
         }
 
         [Test]

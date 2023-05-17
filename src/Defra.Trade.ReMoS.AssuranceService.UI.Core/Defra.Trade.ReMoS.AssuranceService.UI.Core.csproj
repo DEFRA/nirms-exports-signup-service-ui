@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Integration\dxlpe3eo.isi~" />
+    <None Remove="Interfaces\ioddttly.lvg~" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Integration\ApiIntegration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GraphQL.Client" Version="6.0.0" />
     <PackageReference Include="GraphQL.Client.Abstractions" Version="6.0.0" />
     <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="6.0.0" />
