@@ -1,3 +1,5 @@
+using Defra.Trade.ReMoS.AssuranceService.API.Domain.DTO;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Models;
@@ -10,19 +12,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 {
     public class RegisteredBusinessNameModel : PageModel
     {
+        private ITraderService _traderService;
+        private readonly ILogger<RegisteredBusinessNameModel> _logger;
+
+        #region UI Model
         [BindProperty]
         [Required(ErrorMessage = "Enter your business name")]
         [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter your business name using only letters, numbers, and special characters -_./()&")]
         [MaxLength(100, ErrorMessage = "Business name is too long")]
         public string Name { get; set; } = string.Empty;
+        #endregion
 
-        private readonly ILogger<RegisteredBusinessNameModel> _logger;
-        private readonly IGraphqlConsumer _data;
-
-        public RegisteredBusinessNameModel(ILogger<RegisteredBusinessNameModel> logger, IGraphqlConsumer data)
+        public RegisteredBusinessNameModel(ILogger<RegisteredBusinessNameModel> logger, ITraderService traderService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _data = data;
+            _traderService = traderService;
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -42,12 +46,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync();
             }
 
-            var tradeParty = new TradePartyForCreation();
-            tradeParty.Name = Name;
+            TradePartyDTO tradeParty = new()
+            {
+                PartyName = Name
+            };
 
-            var sss = await _data.RegisterTradePartyAsync(tradeParty);
+            var sss = await _traderService.UpdateTradePartyAsync(tradeParty);
 
-            return Redirect(Routes.RegisteredBusinessType);
+            return Redirect(Routes.RegistrationTasklist);
 
         }
     }
