@@ -1,7 +1,10 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
@@ -33,14 +36,18 @@ public class RegisteredBusinessAddressModel : PageModel
     #endregion
 
     private readonly ILogger<RegisteredBusinessAddressModel> _logger;
+    private readonly ITraderService _traderService;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="logger"></param>
-    public RegisteredBusinessAddressModel(ILogger<RegisteredBusinessAddressModel> logger)
+    public RegisteredBusinessAddressModel(
+        ILogger<RegisteredBusinessAddressModel> logger,
+        ITraderService traderService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _traderService = traderService;
     }
 
     //Remove warning when API integration added (has to be async for OnPost functionality but throws this error)
@@ -61,6 +68,23 @@ public class RegisteredBusinessAddressModel : PageModel
             return await OnGetAsync();
         }
 
+        TradeAddressAddUpdateDTO addressDto = CreateAddressDto();
+
+        var partyId = Guid.Parse("82c5f034-b931-4964-bcc9-08db554a682e"); //TODO - get id of an existing party or create a new trade party
+        await _traderService.AddTradeAddressForPartyAsync(partyId, addressDto);
+
         return Redirect(Routes.RegistrationTasklist);
+    }
+
+    private TradeAddressAddUpdateDTO CreateAddressDto()
+    {
+        TradeAddressAddUpdateDTO DTO = new()
+        {
+            LineOne = LineOne,
+            LineTwo = LineTwo,
+            CityName = CityName,
+            PostCode = PostCode,
+        };
+        return DTO;
     }
 }

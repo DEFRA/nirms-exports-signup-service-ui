@@ -28,5 +28,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         {
             return await _apiIntegration.UpdateTradePartyAsync(tradePartyDTO);
         }
+
+        public async Task<TradeAddressDTO> AddTradeAddressForPartyAsync(Guid partyId, TradeAddressAddUpdateDTO tradeAddressAddUpdateDTO)
+        {
+            return await _apiIntegration.AddTradeAddressForParty(partyId, tradeAddressAddUpdateDTO);
+        }
     }
 }

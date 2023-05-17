@@ -7,6 +7,7 @@ using GraphQL.Client.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
@@ -89,6 +90,37 @@ public class ApiIntegration : IAPIIntegration
         if (results != null)
         {
             return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<TradeAddressDTO> AddTradeAddressForParty(Guid partyId, TradeAddressAddUpdateDTO tradeAddressAddUpdateDTO)
+    {
+        TradeAddressDTO? result = new();
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(tradeAddressAddUpdateDTO),
+            Encoding.UTF8,
+            Application.Json);
+
+        var response = await httpClient.PostAsync($"/TradeParties/Parties/{partyId}/addresses", requestBody);
+        response.EnsureSuccessStatusCode();
+
+        var content = await response.Content.ReadAsStringAsync();
+        if (content != null)
+        {
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            result = JsonSerializer.Deserialize<TradeAddressDTO>(content, options);
+        }
+
+        if (result != null)
+        {
+            return result;
         }
         throw new BadHttpRequestException("null return from API");
     }

@@ -8,4 +8,5 @@ public interface IAPIIntegration
     Task<List<TradeParty>?> GetAllTradePartiesAsync();
     Task<TradeParty> AddTradePartyAsync(TraderDTO tradePartyToCreate);
     Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyToCreate);
+    Task<TradeAddressDTO> AddTradeAddressForParty(Guid partyId, TradeAddressAddUpdateDTO tradeAddressAddUpdateDTO);
 }
