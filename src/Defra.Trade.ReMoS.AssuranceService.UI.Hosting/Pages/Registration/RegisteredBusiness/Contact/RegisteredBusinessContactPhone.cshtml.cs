@@ -19,6 +19,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [Required(ErrorMessage = "Enter the phone number of the contact person")]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        [BindProperty]
+        public Guid TraderId { get; set; }
+
         public RegisteredBusinessContactPhoneModel(ILogger<RegisteredBusinessContactPhoneModel> logger, ITraderService traderService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -26,10 +29,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(Guid? id = null)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
+            TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
             _logger.LogInformation("PhoneNumber OnGet");
+
+            if (TraderId != Guid.Empty)
+            {
+                await GetPhoneNumberFromApiAsync();
+            }
+
             return Page();
         }
 
@@ -42,14 +52,33 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync();
             }
 
-            var tradeParty = new TradePartyDTO
+            TradePartyDTO tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId) ?? new TradePartyDTO();
+            tradeParty.Contact ??= new TradeContactDTO();
+
+            tradeParty.Contact.TelephoneNumber = PhoneNumber;
+
+
+            if (tradeParty.Id == Guid.Empty)
             {
-                Contact = new TradeContactDTO { TelephoneNumber = PhoneNumber },
-            };
+                TraderId = await _traderService.CreateTradePartyAsync(tradeParty);
+            }
+            else
+            {
+                await _traderService.UpdateTradePartyAsync(tradeParty);
+            }
 
-            await _traderService.UpdateTradePartyAsync(tradeParty);
+            return RedirectToPage(
+                Routes.Pages.Path.RegistrationTaskListPath,
+                new { id = TraderId });
+        }
 
-            return Redirect(Routes.RegistrationTasklist);
+        private async Task GetPhoneNumberFromApiAsync()
+        {
+            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+            if (tradeParty != null && tradeParty.Contact != null)
+            {
+                PhoneNumber = tradeParty.Contact.TelephoneNumber ?? string.Empty;
+            }
         }
     }
 }
