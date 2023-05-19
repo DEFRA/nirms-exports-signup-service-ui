@@ -50,15 +50,15 @@ public class RegisteredBusinessNatureOfBusinessModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        TraderDTO dto = CreateDTO();
+        TradePartyDTO dto = CreateDTO();
         await _traderService.UpdateTradePartyAsync(dto);
 
         return RedirectToPage(Routes.RegistrationTasklist, TraderId);
     }
 
-    private TraderDTO CreateDTO()
+    private TradePartyDTO CreateDTO()
     {
-        TraderDTO dto = new()
+        TradePartyDTO dto = new()
         {
             Id = TraderId,
             NatureOfBusiness = this.NatureOfBusiness
@@ -68,8 +68,8 @@ public class RegisteredBusinessNatureOfBusinessModel : PageModel
 
     private async Task<string?> GetNatureOfBusiness()
     {
-        TradeParty? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp != null && tp.TradeAddress != null)
+        TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tp != null && tp.Address != null)
         {
             return tp.NatureOfBusiness;
         }

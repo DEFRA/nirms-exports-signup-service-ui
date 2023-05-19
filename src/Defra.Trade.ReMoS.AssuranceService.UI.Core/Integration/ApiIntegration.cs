@@ -7,6 +7,7 @@ using GraphQL.Client.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
@@ -23,9 +24,9 @@ public class ApiIntegration : IAPIIntegration
     }
 
 
-    public async Task<List<TradeParty>?> GetAllTradePartiesAsync()
+    public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
     {
-        List<TradeParty>? results = new();
+        List<TradePartyDTO>? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
         var httpResponseMessage = await httpClient.GetAsync("/TradeParties/Parties");
 
@@ -34,30 +35,26 @@ public class ApiIntegration : IAPIIntegration
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                results = await JsonSerializer.DeserializeAsync<List<TradeParty>>(contentStream);
+                results = await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(contentStream);
             }
         }
         return results;
     }
 
-    public async Task<TradeParty?> GetTradePartyByIdAsync(Guid id)
+    public async Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid id)
     {
-        TradeParty? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.GetAsync($"/TradeParties/Parties{id}");
+        var response = await httpClient.GetAsync($"/TradeParties/Parties/{id}");
 
-        if (httpResponseMessage.IsSuccessStatusCode)
-        {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-            if (contentStream != null)
-            {
-                results = await JsonSerializer.DeserializeAsync<TradeParty>(contentStream);
-            }
-        }
-        return results;
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+            await response.Content.ReadAsStreamAsync(),
+            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase}) ??
+            new TradePartyDTO();
     }
 
-    public async Task<Guid> AddTradePartyAsync(TraderDTO tradePartyToCreate)
+    public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
     {
         Guid results = new();
         var requestBody = new StringContent(
@@ -73,7 +70,11 @@ public class ApiIntegration : IAPIIntegration
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
             }
         }
         if (results != Guid.Empty)
@@ -83,31 +84,29 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyToCreate)
+    public async Task<Guid> UpdateTradePartyAsync(TradePartyDTO tradePartyToUpdate)
     {
-        TradeParty? results = new();
-        var guid = Guid.NewGuid();
+        Guid results = new();
         var requestBody = new StringContent(
-            JsonSerializer.Serialize(tradePartyToCreate),
+            JsonSerializer.Serialize(tradePartyToUpdate),
             Encoding.UTF8,
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/{guid}", requestBody);
+        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                results = await JsonSerializer.DeserializeAsync<TradeParty>(contentStream);
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
             }
         }
-        if (results != null)
+        if (results != Guid.Empty)
         {
             return results;
         }
         throw new BadHttpRequestException("null return from API");
     }
-
 }
