@@ -45,7 +45,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync();
             }
 
-            TraderDTO tradeParty = new()
+            TradePartyDTO tradeParty = new()
             {
                 PartyName = Name
             };

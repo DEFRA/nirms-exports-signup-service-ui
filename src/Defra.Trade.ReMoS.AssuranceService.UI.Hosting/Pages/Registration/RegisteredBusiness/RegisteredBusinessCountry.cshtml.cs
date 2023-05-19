@@ -47,17 +47,17 @@ public class RegisteredBusinessCountryModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        TraderDTO traderDTO = CreateDTO();
+        TradePartyDTO traderDTO = CreateDTO();
         Guid tp = await _traderService.CreateTradePartyAsync(traderDTO);
 
         return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new {id = tp });
     }
 
-    private TraderDTO CreateDTO()
+    private TradePartyDTO CreateDTO()
     {
-        TraderDTO DTO = new()
+        TradePartyDTO DTO = new()
         {
-            Address = new TradeAddress()
+            Address = new TradeAddressDTO()
             {
                 TradeCountry = Country
             }
@@ -67,10 +67,10 @@ public class RegisteredBusinessCountryModel : PageModel
 
     private async Task<string?> GetCountry()
     {
-        TradeParty? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp != null && tp.TradeAddress != null)
+        TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tp != null && tp.Address != null)
         {
-            return tp.TradeAddress.TradeCountry;
+            return tp.Address.TradeCountry;
         }
         return "";
     }

@@ -47,7 +47,7 @@
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessAddressPath" aria-describedby="business-address">
+                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessAddressPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-address">
                                 Registered address
                             </a>
                         </span>

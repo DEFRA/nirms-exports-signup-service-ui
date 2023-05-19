@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -33,6 +34,9 @@ public class RegisteredBusinessAddressModel : PageModel
     [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a post code.")]
     public string PostCode { get; set; } = string.Empty;
+
+    [BindProperty]
+    public Guid TraderId { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessAddressModel> _logger;
@@ -50,12 +54,16 @@ public class RegisteredBusinessAddressModel : PageModel
         _traderService = traderService;
     }
 
-    //Remove warning when API integration added (has to be async for OnPost functionality but throws this error)
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IActionResult> OnGetAsync()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IActionResult> OnGetAsync(Guid? id = null)
     {
+        TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
         _logger.LogInformation("Address OnGet");
+
+        if (TraderId != Guid.Empty)
+        {
+            await GetAddressFromApiAsync();
+        }
+        
         return Page();
     }
 
@@ -68,17 +76,31 @@ public class RegisteredBusinessAddressModel : PageModel
             return await OnGetAsync();
         }
 
-        TradeAddressAddUpdateDTO addressDto = CreateAddressDto();
+        TradePartyDTO tradePartyDto = await _traderService.GetTradePartyByIdAsync(TraderId) ?? new TradePartyDTO();
+        tradePartyDto.Address ??= new TradeAddressDTO();
 
-        var partyId = Guid.Parse("82c5f034-b931-4964-bcc9-08db554a682e"); //TODO - get id of an existing party or create a new trade party
-        await _traderService.AddTradeAddressForPartyAsync(partyId, addressDto);
+        tradePartyDto.Address.LineOne = LineOne;
+        tradePartyDto.Address.LineTwo = LineTwo;
+        tradePartyDto.Address.CityName = CityName;
+        tradePartyDto.Address.PostCode = PostCode;
 
-        return Redirect(Routes.RegistrationTasklist);
+        if (tradePartyDto.Id == Guid.Empty)
+        {
+            TraderId = await _traderService.CreateTradePartyAsync(tradePartyDto);
+        }
+        else
+        {
+            await _traderService.UpdateTradePartyAsync(tradePartyDto);
+        }
+
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath, 
+            new { id = TraderId });
     }
 
-    private TradeAddressAddUpdateDTO CreateAddressDto()
+    private TradeAddressDTO CreateAddressDto()
     {
-        TradeAddressAddUpdateDTO DTO = new()
+        TradeAddressDTO DTO = new()
         {
             LineOne = LineOne,
             LineTwo = LineTwo,
@@ -86,5 +108,17 @@ public class RegisteredBusinessAddressModel : PageModel
             PostCode = PostCode,
         };
         return DTO;
+    }
+
+    private async Task GetAddressFromApiAsync()
+    {
+        TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tp != null && tp.Address != null)
+        {
+            LineOne = tp.Address.LineOne ?? string.Empty;
+            LineTwo = tp.Address.LineTwo ?? string.Empty;
+            CityName = tp.Address.CityName ?? string.Empty;
+            PostCode = tp.Address.PostCode ?? string.Empty;
+        }
     }
 }

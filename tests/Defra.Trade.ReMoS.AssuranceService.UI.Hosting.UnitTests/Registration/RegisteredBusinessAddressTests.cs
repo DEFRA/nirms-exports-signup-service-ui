@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Logging;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
@@ -16,12 +17,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 public class RegisteredBusinessAddressTests : PageModelTestsBase
 {
     protected Mock<ILogger<RegisteredBusinessAddressModel>> _mockLogger = new ();
+    protected Mock<ITraderService> _mockTraderService = new();
     private RegisteredBusinessAddressModel? _systemUnderTest;
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessAddressModel(_mockLogger.Object);
+        _systemUnderTest = new RegisteredBusinessAddressModel(
+            _mockLogger.Object, 
+            _mockTraderService.Object);
     }
 
     [Test]

@@ -19,28 +19,28 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             _apiIntegration = apiIntegration;
         }
 
-        public async Task<Guid> CreateTradePartyAsync(TraderDTO tradePartyDTO)
+        public async Task<Guid> CreateTradePartyAsync(TradePartyDTO tradePartyDTO)
         {
             return await _apiIntegration.AddTradePartyAsync(tradePartyDTO);
         }
 
-        public async Task<TradeParty> UpdateTradePartyAsync(TraderDTO tradePartyDTO)
+        public async Task<Guid> UpdateTradePartyAsync(TradePartyDTO tradePartyDTO)
         {
             return await _apiIntegration.UpdateTradePartyAsync(tradePartyDTO);
         }
 
-        public async Task<TradeParty?> GetTradePartyByIdAsync(Guid Id)
+        public async Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid Id)
         {
             if(Id != Guid.Empty)
             {
                 return await _apiIntegration.GetTradePartyByIdAsync(Id);
             }
-            return new TradeParty();
+            return new TradePartyDTO();
         }
 
-        public async Task<TradeAddressDTO> AddTradeAddressForPartyAsync(Guid partyId, TradeAddressAddUpdateDTO tradeAddressAddUpdateDTO)
-        {
-            return await _apiIntegration.AddTradeAddressForParty(partyId, tradeAddressAddUpdateDTO);
-        }
+        //public async Task<TradeAddressDTO> AddTradeAddressForPartyAsync(Guid partyId, TradeAddressAddUpdateDTO tradeAddressAddUpdateDTO)
+        //{
+        //    return await _apiIntegration.AddTradeAddressForParty(partyId, tradeAddressAddUpdateDTO);
+        //}
     }
 }

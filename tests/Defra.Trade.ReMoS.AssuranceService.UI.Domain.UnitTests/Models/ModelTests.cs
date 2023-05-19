@@ -30,7 +30,7 @@ public class TradePartyForCreationTests
     public void GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeParty = new TraderDTO
+        var tradeParty = new TradePartyDTO
         {
             //Act
             PartyName = "Trade party Ltd"
@@ -48,7 +48,7 @@ public class RegisterTradePartyResponseTests
     public void GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var registerTradeParty = new TraderDTO
+        var registerTradeParty = new TradePartyDTO
         {
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
             PartyName = "Trade party Ltd"
