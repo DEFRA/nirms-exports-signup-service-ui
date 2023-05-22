@@ -109,7 +109,9 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a aria-describedby="points-of-departure" href="points-of-departure">Points of departure</a>
+                            <a asp-page=@Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath aria-describedby="points-of-departure">
+                                Points of departure
+                            </a>
                         </span>
                         <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="establistment-departure">@TaskListStatus.NOTSTART</strong>
                         <!--Add Status-->
