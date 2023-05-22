@@ -1,0 +1,27 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.PostcodeSearchModel
+@{
+    ViewData["Title"] = "Enter Establishment postcode";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form class="form" method="post">
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                Add a point departure
+            </h1>
+            <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="search-points-of-departure">Establishment postcode</label>
+                <input class="govuk-input" id="search-points-of-departure" name="search-points-of-departure" type="search">
+            </div>
+
+            <button class="govuk-button" asp-page-handler="search">Find establishment</button>
+
+        </form>
+
+    </div>
+</div>
