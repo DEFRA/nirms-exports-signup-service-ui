@@ -1,3 +1,5 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -44,7 +46,32 @@ public class EstablishmentDepartureAddressModel : PageModel
     [BindProperty]
     public Guid EstablishmentId { get; set; }
     #endregion
-    public void OnGet()
+
+    private readonly ILogger<EstablishmentDepartureAddressModel> _logger;
+
+    public EstablishmentDepartureAddressModel(
+        ILogger<EstablishmentDepartureAddressModel> logger)
     {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IActionResult> OnGetAsync()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    {
+        _logger.LogInformation("Establishment manual address OnGet");
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostSubmitAsync()
+    {
+        _logger.LogInformation("Establishment manual address OnPostSubmit");
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync();
+        }
+
+        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath);
     }
 }
