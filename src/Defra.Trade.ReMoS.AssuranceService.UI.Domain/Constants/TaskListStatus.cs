@@ -10,8 +10,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 [ExcludeFromCodeCoverage]
 public class TaskListStatus
 {
-    public static readonly string NOTSTART = "Not Started";
-    public static readonly string COMPLETE = "Completed";
-    public static readonly string INPROGRESS = "In Progress";
-    public static readonly string CANNOTSTART = "Cannot Start Yet";
+    public const string NOTSTART = "Not Started";
+    public const string COMPLETE = "Completed";
+    public const string INPROGRESS = "In Progress";
+    public const string CANNOTSTART = "Cannot Start Yet";
 }
