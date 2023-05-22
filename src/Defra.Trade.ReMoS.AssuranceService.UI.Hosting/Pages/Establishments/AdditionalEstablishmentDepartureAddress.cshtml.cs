@@ -16,7 +16,7 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
     public string AdditionalAddress { get; set; } = string.Empty;
 
     [BindProperty]
-    public List<LogisticsLocation>? LogisticsLocations { get; }
+    public List<LogisticsLocation>? LogisticsLocations { get; } = new List<LogisticsLocation>();
     #endregion
 
     private readonly ILogger<AdditionalEstablishmentDepartureAddressModel> _logger;
