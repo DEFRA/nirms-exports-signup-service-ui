@@ -9,5 +9,5 @@ public class TradePartyDTO
     public string? CountryName { get; set; }
     public string? NatureOfBusiness { get; set; }
     public TradeAddressDTO? Address { get; set; }
-    public TradeContact? Contact { get; set; }
+    public TradeContactDTO? Contact { get; set; }
 }
