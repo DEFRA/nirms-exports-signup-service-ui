@@ -2,6 +2,7 @@
 using Moq;
 using Microsoft.Extensions.Logging;
 using FluentAssertions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 #pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
@@ -10,11 +11,14 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 {
     private RegisteredBusinessContactPositionModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactPositionModel>> _mockLogger = new();
+    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessContactPositionModel(_mockLogger.Object);
+        _systemUnderTest = new RegisteredBusinessContactPositionModel(
+            _mockLogger.Object,
+            _mockTraderService.Object);
     }
 
     [Test]

@@ -7,5 +7,6 @@
         public string? PersonName { get; set; }
         public string? TelephoneNumber { get; set; }
         public string? EmailAddress { get; set; }
+        public string? Position { get; set; }
     }
 }
