@@ -65,7 +65,7 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath aria-describedby="name">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.RegistrationID" aria-describedby="name">
                                 Full name
                             </a>
                         </span>
