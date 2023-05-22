@@ -37,9 +37,7 @@ public class RegisteredBusinessContactNameModel : PageModel
         _traderService = traderService;
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async Task<IActionResult> OnGetAsync(Guid? id = null)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
         _logger.LogInformation("Name OnGet");
