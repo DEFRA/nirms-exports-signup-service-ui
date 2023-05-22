@@ -9,6 +9,7 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="post" novalidate>
+            <input type="hidden" asp-for="TraderId" />
             <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
                 <label for="business-name">
                     <h1 class="govuk-heading-l">

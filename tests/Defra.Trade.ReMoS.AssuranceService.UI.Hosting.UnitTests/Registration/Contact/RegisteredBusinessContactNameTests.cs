@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -10,11 +11,12 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 {
     private RegisteredBusinessContactNameModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactNameModel>> _mockLogger = new();
+    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object);
+        _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object, _mockTraderService.Object);
     }
 
     [Test]
