@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact
 {
@@ -10,11 +11,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     {
         private RegisteredBusinessContactEmailModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactEmailModel>> _mockLogger = new();
+        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new RegisteredBusinessContactEmailModel(_mockLogger.Object);
+            _systemUnderTest = new RegisteredBusinessContactEmailModel(_mockLogger.Object, _mockTraderService.Object);
         }
 
         [Test]
