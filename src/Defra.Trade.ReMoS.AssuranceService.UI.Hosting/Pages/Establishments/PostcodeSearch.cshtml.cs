@@ -11,7 +11,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         #region UI Models
         [Required(ErrorMessage = "Enter a postcode.")]
         [BindProperty]
-        public string? Postcode { get; set; }
+        public string? Postcode { get; set; } = string.Empty;
 
         [BindProperty]
         public Guid BusinessId { get; set; }

@@ -1,0 +1,67 @@
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+
+
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
+{
+    [TestFixture]
+    public class PostcodeSearchTests : PageModelTestsBase
+    {
+        private PostcodeSearchModel? _systemUnderTest;
+        protected Mock<ILogger<PostcodeSearchModel>> _mockLogger = new();
+        protected Mock<ITraderService> _mockTraderService = new();
+
+        [SetUp]
+        public void TestCaseSetup()
+        {
+            _systemUnderTest = new PostcodeSearchModel(_mockTraderService.Object, _mockLogger.Object);
+        }
+
+        [Test]
+        public async Task OnGet_NoEmailPresentIfNoSavedData()
+        {
+            //Arrange
+            //TODO: Add setup for returning values when API referenced
+            var id = Guid.NewGuid();
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(id);
+
+            //Assert
+            _systemUnderTest.Postcode.Should().Be("");
+        }
+
+        [Test]
+        public async Task OnPostSearch_SearchValidPostcode()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "TES1";
+
+            //Act
+            await _systemUnderTest.OnPostSearchAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInValidPostcodeNotPresent()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "";
+            var expectedResult = "Enter a postcode.";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(1);
+            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+        }
+    }
+}
