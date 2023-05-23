@@ -16,7 +16,6 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration

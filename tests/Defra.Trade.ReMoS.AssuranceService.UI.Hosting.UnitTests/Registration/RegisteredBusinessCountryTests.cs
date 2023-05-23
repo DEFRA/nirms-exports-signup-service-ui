@@ -27,7 +27,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         Guid guid = Guid.NewGuid();
 
         //Act
-        _ = await _systemUnderTest.OnGetAsync(guid);
+        _ = await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
         _ = _systemUnderTest.Country.Should().Be("");
@@ -37,7 +37,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
-        _systemUnderTest.Country = "";
+        _systemUnderTest!.Country = "";
         Guid guid = Guid.NewGuid();
 
         //Act
