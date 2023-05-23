@@ -19,7 +19,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [Required(ErrorMessage = "Enter your business name")]
         [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter your business name using only letters, numbers, and special characters -_./()&")]
         [MaxLength(100, ErrorMessage = "Business name is too long")]
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; } = string.Empty;
+        [BindProperty]
+        public Guid TradePartyId { get; set; }
         #endregion
 
         public RegisteredBusinessNameModel(ILogger<RegisteredBusinessNameModel> logger, ITraderService traderService)
@@ -28,11 +30,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             _traderService = traderService;
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IActionResult> OnGetAsync()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
             _logger.LogInformation("Business Name OnGet");
+            TradePartyId = id;
+
+            await GetNameAsync();
+
             return Page();
         }
 
@@ -42,18 +46,24 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync();
+                return await OnGetAsync(TradePartyId);
             }
 
             TradePartyDTO tradeParty = new()
             {
+                Id = TradePartyId,
                 PartyName = Name
             };
-
             await _traderService.UpdateTradePartyAsync(tradeParty);
 
-            return Redirect(Routes.RegistrationTasklist);
+            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+        }
 
+        private async Task GetNameAsync()
+        {
+            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+            if (tradeParty != null)
+                Name = tradeParty.PartyName;
         }
     }
 }

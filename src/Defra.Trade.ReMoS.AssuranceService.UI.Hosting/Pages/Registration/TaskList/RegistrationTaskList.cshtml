@@ -24,36 +24,34 @@
                                 Check eligibility
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-country">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.EligibilityStatus == "Completed" ? "green" : "grey")" id="business-country">@Model.EligibilityStatus</strong>
                     </li>
+
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
                             <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-name">
                                 Business name
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-name">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.BusinessName == "Completed" ? "green" : "grey")" id="business-name">@Model.BusinessName</strong>
                     </li>
+
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
                             <a asp-page=@Routes.Pages.Path.RegisteredBusinessNatureOfBusinessPath asp-route-id="@Model.RegistrationID" aria-describedby="business-type">
                                 Business type
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-type">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.NatureOfBusiness == "Completed" ? "green" : "grey")" id="business-type">@Model.NatureOfBusiness</strong>
                     </li>
+
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
                             <a asp-page="@Routes.Pages.Path.RegisteredBusinessAddressPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-address">
                                 Registered address
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="business-address">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
-
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.RegisteredAddress == "Completed" ? "green" : "grey")" id="business-address">@Model.RegisteredAddress</strong>
                     </li>
                 </ul>
             </li>
@@ -69,35 +67,34 @@
                                 Full name
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-name">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactFullName == "Completed" ? "green" : "grey")" id="contact-name">@Model.ContactFullName</strong>
                     </li>
+
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
                             <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPositionPath asp-route-id="@Model.RegistrationID" aria-describedby="position">
                                 Position
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-position">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactPosition == "Completed" ? "green" : "grey")" id="contact-position">@Model.ContactPosition</strong>
                     </li>
+
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactEmailPath aria-describedby="email">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactEmailPath asp-route-id="@Model.RegistrationID" aria-describedby="email">
                                 Email address
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-email">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactEmailAddress == "Completed" ? "green" : "grey")" id="contact-email">@Model.ContactEmailAddress</strong>
                     </li>
+
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPhonePath aria-describedby="phone">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPhonePath asp-route-id="@Model.RegistrationID" aria-describedby="phone">
                                 Telephone number
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="contact-phone">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactTelephone == "Completed" ? "green" : "grey")" id="contact-phone">@Model.ContactTelephone</strong>
                     </li>
                 </ul>
             </li>

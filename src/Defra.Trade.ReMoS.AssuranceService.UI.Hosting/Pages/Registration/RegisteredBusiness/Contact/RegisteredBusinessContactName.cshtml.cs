@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
@@ -18,7 +19,9 @@ public class RegisteredBusinessContactNameModel : PageModel
     public string Name { get; set; } = string.Empty;
     
     [BindProperty]
-    public Guid TraderId { get; set; }
+    public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid ContactId { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessContactNameModel> _logger;
@@ -37,15 +40,12 @@ public class RegisteredBusinessContactNameModel : PageModel
         _traderService = traderService;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid? id = null)
+    public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
+        TradePartyId = id;
         _logger.LogInformation("Name OnGet");
 
-        if (TraderId != Guid.Empty)
-        {
-            await GetContactNameFromApiAsync();
-        }
+        await GetContactNameFromApiAsync();
 
         return Page();
 
@@ -57,36 +57,37 @@ public class RegisteredBusinessContactNameModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return await OnGetAsync(TradePartyId);
         }
 
-        TradePartyDTO tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId) ?? new TradePartyDTO();
-        tradeParty.Contact ??= new TradeContactDTO();
-
-        tradeParty.Contact.PersonName = Name;
-
-
-        if (tradeParty.Id == Guid.Empty)
-        {
-            TraderId = await _traderService.CreateTradePartyAsync(tradeParty);
-        }
-        else
-        {
-            await _traderService.UpdateTradePartyAsync(tradeParty);
-        }
+        TradePartyDTO tradeParty = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TraderId });
+            new { id = TradePartyId });
     }
 
     private async Task GetContactNameFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Name = tradeParty.Contact.PersonName ?? string.Empty;
         }
+    }
+
+    private TradePartyDTO GenerateDTO()
+    {
+        return new TradePartyDTO()
+        {
+            Id = TradePartyId,
+            Contact = new TradeContactDTO()
+            {
+                Id = ContactId,
+                PersonName = Name
+            }
+        };
     }
 
 }

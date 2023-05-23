@@ -18,7 +18,10 @@ public class RegisteredBusinessContactPositionModel : PageModel
     public string Position { get; set; } = string.Empty;
 
     [BindProperty]
-    public Guid TraderId { get; set; }
+    public Guid TradePartyId { get; set; }
+
+    [BindProperty]
+    public Guid ContactId { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessContactPositionModel> _logger;
@@ -37,15 +40,11 @@ public class RegisteredBusinessContactPositionModel : PageModel
         _traderService = traderService;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid? id = null)
+    public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
+        TradePartyId = id;
         _logger.LogInformation("Position OnGet");
-
-        if (TraderId != Guid.Empty)
-        {
-            await GetContactPositionFromApiAsync();
-        }
+        await GetContactPositionFromApiAsync();
 
         return Page();
     }
@@ -56,34 +55,35 @@ public class RegisteredBusinessContactPositionModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return await OnGetAsync(TradePartyId);
         }
 
-        TradePartyDTO tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId) ?? new TradePartyDTO();
-        tradeParty.Contact ??= new TradeContactDTO();
+        TradePartyDTO tradeParty = GenerateDTO();
+         await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
-        tradeParty.Contact.Position = Position;
-
-
-        if (tradeParty.Id == Guid.Empty)
-        {
-            TraderId = await _traderService.CreateTradePartyAsync(tradeParty);
-        }
-        else
-        {
-            await _traderService.UpdateTradePartyAsync(tradeParty);
-        }
 
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TraderId });
+            new { id = TradePartyId });
     }
     private async Task GetContactPositionFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Position = tradeParty.Contact.Position ?? string.Empty;
         }
+    }
+    private TradePartyDTO GenerateDTO()
+    {
+        return new TradePartyDTO()
+        {
+            Id = TradePartyId,
+            Contact = new TradeContactDTO()
+            {
+                Id = ContactId,
+                Position = Position
+            }
+        };
     }
 }

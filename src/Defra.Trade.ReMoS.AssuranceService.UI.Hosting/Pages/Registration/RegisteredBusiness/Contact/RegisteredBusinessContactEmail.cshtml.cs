@@ -9,34 +9,33 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 {
     public class RegisteredBusinessContactEmailModel : PageModel
     {
+        #region UI Model
         [BindProperty]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [StringLength(100, ErrorMessage = "Email is too long")]
         [Required(ErrorMessage = "Enter the email address of the contact person")]
         public string Email { get; set; } = string.Empty;
+        [BindProperty]
+        public Guid TradePartyId { get; set; }
+        [BindProperty]
+        public Guid ContactId { get; set; }
+        #endregion
 
         private readonly ITraderService _traderService;
         private readonly ILogger<RegisteredBusinessContactEmailModel> _logger;
 
-        [BindProperty]
-        public Guid TraderId { get; set; }
         public RegisteredBusinessContactEmailModel(ILogger<RegisteredBusinessContactEmailModel> logger, ITraderService traderService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _traderService = traderService;
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IActionResult> OnGetAsync(Guid? id = null)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
+            TradePartyId = id;
             _logger.LogInformation("Email OnGet");
 
-            if (TraderId != Guid.Empty)
-            {
-                await GetEmailAddressFromApiAsync();
-            }
+            await GetEmailAddressFromApiAsync();
 
             return Page();
         }
@@ -44,39 +43,41 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public async Task<IActionResult> OnPostSubmitAsync()
         {            
             _logger.LogInformation("Email OnPostSubmit");
-
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync();
+                return await OnGetAsync(TradePartyId);
             }
 
-            var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId) ?? new TradePartyDTO();
-            tradeParty.Contact ??= new TradeContactDTO();
+            TradePartyDTO tradeParty = GenerateDTO();
 
-            tradeParty.Contact.EmailAddress = Email;
-
-
-            if (tradeParty.Id == Guid.Empty)
-            {
-                TraderId = await _traderService.CreateTradePartyAsync(tradeParty);
-            }
-            else
-            {
-                await _traderService.UpdateTradePartyAsync(tradeParty);
-            }
+            await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
             return RedirectToPage(
                 Routes.Pages.Path.RegistrationTaskListPath,
-                new { id = TraderId });
+                new { id = TradePartyId });
         }
 
         private async Task GetEmailAddressFromApiAsync()
         {
-            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.Contact != null)
             {
-                Email = tradeParty.Contact.EmailAddress ?? string.Empty;
+                Email = tradeParty.Contact.Email ?? string.Empty;
+                ContactId = tradeParty.Contact.Id;
             }
+        }
+
+        private TradePartyDTO GenerateDTO()
+        {
+            return new TradePartyDTO()
+            {
+                Id = TradePartyId,
+                Contact = new TradeContactDTO()
+                {
+                    Id = ContactId,
+                    Email = Email
+                }
+            };
         }
     }
 }
