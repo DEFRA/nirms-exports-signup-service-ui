@@ -36,6 +36,9 @@ public class RegisteredBusinessAddressModel : PageModel
     public string PostCode { get; set; } = string.Empty;
 
     [BindProperty]
+    public Guid AddressId { get; set; }
+
+    [BindProperty]
     public Guid TraderId { get; set; }
     #endregion
 
@@ -63,7 +66,6 @@ public class RegisteredBusinessAddressModel : PageModel
         {
             await GetAddressFromApiAsync();
         }
-        
         return Page();
     }
 
@@ -76,13 +78,7 @@ public class RegisteredBusinessAddressModel : PageModel
             return await OnGetAsync();
         }
 
-        TradePartyDTO tradePartyDto = await _traderService.GetTradePartyByIdAsync(TraderId) ?? new TradePartyDTO();
-        tradePartyDto.Address ??= new TradeAddressDTO();
-
-        tradePartyDto.Address.LineOne = LineOne;
-        tradePartyDto.Address.LineTwo = LineTwo;
-        tradePartyDto.Address.CityName = CityName;
-        tradePartyDto.Address.PostCode = PostCode;
+        TradePartyDTO tradePartyDto = GenerateDTO(CreateAddressDto());
 
         if (tradePartyDto.Id == Guid.Empty)
         {
@@ -90,7 +86,7 @@ public class RegisteredBusinessAddressModel : PageModel
         }
         else
         {
-            await _traderService.UpdateTradePartyAsync(tradePartyDto);
+            await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
         }
 
         return RedirectToPage(
@@ -102,6 +98,7 @@ public class RegisteredBusinessAddressModel : PageModel
     {
         TradeAddressDTO DTO = new()
         {
+            Id = AddressId,
             LineOne = LineOne,
             LineTwo = LineTwo,
             CityName = CityName,
@@ -110,11 +107,21 @@ public class RegisteredBusinessAddressModel : PageModel
         return DTO;
     }
 
+    private TradePartyDTO GenerateDTO(TradeAddressDTO addressDTO)
+    {
+        return new TradePartyDTO()
+        {
+            Id = TraderId,
+            Address = addressDTO
+        };
+    }
+
     private async Task GetAddressFromApiAsync()
     {
         TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
         if (tp != null && tp.Address != null)
         {
+            AddressId = tp.Address.Id;
             LineOne = tp.Address.LineOne ?? string.Empty;
             LineTwo = tp.Address.LineTwo ?? string.Empty;
             CityName = tp.Address.CityName ?? string.Empty;

@@ -15,10 +15,10 @@ public class RegisteredBusinessNatureOfBusinessModel : PageModel
     #region UI Model
     [BindProperty]
     [Required(ErrorMessage = "error message")]
-    public string NatureOfBusiness { get; set; } = string.Empty;
+    public string? NatureOfBusiness { get; set; } = string.Empty;
 
+    [BindProperty]
     public Guid TraderId { get; set; }
-
     #endregion
 
     private readonly ILogger<RegisteredBusinessNatureOfBusinessModel> _logger;
@@ -53,7 +53,7 @@ public class RegisteredBusinessNatureOfBusinessModel : PageModel
         TradePartyDTO dto = CreateDTO();
         await _traderService.UpdateTradePartyAsync(dto);
 
-        return RedirectToPage(Routes.RegistrationTasklist, TraderId);
+        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TraderId });
     }
 
     private TradePartyDTO CreateDTO()
@@ -66,13 +66,10 @@ public class RegisteredBusinessNatureOfBusinessModel : PageModel
         return dto;
     }
 
-    private async Task<string?> GetNatureOfBusiness()
+    private async Task GetNatureOfBusiness()
     {
         TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp != null && tp.Address != null)
-        {
-            return tp.NatureOfBusiness;
-        }
-        return "";
+        if (tp != null)
+            NatureOfBusiness = tp.NatureOfBusiness;
     }
 }

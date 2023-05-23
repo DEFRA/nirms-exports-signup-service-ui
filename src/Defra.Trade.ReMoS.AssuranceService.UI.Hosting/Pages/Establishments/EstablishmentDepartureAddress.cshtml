@@ -1,7 +1,7 @@
 ﻿@page
-@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessAddressModel
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.EstablishmentDepartureAddressModel
 @{
-    ViewData["Title"] = "Enter Business Address";
+    ViewData["Title"] = "Add a point of departure";
 }
 
 <div class="govuk-grid-row">
@@ -9,28 +9,35 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
-            <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="TradePartyId" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
-                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("LineOne") ? "LineOne": null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("EstablishmentName") ? "EstablishmentName": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            <span class="govuk-caption-l">Business details</span>
-                            What is the registered address of your business?
+                            <span class="govuk-caption-l">Establishments</span>
+                            Add a point of departure
                         </h1>
                     </legend>
 
-                   
+                    <div class="govuk-form-group">
+                        <p id="EstablishmentName_Error" class="govuk-error-message" gds-validation-for="EstablishmentName"></p>
+                        <label class="govuk-label" for="establishment-name">
+                            Establishment name
+                        </label>
+                        <input class="govuk-input" id="establishment-name" asp-for="EstablishmentName" type="text">
+                    </div>
+
                     <div class="govuk-form-group">
                         <p id="LineOne_Error" class="govuk-error-message" gds-validation-for="LineOne"></p>
                         <label class="govuk-label" for="address-line-1">
-                          Address line 1
+                            Address line 1
                         </label>
                         <input class="govuk-input" id="address-line-1" asp-for="LineOne" type="text">
                     </div>
 
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="address-line-2">
-                          Address line 2 (optional)
+                            Address line 2 (optional)
                         </label>
                         <input class="govuk-input" id="address-line-2" asp-for="LineTwo" type="text">
                     </div>
@@ -38,17 +45,25 @@
                     <div class="govuk-form-group">
                         <p id="CityName_Error" class="govuk-error-message" gds-validation-for="CityName"></p>
                         <label class="govuk-label" for="address-city">
-                          Town or city
+                            Town or city
                         </label>
-                        <input class="govuk-input" id="address-city" asp-for="CityName" type="text">
+                        <input class="govuk-input govuk-!-width-two-thirds" id="address-city" asp-for="CityName" type="text">
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
+                        <label class="govuk-label" for="address-country">
+                            Country (optional)
+                        </label>
+                        <input class="govuk-input govuk-!-width-two-thirds" id="address-country" asp-for="Country" type="text">
                     </div>
 
                     <div class="govuk-form-group">
                         <p id="PostCode_Error" class="govuk-error-message" gds-validation-for="PostCode"></p>
                         <label class="govuk-label" for="address-postcode">
-                          Postcode
+                            Postcode
                         </label>
-                        <input class="govuk-input" id="address-postcode" asp-for="PostCode" type="text">
+                        <input class="govuk-input govuk-input--width-10" id="address-postcode" asp-for="PostCode" type="text">
                     </div>
 
                 </fieldset>
@@ -58,8 +73,6 @@
             <p>
                 <a class="govuk-link" asp-page-handler="Save">Save and continue later</a>
             </p>
-            <input type="hidden" asp-for="TraderId" />
-            <input type="hidden" asp-for="AddressId" />
         </form>
     </div>
 </div>

@@ -109,4 +109,56 @@ public class ApiIntegration : IAPIIntegration
         }
         throw new BadHttpRequestException("null return from API");
     }
+
+    public async Task<Guid> UpdateTradePartyAddressAsync(TradePartyDTO tradePartyToUpdate)
+    {
+        Guid results = new();
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(tradePartyToUpdate),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<Guid> UpdateTradePartyContactAsync(TradePartyDTO tradePartyToUpdate)
+    {
+        Guid results = new();
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(tradePartyToUpdate),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
 }

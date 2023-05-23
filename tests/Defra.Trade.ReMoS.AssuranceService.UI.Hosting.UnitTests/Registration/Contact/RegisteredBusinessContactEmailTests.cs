@@ -23,10 +23,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnGet_NoEmailPresentIfNoSavedData()
         {
             //Arrange
-            //TODO: Add setup for returning values when API referenced
+            Guid test = Guid.NewGuid();
 
             //Act
-            await _systemUnderTest!.OnGetAsync();
+            await _systemUnderTest!.OnGetAsync(test);
 
             //Assert
             _systemUnderTest.Email.Should().Be("");

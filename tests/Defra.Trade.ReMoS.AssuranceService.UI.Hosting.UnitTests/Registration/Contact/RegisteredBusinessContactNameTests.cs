@@ -23,10 +23,10 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     public async Task OnGet_NoNamePresentIfNoSavedData()
     {
         // arrange
-        // TODO add setup for returning values when api referenced
+        Guid test = Guid.NewGuid();
 
         // act
-        await _systemUnderTest.OnGetAsync();
+        await _systemUnderTest.OnGetAsync(test);
 
         // assert
         _systemUnderTest.Name.Should().Be("");

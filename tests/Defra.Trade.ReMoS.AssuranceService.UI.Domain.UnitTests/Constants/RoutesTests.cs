@@ -19,6 +19,9 @@ public class RoutesTests
     [TestCase(Routes.RegisteredBusinessName, Routes.Pages.Path.RegisteredBusinessNamePath)]
     [TestCase(Routes.RegisteredBusinessType, Routes.Pages.Path.RegisteredBusinessTypePath)]
     [TestCase(Routes.RegisteredBusinessAddress, Routes.Pages.Path.RegisteredBusinessAddressPath)]
+    [TestCase(Routes.AdditionalEstablishmentDepartureAddress, Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath)]
+    [TestCase(Routes.EstablishmentDepartureAddress, Routes.Pages.Path.EstablishmentDepartureAddressPath)]
+    [TestCase(Routes.EstablishmentDeparturePostcodeSearch, Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath)]
     public void TestRoutesMatchPaths(string routeName, string routePath)
     {
         //arrange
@@ -41,6 +44,9 @@ public class RoutesTests
     [TestCase(Routes.Pages.Names.RegisteredBusinessContactPhoneName, Routes.Pages.Path.RegisteredBusinessContactPhonePath)]
     [TestCase(Routes.Pages.Names.RegisteredBusinessTypeName, Routes.Pages.Path.RegisteredBusinessTypePath)]
     [TestCase(Routes.Pages.Names.RegisteredBusinessAddressName, Routes.Pages.Path.RegisteredBusinessAddressPath)]
+    [TestCase(Routes.Pages.Names.AdditionalEstablishmentDepartureAddressName, Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath)]
+    [TestCase(Routes.Pages.Names.EstablishmentDepartureAddressName, Routes.Pages.Path.EstablishmentDepartureAddressPath)]
+    [TestCase(Routes.Pages.Names.EstablishmentDeparturePostcodeSearchName, Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath)]
     public void TestPathsContainPageNames(string pageName, string path)
     {
         //assert

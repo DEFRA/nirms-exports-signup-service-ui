@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
+using Microsoft.ApplicationInsights.DependencyCollector;
 using System.Diagnostics.CodeAnalysis;
 
 [ExcludeFromCodeCoverage]
@@ -22,6 +23,7 @@ internal sealed class Program
         builder.Services.AddRazorPages();
         builder.Services.AddMvc().AddCustomRouting();
         builder.Services.AddServiceConfigurations(builder.Configuration);
+        builder.Services.AddApplicationInsightsTelemetry();
 
         var app = builder.Build();
 
