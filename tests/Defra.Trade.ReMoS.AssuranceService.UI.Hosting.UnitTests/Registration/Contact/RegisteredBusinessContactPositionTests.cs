@@ -25,10 +25,10 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     public async Task OnGet_NoPositionPresentIfNoSavedData()
     {
         // arrange
-        // TODO add setup for returning values when api referenced
+        Guid test = Guid.NewGuid();
 
         // act
-        await _systemUnderTest.OnGetAsync();
+        await _systemUnderTest.OnGetAsync(test);
 
         // assert
         _systemUnderTest.Position.Should().Be("");
