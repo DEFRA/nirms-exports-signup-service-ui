@@ -94,5 +94,23 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
             validation.Count.Should().Be(1);
             Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInvalidInput()
+        {
+            //Arrange
+            _systemUnderTest!.Name = "";
+            var expectedResult = "Enter your business name";
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
+            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+        }
     }
 }
