@@ -27,6 +27,17 @@
 
             <button class="govuk-button" asp-page-handler="submit">Select address</button>
 
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Cannot find establishment
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <a asp-page=@Routes.Pages.Path.EstablishmentDepartureAddressPath asp-route-id="@Model.TradePartyId">Add the establishment address manually</a>
+                </div>
+            </details>
+
         </form>
 
     </div>
