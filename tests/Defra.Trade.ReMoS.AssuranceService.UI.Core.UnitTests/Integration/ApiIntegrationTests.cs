@@ -54,5 +54,115 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             _mockHttpClientFactory.Verify();
             returnedValue!.Count().Should().Be(tradeParties.Count());
         }
+
+        [Test]
+        public async Task API_Returns_200_When_Calling_GetTradePartyByIdAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO();
+
+            var jsonString = JsonConvert.SerializeObject(tradeParty);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.GetTradePartyByIdAsync(Guid.Empty);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Id.Should().Be(Guid.Parse("00000000-0000-0000-0000-000000000000"));
+        }
+
+        [Test]
+        public async Task API_Returns_200_When_Calling_AddTradePartyAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO
+            {
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+
+            var guid = Guid.NewGuid();
+
+            var jsonString = JsonConvert.SerializeObject(guid);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.AddTradePartyAsync(tradeParty);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Should().Be(guid);
+        }
+
+        [Test]
+        public async Task API_Returns_200_When_Calling_UpdateTradePartyAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO
+            {
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+
+            var guid = Guid.NewGuid();
+
+            var jsonString = JsonConvert.SerializeObject(guid);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.UpdateTradePartyAsync(tradeParty);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Should().Be(guid);
+        }
     }
 }
