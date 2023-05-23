@@ -44,7 +44,7 @@ public class EstablishmentDepartureAddressModel : PageModel
     public string PostCode { get; set; } = string.Empty;
 
     [BindProperty]
-    public Guid EstablishmentId { get; set; }
+    public Guid TradePartyId { get; set; }
     #endregion
 
     private readonly ILogger<EstablishmentDepartureAddressModel> _logger;
@@ -56,10 +56,11 @@ public class EstablishmentDepartureAddressModel : PageModel
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(Guid id)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         _logger.LogInformation("Establishment manual address OnGet");
+        TradePartyId = id;
         return Page();
     }
 
@@ -69,9 +70,9 @@ public class EstablishmentDepartureAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return await OnGetAsync(TradePartyId);
         }
 
-        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath);
+        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
     }
 }

@@ -9,7 +9,7 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
-            <input type="hidden" asp-for="EstablishmentId" />
+            <input type="hidden" asp-for="TradePartyId" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("EstablishmentName") ? "EstablishmentName": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
