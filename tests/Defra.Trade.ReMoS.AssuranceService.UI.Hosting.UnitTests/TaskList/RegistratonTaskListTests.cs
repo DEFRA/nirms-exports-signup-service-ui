@@ -1,5 +1,7 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -14,12 +16,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
     public class RegistratonTaskListTests : PageModelTestsBase
     {
         private RegistrationTaskListModel? _systemUnderTest;
+        private readonly Mock<ITraderService> _traderService = new();
         protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object);
+            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _traderService.Object);
         }
 
         [Test]
@@ -38,7 +41,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Assert
             if (_systemUnderTest != null)
             {
-                _ = _systemUnderTest.RegistrationID.Should().NotBeNull();
+                _ = _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
             }
         }
     }
