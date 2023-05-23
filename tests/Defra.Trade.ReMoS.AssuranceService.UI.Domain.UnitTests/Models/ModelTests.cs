@@ -88,7 +88,7 @@ public class TradeContactDTOTests
             TradePartyId = Guid.Parse("c16eb7a7-2949-4880-b5d7-1205f4f7d548"),
             PersonName = "John Doe",
             TelephoneNumber = "1234567890",
-            EmailAddress = "John.Doe@contactemail.com"
+            Email = "John.Doe@contactemail.com"
         };
 
         //Assert
@@ -96,7 +96,7 @@ public class TradeContactDTOTests
         tradeContact.TradePartyId.Should().Be(Guid.Parse("c16eb7a7-2949-4880-b5d7-1205f4f7d548"));
         tradeContact.PersonName.Should().Be("John Doe");
         tradeContact.TelephoneNumber.Should().Be("1234567890");
-        tradeContact.EmailAddress.Should().Be("John.Doe@contactemail.com");
+        tradeContact.Email.Should().Be("John.Doe@contactemail.com");
     }
 }
 
@@ -244,7 +244,7 @@ public class TradePartyDTORelationshipTests
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
             PersonName = "John Doe",
             TelephoneNumber = "1234567890",
-            EmailAddress = "John.Doe@contactemail.com"
+            Email = "John.Doe@contactemail.com"
         };
 
         var tradeAddress = new TradeAddressDTO
