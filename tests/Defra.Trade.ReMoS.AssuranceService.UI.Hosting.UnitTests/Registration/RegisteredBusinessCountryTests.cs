@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -12,12 +13,17 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     private Mock<ITraderService> traderService = new();
     private RegisteredBusinessCountryModel? _systemUnderTest;
 
+    [SetUp]
+    public void TestCaseSetup()
+    {
+        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
+    }
+
     [Test]
     public async Task OnGet_NoCountryPresentIfNoSavedData()
     {
         //Arrange
         //TODO: Add setup for returning values when API referenced
-        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
         Guid guid = Guid.NewGuid();
 
         //Act
@@ -31,7 +37,6 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
-        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, traderService.Object);
         _systemUnderTest.Country = "";
         Guid guid = Guid.NewGuid();
 
@@ -41,6 +46,24 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         //Assert
         _ = validation.Count.Should().Be(1);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.Country = "";
+        var expectedResult = "Enter a country";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
     }
 }
 
