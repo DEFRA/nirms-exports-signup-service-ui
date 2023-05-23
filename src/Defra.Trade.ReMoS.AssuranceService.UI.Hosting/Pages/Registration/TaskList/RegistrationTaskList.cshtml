@@ -106,7 +106,7 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath aria-describedby="points-of-departure">
+                            <a asp-page=@Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath asp-route-id="@Model.RegistrationID" aria-describedby="points-of-departure">
                                 Points of departure
                             </a>
                         </span>

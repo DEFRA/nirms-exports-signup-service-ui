@@ -161,4 +161,21 @@ public class ApiIntegration : IAPIIntegration
         }
         throw new BadHttpRequestException("null return from API");
     }
+
+    public async Task<List<LogisticsLocation>?> GetLogisticsLocationByPostcodeAsync(string postcode)
+    {
+        List<LogisticsLocation>? results = new();
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<List<LogisticsLocation>>(contentStream);
+            }
+        }
+        return results;
+    }
 }

@@ -24,6 +24,7 @@ public static class ServiceExtensions
 
         services.AddTransient<IAPIIntegration, ApiIntegration>();
         services.AddTransient<ITraderService, TraderService>();
+        services.AddTransient<IEstablishmentService, EstablishmentService>();
         return services;
     }
 }

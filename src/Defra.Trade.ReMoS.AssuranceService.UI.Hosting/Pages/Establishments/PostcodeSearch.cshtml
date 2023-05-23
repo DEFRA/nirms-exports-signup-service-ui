@@ -9,25 +9,19 @@
     <div class="govuk-grid-column-two-thirds">
 
         <form class="form" method="post">
+            <input type="hidden" asp-for="TradePartyId"/>
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">Establishments</span>
-                What are the points of departure of your goods?
+                Add a point of departure
             </h1>
             <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
 
             <div class="govuk-form-group">
-                <label class="govuk-label govuk-!-font-weight-bold" for="search-points-of-departure">Search for an establishment by name, postcode or establishment ID</label>
-                <input class="govuk-input" id="search-points-of-departure" name="search-points-of-departure" type="search">
+                <label class="govuk-label govuk-!-font-weight-bold" for="search-points-of-departure">Establishment postcode</label>
+                <input class="govuk-input" id="search-points-of-departure" asp-for="Postcode" type="search">
             </div>
 
-            <p>
-                <a class="govuk-link" asp-page=@Routes.Pages.Path.EstablishmentDepartureAddressPath asp-page-handler="Manual">Add a point of departure not in list</a>
-            </p>
-
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
-            <p>
-                <a class="govuk-link" asp-page-handler="Save">Save and continue later</a>
-            </p>
+            <button class="govuk-button" asp-page-handler="submit">Find establishment</button>
 
         </form>
 

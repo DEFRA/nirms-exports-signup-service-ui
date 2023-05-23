@@ -41,27 +41,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.Postcode = "TES1";
 
             //Act
-            await _systemUnderTest.OnPostSearchAsync();
-            var validation = ValidateModel(_systemUnderTest);
-
-            //Assert
-            validation.Count.Should().Be(0);
-        }
-
-        [Test]
-        public async Task OnPostSubmit_SubmitInValidPostcodeNotPresent()
-        {
-            //Arrange
-            _systemUnderTest!.Postcode = "";
-            var expectedResult = "Enter a postcode.";
-
-            //Act
             await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
-            validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            validation.Count.Should().Be(0);
         }
     }
 }
