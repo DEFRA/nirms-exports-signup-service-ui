@@ -31,7 +31,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_TradeParties_When_Calling_GetAllTradePartiesAsync()
         {
             // Arrange
-            var tradeParties = new List<TradePartyDTO> { new TradePartyDTO(), new TradePartyDTO() };
+            var tradeParties = new List<TradePartyDTO> {  new TradePartyDTO(), new TradePartyDTO() };
 
             var jsonString = JsonConvert.SerializeObject(tradeParties);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -43,7 +43,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             };
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
-
+            
             var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
             httpClient.BaseAddress = new Uri("https://localhost/");
 

@@ -73,4 +73,22 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         // assert
         validation.Count.Should().Be(1);
     }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.Name = "";
+        var expectedResult = "Enter a name.";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+    }
 }
