@@ -84,7 +84,8 @@ extends:
     setupSlotKeyVaultAccess: true
     deployDevSlot: ${{ parameters.deployDevSlot }}
     appSettingsEnv:
-      dev: >-
+        dev: >-
+          -APISettings:APIUrl "https://$(nc-region-id)02/"
     runSonarScan: true
     runVulnerabilityScan: false
     sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/www**,src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Node**'
