@@ -76,4 +76,28 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         // assert
         validation.Count.Should().Be(4);
     }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "";
+        var expectedResultOne = "Enter address line 1.";
+        var expectedResultTwo = "Enter a town or city.";
+        var expectedResultThree = "Enter a post code.";
+
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(3);
+        Assert.AreEqual(expectedResultOne, validation[0].ErrorMessage);
+        Assert.AreEqual(expectedResultTwo, validation[1].ErrorMessage);
+        Assert.AreEqual(expectedResultThree, validation[2].ErrorMessage);
+    }
+
 }
