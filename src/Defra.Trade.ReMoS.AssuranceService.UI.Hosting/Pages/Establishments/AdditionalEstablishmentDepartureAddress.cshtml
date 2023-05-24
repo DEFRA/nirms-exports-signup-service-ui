@@ -9,66 +9,83 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
-            <div class="govuk-form-group">
-               
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">
-                        <span class="govuk-caption-l">Establishments</span>
-                        Points of departure
-                    </h1>
-                </legend>
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                Points of departure
 
-                <dl class="govuk-summary-list govuk-!-margin-bottom-8">
-                    @foreach (var logisticsLocation in Model.LogisticsLocations)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                @logisticsLocation.Name
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @logisticsLocation.Address.LineOne, @logisticsLocation.Address.LineTwo, @logisticsLocation.Address.CityName, @logisticsLocation.Address.PostCode
-                            </dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link">
-                                    Change
-                                </a>
-                            </dd>
-                        </div>
-                    }
-                </dl>
-
-
-                <div class="govuk-form-group @(ModelState.HasError("AdditionalAddress") ? "govuk-form-group--error" : null)">
-                    <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AdditionalAddress") ? "AdditionalAddress_Error": null)">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
-                            <h3 class="govuk-fieldset__heading">
-                                Do you want to add another point of departure?
-                            </h3>
-                        </legend>
-
-                        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
-
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="add-point-of-departure-yes" asp-for="AdditionalAddress" type="radio" value="yes">
-                                <label class="govuk-label govuk-radios__label" for="add-point-of-departure-yes">
-                                    Yes, add another point of departure
-                                </label>
+            </h1>
+            @foreach (var logisticsLocation in Model.LogisticsLocations)
+            {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@logisticsLocation.LogisticsLocation.Name</h2>
+                        <a class="govuk-link govuk-body govuk-!-margin-bottom-0" href="#">
+                            Remove
+                        </a>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Address
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @logisticsLocation.LogisticsLocation.Address.LineOne, @logisticsLocation.LogisticsLocation.Address.LineTwo, @logisticsLocation.LogisticsLocation.Address.CityName, @logisticsLocation.LogisticsLocation.Address.PostCode
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">
+                                        Change<span class="govuk-visually-hidden"> address</span>
+                                    </a>
+                                </dd>
                             </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="add-point-of-departure-no" asp-for="AdditionalAddress" type="radio" value="no">
-                                <label class="govuk-label govuk-radios__label" for="add-point-of-departure-no">
-                                    No, I have finished adding points of departure
-                                </label>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Email address
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @logisticsLocation.ContactEmail
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">
+                                        Change<span class="govuk-visually-hidden"> email address</span>
+                                    </a>
+                                </dd>
                             </div>
-                        </div>
-                    </fieldset>
+                        </dl>
+                    </div>
                 </div>
+            }
+
+
+            <div class="govuk-form-group @(ModelState.HasError("AdditionalAddress") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AdditionalAddress") ? "AdditionalAddress_Error": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
+                        <h3 class="govuk-fieldset__heading">
+                            Do you want to add another point of departure?
+                        </h3>
+                    </legend>
+
+                    <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="add-point-of-departure-yes" asp-for="AdditionalAddress" type="radio" value="yes">
+                            <label class="govuk-label govuk-radios__label" for="add-point-of-departure-yes">
+                                Yes, add another point of departure
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="add-point-of-departure-no" asp-for="AdditionalAddress" type="radio" value="no">
+                            <label class="govuk-label govuk-radios__label" for="add-point-of-departure-no">
+                                No, I have finished adding points of departure
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
-            <p>
-                <a class="govuk-link" asp-page-handler="Save">Save and continue later</a>
-            </p>
-      </form>
+            <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+
+            <p><a href="task-list">Save and continue later</a></p>
+        </form>
     </div>
 </div>
