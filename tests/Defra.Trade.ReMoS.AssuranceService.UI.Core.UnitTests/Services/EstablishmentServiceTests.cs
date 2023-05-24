@@ -61,5 +61,28 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _mockApiIntegration.Verify();
             Assert.AreEqual(logisticsLocations, returnedValue);
         }
+
+        [Test]
+        public async Task Service_Follows_Correct_Route_When_Calling_AddLogisticsLocationRelationshipAsync()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var logisticsLocations = new LogisticsLocationRelationshipDTO
+            {
+                TraderId = Guid.NewGuid(),
+                EstablishmentId = Guid.NewGuid()
+            };
+
+            _mockApiIntegration.Setup(x => x.AddLogisticsLocationRelationship(logisticsLocations)).Verifiable();
+            _mockApiIntegration.Setup(x => x.AddLogisticsLocationRelationship(logisticsLocations).Result).Returns(logisticsLocations.EstablishmentId);
+
+            // Act
+            var returnedValue = await _establishmentService.AddLogisticsLocationRelationshipAsync(logisticsLocations);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            Assert.AreEqual(logisticsLocations.EstablishmentId, returnedValue);
+        }
     }
 }

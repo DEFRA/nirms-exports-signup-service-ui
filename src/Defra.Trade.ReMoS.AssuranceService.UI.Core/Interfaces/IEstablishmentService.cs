@@ -11,5 +11,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
     public interface IEstablishmentService
     {
         public Task<List<LogisticsLocation>?> GetLogisticsLocationByPostcodeAsync(string postcode);
+        public Task<Guid> AddLogisticsLocationRelationshipAsync(LogisticsLocationRelationshipDTO logisticsLocationRelationshipDTO);
     }
 }

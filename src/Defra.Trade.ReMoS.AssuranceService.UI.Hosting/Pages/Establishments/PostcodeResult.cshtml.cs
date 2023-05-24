@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -19,6 +20,9 @@ public class PostcodeResultModel : PageModel
 
     [BindProperty]
     public List<SelectListItem> LogisticsLocationsList { get; set; }
+
+    [BindProperty]
+    public string SelectedLogisticsLocation {get; set; }
     #endregion
 
     private readonly ILogger<PostcodeResultModel> _logger;
@@ -82,7 +86,13 @@ public class PostcodeResultModel : PageModel
             return await OnGetAsync(TradePartyId, Postcode);
         }
 
-        // TODO add address
+        var logisticsLocationRelationshipDTO = new LogisticsLocationRelationshipDTO()
+        {
+            TraderId = TradePartyId,
+            EstablishmentId = Guid.Parse(SelectedLogisticsLocation)
+        };
+
+        await _establishmentService.AddLogisticsLocationRelationshipAsync(logisticsLocationRelationshipDTO);
 
         return RedirectToPage(
             Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath,

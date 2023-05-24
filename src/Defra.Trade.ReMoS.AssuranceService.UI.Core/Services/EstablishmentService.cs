@@ -23,5 +23,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         {
             return await _apiIntegration.GetLogisticsLocationByPostcodeAsync(postcode);
         }
+
+        public async Task<Guid> AddLogisticsLocationRelationshipAsync(LogisticsLocationRelationshipDTO logisticsLocationRelationshipDTO)
+        {
+            return await _apiIntegration.AddLogisticsLocationRelationship(logisticsLocationRelationshipDTO);
+        }
     }
 }

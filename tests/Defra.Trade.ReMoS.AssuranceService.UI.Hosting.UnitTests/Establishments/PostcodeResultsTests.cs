@@ -4,6 +4,7 @@ using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -57,6 +58,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             _systemUnderTest!.Postcode = "TES1";
+            _systemUnderTest!.TradePartyId = Guid.NewGuid();
+
+            var logisticsLocations = new LogisticsLocationRelationshipDTO
+            {
+                TraderId = Guid.NewGuid(),
+                EstablishmentId = Guid.NewGuid()
+            };
+
+            _mockEstablishmentService.Setup(x => x.AddLogisticsLocationRelationshipAsync(logisticsLocations).Result).Returns(logisticsLocations.EstablishmentId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

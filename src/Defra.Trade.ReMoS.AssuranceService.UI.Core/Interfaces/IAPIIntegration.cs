@@ -12,4 +12,5 @@ public interface IAPIIntegration
     public Task<Guid> UpdateTradePartyAddressAsync(TradePartyDTO tradePartyToUpdate);
     public Task<Guid> UpdateTradePartyContactAsync(TradePartyDTO tradePartyToUpdate);
     public Task<List<LogisticsLocation>?> GetLogisticsLocationByPostcodeAsync(string postcode);
+    public Task<Guid> AddLogisticsLocationRelationship(LogisticsLocationRelationshipDTO logisticsLocationRelationshipDTO);
 }

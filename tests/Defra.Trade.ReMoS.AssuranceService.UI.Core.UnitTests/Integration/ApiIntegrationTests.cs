@@ -296,5 +296,41 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             returnedValue[0].Address.CityName.Should().Be(logisticsLocations[0].Address.CityName);
             returnedValue[0].Address.PostCode.Should().Be(logisticsLocations[0].Address.PostCode);
         }
+
+        [Test]
+        public async Task Integration_Returns_RelationshipId_When_Calling_AddLogisticsLocationRelationship()
+        {
+            // Arrange
+            var logisticsLocations = new LogisticsLocationRelationshipDTO
+            {
+                TraderId = Guid.NewGuid(),
+                EstablishmentId = Guid.NewGuid()
+            };
+
+            var jsonString = JsonConvert.SerializeObject(logisticsLocations);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.AddLogisticsLocationRelationship(logisticsLocations);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Should().Be(logisticsLocations.EstablishmentId);
+        }
     }
 }

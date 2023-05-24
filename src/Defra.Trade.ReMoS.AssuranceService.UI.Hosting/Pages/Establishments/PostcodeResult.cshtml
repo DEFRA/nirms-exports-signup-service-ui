@@ -21,7 +21,7 @@
 
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-!-font-weight-bold" for="points-of-departure-address-select">Select an address</label>
-                    <select class="govuk-select" id="points-of-departure-address-select" asp-items="@Model.LogisticsLocationsList"></select>
+                    <select class="govuk-select" id="points-of-departure-address-select" asp-for="@Model.SelectedLogisticsLocation" asp-items="@Model.LogisticsLocationsList"></select>
                 </div>
             </div>
 

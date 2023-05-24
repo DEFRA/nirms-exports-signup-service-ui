@@ -178,4 +178,34 @@ public class ApiIntegration : IAPIIntegration
         }
         return results;
     }
+
+    public async Task<Guid> AddLogisticsLocationRelationship(LogisticsLocationRelationshipDTO logisticsLocationRelationshipDTO)
+    {
+        Guid results = new();
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(logisticsLocationRelationshipDTO),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.PostAsync($"/Establishments/Relationships", requestBody);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
 }
