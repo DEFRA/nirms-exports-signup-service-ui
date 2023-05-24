@@ -59,10 +59,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             _systemUnderTest!.Postcode = "TES1";
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
+            _systemUnderTest!.SelectedLogisticsLocation = Guid.NewGuid().ToString();
 
             var logisticsLocations = new LogisticsLocationRelationshipDTO
             {
-                TraderId = Guid.NewGuid(),
+                TraderId = _systemUnderTest!.TradePartyId,
                 EstablishmentId = Guid.NewGuid()
             };
 
@@ -74,12 +75,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Assert
             validation.Count.Should().Be(0);
-        }
-
-        [Test]
-        public async Task OnPostSubmitAsync_ShouldAddAddress()
-        {
-            // TODO add test
         }
     }
 }

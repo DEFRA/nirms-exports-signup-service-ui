@@ -166,7 +166,7 @@ public class ApiIntegration : IAPIIntegration
     {
         List<LogisticsLocation>? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.GetAsync($"/Establishments/{postcode}");
+        var httpResponseMessage = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
