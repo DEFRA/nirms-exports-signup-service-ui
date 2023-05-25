@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -16,7 +17,7 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
     public string AdditionalAddress { get; set; } = string.Empty;
 
     [BindProperty]
-    public List<LogisticsLocation>? LogisticsLocations { get; } = new List<LogisticsLocation>();
+    public List<LogisticsLocationBusinessRelationshipDTO>? LogisticsLocations { get; } = new List<LogisticsLocationBusinessRelationshipDTO>();
     #endregion
 
     private readonly ILogger<AdditionalEstablishmentDepartureAddressModel> _logger;
@@ -32,6 +33,7 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         _logger.LogInformation("Additional establishment manual address OnGet");
+
         return Page();
     }
 
