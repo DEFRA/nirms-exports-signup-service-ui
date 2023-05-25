@@ -9,6 +9,7 @@
     <div class="govuk-grid-column-two-thirds">
 
         <form class="form" method="post">
+            <input type="hidden" asp-for="TradePartyId" />
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">Establishments</span>
                 What are the points of departure of your goods?
@@ -21,7 +22,7 @@
             </div>
 
             <p>
-                <a class="govuk-link" asp-page=@Routes.Pages.Path.EstablishmentDepartureAddressPath asp-page-handler="Manual">Add a point of departure not in list</a>
+                <a class="govuk-link" asp-page=@Routes.Pages.Path.EstablishmentDepartureAddressPath asp-route-id="@Model.TradePartyId" asp-page-handler="Manual">Add a point of departure not in list</a>
             </p>
 
             <button class="govuk-button" asp-page-handler="submit">Save and continue</button>

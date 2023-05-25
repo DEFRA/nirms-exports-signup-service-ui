@@ -11,11 +11,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
     {
         private EstablishmentDepartureAddressModel? _systemUnderTest;
         protected Mock<ILogger<EstablishmentDepartureAddressModel>> _mockLogger = new();
+        protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new EstablishmentDepartureAddressModel(_mockLogger.Object);
+            _systemUnderTest = new EstablishmentDepartureAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
         }
 
         [Test]

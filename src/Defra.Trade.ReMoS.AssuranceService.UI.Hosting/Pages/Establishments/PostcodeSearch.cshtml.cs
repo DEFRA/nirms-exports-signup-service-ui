@@ -14,7 +14,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         public string? Postcode { get; set; } = string.Empty;
 
         [BindProperty]
-        public Guid BusinessId { get; set; }
+        public Guid TradePartyId { get; set; }
         #endregion
 
         private readonly ITraderService _traderService;
@@ -31,7 +31,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _logger.LogTrace("Establishment postcode search on get");
-            BusinessId = id;
+            TradePartyId = id;
 
             return Page();
         }
@@ -41,10 +41,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             _logger.LogTrace("Establishment postcode search on post");
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync(BusinessId);
+                return await OnGetAsync(TradePartyId);
             }
 
-            return await OnGetAsync(BusinessId);
+            return await OnGetAsync(TradePartyId);
         }
 
         public async Task<IActionResult> OnPostSubmitAsync()
@@ -53,7 +53,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync(BusinessId);
+                return await OnGetAsync(TradePartyId);
             }
 
             return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath);
