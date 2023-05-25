@@ -2,7 +2,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
