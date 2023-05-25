@@ -62,7 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             //Assert
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             //Assert            
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
         }
 
         [Test]

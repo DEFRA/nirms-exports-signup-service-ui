@@ -96,9 +96,9 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         //Assert            
         validation.Count.Should().Be(3);
-        Assert.AreEqual(expectedResultOne, validation[0].ErrorMessage);
-        Assert.AreEqual(expectedResultTwo, validation[1].ErrorMessage);
-        Assert.AreEqual(expectedResultThree, validation[2].ErrorMessage);
+        expectedResultOne.Should().Be(validation[0].ErrorMessage);
+        expectedResultTwo.Should().Be(validation[1].ErrorMessage);
+        expectedResultThree.Should().Be(validation[2].ErrorMessage);
     }
 
     [Test]

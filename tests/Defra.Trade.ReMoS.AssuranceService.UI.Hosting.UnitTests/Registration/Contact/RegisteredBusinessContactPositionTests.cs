@@ -92,7 +92,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 
         //Assert            
         validation.Count.Should().Be(1);
-        Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
     }
 
     [Test]
