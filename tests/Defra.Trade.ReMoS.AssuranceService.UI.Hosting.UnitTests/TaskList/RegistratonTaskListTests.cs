@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Authentication;
@@ -16,13 +17,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
     public class RegistratonTaskListTests : PageModelTestsBase
     {
         private RegistrationTaskListModel? _systemUnderTest;
-        private readonly Mock<ITraderService> _traderService = new();
+        private readonly Mock<ITraderService> _mockTraderService = new();
         protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _traderService.Object);
+            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object);
         }
 
         [Test]
@@ -33,16 +34,51 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             Guid guid = Guid.NewGuid();
 
             //Act
-            if (_systemUnderTest != null)
-            {
-                _ = await _systemUnderTest.OnGetAsync(guid);
-            }
+             await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
-            if (_systemUnderTest != null)
+
+            _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
+        }
+
+        [Test]
+        public async Task OnGet_NoCountryPresentIfNoSavedData_CheckIfTradePartyIsNull()
+        {
+            //Arrange
+            Guid guid = Guid.NewGuid();
+
+            var tradeContact = new TradeContactDTO
             {
-                _ = _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
-            }
+                PersonName = "Test Name",
+                Email = "test@testmail.com",
+                Position = "Main Tester",
+                TelephoneNumber = "1234567890"
+            };
+
+            var tradeAddress = new TradeAddressDTO
+            {
+                TradeCountry = "Test Country",
+                LineOne = "1 Test Lane",
+                PostCode = "12345"
+            };
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact,
+                Address = tradeAddress,
+                PartyName = "Test",
+                NatureOfBusiness = "Test nature"
+            };
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(guid);
+
+            //Assert
+            _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
         }
     }
 }

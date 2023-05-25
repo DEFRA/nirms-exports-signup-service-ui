@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact
 {
@@ -110,6 +111,32 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             //Assert            
             validation.Count.Should().Be(1);
             Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+        }
+
+        [Test]
+        public async Task OnGetAsync_GuidLookupFillsInGapsForProperties()
+        {
+            //Arrange
+            var guid = new Guid();
+
+            var tradeContact = new TradeContactDTO();
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact
+            };
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+            _systemUnderTest!.Email = "Business-test@email.com";
+
+            //Act
+            await _systemUnderTest.OnGetAsync(guid);
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
         }
     }
 }

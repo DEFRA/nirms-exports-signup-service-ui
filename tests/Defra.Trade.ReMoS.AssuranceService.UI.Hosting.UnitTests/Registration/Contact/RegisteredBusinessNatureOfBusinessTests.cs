@@ -82,5 +82,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             validation.Count.Should().Be(1);
             Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
         }
+
+        [Test]
+        public async Task OnGet_NoNatureOfBusinessPresentIfNoSavedData_GetTradeParty()
+        {
+            //Arrange
+            var guid = new Guid();
+
+            var tradeContact = new TradeContactDTO();
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact
+            };
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+            _systemUnderTest!.NatureOfBusiness = "Test";
+
+            //Act
+            await _systemUnderTest.OnGetAsync(guid);
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
+        }
     }
 }

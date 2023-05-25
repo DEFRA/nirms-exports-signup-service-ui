@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -90,5 +91,32 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         //Assert            
         validation.Count.Should().Be(1);
         Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnGet_NoNamePresentIfNoSavedData_ReturnTradePartyDto()
+    {
+        //Arrange
+        Guid guid = Guid.NewGuid();
+
+        var tradeContact = new TradeContactDTO();
+        var tradeAddress = new TradeAddressDTO();
+
+        var tradePartyDto = new TradePartyDTO
+        {
+            Id = guid,
+            Contact = tradeContact,
+            Address = tradeAddress
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+        //Act
+        await _systemUnderTest!.OnGetAsync(guid);
+
+        //Assert
+        _mockTraderService.Verify();
+        _systemUnderTest.Name.Should().Be("");
     }
 }

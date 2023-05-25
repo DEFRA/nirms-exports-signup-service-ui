@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using System.Runtime.Intrinsics.X86;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 {
@@ -50,7 +51,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             // Assert
             _mockApiIntegration.Verify();
-            Assert.AreEqual(expectedGuid, returnedValue);
+            expectedGuid.Should().Be(returnedValue);
         }
 
         [Test]
@@ -75,7 +76,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             // Assert
             _mockApiIntegration.Verify();
-            Assert.AreEqual(tradePartyDTO.Id, returnedValue);
+            tradePartyDTO.Id.Should().Be(returnedValue);
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             // Assert
             _mockApiIntegration.Verify();
-            Assert.AreEqual(tradePartyDTO, returnedValue);
+            tradePartyDTO.Should().Be(returnedValue);
         }
 
         [Test]
@@ -122,7 +123,59 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             // Assert
             _mockApiIntegration.Verify();
-            Assert.AreEqual(emptyTradePartyDTO.Id, returnedValue!.Id);
+            emptyTradePartyDTO.Id.Should().Be(returnedValue!.Id);
+        }
+
+        [Test]
+        public async Task Service_Follows_Correct_Route_When_Calling_UpdateTradePartyAddressAsync()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
+
+            var tradePartyDTO = new TradePartyDTO
+            {
+                Id = guid,
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+
+            _mockApiIntegration.Setup(x => x.UpdateTradePartyAddressAsync(tradePartyDTO)).Verifiable();
+            _mockApiIntegration.Setup(x => x.UpdateTradePartyAddressAsync(tradePartyDTO)).Returns(Task.FromResult(guid)!);
+
+            // Act
+            var returnedValue = await _traderService.UpdateTradePartyAddressAsync(tradePartyDTO);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(guid);
+        }
+
+        [Test]
+        public async Task Service_Follows_Correct_Route_When_Calling_UpdateTradePartyContactAsync()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
+
+            var tradePartyDTO = new TradePartyDTO
+            {
+                Id = guid,
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+
+            _mockApiIntegration.Setup(x => x.UpdateTradePartyContactAsync(tradePartyDTO)).Verifiable();
+            _mockApiIntegration.Setup(x => x.UpdateTradePartyContactAsync(tradePartyDTO)).Returns(Task.FromResult(guid)!);
+
+            // Act
+            var returnedValue = await _traderService.UpdateTradePartyContactAsync(tradePartyDTO);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(guid);
         }
     }
 }
