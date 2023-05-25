@@ -3,6 +3,7 @@ using Moq;
 using Microsoft.Extensions.Logging;
 using FluentAssertions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 #pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
@@ -91,6 +92,33 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 
         //Assert            
         validation.Count.Should().Be(1);
-        Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnGet_NoPositionPresentIfNoSavedData_ReturnTradePartyDto()
+    {
+        //Arrange
+        //TODO: Add setup for returning values when API referenced
+        Guid guid = Guid.NewGuid();
+
+        var tradeContact = new TradeContactDTO();
+        var tradeAddress = new TradeAddressDTO();
+
+        var tradePartyDto = new TradePartyDTO
+        {
+            Id = guid,
+            Contact = tradeContact,
+            Address = tradeAddress
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+        //Act
+        await _systemUnderTest!.OnGetAsync(guid);
+
+        //Assert
+        _systemUnderTest.Position.Should().Be("");
     }
 }

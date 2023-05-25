@@ -58,7 +58,24 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Assert
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInValidRadio_ModelStateIsInvalid()
+        {
+            //Arrange
+            _systemUnderTest!.AdditionalAddress = "";
+            var expectedResult = "Select yes if you want to add another point of departure";
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
         }
     }
 }
