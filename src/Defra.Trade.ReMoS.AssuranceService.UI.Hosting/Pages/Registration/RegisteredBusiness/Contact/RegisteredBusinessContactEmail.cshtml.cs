@@ -24,10 +24,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         private readonly ITraderService _traderService;
         private readonly ILogger<RegisteredBusinessContactEmailModel> _logger;
 
-        public RegisteredBusinessContactEmailModel(ILogger<RegisteredBusinessContactEmailModel> logger, ITraderService traderService)
+        public RegisteredBusinessContactEmailModel(
+            ILogger<RegisteredBusinessContactEmailModel> logger, 
+            ITraderService traderService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _traderService = traderService;
+            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)

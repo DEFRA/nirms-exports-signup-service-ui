@@ -1,5 +1,8 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -45,14 +48,21 @@ public class EstablishmentDepartureAddressModel : PageModel
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+
+    [BindProperty]
+    public Guid EstablishmentId { get; set; }
     #endregion
 
     private readonly ILogger<EstablishmentDepartureAddressModel> _logger;
+    //private readonly ITraderService _traderService;
+    private readonly IEstablishmentService _establishmentService;
 
     public EstablishmentDepartureAddressModel(
-        ILogger<EstablishmentDepartureAddressModel> logger)
+        ILogger<EstablishmentDepartureAddressModel> logger,
+        IEstablishmentService establishmentService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -61,6 +71,8 @@ public class EstablishmentDepartureAddressModel : PageModel
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
+
+        await RetrieveEstablishmentDetails();
         return Page();
     }
 
@@ -73,6 +85,47 @@ public class EstablishmentDepartureAddressModel : PageModel
             return await OnGetAsync(TradePartyId);
         }
 
+        var establishmentId = await SaveEstablishmentDetails();
+
         return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
+    }
+
+    private async Task<Guid?> SaveEstablishmentDetails()
+    {
+        var establishmentDto = new LogisticsLocationDTO
+        {
+            Id = EstablishmentId,
+            Name = EstablishmentName,
+            Address = new TradeAddressDTO
+            {
+                LineOne = LineOne,
+                LineTwo = LineTwo,
+                CityName = CityName,
+                TradeCountry = Country,
+                PostCode = PostCode,
+            }
+        };
+        return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
+    }
+
+    private async Task RetrieveEstablishmentDetails()
+    {
+
+        LogisticsLocationDTO? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? null;
+
+        //TODO - this needs implementing
+        //if (establishment == null)
+        //{
+        //    IEnumerable<LogisticsLocationDTO>? establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
+        //    establishment = establishments?.FirstOrDefault();
+        //}
+
+        EstablishmentName = establishment?.Name ?? string.Empty;
+        LineOne = establishment?.Address?.LineOne ?? string.Empty;
+        LineTwo = establishment?.Address?.LineTwo ?? string.Empty;
+        CityName = establishment?.Address?.CityName ?? string.Empty;
+        Country = establishment?.Address?.TradeCountry ?? string.Empty;
+        PostCode = establishment?.Address?.PostCode ?? string.Empty;
+
     }
 }
