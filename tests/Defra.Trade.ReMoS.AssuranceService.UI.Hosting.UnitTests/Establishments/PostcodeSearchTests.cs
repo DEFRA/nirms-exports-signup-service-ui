@@ -47,5 +47,53 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Assert
             validation.Count.Should().Be(0);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInValidPostcodeNotPresent()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "";
+            var expectedResult = "Enter a postcode.";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
+        public async Task OnPostSearch_SearchValidPostcode_ModelIsInvalid()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "TES1";
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInValidPostcodeNotPresent_ModelIsInvalid()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "";
+            var expectedResult = "Enter a postcode.";
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
     }
 }

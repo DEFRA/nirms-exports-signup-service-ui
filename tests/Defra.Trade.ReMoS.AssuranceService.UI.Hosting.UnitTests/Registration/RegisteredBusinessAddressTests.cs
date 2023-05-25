@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Logging;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
@@ -95,9 +96,62 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         //Assert            
         validation.Count.Should().Be(3);
-        Assert.AreEqual(expectedResultOne, validation[0].ErrorMessage);
-        Assert.AreEqual(expectedResultTwo, validation[1].ErrorMessage);
-        Assert.AreEqual(expectedResultThree, validation[2].ErrorMessage);
+        expectedResultOne.Should().Be(validation[0].ErrorMessage);
+        expectedResultTwo.Should().Be(validation[1].ErrorMessage);
+        expectedResultThree.Should().Be(validation[2].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnGet_NoAddressPresentIfNoSavedData_GetTradeParty()
+    {
+        //Arrange
+        var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d191");
+
+        var tradeContact = new TradeContactDTO();
+        var tradeAddress = new TradeAddressDTO
+        {
+            TradeCountry = "Test Country",
+            LineOne = "1 Test Lane",
+            PostCode = "12345"
+        };
+
+        var tradePartyDto = new TradePartyDTO
+        {
+            Id = guid,
+            Contact = tradeContact, 
+            Address = tradeAddress
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+        //Act
+        await _systemUnderTest.OnGetAsync(guid);
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+
+        // assert
+        _systemUnderTest.LineOne.Should().Be("1 Test Lane");
+        _systemUnderTest.PostCode.Should().Be("12345");
+    }
+
+    [Test]
+    public async Task OnPostSubmit_GivenValidGuid_SubmitValidInput()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "Line 1 - '";
+        _systemUnderTest.LineTwo = "Line 2 - '";
+        _systemUnderTest.CityName = "City - '";
+        _systemUnderTest.PostCode = "P0S1 C0DE";
+
+        // act 
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
     }
 
 }

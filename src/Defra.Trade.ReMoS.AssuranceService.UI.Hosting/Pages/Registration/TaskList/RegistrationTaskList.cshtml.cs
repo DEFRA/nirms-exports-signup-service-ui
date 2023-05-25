@@ -47,6 +47,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             _logger = logger;
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
         }
+
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {
             _logger.LogInformation("OnGet");
