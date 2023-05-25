@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -16,7 +17,7 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
     public string AdditionalAddress { get; set; } = string.Empty;
 
     [BindProperty]
-    public List<LogisticLocationBusinessRelationship>? LogisticsLocations { get; } = new List<LogisticLocationBusinessRelationship>();
+    public List<LogisticsLocationBusinessRelationshipDTO>? LogisticsLocations { get; } = new List<LogisticsLocationBusinessRelationshipDTO>();
     #endregion
 
     private readonly ILogger<AdditionalEstablishmentDepartureAddressModel> _logger;
