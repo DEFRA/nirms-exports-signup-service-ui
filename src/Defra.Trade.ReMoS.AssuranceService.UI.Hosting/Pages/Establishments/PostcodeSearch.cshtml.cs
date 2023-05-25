@@ -10,6 +10,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
     {
         #region UI Models
         [BindProperty]
+        [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Enter a real postcode.")]
+        [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
+        [Required(ErrorMessage = "Enter a post code.")]
         public string? Postcode { get; set; } = string.Empty;
 
         [BindProperty]

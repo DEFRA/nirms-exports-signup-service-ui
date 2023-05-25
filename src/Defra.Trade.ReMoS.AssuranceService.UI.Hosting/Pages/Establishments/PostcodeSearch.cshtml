@@ -7,22 +7,29 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
 
-        <form class="form" method="post">
-            <input type="hidden" asp-for="TradePartyId"/>
-            <h1 class="govuk-heading-l">
-                <span class="govuk-caption-l">Establishments</span>
-                Add a point of departure
-            </h1>
-            <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+        <form method="POST" novalidate>
+        <input type="hidden" asp-for="TradePartyId" />
+            <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Postcode") ? "Postcode": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            <span class="govuk-caption-l">Establishments</span>
+                            Add a point of departure
+                        </h1>
+                    </legend>
 
-            <div class="govuk-form-group">
-                <label class="govuk-label govuk-!-font-weight-bold" for="search-points-of-departure">Establishment postcode</label>
-                <input class="govuk-input" id="search-points-of-departure" asp-for="Postcode" type="search">
+                <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+                    <p id="Postcode_Error" class="govuk-error-message" gds-validation-for="Postcode"></p>
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-!-font-weight-bold" for="search-points-of-departure">Establishment postcode</label>  
+                    <input class="govuk-input" id="search-points-of-departure" asp-for="Postcode" type="search">
+                </div>
+                </fieldset>
             </div>
 
             <button class="govuk-button" asp-page-handler="submit">Find establishment</button>
-
         </form>
 
     </div>

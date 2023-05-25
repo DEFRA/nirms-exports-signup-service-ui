@@ -42,34 +42,12 @@ public class PostcodeResultModel : PageModel
         Postcode = postcode;
         TradePartyId= id;
 
-        var LogisticsLocations = new List<LogisticsLocation>();
+        var LogisticsLocations = new List<LogisticsLocationDTO>();
 
         if (Postcode != string.Empty)
         {
-            LogisticsLocations = await _establishmentService.GetLogisticsLocationByPostcodeAsync(Postcode);
+            LogisticsLocations = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
 
-            //LogisticsLocations.Add(new LogisticsLocation()
-            //{
-            //    Name = "Test 2",
-            //    Id = Guid.NewGuid(),
-            //    Address = new TradeAddress()
-            //    {
-            //        LineOne = "line 1",
-            //        CityName = "city",
-            //        PostCode = Postcode,
-            //    }
-            //});
-            //LogisticsLocations.Add(new LogisticsLocation()
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Name = "Test 1",
-            //    Address = new TradeAddress()
-            //    {
-            //        LineOne = "line 1",
-            //        CityName = "city",
-            //        PostCode = Postcode,
-            //    }
-            //});
         }
 
         LogisticsLocationsList = LogisticsLocations.Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() }).ToList();
@@ -86,13 +64,13 @@ public class PostcodeResultModel : PageModel
             return await OnGetAsync(TradePartyId, Postcode);
         }
 
-        var logisticsLocationRelationshipDTO = new LogisticsLocationRelationshipDTO()
+        var logisticsLocationRelationshipDTO = new LogisticsLocationBusinessRelationshipDTO()
         {
-            TraderId = TradePartyId,
-            EstablishmentId = Guid.Parse(SelectedLogisticsLocation)
+            TradePartyId = TradePartyId,
+            LogisticsLocationId = Guid.Parse(SelectedLogisticsLocation)
         };
 
-        await _establishmentService.AddLogisticsLocationRelationshipAsync(logisticsLocationRelationshipDTO);
+        await _establishmentService.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
 
         return RedirectToPage(
             Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath,

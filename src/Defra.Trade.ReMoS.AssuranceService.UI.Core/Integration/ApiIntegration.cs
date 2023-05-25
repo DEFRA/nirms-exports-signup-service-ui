@@ -1,9 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
-using GraphQL;
-using GraphQL.Client.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
@@ -162,33 +158,16 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<List<LogisticsLocation>?> GetLogisticsLocationByPostcodeAsync(string postcode)
-    {
-        List<LogisticsLocation>? results = new();
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
-
-        if (httpResponseMessage.IsSuccessStatusCode)
-        {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-            if (contentStream != null)
-            {
-                results = await JsonSerializer.DeserializeAsync<List<LogisticsLocation>>(contentStream);
-            }
-        }
-        return results;
-    }
-
-    public async Task<Guid> AddLogisticsLocationRelationship(LogisticsLocationRelationshipDTO logisticsLocationRelationshipDTO)
+    public async Task<Guid?> CreateEstablishmentAsync(LogisticsLocationDTO logisticsLocationDTO)
     {
         Guid results = new();
         var requestBody = new StringContent(
-            JsonSerializer.Serialize(logisticsLocationRelationshipDTO),
+            JsonSerializer.Serialize(logisticsLocationDTO),
             Encoding.UTF8,
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PostAsync($"/Establishments/Relationships", requestBody);
+        var httpResponseMessage = await httpClient.PostAsync($"Establishments", requestBody);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
@@ -207,5 +186,67 @@ public class ApiIntegration : IAPIIntegration
             return results;
         }
         throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO relationDto)
+    {
+        Guid results = new();
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(relationDto),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.PostAsync($"Relationships", requestBody);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid id)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Establishments/{id}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<LogisticsLocationDTO>(
+            await response.Content.ReadAsStreamAsync(),
+            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
+            new LogisticsLocationDTO();
+    }
+
+    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode)
+    {
+        List<LogisticsLocationDTO>? results = new();
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDTO>>(
+            await response.Content.ReadAsStreamAsync(),
+            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
+            new List<LogisticsLocationDTO>();
     }
 }

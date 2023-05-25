@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using System;
@@ -8,25 +9,50 @@ using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+
+public class EstablishmentService : IEstablishmentService
 {
-    public class EstablishmentService : IEstablishmentService
+    private readonly IAPIIntegration _api;
+
+    public EstablishmentService(IAPIIntegration api)
     {
-        private readonly IAPIIntegration _apiIntegration;
+        _api = api;
+    }
+    public async Task<Guid?> CreateEstablishmentAndAddToPartyAsync(
+        Guid partyId, 
+        LogisticsLocationDTO logisticsLocationDTO)
+    {
+        //create new establishment
+        var establishmentId = await _api.CreateEstablishmentAsync(logisticsLocationDTO);
 
-        public EstablishmentService(IAPIIntegration apiIntegration) 
+        //add created establishment to party
+        LogisticsLocationBusinessRelationshipDTO relationDto = new LogisticsLocationBusinessRelationshipDTO
         {
-            _apiIntegration = apiIntegration;
-        }
+            TradePartyId = partyId,
+            LogisticsLocationId = establishmentId.Value,
+        };
+        Guid? relationId = await _api.AddEstablishmentToPartyAsync(relationDto);
 
-        public async Task<List<LogisticsLocation>?> GetLogisticsLocationByPostcodeAsync(string postcode)
-        {
-            return await _apiIntegration.GetLogisticsLocationByPostcodeAsync(postcode);
-        }
+        return establishmentId;
+    }
 
-        public async Task<Guid> AddLogisticsLocationRelationshipAsync(LogisticsLocationRelationshipDTO logisticsLocationRelationshipDTO)
-        {
-            return await _apiIntegration.AddLogisticsLocationRelationship(logisticsLocationRelationshipDTO);
-        }
+    public Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id)
+    {
+        return (Id != Guid.Empty) ? await _api.GetEstablishmentByIdAsync(Id) : null;
+    }
+    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentByPostcodeAsync(string postcode)
+    {
+        return await _api.GetEstablishmentsByPostcodeAsync(postcode);
+    }
+
+    public async Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO logisticsLocationRelationshipDTO)
+    {
+        return await _api.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
     }
 }
