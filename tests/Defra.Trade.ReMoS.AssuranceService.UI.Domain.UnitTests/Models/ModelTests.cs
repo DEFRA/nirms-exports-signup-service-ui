@@ -1,5 +1,4 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Reactive;
@@ -13,7 +12,7 @@ public class TradePartyTests
     public void SetTradeParty_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeParty = new TradeParty
+        var tradeParty = new TradePartyDTO
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
@@ -59,7 +58,7 @@ public class TradeContactTests
     public void SetTradeContact_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeContact = new TradeContact
+        var tradeContact = new TradeContactDTO
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
@@ -107,7 +106,7 @@ public class TradeAddressTests
     public void SetTradeAddress_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeAddress = new TradeAddress
+        var tradeAddress = new TradeAddressDTO
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d568"),
@@ -175,7 +174,7 @@ public class TradePartyRelationshipTests
     public void SetTradeContactAndTradeContactAndTradeAddress_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeContact = new TradeContact
+        var tradeContact = new TradeContactDTO
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
@@ -183,7 +182,7 @@ public class TradePartyRelationshipTests
             TelephoneNumber = "1234567890"
         };
 
-        var tradeAddress = new TradeAddress
+        var tradeAddress = new TradeAddressDTO
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d568"),
@@ -197,14 +196,14 @@ public class TradePartyRelationshipTests
             TradeCountry = "United Kingdom",
         };
 
-        var tradeParty = new TradeParty
+        var tradeParty = new TradePartyDTO
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
             PartyName = "Trade party Ltd",
             NatureOfBusiness = "Wholesale Hamster Supplies",
-            TradeContact = tradeContact,
-            TradeAddress = tradeAddress
+            Contact = tradeContact,
+            Address = tradeAddress
         };
 
         //Assert
@@ -226,8 +225,8 @@ public class TradePartyRelationshipTests
         tradeAddress.CityName.Should().Be("London");
         tradeAddress.TradeCountry.Should().Be("United Kingdom");
 
-        tradeParty.TradeContact.Should().Be(tradeContact);
-        tradeParty.TradeAddress.Should().Be(tradeAddress);
+        tradeParty.Contact.Should().Be(tradeContact);
+        tradeParty.Address.Should().Be(tradeAddress);
     }
 }
 
@@ -312,11 +311,11 @@ public class LogisticsLocationTests
         var tradeContactId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d192");
         var created = DateTime.Now;
         var lastModified = DateTime.Now;
-        var logisticsLocation = new LogisticsLocation
+        var logisticsLocation = new LogisticsLocationDTO
         {
             Id = logisticsLocationId,
             Name = "Test name",
-            Address = new TradeAddress
+            Address = new TradeAddressDTO
             {
                 Id = tradeAddressId,
                 LineOne = "Line One",
@@ -332,33 +331,8 @@ public class LogisticsLocationTests
             CreatedDate = created,
             LastModifiedDate = lastModified,
             NI_GBFlag = "true",
-            EstablishmentBusinessRelationship = new LogisticLocationBusinessRelationship
-            {
-                RelationshipId = relationshipId,
-                TradePartyId = tradePartyId,
-                LogisticsLocationId = logisticsLocationId,
-                CreatedDate = created,
-                ModifiedDate= lastModified,
-                Status = "Test Status",
-                ContactEmail = "test@test.com",
-                TradeParty = new TradeParty
-                {
-                    Id = tradePartyId,
-                    PartyName = "Test Party Name",
-                    NatureOfBusiness = "Nature of business",
-                    TradeContact = new TradeContact
-                    {
-                        Id = tradeContactId,
-                        PersonName = "Test name",
-                        TelephoneNumber = "1234567890"
-                    }
-                }
-            }
 
         };
-
-        logisticsLocation.EstablishmentBusinessRelationship.LogisticsLocation = logisticsLocation;
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.TradeAddress = logisticsLocation.Address;
 
         // assert
         logisticsLocation.Id.Should().Be(logisticsLocationId);
@@ -376,20 +350,5 @@ public class LogisticsLocationTests
         logisticsLocation.CreatedDate.Should().Be(created);
         logisticsLocation.LastModifiedDate.Should().Be(lastModified);
         logisticsLocation.NI_GBFlag.Should().Be("true");
-        logisticsLocation.EstablishmentBusinessRelationship.RelationshipId.Should().Be(relationshipId);
-        logisticsLocation.EstablishmentBusinessRelationship.TradePartyId.Should().Be(tradePartyId);
-        logisticsLocation.EstablishmentBusinessRelationship.LogisticsLocationId.Should().Be(logisticsLocationId);
-        logisticsLocation.EstablishmentBusinessRelationship.CreatedDate.Should().Be(created);
-        logisticsLocation.EstablishmentBusinessRelationship.ModifiedDate.Should().Be(lastModified);
-        logisticsLocation.EstablishmentBusinessRelationship.Status.Should().Be("Test Status");
-        logisticsLocation.EstablishmentBusinessRelationship.ContactEmail.Should().Be("test@test.com");
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.Id.Should().Be(tradePartyId);
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.PartyName.Should().Be("Test Party Name");
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.NatureOfBusiness.Should().Be("Nature of business");
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.TradeContact.Id.Should().Be(tradeContactId);
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.TradeContact.PersonName.Should().Be("Test name");
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.TradeContact.TelephoneNumber.Should().Be("1234567890");
-        logisticsLocation.EstablishmentBusinessRelationship.LogisticsLocation.Should().Be(logisticsLocation);
-        logisticsLocation.EstablishmentBusinessRelationship.TradeParty.TradeAddress.Should().Be(logisticsLocation.Address);
     }
 }

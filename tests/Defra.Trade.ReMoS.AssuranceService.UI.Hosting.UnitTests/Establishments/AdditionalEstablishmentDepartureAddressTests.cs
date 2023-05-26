@@ -11,11 +11,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
     {
         private AdditionalEstablishmentDepartureAddressModel? _systemUnderTest;
         protected Mock<ILogger<AdditionalEstablishmentDepartureAddressModel>> _mockLogger = new();
+        protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new AdditionalEstablishmentDepartureAddressModel(_mockLogger.Object);
+            _systemUnderTest = new AdditionalEstablishmentDepartureAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //TODO: Add setup for returning values when API referenced
 
             //Act
-            await _systemUnderTest!.OnGetAsync();
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
 
             //Assert
             _systemUnderTest.AdditionalAddress.Should().Be("");

@@ -9,16 +9,17 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
+            <input type="hidden" asp-for="TradePartyId" />
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">Establishments</span>
                 Points of departure
 
             </h1>
-            @foreach (var logisticsLocation in Model.LogisticsLocations)
+            @foreach (var location in Model.LogisticsLocations)
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">Name</h2>
+                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.LocationName</h2>
                         <a class="govuk-link govuk-body govuk-!-margin-bottom-0" href="#">
                             Remove
                         </a>
@@ -30,7 +31,10 @@
                                     Address
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    LineOne, LineTwo, CityName, PostCode
+                                    @(location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty)
+                                    @(location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty)
+                                    @(location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty)
+                                    @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}," : string.Empty)
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="#">
@@ -43,7 +47,7 @@
                                     Email address
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    ContactEmail
+                                    @location.ContactEmail
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="#">

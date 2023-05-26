@@ -36,9 +36,9 @@ public class EstablishmentService : IEstablishmentService
         return establishmentId;
     }
 
-    public Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<IEnumerable<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
-        throw new NotImplementedException();
+        return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId);
     }
 
     public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id)

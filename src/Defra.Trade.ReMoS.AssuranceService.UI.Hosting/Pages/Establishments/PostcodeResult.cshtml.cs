@@ -2,7 +2,6 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,10 +18,10 @@ public class PostcodeResultModel : PageModel
     public Guid TradePartyId { get; set; }
 
     [BindProperty]
-    public List<SelectListItem> LogisticsLocationsList { get; set; }
+    public List<SelectListItem> LogisticsLocationsList { get; set; } = default!;
 
     [BindProperty]
-    public string SelectedLogisticsLocation {get; set; }
+    public string SelectedLogisticsLocation { get; set; } = default!;
     #endregion
 
     private readonly ILogger<PostcodeResultModel> _logger;

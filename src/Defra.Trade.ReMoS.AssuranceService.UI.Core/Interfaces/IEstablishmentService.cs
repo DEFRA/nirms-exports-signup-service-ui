@@ -13,7 +13,7 @@ public interface IEstablishmentService
         Guid partyId,
         LogisticsLocationDTO logisticsLocationDTO);
     Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id);
-    Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
+    Task<IEnumerable<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
     public Task<List<LogisticsLocationDTO>?> GetEstablishmentByPostcodeAsync(string postcode);
     public Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO logisticsLocationRelationshipDTO);
 }

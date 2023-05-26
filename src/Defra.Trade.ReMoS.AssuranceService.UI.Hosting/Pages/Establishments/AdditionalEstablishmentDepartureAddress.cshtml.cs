@@ -2,40 +2,40 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
+[BindProperties]
 public class AdditionalEstablishmentDepartureAddressModel : PageModel
 {
     #region ui model variables
-    [BindProperty]
     [Required(ErrorMessage = "Select yes if you want to add another point of departure")]
     public string AdditionalAddress { get; set; } = string.Empty;
-
-    [BindProperty]
-    public List<LogisticsLocationBusinessRelationshipDTO>? LogisticsLocations { get; } = new List<LogisticsLocationBusinessRelationshipDTO>();
-
-    [BindProperty]
+    public List<LogisticsLocationDetailsDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDetailsDTO>();
     public Guid TradePartyId { get; set; }
     #endregion
 
     private readonly ILogger<AdditionalEstablishmentDepartureAddressModel> _logger;
+    private readonly IEstablishmentService _establishmentService;
 
     public AdditionalEstablishmentDepartureAddressModel(
-        ILogger<AdditionalEstablishmentDepartureAddressModel> logger)
+        ILogger<AdditionalEstablishmentDepartureAddressModel> logger,
+        IEstablishmentService establishmentService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IActionResult> OnGetAsync()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    public async Task<IActionResult> OnGetAsync(Guid id)
     {
         _logger.LogInformation("Additional establishment manual address OnGet");
+        TradePartyId = id;
+
+        //retrieve all departure establishments with addresses for this trade party
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
 
         return Page();
     }
@@ -46,13 +46,13 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return await OnGetAsync(TradePartyId);
         }
 
         if (AdditionalAddress == "yes")
         {
-            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath);
+            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = TradePartyId });
         }
-        else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath);
+        else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
     }
 }
