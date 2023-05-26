@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
@@ -61,7 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
         }
 
         [Test]
@@ -77,7 +78,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert            
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert            
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
         }
 
         [Test]
@@ -111,7 +112,32 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration
 
             //Assert            
             validation.Count.Should().Be(1);
-            Assert.AreEqual(expectedResult, validation[0].ErrorMessage);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
+        public async Task OnGet_NoNamePresentIfNoSavedData_ReturnTradeParty()
+        {
+            //Arrange
+            var guid = new Guid();
+
+            var tradeContact = new TradeContactDTO();
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact
+            };
+
+            _traderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _traderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+            //Act
+            await _systemUnderTest.OnGetAsync(guid);
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
         }
     }
 }

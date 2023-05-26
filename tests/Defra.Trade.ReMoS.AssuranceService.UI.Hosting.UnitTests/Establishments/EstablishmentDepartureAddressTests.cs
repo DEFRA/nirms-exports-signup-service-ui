@@ -72,5 +72,24 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Assert
             validation.Count.Should().Be(4);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInValidRadio_GetsTradePartyData()
+        {
+            //Arrange
+            _systemUnderTest!.EstablishmentName = "";
+            _systemUnderTest!.LineOne = "";
+            _systemUnderTest!.CityName = "";
+            _systemUnderTest!.PostCode = "";
+
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+   
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(4);
+        }
     }
 }
