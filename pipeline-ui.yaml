@@ -74,7 +74,7 @@ extends:
   parameters:
     forceDevDeploy: ${{ parameters.forceDevDeploy }}
     deployToSecondary: ${{ parameters.deployToSecondary }}
-    appName: $(APINameAPIName)
+    appName: $(APIName)
     appProject: GC
     appInstanceNumber: $(nc-region-id)01
     buildProjects: 'src\$(APIName)\$(APIName).csproj'
