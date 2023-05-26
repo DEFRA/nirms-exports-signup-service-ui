@@ -235,4 +235,18 @@ public class ApiIntegration : IAPIIntegration
     {
         throw new NotImplementedException();
     }
+
+    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode)
+    {
+        List<LogisticsLocationDTO>? results = new();
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDTO>>(
+            await response.Content.ReadAsStreamAsync(),
+            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
+            new List<LogisticsLocationDTO>();
+    }
 }

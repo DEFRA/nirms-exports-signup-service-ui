@@ -41,7 +41,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.Postcode = "TES1";
 
             //Act
-            await _systemUnderTest.OnPostSearchAsync();
+            await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -72,7 +72,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
             //Act
-            await _systemUnderTest.OnPostSearchAsync();
+            await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert

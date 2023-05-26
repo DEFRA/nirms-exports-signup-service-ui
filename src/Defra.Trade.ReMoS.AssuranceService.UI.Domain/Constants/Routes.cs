@@ -21,6 +21,7 @@ public static class Routes
     public const string EstablishmentDeparturePostcodeSearch = "/establishment-departure-postcode-search";
     public const string EstablishmentDepartureAddress = "/establishment-departure-address";
     public const string AdditionalEstablishmentDepartureAddress = "/additional-establishment-departure-address";
+    public const string EstablishmentDeparturePostcodeResult = "/establishment-departure-postcode-result";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -36,7 +37,8 @@ public static class Routes
         (Pages.Path.RegisteredBusinessNatureOfBusinessPath, RegisteredBusinessNatureOfBusiness),
         (Pages.Path.EstablishmentDeparturePostcodeSearchPath, EstablishmentDeparturePostcodeSearch),
         (Pages.Path.EstablishmentDepartureAddressPath, EstablishmentDepartureAddress),
-        (Pages.Path.AdditionalEstablishmentDepartureAddressPath, AdditionalEstablishmentDepartureAddress)
+        (Pages.Path.AdditionalEstablishmentDepartureAddressPath, AdditionalEstablishmentDepartureAddress),
+        (Pages.Path.EstablishmentDeparturePostcodeResultPath, EstablishmentDeparturePostcodeResult)
     };
 
     public static class Pages
@@ -56,6 +58,7 @@ public static class Routes
             public const string EstablishmentDeparturePostcodeSearchName = "PostcodeSearch";
             public const string EstablishmentDepartureAddressName = "EstablishmentDepartureAddress";
             public const string AdditionalEstablishmentDepartureAddressName = "AdditionalEstablishmentDepartureAddress";
+            public const string EstablishmentDeparturePostcodeResultName = "PostcodeResult";
         }
 
         public static class Path
@@ -73,6 +76,7 @@ public static class Routes
             public const string EstablishmentDeparturePostcodeSearchPath = $"/Establishments/{Names.EstablishmentDeparturePostcodeSearchName}";
             public const string EstablishmentDepartureAddressPath = $"/Establishments/{Names.EstablishmentDepartureAddressName}";
             public const string AdditionalEstablishmentDepartureAddressPath = $"/Establishments/{Names.AdditionalEstablishmentDepartureAddressName}";
+            public const string EstablishmentDeparturePostcodeResultPath = $"/Establishments/{Names.EstablishmentDeparturePostcodeResultName}";
         }
     }
 }

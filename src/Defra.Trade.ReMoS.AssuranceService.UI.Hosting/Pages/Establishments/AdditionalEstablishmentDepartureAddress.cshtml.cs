@@ -18,6 +18,9 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 
     [BindProperty]
     public List<LogisticsLocationBusinessRelationshipDTO>? LogisticsLocations { get; } = new List<LogisticsLocationBusinessRelationshipDTO>();
+
+    [BindProperty]
+    public Guid TradePartyId { get; set; }
     #endregion
 
     private readonly ILogger<AdditionalEstablishmentDepartureAddressModel> _logger;
