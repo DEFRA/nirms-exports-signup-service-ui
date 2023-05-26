@@ -580,17 +580,44 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
         [Test]
         [ExpectedException(typeof(NotImplementedException), "Work in Progress")]
-        public async Task Integration_Throws_BadHttpRequestException_When_Calling_GetEstablishmentsForTradePartyAsync()
+        public async Task Integration_Returns_LogisticsLocationDetailss_When_Calling_GetEstablishmentsForTradePartyAsync()
         {
-            //Arrange
-            //TODO: Remove once method is completed
+            // Arrange
+            var logisticsLocations = new List<LogisticsLocationDetailsDTO>
+            {
+                new LogisticsLocationDetailsDTO()
+                {
+                    LocationName = "Test 2",
+                    LocationId = Guid.NewGuid(),
+                    TradePartyId = Guid.NewGuid(),
+                }
+            };
+
+            var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent,
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
             _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
 
             // Act
-            await Assert.ThrowsExceptionAsync<NotImplementedException>(async () => await _apiIntegration.GetEstablishmentsForTradePartyAsync(new Guid()));
+            var returnedValue = await _apiIntegration.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>());
 
             // Assert
             _mockHttpClientFactory.Verify();
+            returnedValue!.Count.Should().Be(1);
+            returnedValue[0].LocationName.Should().Be(logisticsLocations[0].LocationName);
         }
 
         [Test]

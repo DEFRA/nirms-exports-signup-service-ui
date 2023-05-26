@@ -37,20 +37,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             expectedGuid.Should().Be((Guid)returnedValue);
         }
 
-        [Test]
-        [ExpectedException(typeof(NotImplementedException), "Work in Progress")]
-        public async Task Services_Throws_NotImplementedException_When_Calling_GetEstablishmentsForTradePartyAsync()
-        {
-            //Arrange
-            //TODO: Remove once method is completed
-            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
-
-            //Act, Assert
-            await Microsoft.VisualStudio.TestTools.UnitTesting.Assert
-                .ThrowsExceptionAsync<NotImplementedException>(async () => await _establishmentService!.GetEstablishmentsForTradePartyAsync(new Guid()));
-
-        }
-
 
         [Test]
         public async Task Service_Returns_LogisticsLocationDTO_When_Calling_GetEstablishmentByIdAsync()
