@@ -2,7 +2,6 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -87,7 +86,7 @@ public class EstablishmentDepartureAddressModel : PageModel
 
         var establishmentId = await SaveEstablishmentDetails();
 
-        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
+        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { tradePartyId = TradePartyId });
     }
 
     private async Task<Guid?> SaveEstablishmentDetails()

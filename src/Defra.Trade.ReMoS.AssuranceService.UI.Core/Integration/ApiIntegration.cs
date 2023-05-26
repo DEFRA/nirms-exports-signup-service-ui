@@ -31,7 +31,11 @@ public class ApiIntegration : IAPIIntegration
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                results = await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(contentStream);
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                results = await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(contentStream, options);
             }
         }
         return results;
@@ -231,8 +235,24 @@ public class ApiIntegration : IAPIIntegration
             new LogisticsLocationDTO();
     }
 
-    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<List<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
-        throw new NotImplementedException();
+        List<LogisticsLocationDetailsDTO>? results = new();
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.GetAsync($"/Establishments/Party/{tradePartyId}");
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                results = await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>>(contentStream, options);
+            }
+        }
+        return results;
     }
 }

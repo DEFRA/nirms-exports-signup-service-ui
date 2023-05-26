@@ -1,6 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
-
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 public class LogisticsLocationBusinessRelationshipDTO
 {

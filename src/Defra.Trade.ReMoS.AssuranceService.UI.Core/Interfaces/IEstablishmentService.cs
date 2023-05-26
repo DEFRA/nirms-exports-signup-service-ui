@@ -13,5 +13,5 @@ public interface IEstablishmentService
         Guid partyId,
         LogisticsLocationDTO logisticsLocationDTO);
     Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id);
-    Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
+    Task<IEnumerable<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
 }

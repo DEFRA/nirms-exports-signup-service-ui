@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
