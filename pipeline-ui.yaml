@@ -74,7 +74,7 @@ extends:
   parameters:
     forceDevDeploy: ${{ parameters.forceDevDeploy }}
     deployToSecondary: ${{ parameters.deployToSecondary }}
-    appName: $(APIName)
+    appName: $(APINameAPIName)
     appProject: GC
     appInstanceNumber: $(nc-region-id)01
     buildProjects: 'src\$(APIName)\$(APIName).csproj'
@@ -85,7 +85,7 @@ extends:
     deployDevSlot: ${{ parameters.deployDevSlot }}
     appSettingsEnv:
         dev: >-
-          -APISettings:APIUrl "https://$(nc-region-id)02.azurewebsites.net/"
+          -APISettings:APIUrl "https://dev$(appProject)webaw$(nc-region-id)02.azurewebsites.net/"
     runSonarScan: true
     runVulnerabilityScan: false
     sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/www**,src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Node**'
