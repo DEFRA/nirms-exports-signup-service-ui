@@ -14,4 +14,5 @@ public interface IAPIIntegration
     Task<List<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
     Task<Guid?> CreateEstablishmentAsync(LogisticsLocationDTO logisticsLocationDTO);
     Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO relationDto);
+    public Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode);
 }

@@ -1,8 +1,10 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,5 +44,14 @@ public class EstablishmentService : IEstablishmentService
     public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id)
     {
         return (Id != Guid.Empty) ? await _api.GetEstablishmentByIdAsync(Id) : null;
+    }
+    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentByPostcodeAsync(string postcode)
+    {
+        return await _api.GetEstablishmentsByPostcodeAsync(postcode);
+    }
+
+    public async Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO logisticsLocationRelationshipDTO)
+    {
+        return await _api.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
     }
 }

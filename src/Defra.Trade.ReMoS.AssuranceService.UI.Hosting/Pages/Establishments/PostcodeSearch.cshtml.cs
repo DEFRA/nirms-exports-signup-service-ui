@@ -9,8 +9,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
     public class PostcodeSearchModel : PageModel
     {
         #region UI Models
-        [Required(ErrorMessage = "Enter a postcode.")]
         [BindProperty]
+        [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Enter a real postcode.")]
+        [StringLength(100, ErrorMessage = "Postcode must be 100 characters or less")]
+        [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
 
         [BindProperty]
@@ -36,17 +38,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             return Page();
         }
 
-        public async Task<IActionResult> OnPostSearchAsync()
-        {
-            _logger.LogTrace("Establishment postcode search on post");
-            if (!ModelState.IsValid)
-            {
-                return await OnGetAsync(TradePartyId);
-            }
-
-            return await OnGetAsync(TradePartyId);
-        }
-
         public async Task<IActionResult> OnPostSubmitAsync()
         {
             _logger.LogInformation("Establishment manual address OnPostSubmit");
@@ -56,7 +47,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
                 return await OnGetAsync(TradePartyId);
             }
 
-            return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath);
+
+            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeResultPath, new { id = TradePartyId, postcode = Postcode});
         }
     }
 }

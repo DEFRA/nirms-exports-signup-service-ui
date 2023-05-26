@@ -1,0 +1,45 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.PostcodeResultModel
+@{
+    ViewData["Title"] = "Postcode search result";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form class="form" method="post">
+            <input type="hidden" asp-for="TradePartyId" />
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                Add a point of departure
+            </h1>
+            <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+
+            <div class="govuk-form-group">
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
+                <p><span>@Model.Postcode</span> <a asp-page=@Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath asp-route-id="@Model.TradePartyId">Change</a></p>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-!-font-weight-bold" for="points-of-departure-address-select">Select an address</label>
+                    <select class="govuk-select" id="points-of-departure-address-select" asp-for="@Model.SelectedLogisticsLocation" asp-items="@Model.LogisticsLocationsList"></select>
+                </div>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit">Select address</button>
+
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Cannot find establishment
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <a asp-page=@Routes.Pages.Path.EstablishmentDepartureAddressPath asp-route-id="@Model.TradePartyId">Add the establishment address manually</a>
+                </div>
+            </details>
+
+        </form>
+
+    </div>
+</div>
