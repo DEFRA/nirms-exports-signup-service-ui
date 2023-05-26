@@ -86,7 +86,7 @@ public class EstablishmentDepartureAddressModel : PageModel
 
         var establishmentId = await SaveEstablishmentDetails();
 
-        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { tradePartyId = TradePartyId });
+        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
     }
 
     private async Task<Guid?> SaveEstablishmentDetails()

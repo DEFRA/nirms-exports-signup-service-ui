@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Entities;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments

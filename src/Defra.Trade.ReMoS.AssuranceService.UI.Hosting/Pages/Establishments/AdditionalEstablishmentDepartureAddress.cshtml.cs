@@ -29,10 +29,10 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid tradePartyId)
+    public async Task<IActionResult> OnGetAsync(Guid id)
     {
         _logger.LogInformation("Additional establishment manual address OnGet");
-        TradePartyId = tradePartyId;
+        TradePartyId = id;
 
         //retrieve all departure establishments with addresses for this trade party
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();

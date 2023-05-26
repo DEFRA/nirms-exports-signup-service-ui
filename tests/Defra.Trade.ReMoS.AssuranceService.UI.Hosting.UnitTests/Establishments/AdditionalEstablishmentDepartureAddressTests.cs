@@ -26,7 +26,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //TODO: Add setup for returning values when API referenced
 
             //Act
-            await _systemUnderTest!.OnGetAsync();
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
 
             //Assert
             _systemUnderTest.AdditionalAddress.Should().Be("");
