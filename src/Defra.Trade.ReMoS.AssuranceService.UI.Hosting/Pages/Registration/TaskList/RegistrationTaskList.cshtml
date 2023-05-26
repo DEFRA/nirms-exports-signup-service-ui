@@ -112,8 +112,7 @@
                                 Points of departure
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="establistment-departure">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDeparture == "Completed" ? "green" : "grey")" id="establistment-departure">@Model.PointsOfDeparture</strong>
                     </li>
 
                     <li class="app-task-list__item">

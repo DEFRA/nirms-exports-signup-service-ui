@@ -51,8 +51,8 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 
         if (AdditionalAddress == "yes")
         {
-            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath);
+            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = TradePartyId });
         }
-        else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath);
+        else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
     }
 }
