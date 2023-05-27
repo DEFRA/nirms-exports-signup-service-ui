@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
@@ -13,10 +14,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 public class ApiIntegration : IAPIIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public ApiIntegration(IHttpClientFactory httpClientFactory)
     { 
         _httpClientFactory = httpClientFactory;
+        _jsonSerializerOptions = new JsonSerializerOptions()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
     }
 
 
@@ -30,12 +36,8 @@ public class ApiIntegration : IAPIIntegration
         {
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(contentStream, options);
+            {                
+                results = await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(contentStream, _jsonSerializerOptions);
             }
         }
         return results;
@@ -50,8 +52,7 @@ public class ApiIntegration : IAPIIntegration
 
         return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
             await response.Content.ReadAsStreamAsync(),
-            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase}) ??
-            new TradePartyDTO();
+            options: _jsonSerializerOptions) ?? new TradePartyDTO();
     }
 
     public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
@@ -69,12 +70,8 @@ public class ApiIntegration : IAPIIntegration
         {
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+            {                
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)
@@ -177,12 +174,8 @@ public class ApiIntegration : IAPIIntegration
         {
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+            {                
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)
@@ -207,12 +200,8 @@ public class ApiIntegration : IAPIIntegration
         {
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+            {               
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)
@@ -231,8 +220,7 @@ public class ApiIntegration : IAPIIntegration
 
         return await JsonSerializer.DeserializeAsync<LogisticsLocationDTO>(
             await response.Content.ReadAsStreamAsync(),
-            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
-            new LogisticsLocationDTO();
+            options: _jsonSerializerOptions) ?? new LogisticsLocationDTO();
     }
 
     public async Task<List<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
@@ -245,12 +233,8 @@ public class ApiIntegration : IAPIIntegration
         {
             using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>>(contentStream, options);
+            {               
+                results = await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>>(contentStream, _jsonSerializerOptions);
             }
         }
         return results;
@@ -266,7 +250,14 @@ public class ApiIntegration : IAPIIntegration
 
         return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDTO>>(
             await response.Content.ReadAsStreamAsync(),
-            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
-            new List<LogisticsLocationDTO>();
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDTO>();
+    }
+
+    public async Task RemoveEstablishmentFromPartyAsync(Guid tradePartyId, Guid locationId)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.DeleteAsync($"/Relationships?partyId={tradePartyId}&establishmentid={locationId}");
+
+        response.EnsureSuccessStatusCode();
     }
 }

@@ -20,7 +20,13 @@
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
                         <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.LocationName</h2>
-                        <a class="govuk-link govuk-body govuk-!-margin-bottom-0" href="#">
+                        @*                        <a class="govuk-link govuk-body govuk-!-margin-bottom-0" asp-page-handler="OnPostRemoveEstablishment">
+                    Remove
+                    </a>*@
+                        <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
+                           asp-page-handler="RemoveEstablishment"
+                           asp-route-tradepartyid="@Model.TradePartyId"
+                           asp-route-establishmentId="@location.LocationId">
                             Remove
                         </a>
                     </div>

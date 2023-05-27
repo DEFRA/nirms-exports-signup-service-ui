@@ -55,4 +55,20 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
         }
         else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
     }
+
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId)
+    {
+        TradePartyId = tradePartyId;
+
+        await _establishmentService.RemoveEstablishmentFromPartyAsync(TradePartyId, establishmentId);
+
+        //if more establishments present, call onget
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
+
+        if(LogisticsLocations?.Count > 0)
+            return await OnGetAsync(TradePartyId);
+        else
+            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = TradePartyId });
+
+    }
 }
