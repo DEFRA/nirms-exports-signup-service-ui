@@ -64,7 +64,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         {
             TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
-            if (tradeParty != null)
+            if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
                 if (tradeParty.PartyName != null)
                     BusinessName = TaskListStatus.COMPLETE;
@@ -91,12 +91,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                         ContactPosition = TaskListStatus.COMPLETE;
                 }
 
+                //TODO - replace this call with a simple 'do establishments exist' functionality
+                List<LogisticsLocationDetailsDTO>? establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?.ToList();
+                if (establishments != null && establishments.Count > 0)
+                    PointsOfDeparture = TaskListStatus.COMPLETE;
             }
 
-            //TODO - replace this call with a simple 'do establishments exist' functionality
-            List<LogisticsLocationDetailsDTO>? establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?.ToList();
-            if (establishments != null && establishments.Count > 0)
-                PointsOfDeparture = TaskListStatus.COMPLETE;
 
 
         }

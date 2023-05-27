@@ -71,4 +71,9 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
             return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = TradePartyId });
 
     }
+
+    public async Task<IActionResult> OnGetChangeEstablishmentAddress()
+    {
+        throw new NotImplementedException();
+    }
 }
