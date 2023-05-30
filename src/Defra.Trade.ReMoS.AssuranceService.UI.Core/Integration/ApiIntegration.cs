@@ -25,7 +25,6 @@ public class ApiIntegration : IAPIIntegration
         };
     }
 
-
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
     {
         var httpClient = _httpClientFactory.CreateClient("Assurance");

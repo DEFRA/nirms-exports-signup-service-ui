@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -78,5 +79,102 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             validation.Count.Should().Be(1);
             expectedResult.Should().Be(validation[0].ErrorMessage);
         }
+
+        [Test]
+        public async Task OnGetRemoveEstablishment_SubmitIsValid()
+        {
+            //Arrange
+            _systemUnderTest!.AdditionalAddress = "yes";
+
+            //Act
+            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetRemoveEstablishment_GivenExistingLocations_SubmitIsValid()
+        {
+            //Arrange
+
+            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
+            _systemUnderTest!.AdditionalAddress = "yes";
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+
+            //Act
+            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetRemoveEstablishment_GivenNoExistingLocations_Redirect()
+        {
+            //Arrange
+            var list = new List<LogisticsLocationDetailsDTO> { };
+            _systemUnderTest!.AdditionalAddress = "yes";
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+
+            //Act
+            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+
+        [Test]
+        public async Task OnGetChangeEstablishmentAddress_SubmitIsValid()
+        {
+            //Arrange
+            _systemUnderTest!.AdditionalAddress = "yes";
+
+            //Act
+            await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetChangeEstablishmentAddress_GivenAddedManually_SubmitIsValid()
+        {
+            //Arrange
+
+            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
+            _systemUnderTest!.AdditionalAddress = "yes";
+            _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(new Guid(), new Guid())).Returns(Task.FromResult(true));
+
+            //Act
+            await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetChangeEstablishmentAddress_GivenNotAddedManually_Redirect()
+        {
+            //Arrange
+
+            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
+            _systemUnderTest!.AdditionalAddress = "yes";
+            _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(new Guid(), new Guid())).Returns(Task.FromResult(false));
+
+            //Act
+            await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
     }
 }

@@ -65,7 +65,6 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
             return await OnGetAsync(tradePartyId);
         else
             return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
-
     }
 
     public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId)

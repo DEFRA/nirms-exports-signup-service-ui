@@ -129,5 +129,81 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _mockApiIntegration.Verify();
             returnedValue.Should().Be(logisticsLocations.TradePartyId);
         }
+
+        [Test]
+        public async Task Service_Returns_True_When_Calling_RemoveEstablishmentFromPartyAsync()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = Guid.NewGuid(),
+                LogisticsLocationId = Guid.NewGuid()
+            };
+
+            _mockApiIntegration.Setup(x => x.RemoveEstablishmentFromPartyAsync(new Guid(), new Guid())).Verifiable();
+
+            // Act
+            var returnedValue = await _establishmentService.RemoveEstablishmentFromPartyAsync(new Guid(), new Guid());
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(true);
+        }
+
+        [Test]
+        public async Task Service_Returns_False_When_Calling_IsFirstTradePartyForEstablishment()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = Guid.NewGuid(),
+                LogisticsLocationId = Guid.NewGuid()
+            };
+
+            var list = new List<LogisticsLocationBusinessRelationshipDTO> { logisticsLocations };
+
+            _mockApiIntegration.Setup(x => x.GetAllRelationsForEstablishmentAsync(new Guid())).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetAllRelationsForEstablishmentAsync(new Guid())).Returns(Task.FromResult(list)!);
+
+            // Act
+            var returnedValue = await _establishmentService.IsFirstTradePartyForEstablishment(new Guid(), new Guid());
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(false);
+        }
+
+        [Test]
+        public async Task Service_Returns_True_When_Calling_IsFirstTradePartyForEstablishment()
+        {
+            // Arrange
+            var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
+
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = guid,
+                LogisticsLocationId = guid,
+                CreatedDate = DateTime.UtcNow,
+                ModifiedDate = DateTime.UtcNow
+            };
+
+            var list = new List<LogisticsLocationBusinessRelationshipDTO> { logisticsLocations };
+
+            _mockApiIntegration.Setup(x => x.GetAllRelationsForEstablishmentAsync(guid)).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetAllRelationsForEstablishmentAsync(guid)).Returns(Task.FromResult(list)!);
+
+            // Act
+            var returnedValue = await _establishmentService.IsFirstTradePartyForEstablishment(guid, guid);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(true);
+        }
     }
 }
