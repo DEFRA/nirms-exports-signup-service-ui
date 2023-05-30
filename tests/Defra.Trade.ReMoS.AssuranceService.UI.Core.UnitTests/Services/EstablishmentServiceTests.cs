@@ -37,6 +37,27 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             expectedGuid.Should().Be((Guid)returnedValue);
         }
 
+        [Test]
+        public async Task Service_Returns_LogisticsLocationDTO_When_Calling_GetEstablishmentsForTradePartyAsync()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var expectedGuid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
+
+            var logisticsLocationDto = new List<LogisticsLocationDetailsDTO>();
+
+            _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid)).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid)).Returns(Task.FromResult(logisticsLocationDto)!);
+
+            // Act
+            var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Equal(logisticsLocationDto);
+        }
+
 
         [Test]
         public async Task Service_Returns_LogisticsLocationDTO_When_Calling_GetEstablishmentByIdAsync()
