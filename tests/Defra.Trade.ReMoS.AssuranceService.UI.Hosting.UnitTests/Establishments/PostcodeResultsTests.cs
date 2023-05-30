@@ -4,6 +4,7 @@ using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -59,6 +60,32 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.Postcode = "TES1";
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedLogisticsLocation = Guid.NewGuid().ToString();
+
+            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = _systemUnderTest!.TradePartyId,
+                LogisticsLocationId = Guid.NewGuid()
+            };
+
+            _mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmitAsync_GivenInvalidModdel_ShouldBeHandled()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "TES1";
+            _systemUnderTest!.TradePartyId = Guid.NewGuid();
+            _systemUnderTest!.SelectedLogisticsLocation = Guid.NewGuid().ToString();
+
+            _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
 
             var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
             {
