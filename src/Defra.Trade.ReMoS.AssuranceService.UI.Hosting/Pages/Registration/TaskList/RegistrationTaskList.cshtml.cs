@@ -41,11 +41,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         private readonly ILogger<RegistrationTaskListModel> _logger;
         private readonly ITraderService _traderService;
+        private readonly IEstablishmentService _establishmentService;
 
-        public RegistrationTaskListModel(ILogger<RegistrationTaskListModel> logger, ITraderService traderService)
+        public RegistrationTaskListModel(ILogger<RegistrationTaskListModel> logger, ITraderService traderService, IEstablishmentService establishmentService)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
         }
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
@@ -62,7 +64,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         {
             TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
-            if(tradeParty != null)
+            if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
                 if (tradeParty.PartyName != null)
                     BusinessName = TaskListStatus.COMPLETE;
@@ -88,9 +90,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                     if (tradeParty.Contact.Position != null)
                         ContactPosition = TaskListStatus.COMPLETE;
                 }
-                
+
+                //TODO - replace this call with a simple 'do establishments exist' functionality
+                List<LogisticsLocationDetailsDTO>? establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?.ToList();
+                if (establishments != null && establishments.Count > 0)
+                    PointsOfDeparture = TaskListStatus.COMPLETE;
             }
-            
+
+
+
         }
     }
 }

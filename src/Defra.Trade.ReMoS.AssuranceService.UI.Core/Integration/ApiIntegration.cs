@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
@@ -13,32 +14,28 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 public class ApiIntegration : IAPIIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public ApiIntegration(IHttpClientFactory httpClientFactory)
-    { 
+    {
         _httpClientFactory = httpClientFactory;
+        _jsonSerializerOptions = new JsonSerializerOptions()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
     }
 
 
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
     {
-        List<TradePartyDTO>? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.GetAsync("/TradeParties/Parties");
+        var response = await httpClient.GetAsync("/TradeParties/Parties");
+        
+        response.EnsureSuccessStatusCode();
 
-        if (httpResponseMessage.IsSuccessStatusCode)
-        {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-            if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(contentStream, options);
-            }
-        }
-        return results;
+        return await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new List<TradePartyDTO>();
     }
 
     public async Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid id)
@@ -50,8 +47,7 @@ public class ApiIntegration : IAPIIntegration
 
         return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
             await response.Content.ReadAsStreamAsync(),
-            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase}) ??
-            new TradePartyDTO();
+            options: _jsonSerializerOptions) ?? new TradePartyDTO();
     }
 
     public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
@@ -63,18 +59,14 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PostAsync($"TradeParties/Party", requestBody);
+        var response = await httpClient.PostAsync($"TradeParties/Party", requestBody);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)
@@ -93,11 +85,11 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"/TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
                 results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
@@ -119,11 +111,11 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"/TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
                 results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
@@ -145,11 +137,11 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PutAsync($"/TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"/TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
                 results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
@@ -171,18 +163,14 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PostAsync($"Establishments", requestBody);
+        var response = await httpClient.PostAsync($"Establishments", requestBody);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)
@@ -201,18 +189,14 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PostAsync($"Relationships", requestBody);
+        var response = await httpClient.PostAsync($"Relationships", requestBody);
 
-        if (httpResponseMessage.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, options);
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)
@@ -231,34 +215,23 @@ public class ApiIntegration : IAPIIntegration
 
         return await JsonSerializer.DeserializeAsync<LogisticsLocationDTO>(
             await response.Content.ReadAsStreamAsync(),
-            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
-            new LogisticsLocationDTO();
+            options: _jsonSerializerOptions) ?? new LogisticsLocationDTO();
     }
 
     public async Task<List<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
-        List<LogisticsLocationDetailsDTO>? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.GetAsync($"/Establishments/Party/{tradePartyId}");
+        var response = await httpClient.GetAsync($"/Establishments/Party/{tradePartyId}");
 
-        if (httpResponseMessage.IsSuccessStatusCode)
-        {
-            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-            if (contentStream != null)
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-                results = await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>>(contentStream, options);
-            }
-        }
-        return results;
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>> (
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDetailsDTO>();
     }
 
     public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode)
     {
-        List<LogisticsLocationDTO>? results = new();
         var httpClient = _httpClientFactory.CreateClient("Assurance");
         var response = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
 
@@ -266,7 +239,26 @@ public class ApiIntegration : IAPIIntegration
 
         return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDTO>>(
             await response.Content.ReadAsStreamAsync(),
-            options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ??
-            new List<LogisticsLocationDTO>();
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDTO>();
+    }
+
+    public async Task RemoveEstablishmentFromPartyAsync(Guid tradePartyId, Guid locationId)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.DeleteAsync($"/Relationships?partyId={tradePartyId}&establishmentid={locationId}");
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<List<LogisticsLocationBusinessRelationshipDTO>?> GetAllRelationsForEstablishmentAsync(Guid id)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Relationships/Establishment/{id}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationBusinessRelationshipDTO>>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationBusinessRelationshipDTO>();
     }
 }

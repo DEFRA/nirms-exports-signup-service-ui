@@ -55,4 +55,31 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
         }
         else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
     }
+
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId)
+    {
+        await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
+
+        if (LogisticsLocations?.Count > 0)
+            return await OnGetAsync(tradePartyId);
+        else
+            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
+
+    }
+
+    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId)
+    {
+        bool establishmentAddedManually = await _establishmentService.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId);
+        await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
+
+        if (establishmentAddedManually)
+        {   
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentDepartureAddressPath,
+                new { id = tradePartyId });
+        }
+
+        return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
+    }
 }

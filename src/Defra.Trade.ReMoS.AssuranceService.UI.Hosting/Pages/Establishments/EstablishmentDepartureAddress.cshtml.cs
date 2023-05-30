@@ -64,9 +64,8 @@ public class EstablishmentDepartureAddressModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    //TODO - pass in which page directed to here (search or manual add)
     public async Task<IActionResult> OnGetAsync(Guid id)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
