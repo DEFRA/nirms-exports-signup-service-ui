@@ -249,4 +249,16 @@ public class ApiIntegration : IAPIIntegration
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task<List<LogisticsLocationBusinessRelationshipDTO>?> GetAllRelationsForEstablishmentAsync(Guid id)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Relationships/Establishment/{id}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationBusinessRelationshipDTO>>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationBusinessRelationshipDTO>();
+    }
 }

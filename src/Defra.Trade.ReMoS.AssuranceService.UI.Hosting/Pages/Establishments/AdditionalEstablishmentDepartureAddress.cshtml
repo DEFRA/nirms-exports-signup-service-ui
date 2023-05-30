@@ -20,9 +20,6 @@
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
                         <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.LocationName</h2>
-                        @*                        <a class="govuk-link govuk-body govuk-!-margin-bottom-0" asp-page-handler="OnPostRemoveEstablishment">
-                    Remove
-                    </a>*@
                         <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
                            asp-page-handler="RemoveEstablishment"
                            asp-route-tradepartyid="@Model.TradePartyId"
@@ -43,7 +40,10 @@
                                     @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}," : string.Empty)
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">
+                                    <a class="govuk-link"
+                                       asp-page-handler="ChangeEstablishmentAddress"
+                                       asp-route-tradepartyid="@Model.TradePartyId"
+                                       asp-route-establishmentId="@location.LocationId">
                                         Change<span class="govuk-visually-hidden"> address</span>
                                     </a>
                                 </dd>

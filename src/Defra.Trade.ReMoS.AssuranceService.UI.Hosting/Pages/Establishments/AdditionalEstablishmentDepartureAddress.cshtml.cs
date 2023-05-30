@@ -58,22 +58,28 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 
     public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId)
     {
-        TradePartyId = tradePartyId;
+        await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
 
-        await _establishmentService.RemoveEstablishmentFromPartyAsync(TradePartyId, establishmentId);
-
-        //if more establishments present, call onget
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
-
-        if(LogisticsLocations?.Count > 0)
-            return await OnGetAsync(TradePartyId);
+        if (LogisticsLocations?.Count > 0)
+            return await OnGetAsync(tradePartyId);
         else
-            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = TradePartyId });
+            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
 
     }
 
-    public async Task<IActionResult> OnGetChangeEstablishmentAddress()
+    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId)
     {
-        throw new NotImplementedException();
+        bool establishmentAddedManually = await _establishmentService.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId);
+        await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
+
+        if (establishmentAddedManually)
+        {   
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentDepartureAddressPath,
+                new { id = tradePartyId });
+        }
+
+        return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
     }
 }

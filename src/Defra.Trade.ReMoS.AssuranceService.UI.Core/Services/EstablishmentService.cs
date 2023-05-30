@@ -22,10 +22,8 @@ public class EstablishmentService : IEstablishmentService
         Guid partyId, 
         LogisticsLocationDTO logisticsLocationDTO)
     {
-        //create new establishment
         var establishmentId = await _api.CreateEstablishmentAsync(logisticsLocationDTO);
 
-        //add created establishment to party
         LogisticsLocationBusinessRelationshipDTO relationDto = new LogisticsLocationBusinessRelationshipDTO
         {
             TradePartyId = partyId,
@@ -58,6 +56,21 @@ public class EstablishmentService : IEstablishmentService
     public async Task<bool> RemoveEstablishmentFromPartyAsync(Guid partyId, Guid establishmentId)
     {
         await _api.RemoveEstablishmentFromPartyAsync(partyId, establishmentId);
+        return true;
+    }
+
+    public async Task<bool> IsFirstTradePartyForEstablishment(Guid partyId, Guid establishmentId)
+    {
+        var relations = await _api.GetAllRelationsForEstablishmentAsync(establishmentId);
+
+        var firstParty = relations?
+            .OrderBy(x => x.ModifiedDate)
+            .Select(x => x.TradePartyId)
+            .First();
+
+        if (partyId != firstParty)
+            return false;
+
         return true;
     }
 }
