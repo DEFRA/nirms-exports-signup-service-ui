@@ -757,5 +757,145 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             _mockHttpClientFactory.Verify();
         }
 
+        [Test]
+        [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
+        public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateEstablishmentRelationship()
+        {
+            // Arrange
+            var logisticsLocationRelationshipDto = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = Guid.NewGuid(),
+                LogisticsLocationId = Guid.NewGuid(),
+                ContactEmail = "test@test.com",
+                RelationshipId = Guid.Empty
+            };
+
+            var jsonString = JsonConvert.SerializeObject(logisticsLocationRelationshipDto);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto));
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
+
+        [Test]
+        public async Task Integration_Returns_True_When_Calling_UpdateEstablishmentRelationship()
+        {
+            // Arrange
+            var logisticsLocationRelationshipDto = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = Guid.NewGuid(),
+                LogisticsLocationId = Guid.NewGuid(),
+                ContactEmail = "test@test.com",
+                RelationshipId = Guid.NewGuid(),
+            };
+
+            var guid = Guid.NewGuid();
+
+            var jsonString = JsonConvert.SerializeObject(logisticsLocationRelationshipDto);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NoContent,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue.Should().Be(true);
+            //returnedValue.TradePartyId.Should().Be(logisticsLocationRelationshipDto.TradePartyId);
+            //returnedValue.ContactEmail.Should().Be(logisticsLocationRelationshipDto.ContactEmail);
+            //returnedValue.LogisticsLocationId.Should().Be(logisticsLocationRelationshipDto.LogisticsLocationId);
+        }
+
+        [Test]
+        public async Task Integration_Verify_When_Calling_GetRelationshipBetweenPartyAndEstablishment()
+        {
+            // Arrange
+            var relationshipDto = new LogisticsLocationBusinessRelationshipDTO();
+            var jsonString = JsonConvert.SerializeObject(relationshipDto);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.GetRelationshipBetweenPartyAndEstablishment(Guid.NewGuid(), Guid.NewGuid());
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
+
+        [Test]
+        public async Task Integration_Verify_When_Calling_GetRelationshipById()
+        {
+            // Arrange
+            var relationshipDto = new LogisticsLocationBusinessRelationshipDTO();
+            var jsonString = JsonConvert.SerializeObject(relationshipDto);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.GetRelationshipById(Guid.NewGuid());
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
     }
 }

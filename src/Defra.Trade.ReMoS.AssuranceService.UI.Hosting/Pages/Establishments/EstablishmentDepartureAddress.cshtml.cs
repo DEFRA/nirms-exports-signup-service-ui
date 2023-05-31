@@ -64,7 +64,6 @@ public class EstablishmentDepartureAddressModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    //TODO - pass in which page directed to here (search or manual add)
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         _logger.LogInformation("Establishment manual address OnGet");
@@ -85,7 +84,12 @@ public class EstablishmentDepartureAddressModel : PageModel
 
         var establishmentId = await SaveEstablishmentDetails();
 
-        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
+        //TODO - redirect to email page and pass in party id, relation id
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentDepartureContactEmailPath, 
+            new { id = TradePartyId, locationId = establishmentId });
+
+        //return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
     }
 
     private async Task<Guid?> SaveEstablishmentDetails()

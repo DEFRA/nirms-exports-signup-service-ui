@@ -16,6 +16,8 @@ public interface IEstablishmentService
     Task<IEnumerable<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
     public Task<List<LogisticsLocationDTO>?> GetEstablishmentByPostcodeAsync(string postcode);
     public Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO logisticsLocationRelationshipDTO);
+    public Task<bool> UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationshipDTO logisticsLocationBusinessRelationshipDTO);
+    public Task<LogisticsLocationBusinessRelationshipDTO?> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId);
     Task<bool> RemoveEstablishmentFromPartyAsync(Guid partyId, Guid establishmentId);
     Task<bool> IsFirstTradePartyForEstablishment(Guid partyId, Guid establishmentId);
 }

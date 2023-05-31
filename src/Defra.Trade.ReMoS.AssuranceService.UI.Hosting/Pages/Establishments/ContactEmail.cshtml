@@ -1,0 +1,49 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.ContactEmailModel
+@{
+    ViewData["Title"] = "Enter Establishment contact email";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form method="POST" novalidate>
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="EstablishmentId" />
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            <span class="govuk-caption-l">Establishments</span>
+                            Add a point of departure
+                        </h1>
+                    </legend>
+
+                    <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
+                    <p>
+                        <span>
+                            @(Model.Location.Name != null ? $"{Model.Location.Name}," : string.Empty),
+                            @(Model.Location.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
+                            @(Model.Location.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
+                            @(Model.Location.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
+                            @(Model.Location.Address?.PostCode != null ? $"{Model.Location.Address?.PostCode} " : string.Empty)
+                        </span> <a href="points-of-departure-address">Change</a>
+                    </p>
+
+                    <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="establishment-email">Establishment email address (optional)</label>
+                        <p class="govuk-hint">This will enable us to contact the establishment directly.</p>
+                        <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
+                        <input class="govuk-input" id="establishment-email" asp-for="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email">
+                      </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit">Continue</button>
+        </form>
+
+    </div>
+</div>

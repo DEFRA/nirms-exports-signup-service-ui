@@ -131,6 +131,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
+        public async Task Service_Returns_LogisticsLocationBusinessRelationshipDTO_When_Calling_UpdateEstablishmentRelationship()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var logisticsLocationRelationshipDto = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = Guid.NewGuid(),
+                LogisticsLocationId = Guid.NewGuid(),
+                ContactEmail = "test@test.com",
+                RelationshipId = Guid.NewGuid(),
+            };
+
+            _mockApiIntegration.Setup(x => x.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto)).Verifiable();
+            _mockApiIntegration.Setup(x => x.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto)).Returns(Task.FromResult(true)!);
+
+            // Act
+            var returnedValue = await _establishmentService.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(true);
+        }
+
+        [Test]
         public async Task Service_Returns_True_When_Calling_RemoveEstablishmentFromPartyAsync()
         {
             // Arrange
@@ -204,6 +229,34 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Assert
             _mockApiIntegration.Verify();
             returnedValue.Should().Be(true);
+        }
+
+        [Test]
+        public async Task Service_Returns_RelationDTO_When_Calling_GetRelationshipBetweenPartyAndEstablishment()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+
+            var expectedPartyGuid = Guid.NewGuid();
+            var expectedEstablishmentGuid = Guid.NewGuid();
+
+            var relationDto = new LogisticsLocationBusinessRelationshipDTO
+            {
+                TradePartyId = Guid.NewGuid(),
+                LogisticsLocationId = Guid.NewGuid(),
+                ContactEmail = "test@test.com",
+                RelationshipId = Guid.NewGuid(),
+            };
+
+            _mockApiIntegration.Setup(x => x.GetRelationshipBetweenPartyAndEstablishment(expectedPartyGuid, expectedEstablishmentGuid)).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetRelationshipBetweenPartyAndEstablishment(expectedPartyGuid, expectedEstablishmentGuid)).Returns(Task.FromResult(relationDto)!);
+
+            // Act
+            var returnedValue = await _establishmentService.GetRelationshipBetweenPartyAndEstablishment(expectedPartyGuid, expectedEstablishmentGuid);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(relationDto);
         }
     }
 }

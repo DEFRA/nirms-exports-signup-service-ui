@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -259,5 +260,46 @@ public class ApiIntegration : IAPIIntegration
         return await JsonSerializer.DeserializeAsync<List<LogisticsLocationBusinessRelationshipDTO>>(
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new List<LogisticsLocationBusinessRelationshipDTO>();
+    }
+
+    public async Task<bool> UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationshipDTO relationDto)
+    {
+        LogisticsLocationBusinessRelationshipDTO results = new();
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(relationDto),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpResponseMessage = await httpClient.PutAsync($"/Relationships/{relationDto.RelationshipId}", requestBody);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+            return true;
+
+        throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<LogisticsLocationBusinessRelationshipDTO> GetRelationshipById(Guid id)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Relationships/{id}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<LogisticsLocationBusinessRelationshipDTO>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
+    }
+
+    public async Task<LogisticsLocationBusinessRelationshipDTO> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId)
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.GetAsync($"/Relationships/Trader/{partyId}/Establishment/{establishmentId}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<LogisticsLocationBusinessRelationshipDTO>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
     }
 }

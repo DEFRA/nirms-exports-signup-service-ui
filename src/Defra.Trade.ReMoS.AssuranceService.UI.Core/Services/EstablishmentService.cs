@@ -53,6 +53,16 @@ public class EstablishmentService : IEstablishmentService
         return await _api.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
     }
 
+    public async Task<bool> UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationshipDTO logisticsLocationRelationshipDTO)
+    {
+        return await _api.UpdateEstablishmentRelationship(logisticsLocationRelationshipDTO);
+    }
+
+    public async Task<LogisticsLocationBusinessRelationshipDTO?> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId)
+    {
+        return await _api.GetRelationshipBetweenPartyAndEstablishment(partyId, establishmentId);
+    }
+
     public async Task<bool> RemoveEstablishmentFromPartyAsync(Guid partyId, Guid establishmentId)
     {
         await _api.RemoveEstablishmentFromPartyAsync(partyId, establishmentId);

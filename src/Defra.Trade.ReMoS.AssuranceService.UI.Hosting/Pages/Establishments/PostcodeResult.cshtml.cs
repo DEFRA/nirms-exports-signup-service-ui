@@ -72,7 +72,7 @@ public class PostcodeResultModel : PageModel
         await _establishmentService.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
 
         return RedirectToPage(
-            Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath,
-            new { id = TradePartyId });
+            Routes.Pages.Path.EstablishmentDepartureContactEmailPath,
+            new { id = TradePartyId, locationId = Guid.Parse(SelectedLogisticsLocation) });
     }
 }
