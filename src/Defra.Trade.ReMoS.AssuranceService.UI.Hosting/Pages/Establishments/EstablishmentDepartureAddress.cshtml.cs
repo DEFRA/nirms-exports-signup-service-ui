@@ -84,12 +84,10 @@ public class EstablishmentDepartureAddressModel : PageModel
 
         var establishmentId = await SaveEstablishmentDetails();
 
-        //TODO - redirect to email page and pass in party id, relation id
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentDepartureContactEmailPath, 
             new { id = TradePartyId, locationId = establishmentId });
 
-        //return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
     }
 
     private async Task<Guid?> SaveEstablishmentDetails()

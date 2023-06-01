@@ -17,12 +17,11 @@ public class ContactEmailTests : PageModelTestsBase
     private ContactEmailModel? _systemUnderTest;
     protected Mock<ILogger<ContactEmailModel>> _mockLogger = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new ContactEmailModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
+        _systemUnderTest = new ContactEmailModel(_mockLogger.Object, _mockEstablishmentService.Object);
     }
 
     [Test]
@@ -37,7 +36,7 @@ public class ContactEmailTests : PageModelTestsBase
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());
 
         //Assert
-        _systemUnderTest.Email.Should().Be("");
+        _systemUnderTest.Email.Should().Be(null);
     }
 
     [Test]

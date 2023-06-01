@@ -23,17 +23,14 @@ public class ContactEmailModel : PageModel
     #endregion
 
     private readonly IEstablishmentService _establishmentService;
-    private readonly ITraderService _traderService;
     private readonly ILogger<ContactEmailModel> _logger;
 
     public ContactEmailModel(
         ILogger<ContactEmailModel> logger,
-        IEstablishmentService establishmentService,
-        ITraderService traderService)
+        IEstablishmentService establishmentService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId)
@@ -42,13 +39,14 @@ public class ContactEmailModel : PageModel
         TradePartyId = id;
         EstablishmentId = locationId;
 
-        if (TradePartyId != Guid.Empty)
+        if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
         {
             Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
             LogisticsLocationBusinessRelationship = await _establishmentService
                 .GetRelationshipBetweenPartyAndEstablishment(
                 TradePartyId,
                 EstablishmentId);
+            Email = LogisticsLocationBusinessRelationship?.ContactEmail;
         }
 
         return Page();

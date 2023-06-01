@@ -56,7 +56,10 @@
                                     @location.ContactEmail
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">
+                                    <a class="govuk-link"
+                                       asp-page-handler="ChangeEmail"
+                                       asp-route-tradepartyid="@Model.TradePartyId"
+                                       asp-route-establishmentId="@location.LocationId">
                                         Change<span class="govuk-visually-hidden"> email address</span>
                                     </a>
                                 </dd>

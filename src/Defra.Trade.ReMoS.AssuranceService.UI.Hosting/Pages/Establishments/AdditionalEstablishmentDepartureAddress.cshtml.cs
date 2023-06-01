@@ -81,4 +81,11 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 
         return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
     }
+
+    public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId)
+    {        
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentDepartureContactEmailPath,
+            new { id = tradePartyId, locationId = establishmentId });
+    }
 }

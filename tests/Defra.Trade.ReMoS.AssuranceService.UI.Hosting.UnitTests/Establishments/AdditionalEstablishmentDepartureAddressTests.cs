@@ -4,6 +4,8 @@ using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -146,7 +148,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetChangeEstablishmentAddress_GivenAddedManually_SubmitIsValid()
         {
             //Arrange
-
             var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
             _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(new Guid(), new Guid())).Returns(Task.FromResult(true));
@@ -163,7 +164,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetChangeEstablishmentAddress_GivenNotAddedManually_Redirect()
         {
             //Arrange
-
             var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
             _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(new Guid(), new Guid())).Returns(Task.FromResult(false));
@@ -174,6 +174,23 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Assert
             validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public void OnGetChangeEmail_Redirect_Successfully()
+        {
+            var tradePartyId = Guid.NewGuid();
+            var establishmentId = Guid.NewGuid();
+            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentDepartureContactEmailPath, new { id = tradePartyId, locationId = establishmentId });
+
+            // Act
+            var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<RedirectToPageResult>();
+            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
         }
 
     }

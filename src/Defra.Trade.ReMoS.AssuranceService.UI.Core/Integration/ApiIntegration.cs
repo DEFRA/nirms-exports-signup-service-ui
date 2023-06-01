@@ -264,7 +264,6 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<bool> UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationshipDTO relationDto)
     {
-        LogisticsLocationBusinessRelationshipDTO results = new();
         var requestBody = new StringContent(
             JsonSerializer.Serialize(relationDto),
             Encoding.UTF8,
