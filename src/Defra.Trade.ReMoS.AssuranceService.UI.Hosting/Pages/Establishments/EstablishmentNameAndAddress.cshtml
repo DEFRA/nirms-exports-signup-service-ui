@@ -1,5 +1,5 @@
 ﻿@page
-@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.EstablishmentDepartureAddressModel
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.EstablishmentNameAndAddressModel
 @{
     ViewData["Title"] = "Add a point of departure";
 }
@@ -10,12 +10,13 @@
 
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("EstablishmentName") ? "EstablishmentName": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Establishments</span>
-                            Add a point of departure
+                            @Model.ContentHeading
                         </h1>
                     </legend>
 

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
-public class EstablishmentDepartureAddressModel : PageModel
+public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
@@ -50,24 +50,40 @@ public class EstablishmentDepartureAddressModel : PageModel
 
     [BindProperty]
     public Guid EstablishmentId { get; set; }
+
+    public string ContentHeading = string.Empty;
+
+    public string ContentText = string.Empty;
+
+    [BindProperty]
+    public string NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
-    private readonly ILogger<EstablishmentDepartureAddressModel> _logger;
-    //private readonly ITraderService _traderService;
+    private readonly ILogger<EstablishmentNameAndAddressModel> _logger;
     private readonly IEstablishmentService _establishmentService;
 
-    public EstablishmentDepartureAddressModel(
-        ILogger<EstablishmentDepartureAddressModel> logger,
+    public EstablishmentNameAndAddressModel(
+        ILogger<EstablishmentNameAndAddressModel> logger,
         IEstablishmentService establishmentService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id)
+    public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
+        this.NI_GBFlag = NI_GBFlag;
+
+        if (NI_GBFlag == "NI")
+        {
+            ContentHeading = "Add a point of destination";
+        }
+        else
+        {
+            ContentHeading = "Add a point of departure";
+        }
 
         await RetrieveEstablishmentDetails();
         return Page();
@@ -79,14 +95,14 @@ public class EstablishmentDepartureAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(TradePartyId, NI_GBFlag);
         }
 
         var establishmentId = await SaveEstablishmentDetails();
 
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentDepartureContactEmailPath, 
-            new { id = TradePartyId, locationId = establishmentId });
+            Routes.Pages.Path.EstablishmentContactEmailPath, 
+            new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
 
     }
 
@@ -103,7 +119,8 @@ public class EstablishmentDepartureAddressModel : PageModel
                 CityName = CityName,
                 TradeCountry = Country,
                 PostCode = PostCode,
-            }
+            },
+            NI_GBFlag = NI_GBFlag,
         };
         return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
     }
@@ -111,14 +128,7 @@ public class EstablishmentDepartureAddressModel : PageModel
     private async Task RetrieveEstablishmentDetails()
     {
 
-        LogisticsLocationDTO? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? null;
-
-        //TODO - this needs implementing
-        //if (establishment == null)
-        //{
-        //    IEnumerable<LogisticsLocationDTO>? establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
-        //    establishment = establishments?.FirstOrDefault();
-        //}
+        LogisticsLocationDTO? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
 
         EstablishmentName = establishment?.Name ?? string.Empty;
         LineOne = establishment?.Address?.LineOne ?? string.Empty;

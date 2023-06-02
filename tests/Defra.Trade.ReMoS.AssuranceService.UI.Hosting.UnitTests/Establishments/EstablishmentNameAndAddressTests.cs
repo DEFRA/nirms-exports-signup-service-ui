@@ -7,16 +7,16 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
     [TestFixture]
-    public class EstablishmentDepartureAddressTests : PageModelTestsBase
+    public class EstablishmentNameAndAddressTests : PageModelTestsBase
     {
-        private EstablishmentDepartureAddressModel? _systemUnderTest;
-        protected Mock<ILogger<EstablishmentDepartureAddressModel>> _mockLogger = new();
+        private EstablishmentNameAndAddressModel? _systemUnderTest;
+        protected Mock<ILogger<EstablishmentNameAndAddressModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new EstablishmentDepartureAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
+            _systemUnderTest = new EstablishmentNameAndAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
         }
 
         [Test]
@@ -90,6 +90,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Assert
             validation.Count.Should().Be(4);
+        }
+
+        [Test]
+        public async Task OnGet_HeadingSetToParameter_Successfully()
+        {
+            //Arrange
+            var expectedHeading = "Add a point of destination";
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
+
+            //Assert
+            _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
         }
     }
 }

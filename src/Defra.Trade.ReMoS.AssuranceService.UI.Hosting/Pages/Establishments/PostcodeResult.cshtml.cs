@@ -22,6 +22,13 @@ public class PostcodeResultModel : PageModel
 
     [BindProperty]
     public string SelectedLogisticsLocation { get; set; } = default!;
+
+    public string ContentHeading = string.Empty;
+    
+    public string ContentText = string.Empty;
+    
+    [BindProperty]
+    public string NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
     private readonly ILogger<PostcodeResultModel> _logger;
@@ -35,18 +42,30 @@ public class PostcodeResultModel : PageModel
         _establishmentService = establishmentService;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string postcode)
+    public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Postcode result OnGetAsync");
         Postcode = postcode;
         TradePartyId= id;
 
         var LogisticsLocations = new List<LogisticsLocationDTO>();
+        this.NI_GBFlag = NI_GBFlag;
 
+        if (NI_GBFlag == "NI")
+        {
+            ContentHeading = "Add a point of destination (optional)";
+            ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+        }
+        else
+        {
+            ContentHeading = "Add a point of departure";
+            ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
+        }
+
+        
         if (Postcode != string.Empty)
         {
             LogisticsLocations = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
-
         }
 
         LogisticsLocationsList = LogisticsLocations.Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() }).ToList();
@@ -72,7 +91,7 @@ public class PostcodeResultModel : PageModel
         await _establishmentService.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
 
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentDepartureContactEmailPath,
-            new { id = TradePartyId, locationId = Guid.Parse(SelectedLogisticsLocation) });
+            Routes.Pages.Path.EstablishmentContactEmailPath,
+            new { id = TradePartyId, locationId = Guid.Parse(SelectedLogisticsLocation), NI_GBFlag });
     }
 }

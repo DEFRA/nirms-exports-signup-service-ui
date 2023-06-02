@@ -52,4 +52,19 @@ public class ContactEmailTests : PageModelTestsBase
         //Assert
         validation.Count.Should().Be(0);
     }
+
+    [Test]
+    public async Task OnGet_HeadingSetToParameter_Successfully()
+    {
+        //Arrange
+        var expectedHeading = "Add a point of destination (optional)";
+        var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+
+        //Act
+        await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
+
+        //Assert
+        _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
+        _systemUnderTest.ContentText.Should().Be(expectedContentText);
+    }
 }

@@ -10,16 +10,16 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
     [TestFixture]
-    public class AdditionalEstablishmentDepartureAddressTests : PageModelTestsBase
+    public class AdditionalEstablishmentAddressTests : PageModelTestsBase
     {
-        private AdditionalEstablishmentDepartureAddressModel? _systemUnderTest;
-        protected Mock<ILogger<AdditionalEstablishmentDepartureAddressModel>> _mockLogger = new();
+        private AdditionalEstablishmentAddressModel? _systemUnderTest;
+        protected Mock<ILogger<AdditionalEstablishmentAddressModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new AdditionalEstablishmentDepartureAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
+            _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
         }
 
         [Test]
@@ -181,7 +181,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             var tradePartyId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
-            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentDepartureContactEmailPath, new { id = tradePartyId, locationId = establishmentId });
+            var expected = new RedirectToPageResult(
+                Routes.Pages.Path.EstablishmentContactEmailPath, 
+                new { id = tradePartyId, locationId = establishmentId, NI_GBFlag = string.Empty });
 
             // Act
             var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId);
@@ -191,6 +193,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             result.Should().BeOfType<RedirectToPageResult>();
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        }
+
+        [Test]
+        public async Task OnGet_HeadingSetToParameter_Successfully()
+        {
+            //Arrange
+            var expectedHeading = "Points of destination (optional)";
+            var expectedContentText = "destination";
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
+
+            //Assert
+            _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
+            _systemUnderTest.ContentText.Should().Be(expectedContentText);
         }
 
     }

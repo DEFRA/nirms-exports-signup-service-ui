@@ -102,5 +102,23 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Assert
             validation.Count.Should().Be(0);
         }
+
+        [Test]
+        public async Task OnGet_HeadingSetToParameter_Successfully()
+        {
+            //Arrange
+            var expectedHeading = "Add a point of destination (optional)";
+            var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+            _mockEstablishmentService
+                .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))
+                .Returns(Task.FromResult<List<LogisticsLocationDTO>?>(new List<LogisticsLocationDTO>() { new LogisticsLocationDTO() }));
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "aaa", "NI");
+
+            //Assert
+            _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
+            _systemUnderTest.ContentText.Should().Be(expectedContentText);
+        }
     }
 }

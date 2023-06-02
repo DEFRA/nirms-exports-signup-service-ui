@@ -18,11 +18,11 @@ public static class Routes
     public const string RegisteredBusinessType = "/registered-business-type";
     public const string RegisteredBusinessAddress = "/registered-business-address";
     public const string RegisteredBusinessNatureOfBusiness = "/registered-business-nature-of-business";
-    public const string EstablishmentDeparturePostcodeSearch = "/establishment-departure-postcode-search";
-    public const string EstablishmentDepartureAddress = "/establishment-departure-address";
-    public const string AdditionalEstablishmentDepartureAddress = "/additional-establishment-departure-address";
-    public const string EstablishmentDeparturePostcodeResult = "/establishment-departure-postcode-result";
-    public const string EstablishmentDepartureContactEmail = "/establishment-departure-contact-email";
+    public const string EstablishmentPostcodeSearch = "/establishment-postcode-search";
+    public const string EstablishmentNameAndAddress = "/establishment-name-address";
+    public const string AdditionalEstablishmentAddress = "/additional-establishment-address";
+    public const string EstablishmentPostcodeResult = "/establishment-postcode-result";
+    public const string EstablishmentContactEmail = "/establishment-contact-email";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -36,11 +36,11 @@ public static class Routes
         (Pages.Path.RegisteredBusinessTypePath, RegisteredBusinessType),
         (Pages.Path.RegisteredBusinessAddressPath, RegisteredBusinessAddress),
         (Pages.Path.RegisteredBusinessNatureOfBusinessPath, RegisteredBusinessNatureOfBusiness),
-        (Pages.Path.EstablishmentDeparturePostcodeSearchPath, EstablishmentDeparturePostcodeSearch),
-        (Pages.Path.EstablishmentDepartureAddressPath, EstablishmentDepartureAddress),
-        (Pages.Path.AdditionalEstablishmentDepartureAddressPath, AdditionalEstablishmentDepartureAddress),
-        (Pages.Path.EstablishmentDeparturePostcodeResultPath, EstablishmentDeparturePostcodeResult),
-        (Pages.Path.EstablishmentDepartureContactEmailPath, EstablishmentDepartureContactEmail)
+        (Pages.Path.EstablishmentPostcodeSearchPath, EstablishmentPostcodeSearch),
+        (Pages.Path.EstablishmentNameAndAddressPath, EstablishmentNameAndAddress),
+        (Pages.Path.AdditionalEstablishmentAddressPath, AdditionalEstablishmentAddress),
+        (Pages.Path.EstablishmentPostcodeResultPath, EstablishmentPostcodeResult),
+        (Pages.Path.EstablishmentContactEmailPath, EstablishmentContactEmail)
     };
 
     public static class Pages
@@ -57,11 +57,11 @@ public static class Routes
             public const string RegisteredBusinessTypeName = "RegisteredBusinessType";
             public const string RegisteredBusinessAddressName = "RegisteredBusinessAddress";
             public const string RegisteredBusinessNatureOfBusinessName = "RegisteredBusinessNatureOfBusiness";
-            public const string EstablishmentDeparturePostcodeSearchName = "PostcodeSearch";
-            public const string EstablishmentDepartureAddressName = "EstablishmentDepartureAddress";
-            public const string AdditionalEstablishmentDepartureAddressName = "AdditionalEstablishmentDepartureAddress";
-            public const string EstablishmentDeparturePostcodeResultName = "PostcodeResult";
-            public const string EstablishmentDepartureContactEmailName = "ContactEmail";
+            public const string EstablishmentPostcodeSearchName = "PostcodeSearch";
+            public const string EstablishmentNameAndAddressName = "EstablishmentNameAndAddress";
+            public const string AdditionalEstablishmentAddressName = "AdditionalEstablishmentAddress";
+            public const string EstablishmentPostcodeResultName = "PostcodeResult";
+            public const string EstablishmentContactEmailName = "ContactEmail";
         }
 
         public static class Path
@@ -76,11 +76,11 @@ public static class Routes
             public const string RegisteredBusinessTypePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessTypeName}";
             public const string RegisteredBusinessAddressPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAddressName}";
             public const string RegisteredBusinessNatureOfBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessNatureOfBusinessName}";
-            public const string EstablishmentDeparturePostcodeSearchPath = $"/Establishments/{Names.EstablishmentDeparturePostcodeSearchName}";
-            public const string EstablishmentDepartureAddressPath = $"/Establishments/{Names.EstablishmentDepartureAddressName}";
-            public const string AdditionalEstablishmentDepartureAddressPath = $"/Establishments/{Names.AdditionalEstablishmentDepartureAddressName}";
-            public const string EstablishmentDeparturePostcodeResultPath = $"/Establishments/{Names.EstablishmentDeparturePostcodeResultName}";
-            public const string EstablishmentDepartureContactEmailPath = $"/Establishments/{Names.EstablishmentDepartureContactEmailName}";
+            public const string EstablishmentPostcodeSearchPath = $"/Establishments/{Names.EstablishmentPostcodeSearchName}";
+            public const string EstablishmentNameAndAddressPath = $"/Establishments/{Names.EstablishmentNameAndAddressName}";
+            public const string AdditionalEstablishmentAddressPath = $"/Establishments/{Names.AdditionalEstablishmentAddressName}";
+            public const string EstablishmentPostcodeResultPath = $"/Establishments/{Names.EstablishmentPostcodeResultName}";
+            public const string EstablishmentContactEmailPath = $"/Establishments/{Names.EstablishmentContactEmailName}";
         }
     }
 }

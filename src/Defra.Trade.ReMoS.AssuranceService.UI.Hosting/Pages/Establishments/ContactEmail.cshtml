@@ -11,16 +11,19 @@
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Establishments</span>
-                            Add a point of departure
+                            @Model.ContentHeading
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+                    <p class="govuk-hint" id="search-points-of-departure">
+                        @Model.ContentText
+                        </p>
 
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
                     <p>

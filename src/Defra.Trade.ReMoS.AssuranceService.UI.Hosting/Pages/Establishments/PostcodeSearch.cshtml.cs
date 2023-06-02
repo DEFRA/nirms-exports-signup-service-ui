@@ -15,6 +15,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
 
+        public string ContentHeading = string.Empty;
+        public string ContentText = string.Empty;
+        
+        [BindProperty]
+        public string NI_GBFlag { get; set; } = string.Empty;
+
         [BindProperty]
         public Guid TradePartyId { get; set; }
         #endregion
@@ -29,11 +35,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IActionResult> OnGetAsync(Guid id)
+        public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _logger.LogTrace("Establishment postcode search on get");
             TradePartyId = id;
+
+            if (NI_GBFlag == "NI") 
+            {
+                ContentHeading = "Add a point of destination (optional)";
+                ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+            }
+            else
+            {
+                ContentHeading = "Add a point of departure";
+                ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
+            }
 
             return Page();
         }
@@ -44,11 +61,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync(TradePartyId);
+                return await OnGetAsync(TradePartyId, NI_GBFlag);
             }
 
-
-            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeResultPath, new { id = TradePartyId, postcode = Postcode});
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentPostcodeResultPath, 
+                new { id = TradePartyId, postcode = Postcode, NI_GBFlag});
         }
     }
 }

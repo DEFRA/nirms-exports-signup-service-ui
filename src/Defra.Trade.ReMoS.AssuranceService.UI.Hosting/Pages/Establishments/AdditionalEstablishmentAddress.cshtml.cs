@@ -9,32 +9,46 @@ using System.ComponentModel.DataAnnotations;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
 [BindProperties]
-public class AdditionalEstablishmentDepartureAddressModel : PageModel
+public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
     [Required(ErrorMessage = "Select yes if you want to add another point of departure")]
     public string AdditionalAddress { get; set; } = string.Empty;
     public List<LogisticsLocationDetailsDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDetailsDTO>();
     public Guid TradePartyId { get; set; }
+    public string ContentHeading = string.Empty;
+    public string ContentText = string.Empty;
+    public string NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
-    private readonly ILogger<AdditionalEstablishmentDepartureAddressModel> _logger;
+    private readonly ILogger<AdditionalEstablishmentAddressModel> _logger;
     private readonly IEstablishmentService _establishmentService;
 
-    public AdditionalEstablishmentDepartureAddressModel(
-        ILogger<AdditionalEstablishmentDepartureAddressModel> logger,
+    public AdditionalEstablishmentAddressModel(
+        ILogger<AdditionalEstablishmentAddressModel> logger,
         IEstablishmentService establishmentService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id)
+    public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Additional establishment manual address OnGet");
         TradePartyId = id;
+        this.NI_GBFlag = NI_GBFlag;
 
-        //retrieve all departure establishments with addresses for this trade party
+        if (NI_GBFlag == "NI")
+        {
+            ContentHeading = "Points of destination (optional)";
+            ContentText = "destination";
+        }
+        else
+        {
+            ContentHeading = "Points of departure";
+            ContentText = "departure";
+        }
+
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
 
         return Page();
@@ -51,7 +65,7 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
 
         if (AdditionalAddress == "yes")
         {
-            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = TradePartyId });
+            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId, NI_GBFlag });
         }
         else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
     }
@@ -64,7 +78,7 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
         if (LogisticsLocations?.Count > 0)
             return await OnGetAsync(tradePartyId);
         else
-            return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
+            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag });
     }
 
     public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId)
@@ -75,17 +89,17 @@ public class AdditionalEstablishmentDepartureAddressModel : PageModel
         if (establishmentAddedManually)
         {   
             return RedirectToPage(
-                Routes.Pages.Path.EstablishmentDepartureAddressPath,
-                new { id = tradePartyId });
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = tradePartyId, NI_GBFlag });
         }
 
-        return RedirectToPage(Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath, new { id = tradePartyId });
+        return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag});
     }
 
     public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId)
     {        
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentDepartureContactEmailPath,
-            new { id = tradePartyId, locationId = establishmentId });
+            Routes.Pages.Path.EstablishmentContactEmailPath,
+            new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
     }
 }

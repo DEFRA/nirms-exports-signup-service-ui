@@ -10,15 +10,18 @@
 
         <form class="form" method="post">
             <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">Establishments</span>
-                Add a point of departure
+                @Model.ContentHeading
             </h1>
-            <p class="govuk-hint" id="search-points-of-departure">Add all establishments in Great Britan from which your goods will be departing under the scheme.</p>
+            <p class="govuk-hint" id="search-points-of-departure">
+                @Model.ContentText
+            </p>
 
             <div class="govuk-form-group">
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
-                <p><span>@Model.Postcode</span> <a asp-page=@Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath asp-route-id="@Model.TradePartyId">Change</a></p>
+                <p><span>@Model.Postcode</span> <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath asp-route-id="@Model.TradePartyId">Change</a></p>
 
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-!-font-weight-bold" for="points-of-departure-address-select">Select an address</label>
@@ -35,7 +38,12 @@
                     </span>
                 </summary>
                 <div class="govuk-details__text">
-                    <a asp-page=@Routes.Pages.Path.EstablishmentDepartureAddressPath asp-route-id="@Model.TradePartyId">Add the establishment address manually</a>
+                    <a 
+                        asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath 
+                        asp-route-id="@Model.TradePartyId"
+                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                        Add the establishment address manually
+                    </a>
                 </div>
             </details>
 

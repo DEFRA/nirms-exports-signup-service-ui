@@ -20,6 +20,9 @@ public class ContactEmailModel : PageModel
     public LogisticsLocationBusinessRelationshipDTO? LogisticsLocationBusinessRelationship { get; set; } = new LogisticsLocationBusinessRelationshipDTO();
     public Guid TradePartyId { get; set; }
     public Guid EstablishmentId { get; set; }
+    public string ContentHeading = string.Empty;
+    public string ContentText = string.Empty;
+    public string NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
     private readonly IEstablishmentService _establishmentService;
@@ -33,11 +36,23 @@ public class ContactEmailModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId)
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment departure destination OnGetAsync");
         TradePartyId = id;
         EstablishmentId = locationId;
+        this.NI_GBFlag = NI_GBFlag;
+
+        if (NI_GBFlag == "NI")
+        {
+            ContentHeading = "Add a point of destination (optional)";
+            ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+        }
+        else
+        {
+            ContentHeading = "Add a point of departure";
+            ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
+        }
 
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
         {
@@ -58,12 +73,14 @@ public class ContactEmailModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag);
         }
 
         await SaveEmailToApi();
 
-        return RedirectToPage(Routes.Pages.Path.AdditionalEstablishmentDepartureAddressPath, new { id = TradePartyId });
+        return RedirectToPage(
+            Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
+            new { id = TradePartyId, NI_GBFlag});
     }
 
     private async Task SaveEmailToApi()

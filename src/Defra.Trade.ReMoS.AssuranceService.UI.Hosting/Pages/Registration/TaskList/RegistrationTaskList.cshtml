@@ -106,23 +106,32 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.EstablishmentDeparturePostcodeSearchPath 
-                                asp-route-id="@Model.RegistrationID"  
-                                aria-describedby="points-of-departure">
+                            <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
+                               asp-route-id="@Model.RegistrationID"
+                               asp-route-NI_GBFlag="GB"
+                               aria-describedby="points-of-departure">
                                 Points of departure
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDeparture == "Completed" ? "green" : "grey")" id="establistment-departure">@Model.PointsOfDeparture</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDeparture == "Completed" ? "green" : "grey")"
+                                id="establistment-departure">
+                            @Model.PointsOfDeparture
+                        </strong>
                     </li>
 
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a aria-describedby="points-of-destination" href="points-of-destination">
-                                Points of destination
+                            <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
+                               asp-route-id="@Model.RegistrationID"
+                               asp-route-NI_GBFlag="NI"
+                               aria-describedby="points-of-destination">
+                                Points of destination (optional)
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="establistment-destination">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDestination == "Completed" ? "green" : "grey")"
+                                id="establistment-destination">
+                            @Model.PointsOfDestination
+                        </strong>
                     </li>
                 </ul>
             </li>
