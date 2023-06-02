@@ -51,9 +51,9 @@ public class EstablishmentNameAndAddressModel : PageModel
     [BindProperty]
     public Guid EstablishmentId { get; set; }
 
-    public string ContentHeading = string.Empty;
+    public string ContentHeading { get; set; } = string.Empty;
 
-    public string ContentText = string.Empty;
+    public string ContentText { get; set; } = string.Empty;
 
     [BindProperty]
     public string NI_GBFlag { get; set; } = string.Empty;

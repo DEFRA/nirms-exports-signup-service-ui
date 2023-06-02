@@ -92,13 +92,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 }
 
                 //TODO - replace this call with a simple 'do establishments exist' functionality
-                List<LogisticsLocationDetailsDTO>? establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?.ToList();
-                if (establishments != null && establishments.Count > 0)
+                var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);
+                var gbEstablishments = establishments?.Where(x => x.NI_GBFlag == "GB");
+                var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
+
+                if (gbEstablishments != null && gbEstablishments.Count() > 0)
                     PointsOfDeparture = TaskListStatus.COMPLETE;
+
+                if (niEstablishments != null && niEstablishments.Count() > 0)
+                    PointsOfDestination = TaskListStatus.COMPLETE;
             }
-
-
-
         }
     }
 }

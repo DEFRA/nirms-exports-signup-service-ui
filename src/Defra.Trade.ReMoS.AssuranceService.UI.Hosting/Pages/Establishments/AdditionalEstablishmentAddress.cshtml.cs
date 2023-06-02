@@ -16,8 +16,8 @@ public class AdditionalEstablishmentAddressModel : PageModel
     public string AdditionalAddress { get; set; } = string.Empty;
     public List<LogisticsLocationDetailsDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDetailsDTO>();
     public Guid TradePartyId { get; set; }
-    public string ContentHeading = string.Empty;
-    public string ContentText = string.Empty;
+    public string ContentHeading { get; set; } = string.Empty;
+    public string ContentText { get; set; } = string.Empty;
     public string NI_GBFlag { get; set; } = string.Empty;
     #endregion
 

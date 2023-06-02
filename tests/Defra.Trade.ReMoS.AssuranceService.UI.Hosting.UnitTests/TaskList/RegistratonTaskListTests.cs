@@ -113,7 +113,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO()};
+            var list = new List<LogisticsLocationDetailsDTO> 
+            { 
+                new LogisticsLocationDetailsDTO() { NI_GBFlag = "NI"}
+            };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
@@ -123,7 +126,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
-            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
         }
     }
 }
