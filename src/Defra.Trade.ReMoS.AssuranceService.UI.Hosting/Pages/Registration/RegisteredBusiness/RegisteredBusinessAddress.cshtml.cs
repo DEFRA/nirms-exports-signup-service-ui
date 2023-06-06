@@ -117,14 +117,14 @@ public class RegisteredBusinessAddressModel : PageModel
 
     private async Task GetAddressFromApiAsync()
     {
-        TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp != null && tp.Address != null)
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tradeParty != null && tradeParty.Address != null)
         {
-            AddressId = tp.Address.Id;
-            LineOne = tp.Address.LineOne ?? string.Empty;
-            LineTwo = tp.Address.LineTwo ?? string.Empty;
-            CityName = tp.Address.CityName ?? string.Empty;
-            PostCode = tp.Address.PostCode ?? string.Empty;
+            AddressId = tradeParty.Address.Id;
+            LineOne = tradeParty.Address.LineOne ?? string.Empty;
+            LineTwo = tradeParty.Address.LineTwo ?? string.Empty;
+            CityName = tradeParty.Address.CityName ?? string.Empty;
+            PostCode = tradeParty.Address.PostCode ?? string.Empty;
         }
     }
 }

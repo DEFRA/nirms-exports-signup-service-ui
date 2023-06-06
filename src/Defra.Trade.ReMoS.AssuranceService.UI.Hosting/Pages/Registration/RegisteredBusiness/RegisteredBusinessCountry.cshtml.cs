@@ -32,7 +32,10 @@ public class RegisteredBusinessCountryModel : PageModel
         _logger.LogInformation("Country OnGet");
         TraderId = Id;
 
-        await GetCountry();
+        if (Id != Guid.Empty)
+        {
+            Country = await GetCountryFromApiAsync();
+        }
 
         return Page();
     }
@@ -47,9 +50,11 @@ public class RegisteredBusinessCountryModel : PageModel
         }
 
         TradePartyDTO traderDTO = CreateDTO();
-        Guid tp = await _traderService.CreateTradePartyAsync(traderDTO);
+        Guid partyId = await _traderService.CreateTradePartyAsync(traderDTO);
 
-        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new {id = tp });
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath,
+            new { id = partyId });
     }
 
     private TradePartyDTO CreateDTO()
@@ -61,16 +66,17 @@ public class RegisteredBusinessCountryModel : PageModel
                 TradeCountry = Country
             }
         };
-     return DTO;
+
+        return DTO;
     }
 
-    private async Task<string?> GetCountry()
+    private async Task<string> GetCountryFromApiAsync()
     {
-        TradePartyDTO? tp = await _traderService.GetTradePartyByIdAsync(TraderId);
-        if (tp != null && tp.Address != null)
+        var tradePartyDto = await _traderService.GetTradePartyByIdAsync(TraderId);
+        if (tradePartyDto != null && tradePartyDto.Address != null && tradePartyDto.Address.TradeCountry != null)
         {
-            return tp.Address.TradeCountry;
+            return tradePartyDto.Address.TradeCountry;
         }
-        return "";
+        return string.Empty;
     }
 }
