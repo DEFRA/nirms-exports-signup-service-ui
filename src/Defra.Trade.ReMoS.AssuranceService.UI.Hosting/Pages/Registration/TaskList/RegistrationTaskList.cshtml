@@ -63,7 +63,7 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.RegistrationID" aria-describedby="name">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.RegistrationID" aria-describedby="contact-name">
                                 Full name
                             </a>
                         </span>
@@ -72,7 +72,7 @@
 
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPositionPath asp-route-id="@Model.RegistrationID" aria-describedby="position">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPositionPath asp-route-id="@Model.RegistrationID" aria-describedby="contact-position">
                                 Position
                             </a>
                         </span>
@@ -81,7 +81,7 @@
 
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactEmailPath asp-route-id="@Model.RegistrationID" aria-describedby="email">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactEmailPath asp-route-id="@Model.RegistrationID" aria-describedby="contact-email">
                                 Email address
                             </a>
                         </span>
@@ -90,7 +90,7 @@
 
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPhonePath asp-route-id="@Model.RegistrationID" aria-describedby="phone">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPhonePath asp-route-id="@Model.RegistrationID" aria-describedby="contact-phone">
                                 Telephone number
                             </a>
                         </span>
@@ -109,7 +109,7 @@
                             <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
                                asp-route-id="@Model.RegistrationID"
                                asp-route-NI_GBFlag="GB"
-                               aria-describedby="points-of-departure">
+                               aria-describedby="establistment-departure">
                                 Points of departure
                             </a>
                         </span>
@@ -124,7 +124,7 @@
                             <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
                                asp-route-id="@Model.RegistrationID"
                                asp-route-NI_GBFlag="NI"
-                               aria-describedby="points-of-destination">
+                               aria-describedby="establistment-destination">
                                 Points of destination (optional)
                             </a>
                         </span>
@@ -143,7 +143,7 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a href="sps-food-categories" aria-describedby="sps-food-categories">
+                            <a href="sps-food-categories" aria-describedby="sps-goods">
                                 SPS goods categories
                             </a>
                         </span>
@@ -177,7 +177,7 @@
                         </span>
                         <span id="checkComplete" style="display:none;">
                             <span class="app-task-list__task-name">
-                                <a href="check-and-submit" aria-describedby="check-answers">
+                                <a href="check-and-submit" aria-describedby="complete-submit">
                                     Check answers and submit sign up
                                 </a>
                             </span>
