@@ -9,6 +9,7 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
+            <input type="hidden" asp-for="TraderId" />
             <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Country") ? "Country_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
