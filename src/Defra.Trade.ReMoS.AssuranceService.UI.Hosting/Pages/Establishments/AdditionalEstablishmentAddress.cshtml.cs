@@ -16,9 +16,9 @@ public class AdditionalEstablishmentAddressModel : PageModel
     public string AdditionalAddress { get; set; } = string.Empty;
     public List<LogisticsLocationDetailsDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDetailsDTO>();
     public Guid TradePartyId { get; set; }
-    public string ContentHeading { get; set; } = string.Empty;
-    public string ContentText { get; set; } = string.Empty;
-    public string NI_GBFlag { get; set; } = string.Empty;
+    public string? ContentHeading { get; set; } = string.Empty;
+    public string?ContentText { get; set; } = string.Empty;
+    public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
     private readonly ILogger<AdditionalEstablishmentAddressModel> _logger;
@@ -70,7 +70,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
     }
 
-    public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId)
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
@@ -81,7 +81,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag });
     }
 
-    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId)
+    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         bool establishmentAddedManually = await _establishmentService.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId);
         await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
@@ -96,7 +96,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag});
     }
 
-    public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId)
+    public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {        
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
