@@ -181,12 +181,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             var tradePartyId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
+            string NI_GBFlag = "GB";
             var expected = new RedirectToPageResult(
                 Routes.Pages.Path.EstablishmentContactEmailPath, 
                 new { id = tradePartyId, locationId = establishmentId, NI_GBFlag = string.Empty });
 
             // Act
-            var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId);
+            var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId, string.Empty);
 
             // Assert
             result.Should().NotBeNull();

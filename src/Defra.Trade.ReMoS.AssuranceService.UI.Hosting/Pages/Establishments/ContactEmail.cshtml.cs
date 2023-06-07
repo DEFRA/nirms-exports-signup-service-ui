@@ -22,7 +22,7 @@ public class ContactEmailModel : PageModel
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
-    public string NI_GBFlag { get; set; } = string.Empty;
+    public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
     private readonly IEstablishmentService _establishmentService;
