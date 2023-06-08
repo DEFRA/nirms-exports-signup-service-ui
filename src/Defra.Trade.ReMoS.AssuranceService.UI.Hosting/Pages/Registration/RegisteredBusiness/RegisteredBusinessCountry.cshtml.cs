@@ -15,6 +15,7 @@ public class RegisteredBusinessCountryModel : PageModel
     [Required(ErrorMessage = "Enter a country")]
     public string Country { get; set; } = string.Empty;
 
+    [BindProperty]
     public Guid TraderId { get; set; }
     #endregion
 
@@ -49,12 +50,11 @@ public class RegisteredBusinessCountryModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        TradePartyDTO traderDTO = CreateDTO();
-        Guid partyId = await _traderService.CreateTradePartyAsync(traderDTO);
+        await SaveCountryToApiAsync();
 
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = partyId });
+            new { id = TraderId });
     }
 
     private TradePartyDTO CreateDTO()
@@ -78,5 +78,22 @@ public class RegisteredBusinessCountryModel : PageModel
             return tradePartyDto.Address.TradeCountry;
         }
         return string.Empty;
+    }
+
+    private async Task SaveCountryToApiAsync()
+    {
+        if (TraderId == Guid.Empty)
+        {
+            TraderId = await _traderService.CreateTradePartyAsync(CreateDTO());
+            return;
+        }
+
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+
+        if (tradeParty != null && tradeParty.Address != null)
+        {
+            tradeParty.Address.TradeCountry = Country;
+            await _traderService.UpdateTradePartyAddressAsync(tradeParty);
+        }
     }
 }
