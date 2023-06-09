@@ -1,5 +1,8 @@
+using Defra.Trade.Common.Security.AzureKeyVault;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+using Defra.Trade.Common.Security.AzureKeyVault;
+using Defra.Trade.Common.Security.AzureKeyVault.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
@@ -22,8 +25,9 @@ internal sealed class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddMvc().AddCustomRouting();
-        builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApplicationInsightsTelemetry();
+        builder.Configuration.AddAzureKeyVault<KeyVaultSettings>(KeyVaultSettings.KeyVaultSecretsSettingsName, new ManagedIdentityKeyVaultAuthentication());
+        builder.Services.AddServiceConfigurations(builder.Configuration);
 
         var app = builder.Build();
 
@@ -42,5 +46,7 @@ internal sealed class Program
         app.MapRazorPages();
         
         app.Run();
+
+
     }
 }

@@ -8,7 +8,11 @@ using Microsoft.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Defra.Trade.Common.Security;
 using static System.Net.Mime.MediaTypeNames;
+using Defra.Trade.Common.Security.Authentication.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -16,14 +20,20 @@ public class ApiIntegration : IAPIIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly IAuthenticationService authenticationService;
+    private readonly IOptions<KeyVaultSettings> keyVaultSettings;
+    private readonly ILogger<IAPIIntegration> _logger;
 
-    public ApiIntegration(IHttpClientFactory httpClientFactory)
+    public ApiIntegration(IHttpClientFactory httpClientFactory, IAuthenticationService authenticationService, IOptions<KeyVaultSettings> keyVaultSettings, ILogger<IAPIIntegration> logger)
     {
         _httpClientFactory = httpClientFactory;
         _jsonSerializerOptions = new JsonSerializerOptions()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
+        this.authenticationService = authenticationService;
+        this.keyVaultSettings = keyVaultSettings;
+        _logger = logger;
     }
 
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
@@ -52,6 +62,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
     {
+        var test = keyVaultSettings.Value.ApimInternalClientsSubscription;
+
         Guid results = new();
         var requestBody = new StringContent(
             JsonSerializer.Serialize(tradePartyToCreate),
