@@ -13,6 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -20,20 +21,20 @@ public class ApiIntegration : IAPIIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly IAuthenticationService authenticationService;
-    private readonly IOptions<KeyVaultSettings> keyVaultSettings;
+    private readonly IOptions<KeyVaultSettings> _keyVaultSettings;
     private readonly ILogger<IAPIIntegration> _logger;
+    private readonly IAuthenticationService _authenticationService;
 
-    public ApiIntegration(IHttpClientFactory httpClientFactory, IAuthenticationService authenticationService, IOptions<KeyVaultSettings> keyVaultSettings, ILogger<IAPIIntegration> logger)
+    public ApiIntegration(IHttpClientFactory httpClientFactory, IOptions<KeyVaultSettings> keyVaultSettings, ILogger<IAPIIntegration> logger, IAuthenticationService authenticationService)
     {
         _httpClientFactory = httpClientFactory;
         _jsonSerializerOptions = new JsonSerializerOptions()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
-        this.authenticationService = authenticationService;
-        this.keyVaultSettings = keyVaultSettings;
+        _keyVaultSettings = keyVaultSettings;
         _logger = logger;
+        _authenticationService = authenticationService;
     }
 
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
@@ -62,7 +63,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
     {
-        var test = keyVaultSettings.Value.ApimInternalClientsSubscription;
+        var test = _keyVaultSettings.Value.SubscriptionKey;
 
         Guid results = new();
         var requestBody = new StringContent(
