@@ -15,11 +15,11 @@
                         Telephone number
                     </h1>
                 </label>
-                <p class="govuk-hint" id="email-hint">
+                <p class="govuk-hint" id="telephone-hint">
                     The telephone number of the contact person at the business responsible for Northern Ireland Retail Movement Scheme movements. We'll only use this if there an issue with sign up, or with a specific movement.
                 </p>
                 <p id="Phone_Error" class="govuk-error-message" gds-validation-for="PhoneNumber"></p>
-                <input class="govuk-input" asp-for="PhoneNumber" id="phone" type="tel" spellcheck="false"/>
+                <input class="govuk-input" asp-for="PhoneNumber" id="business-phone" aria-describedby="" type="telephone-hint" spellcheck="false" />
             </div>
             <div class="govuk-form-group">
                 <button class="govuk-button" asp-page-handler="submit">Save and continue</button>                
