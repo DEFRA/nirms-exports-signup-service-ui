@@ -86,8 +86,10 @@ extends:
     appSettingsEnv:
         dev: >-
           -APISettings:APIUrl "https://$(environment)gcwebaw$(nc-region-id)02.azurewebsites.net/"
+          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
         tst: >-
           -APISettings:APIUrl "https://$(environment)gcwebaw$(nc-region-id)02.azurewebsites.net/"
+          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
     runSonarScan: true
     runVulnerabilityScan: false
     sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/www**,src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Node**'

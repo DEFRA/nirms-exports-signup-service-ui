@@ -1,8 +1,11 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.Common.Security.Authentication.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -27,6 +30,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         private IAPIIntegration? _apiIntegration;
         protected Mock<IHttpClientFactory> _mockHttpClientFactory = new();
         protected Mock<HttpMessageHandler> _mockHttpMessageHandler = new();
+        private readonly Mock<IAuthenticationService> _mockAuthenticationService = new();
 
         [Test]
         public async Task Integration_Returns_TradeParties_When_Calling_GetAllTradePartiesAsync()
@@ -36,6 +40,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             var jsonString = JsonConvert.SerializeObject(tradeParties);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var expectedResponse = new HttpResponseMessage
             {
@@ -50,7 +57,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetAllTradePartiesAsync();
@@ -65,6 +72,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         {
             // Arrange
             var tradeParty = new TradePartyDTO();
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(tradeParty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -82,7 +92,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetTradePartyByIdAsync(Guid.Empty);
@@ -102,6 +112,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -121,7 +134,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.AddTradePartyAsync(tradeParty);
@@ -141,6 +154,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -160,7 +176,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.UpdateTradePartyAsync(tradeParty);
@@ -183,6 +199,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -200,7 +219,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddTradePartyAsync(tradeParty));
@@ -221,6 +240,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -238,7 +260,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyAsync(tradeParty));
@@ -257,6 +279,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -276,7 +301,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.UpdateTradePartyAddressAsync(tradeParty);
@@ -298,6 +323,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -315,7 +343,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyAddressAsync(tradeParty));
@@ -334,6 +362,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -353,7 +384,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.UpdateTradePartyContactAsync(tradeParty);
@@ -376,6 +407,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -393,7 +427,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyContactAsync(tradeParty));
@@ -410,6 +444,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
                 Name = "Trade party Ltd"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -429,7 +466,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.CreateEstablishmentAsync(logisticsLocationDto);
@@ -448,6 +485,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
                 Name = "Trade party Ltd"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -465,7 +505,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.CreateEstablishmentAsync(logisticsLocationDto));
@@ -482,6 +522,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
                 Status = "Active"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -501,7 +544,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.AddEstablishmentToPartyAsync(logisticsLocationDto);
@@ -520,6 +563,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
                 Status = "Active"
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -537,7 +583,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddEstablishmentToPartyAsync(logisticsLocationDto));
@@ -554,6 +600,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             var location = new LogisticsLocationDTO();
             var jsonString = JsonConvert.SerializeObject(location);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var expectedResponse = new HttpResponseMessage
             {
@@ -568,7 +617,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetEstablishmentByIdAsync(guid);
@@ -592,6 +641,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                     TradePartyId = Guid.NewGuid(),
                 }
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -609,7 +661,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>());
@@ -639,6 +691,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 }
             };
             var postcode = "TES1";
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver= new CamelCasePropertyNamesContractResolver() });
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -656,7 +711,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetEstablishmentsByPostcodeAsync(postcode);
@@ -688,6 +743,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                     }
                 }
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -705,7 +763,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await _apiIntegration.RemoveEstablishmentFromPartyAsync(new Guid(), new Guid());
@@ -732,6 +790,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                     }
                 }
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -748,7 +809,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await _apiIntegration.GetAllRelationsForEstablishmentAsync(new Guid());
@@ -769,6 +830,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 ContactEmail = "test@test.com",
                 RelationshipId = Guid.Empty
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocationRelationshipDto);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -786,7 +850,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto));
@@ -806,6 +870,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 ContactEmail = "test@test.com",
                 RelationshipId = Guid.NewGuid(),
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             var guid = Guid.NewGuid();
 
@@ -825,7 +892,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.UpdateEstablishmentRelationship(logisticsLocationRelationshipDto);
@@ -851,6 +918,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 StatusCode = HttpStatusCode.OK,
                 Content = httpContent
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
@@ -859,7 +929,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetRelationshipBetweenPartyAndEstablishment(Guid.NewGuid(), Guid.NewGuid());
@@ -881,6 +951,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 StatusCode = HttpStatusCode.OK,
                 Content = httpContent
             };
+            var keyVaultSettings = new KeyVaultSettings();
+            keyVaultSettings.SubscriptionKey = "testkey";
+            IOptions<KeyVaultSettings> keyVaultSettingsOptions = Options.Create(keyVaultSettings);
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
@@ -889,7 +962,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
-            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, keyVaultSettingsOptions, _mockAuthenticationService.Object);
 
             // Act
             var returnedValue = await _apiIntegration.GetRelationshipById(Guid.NewGuid());
