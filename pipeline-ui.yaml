@@ -85,10 +85,10 @@ extends:
     deployDevSlot: ${{ parameters.deployDevSlot }}
     appSettingsEnv:
         dev: >-
-          -APISettings:APIUrl "https://$(environment)gcwebaw$(nc-region-id)02.azurewebsites.net/"
+          -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
           -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
         tst: >-
-          -APISettings:APIUrl "https://$(environment)gcwebaw$(nc-region-id)02.azurewebsites.net/"
+          -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
           -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
     runSonarScan: true
     runVulnerabilityScan: false
