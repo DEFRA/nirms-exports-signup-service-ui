@@ -20,9 +20,11 @@ public static class Routes
     public const string RegisteredBusinessNatureOfBusiness = "/registered-business-nature-of-business";
     public const string EstablishmentPostcodeSearch = "/establishment-postcode-search";
     public const string EstablishmentNameAndAddress = "/establishment-name-address";
-    public const string AdditionalEstablishmentAddress = "/additional-establishment-address";
     public const string EstablishmentPostcodeResult = "/establishment-postcode-result";
     public const string EstablishmentContactEmail = "/establishment-contact-email";
+    public const string AdditionalEstablishmentAddress = "/additional-establishment-address";
+    public const string AuthorisedSignatoryDetails = "/authorised-signatory-details";
+    public const string AuthorisedSignatoryName = "/authorised-signatory-name";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -40,7 +42,9 @@ public static class Routes
         (Pages.Path.EstablishmentNameAndAddressPath, EstablishmentNameAndAddress),
         (Pages.Path.AdditionalEstablishmentAddressPath, AdditionalEstablishmentAddress),
         (Pages.Path.EstablishmentPostcodeResultPath, EstablishmentPostcodeResult),
-        (Pages.Path.EstablishmentContactEmailPath, EstablishmentContactEmail)
+        (Pages.Path.EstablishmentContactEmailPath, EstablishmentContactEmail),
+        (Pages.Path.AuthorisedSignatoryDetailsPath, AuthorisedSignatoryDetails),
+        (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName)
     };
 
     public static class Pages
@@ -62,6 +66,8 @@ public static class Routes
             public const string AdditionalEstablishmentAddressName = "AdditionalEstablishmentAddress";
             public const string EstablishmentPostcodeResultName = "PostcodeResult";
             public const string EstablishmentContactEmailName = "ContactEmail";
+            public const string AuthorisedSignatoryDetailsName = "IsAuthorisedSignatory";
+            public const string AuthorisedSignatoryNameName = "AuthorisedSignatoryName";
         }
 
         public static class Path
@@ -81,6 +87,8 @@ public static class Routes
             public const string AdditionalEstablishmentAddressPath = $"/Establishments/{Names.AdditionalEstablishmentAddressName}";
             public const string EstablishmentPostcodeResultPath = $"/Establishments/{Names.EstablishmentPostcodeResultName}";
             public const string EstablishmentContactEmailPath = $"/Establishments/{Names.EstablishmentContactEmailName}";
+            public const string AuthorisedSignatoryDetailsPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryDetailsName}";
+            public const string AuthorisedSignatoryNamePath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryNameName}";
         }
     }
 }

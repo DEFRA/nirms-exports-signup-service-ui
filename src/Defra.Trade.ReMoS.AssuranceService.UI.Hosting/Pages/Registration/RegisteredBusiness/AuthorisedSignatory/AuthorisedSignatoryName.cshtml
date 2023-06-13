@@ -1,0 +1,33 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.AuthorisedSignatoryNameModel
+@{
+    ViewData["Title"] = "Enter Contact Name";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="post" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
+                <label for="authorised-signatory-name">
+                    <h1 class="govuk-heading-l">
+                        <span class="govuk-caption-l">Contact details</span>
+                        Full name of Authorised Signatory
+                    </h1>
+                </label>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="address-line-1">
+                        The full name of the Authorised Signatory at ACME Trading.
+                    </label>
+                    <p id="name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
+                    <input class="govuk-input" id="name" asp-for="Name" type="text">
+                </div>
+
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <input type="hidden" asp-for="TradePartyId" />
+            </div>
+        </form>
+    </div>
+</div>

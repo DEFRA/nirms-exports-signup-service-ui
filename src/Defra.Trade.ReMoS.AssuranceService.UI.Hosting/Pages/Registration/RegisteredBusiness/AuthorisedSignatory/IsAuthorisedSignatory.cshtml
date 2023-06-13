@@ -1,0 +1,50 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.IsAuthorisedSignatoryModel
+@{
+    ViewData["Title"] = "Fill in Yes or No for the contact person to be the Authorised Signatory";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        
+        <form method="POST" novalidate>
+            <input type="hidden" asp-for="TradePartyId" />
+            <div class="govuk-form-group @(ModelState.HasError("IsAuthorisedSignatory") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("IsAuthorisedSignatory") ? "IsAuthorisedSignatory_Error": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            <span class="govuk-caption-l">Contact details</span>
+                            Is the contact person the Authorised Signatory at ACME Trading?
+                        </h1>
+                    </legend>
+
+                    <p id="IsAuthorisedSignatory_Error" class="govuk-error-message" gds-validation-for="IsAuthorisedSignatory"></p>
+                    
+                    <p class="govuk-hint" id="email-hint">
+                        The Authorised Signatory is the person who is authorised by a company to sign contracts and other legal documents on behalf of the company. This person has the legal authority to bind the company to agreements and make other decisions on behalf of the company.
+                    </p>
+                    
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type" asp-for="IsAuthorisedSignatory" type="radio" value="true">
+                            <label class="govuk-label govuk-radios__label" for="business-type">
+                                Yes, the contact person is the Authorised Signatory
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="business-type-2" asp-for="IsAuthorisedSignatory" type="radio" value="false">
+                            <label class="govuk-label govuk-radios__label" for="business-type-2">
+                                No, a different person is the Authorised Signatory
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit" id="button-rbNatureSubmit">Save and continue</button>
+            <input type="hidden" asp-for="TradePartyId" />
+        </form>
+    </div>
+</div>

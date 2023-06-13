@@ -20,4 +20,5 @@ public interface IAPIIntegration
     Task RemoveEstablishmentFromPartyAsync(Guid tradePartyId, Guid locationId);
     Task<List<LogisticsLocationBusinessRelationshipDTO>?> GetAllRelationsForEstablishmentAsync(Guid id);
     Task<LogisticsLocationBusinessRelationshipDTO> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId);
+    public Task<Guid> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate);
 }

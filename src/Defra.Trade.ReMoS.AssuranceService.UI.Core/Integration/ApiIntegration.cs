@@ -301,4 +301,30 @@ public class ApiIntegration : IAPIIntegration
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
     }
+
+    public async Task<Guid> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate)
+    {
+        Guid results = new();
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(tradePartyToUpdate),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var contentStream = await response.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
 }
