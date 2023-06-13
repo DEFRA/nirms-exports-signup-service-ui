@@ -76,7 +76,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.PostAsync($"TradeParties/Party", requestBody);
+        var response = await httpClient.PostAsync($"v1/TradeParties/Party", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -105,7 +105,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"v1//TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -134,7 +134,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"v1//TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -163,7 +163,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"v1//TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -192,7 +192,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.PostAsync($"Establishments", requestBody);
+        var response = await httpClient.PostAsync($"v1/Establishments", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -221,7 +221,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.PostAsync($"Relationships", requestBody);
+        var response = await httpClient.PostAsync($"v1/Relationships", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -244,7 +244,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/Establishments/{id}");
+        var response = await httpClient.GetAsync($"v1/Establishments/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -259,7 +259,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/Establishments/Party/{tradePartyId}");
+        var response = await httpClient.GetAsync($"v1/Establishments/Party/{tradePartyId}");
 
         response.EnsureSuccessStatusCode();
 
@@ -274,7 +274,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
+        var response = await httpClient.GetAsync($"v1/Establishments/Postcode/{postcode}");
 
         response.EnsureSuccessStatusCode();
 
@@ -289,7 +289,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.DeleteAsync($"/Relationships?partyId={tradePartyId}&establishmentid={locationId}");
+        var response = await httpClient.DeleteAsync($"v1/Relationships?partyId={tradePartyId}&establishmentid={locationId}");
 
         response.EnsureSuccessStatusCode();
     }
@@ -300,7 +300,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/Relationships/Establishment/{id}");
+        var response = await httpClient.GetAsync($"v1/Relationships/Establishment/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -320,7 +320,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var httpResponseMessage = await httpClient.PutAsync($"/Relationships/{relationDto.RelationshipId}", requestBody);
+        var httpResponseMessage = await httpClient.PutAsync($"v1/Relationships/{relationDto.RelationshipId}", requestBody);
 
         if (httpResponseMessage.IsSuccessStatusCode)
             return true;
@@ -334,7 +334,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/Relationships/{id}");
+        var response = await httpClient.GetAsync($"v1/Relationships/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -349,7 +349,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/Relationships/Trader/{partyId}/Establishment/{establishmentId}");
+        var response = await httpClient.GetAsync($"v1/Relationships/Trader/{partyId}/Establishment/{establishmentId}");
 
         response.EnsureSuccessStatusCode();
 
