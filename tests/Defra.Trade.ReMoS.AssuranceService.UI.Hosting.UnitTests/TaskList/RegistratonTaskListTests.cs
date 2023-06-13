@@ -129,5 +129,46 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.NOTSTART);
             _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
         }
+
+        [Test]
+        public async Task GetAPIData_GivenCountryAndFboIsPopulated_EligibilityMarkedAsComplete()
+        {
+            //Arrange
+            TradePartyDTO tradePartyFromApi = new TradePartyDTO
+            {
+                Id = Guid.NewGuid(),
+                FboNumber = "fbonum-123456-fbonum",
+                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB"}
+            };
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyFromApi);
+
+            //Act
+            await _systemUnderTest!.GetAPIData();
+
+            //Assert
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
+        }
+
+        [Test]
+        public async Task GetAPIData_GivenFboNotPopulated_EligibilityMarkedAsNotStarted()
+        {
+            //Arrange
+            TradePartyDTO tradePartyFromApi = new TradePartyDTO
+            {
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" }
+            };
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyFromApi);
+
+            //Act
+            await _systemUnderTest!.GetAPIData();
+
+            //Assert
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.NOTSTART);
+        }
     }
 }

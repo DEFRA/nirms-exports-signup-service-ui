@@ -17,13 +17,15 @@ public class TradePartyTests
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
             PartyName = "Trade party Ltd",
-            NatureOfBusiness = "Wholesale Hamster Supplies"
+            NatureOfBusiness = "Wholesale Hamster Supplies",
+            FboNumber = "fbonum-123456-fbonum",
         };
 
         //Assert
         tradeParty.Id.Should().Be(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"));
         tradeParty.PartyName.Should().Be("Trade party Ltd");
         tradeParty.NatureOfBusiness.Should().Be("Wholesale Hamster Supplies");
+        tradeParty.FboNumber.Should().Be("fbonum-123456-fbonum");
     }
 }
 
