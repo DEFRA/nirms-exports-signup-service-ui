@@ -40,7 +40,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync("/TradeParties/Parties");
+        var response = await httpClient.GetAsync("v1/TradeParties/Parties");
         
         response.EnsureSuccessStatusCode();
 
@@ -55,7 +55,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
-        var response = await httpClient.GetAsync($"/TradeParties/Parties/{id}");
+        var response = await httpClient.GetAsync($"v1/TradeParties/Parties/{id}");
 
         response.EnsureSuccessStatusCode();
 
