@@ -3,12 +3,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 
@@ -20,12 +16,12 @@ public static class ServiceExtensions
         services.AddHttpClient("Assurance", httpClient =>
         {
             httpClient.BaseAddress = new Uri(config.GetValue<string>("APISettings:APIUrl"));
+            httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         });
 
         services.AddTransient<IAPIIntegration, ApiIntegration>();
         services.AddTransient<ITraderService, TraderService>();
         services.AddTransient<IEstablishmentService, EstablishmentService>();
-        //services.Configure<KeyVaultSettings>(config.GetSection(KeyVaultSettings.KeyVaultSecretsSettingsName));
 
         return services;
     }

@@ -1,16 +1,7 @@
-using Defra.Trade.Common.Security.AzureKeyVault;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
-using Defra.Trade.Common.Security.AzureKeyVault;
-using Defra.Trade.Common.Security.AzureKeyVault.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using GraphQL.Client.Abstractions;
-using GraphQL.Client.Http;
-using GraphQL.Client.Serializer.SystemTextJson;
-using Microsoft.ApplicationInsights.DependencyCollector;
 using System.Diagnostics.CodeAnalysis;
 using Defra.Trade.Common.AppConfig;
-using Microsoft.Extensions.DependencyInjection;
 using Defra.Trade.Common.Security.Authentication.Infrastructure;
 
 [ExcludeFromCodeCoverage]
@@ -29,7 +20,6 @@ internal sealed class Program
         builder.Services.AddRazorPages();
         builder.Services.AddMvc().AddCustomRouting();
         builder.Services.AddApplicationInsightsTelemetry();
-        //builder.Configuration.AddAzureKeyVault<KeyVaultSettings>(KeyVaultSettings.KeyVaultSecretsSettingsName, new ManagedIdentityKeyVaultAuthentication());
         builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
         builder.Services.Configure<KeyVaultSettings>(builder.Configuration.GetSection("Apim:Internal"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
