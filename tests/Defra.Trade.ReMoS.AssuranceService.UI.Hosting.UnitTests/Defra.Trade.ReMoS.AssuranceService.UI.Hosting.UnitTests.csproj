@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\src\Defra.Trade.ReMoS.AssuranceService.UI.Hosting\Defra.Trade.ReMoS.AssuranceService.UI.Hosting.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+	</ItemGroup>
+
 </Project>
