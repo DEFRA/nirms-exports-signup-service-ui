@@ -38,7 +38,7 @@
 
                     <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
                         <label class="govuk-label govuk-!-font-weight-bold" for="establishment-email">Establishment email address (optional)</label>
-                        <p class="govuk-hint">This will enable us to contact the establishment directly.</p>
+                        <p id="email-hint" class="govuk-hint">This will enable us to contact the establishment directly.</p>
                         <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
                         <input class="govuk-input" id="establishment-email" asp-for="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email">
                       </div>
