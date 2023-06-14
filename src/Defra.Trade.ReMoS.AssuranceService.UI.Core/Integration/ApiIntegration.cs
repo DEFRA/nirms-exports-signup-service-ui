@@ -14,17 +14,17 @@ public class ApiIntegration : IAPIIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly IOptions<KeyVaultSettings> _keyVaultSettings;
+    private readonly IOptions<AppConfigurationService> _appConfigurationSettings;
     private readonly IAuthenticationService _authenticationService;
 
-    public ApiIntegration(IHttpClientFactory httpClientFactory, IOptions<KeyVaultSettings> keyVaultSettings, IAuthenticationService authenticationService)
+    public ApiIntegration(IHttpClientFactory httpClientFactory, IOptions<AppConfigurationService> appConfigurationSettings, IAuthenticationService authenticationService)
     {
         _httpClientFactory = httpClientFactory;
         _jsonSerializerOptions = new JsonSerializerOptions()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
-        _keyVaultSettings = keyVaultSettings;
+        _appConfigurationSettings = appConfigurationSettings;
         _authenticationService = authenticationService;
     }
 
@@ -33,7 +33,7 @@ public class ApiIntegration : IAPIIntegration
         var httpClient = _httpClientFactory.CreateClient("Assurance");
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
-        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
+        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
         var response = await httpClient.GetAsync("v1/TradeParties/Parties");
         
         response.EnsureSuccessStatusCode();
@@ -311,7 +311,7 @@ public class ApiIntegration : IAPIIntegration
     {
         var httpClient = _httpClientFactory.CreateClient("Assurance");
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
-        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _keyVaultSettings.Value.SubscriptionKey);
+        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
 
         return httpClient;
     }

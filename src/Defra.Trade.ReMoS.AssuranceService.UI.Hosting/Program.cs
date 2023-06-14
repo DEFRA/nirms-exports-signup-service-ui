@@ -21,7 +21,7 @@ internal sealed class Program
         builder.Services.AddMvc().AddCustomRouting();
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
-        builder.Services.Configure<KeyVaultSettings>(builder.Configuration.GetSection("Apim:Internal"));
+        builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
 
