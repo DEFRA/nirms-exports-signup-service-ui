@@ -302,29 +302,44 @@ public class ApiIntegration : IAPIIntegration
             options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
     }
 
-    public async Task<Guid> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate)
+    public async Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate)
     {
-        Guid results = new();
-        var requestBody = new StringContent(
-            JsonSerializer.Serialize(tradePartyToUpdate),
-            Encoding.UTF8,
-            Application.Json);
-
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+        var requestBody = new StringContent(
+        JsonSerializer.Serialize(tradePartyToUpdate),
+        Encoding.UTF8,
+        Application.Json);
 
-        if (response.IsSuccessStatusCode)
-        {
-            using var contentStream = await response.Content.ReadAsStreamAsync();
-            if (contentStream != null)
-            {
-                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
-            }
-        }
-        if (results != Guid.Empty)
-        {
-            return results;
-        }
+        var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+   
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new TradePartyDTO();
+
+        //TradePartyDTO? results = new();
+        //var requestBody = new StringContent(
+        //    JsonSerializer.Serialize(tradePartyToUpdate),
+        //    Encoding.UTF8,
+        //    Application.Json);
+
+        //var httpClient = _httpClientFactory.CreateClient("Assurance");
+        //var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    using var contentStream = await response.Content.ReadAsStreamAsync();
+        //    if (contentStream != null)
+        //    {
+        //        results = await JsonSerializer.DeserializeAsync<TradePartyDTO?>(contentStream);
+        //    }
+        //}
+        //if (results?.Id != Guid.Empty)
+        //{
+        //    return results;
+        //}
         throw new BadHttpRequestException("null return from API");
     }
 }
