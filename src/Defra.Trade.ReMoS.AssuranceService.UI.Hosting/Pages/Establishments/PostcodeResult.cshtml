@@ -21,7 +21,13 @@
 
             <div class="govuk-form-group">
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
-                <p><span>@Model.Postcode</span> <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath asp-route-id="@Model.TradePartyId">Change</a></p>
+                <p><span>@Model.Postcode</span> 
+                    <a  asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath 
+                        asp-route-id="@Model.TradePartyId"
+                       asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                        Change
+                    </a>
+                </p>
 
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-!-font-weight-bold" for="points-of-departure-address-select">Select an address</label>

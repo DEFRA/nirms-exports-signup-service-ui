@@ -38,7 +38,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSearch_SearchValidPostcode()
         {
             //Arrange
-            _systemUnderTest!.Postcode = "TES1";
+            _systemUnderTest!.Postcode = "AB120AB";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -68,7 +68,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSearch_SearchValidPostcode_ModelIsInvalid()
         {
             //Arrange
-            _systemUnderTest!.Postcode = "TES1";
+            _systemUnderTest!.Postcode = "AB120AB";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
             //Act
