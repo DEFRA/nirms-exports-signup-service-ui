@@ -305,7 +305,7 @@ public class ApiIntegration : IAPIIntegration
             options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
     }
 
-    public HttpClient CreateHttpClient()
+    public HttpClient CreateHttpClient(HttpClient httpClient)
     {
         //var httpClient = _httpClientFactory.CreateClient("Assurance");
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
