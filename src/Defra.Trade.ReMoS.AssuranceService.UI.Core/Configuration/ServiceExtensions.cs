@@ -16,7 +16,7 @@ public static class ServiceExtensions
         services.AddHttpClient("Assurance", httpClient =>
         {
             //DEV
-            httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}v1/");
+            httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}/");
 
             //Local
             //httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}");
