@@ -48,9 +48,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             await _systemUnderTest.OnGetAsync(id, postcode);
 
             // assert
-            _systemUnderTest.LogisticsLocationsList.Should().HaveCount(1);
-            _systemUnderTest.LogisticsLocationsList[0].Text.Should().Be("Test 2, line 1, city, TES1");
-            _systemUnderTest.LogisticsLocationsList[0].Value.Should().Be(logisticsLocations[0].Id.ToString());
+            _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
+            _systemUnderTest.EstablishmentsList[0].Text.Should().Be("Test 2, line 1, city, TES1");
+            _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Id.ToString());
             }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             _systemUnderTest!.Postcode = "TES1";
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
-            _systemUnderTest!.SelectedLogisticsLocation = Guid.NewGuid().ToString();
+            _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
             var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
             {
@@ -83,7 +83,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             _systemUnderTest!.Postcode = "TES1";
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
-            _systemUnderTest!.SelectedLogisticsLocation = Guid.NewGuid().ToString();
+            _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
             _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
 

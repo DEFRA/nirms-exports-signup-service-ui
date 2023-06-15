@@ -1,10 +1,11 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -18,10 +19,10 @@ public class PostcodeResultModel : PageModel
     public Guid TradePartyId { get; set; }
 
     [BindProperty]
-    public List<SelectListItem> LogisticsLocationsList { get; set; } = default!;
+    public List<SelectListItem> EstablishmentsList { get; set; } = default!;
 
     [BindProperty]
-    public string SelectedLogisticsLocation { get; set; } = default!;
+    public string SelectedEstablishment { get; set; } = default!;
 
     public string? ContentHeading { get; set; } = string.Empty;
     
@@ -39,7 +40,7 @@ public class PostcodeResultModel : PageModel
         IEstablishmentService establishmentService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _establishmentService = establishmentService;
+        _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string NI_GBFlag = "GB")
@@ -48,7 +49,7 @@ public class PostcodeResultModel : PageModel
         Postcode = postcode;
         TradePartyId= id;
 
-        var LogisticsLocations = new List<LogisticsLocationDTO>();
+        var establishments = new List<LogisticsLocationDTO>();
         this.NI_GBFlag = NI_GBFlag;
 
         if (NI_GBFlag == "NI")
@@ -65,10 +66,15 @@ public class PostcodeResultModel : PageModel
         
         if (Postcode != string.Empty)
         {
-            LogisticsLocations = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
+            establishments = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
         }
 
-        LogisticsLocationsList = LogisticsLocations.Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() }).ToList();
+        EstablishmentsList = establishments?.Count > 0 ? establishments.Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() }).ToList() : null!;
+
+        if (EstablishmentsList == null || EstablishmentsList.Count == 0)
+        {
+            ModelState.AddModelError(nameof(EstablishmentsList), "No search results returned");
+        }
 
         return Page();
     }
@@ -85,13 +91,13 @@ public class PostcodeResultModel : PageModel
         var logisticsLocationRelationshipDTO = new LogisticsLocationBusinessRelationshipDTO()
         {
             TradePartyId = TradePartyId,
-            LogisticsLocationId = Guid.Parse(SelectedLogisticsLocation)
+            LogisticsLocationId = Guid.Parse(SelectedEstablishment)
         };
 
         await _establishmentService.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = TradePartyId, locationId = Guid.Parse(SelectedLogisticsLocation), NI_GBFlag });
+            new { id = TradePartyId, locationId = Guid.Parse(SelectedEstablishment), NI_GBFlag });
     }
 }
