@@ -30,10 +30,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
-        httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
-        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
+        var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync("TradeParties/Parties");
         
         response.EnsureSuccessStatusCode();
