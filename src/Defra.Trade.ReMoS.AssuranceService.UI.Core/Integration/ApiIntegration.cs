@@ -30,8 +30,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        httpClient = CreateHttpClient();
+        var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync("TradeParties/Parties");
         
         response.EnsureSuccessStatusCode();
@@ -305,9 +304,9 @@ public class ApiIntegration : IAPIIntegration
             options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
     }
 
-    public HttpClient CreateHttpClient(HttpClient httpClient)
+    public HttpClient CreateHttpClient()
     {
-        //var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
         httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
 
