@@ -16,10 +16,10 @@ public static class ServiceExtensions
         services.AddHttpClient("Assurance", httpClient =>
         {
             //DEV
-            httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}v1/");
+            //httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}v1/");
 
             //Local
-            //httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}");
+            httpClient.BaseAddress = new Uri($"{config.GetValue<string>("APISettings:APIUrl")}");
 
             httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         });
