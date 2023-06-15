@@ -11,7 +11,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     {
         #region UI Model
         [BindProperty]
-        [RegularExpression(@"\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}\b", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [StringLength(100, ErrorMessage = "Email is too long")]
         [Required(ErrorMessage = "Enter the email address of the contact person")]
         public string Email { get; set; } = string.Empty;
