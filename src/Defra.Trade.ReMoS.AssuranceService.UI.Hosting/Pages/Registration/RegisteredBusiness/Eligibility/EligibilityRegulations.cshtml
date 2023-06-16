@@ -1,0 +1,55 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.EligibilityRegulationsModel
+@{
+    ViewData["Title"] = "Submit Registration";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <h1 class="govuk-heading-l">
+            Regulations for moving goods from England, Scotland and Wales under the Northern Ireland Retail Movement Scheme
+        </h1>
+
+        <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Prototype annotation
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <p class="govuk-body">
+                    Copy TBC
+                </p>
+            </div>
+        </div>
+
+        <p>Before you start this sign up process, confirm you are aware of the following:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>Packing and labelling...</li>
+            <li>HMRC requirements...</li>
+            <li>SPS requirements...</li>
+            <li>UK only...</li>
+            <li>Goods must stay in Northern Ireland...</li>
+        </ul>
+
+        <p><a href="">See full guidance</a></p>
+
+        <form method="POST" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Confirmed") ? "govuk-form-group--error" : null)">
+                <p id="RegulationConfirmed_Error" class="govuk-error-message" gds-validation-for="Confirmed"></p>
+                <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
+                    <input class="govuk-checkboxes__input" id="Confirmed" type="checkbox" aria-describedby="RegulationConfirmed_Error" asp-for="Confirmed" value="true">
+                    <label class="govuk-label govuk-checkboxes__label govuk-!-font-weight-bold" for="Confirmed">
+                        I confirm that I have understood the guidance and regulations for moving goods under this scheme
+                    </label>
+                </div>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit" id="button-elig_regulations_Submit data-module="govuk-button">Continue</button>
+            <input type="hidden" asp-for="TraderId"/>
+        </form>
+    </div>
+</div>

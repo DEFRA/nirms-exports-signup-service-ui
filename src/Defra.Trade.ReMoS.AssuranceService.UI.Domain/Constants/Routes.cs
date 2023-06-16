@@ -3,6 +3,7 @@
 public static class Routes
 {
     public const string RegisteredBusinessCountry = "/registered-business-country";
+    public const string RegisteredBusinessRegulations = "/registered-business-regulations";
     public const string RegisteredBusinessFboNumber = "/registered-business-fbo-number";
     public const string RegisteredBusinessCanNotRegister = "/registered-business-cannot-register";
     
@@ -26,6 +27,7 @@ public static class Routes
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
+        (Pages.Path.RegisteredBusinessRegulationsPath, RegisteredBusinessRegulations),
         (Pages.Path.RegisteredBusinessFboNumberPath, RegisteredBusinessFboNumber),
         (Pages.Path.RegisteredBusinessCanNotRegisterPath, RegisteredBusinessCanNotRegister),
         (Pages.Path.RegistrationTaskListPath, RegistrationTasklist),
@@ -51,6 +53,7 @@ public static class Routes
         public static class Names
         {
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
+            public const string RegisteredBusinessRegulationsName = "EligibilityRegulations";
             public const string RegisteredBusinessFboNumberName = "RegisteredBusinessFboNumber";
             public const string RegisteredBusinessCanNotRegisterName = "RegisteredBusinessCanNotRegister";
             public const string RegistrationTasklistName = "RegistrationTaskList";
@@ -73,7 +76,8 @@ public static class Routes
 
         public static class Path
         {
-            public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCountryName}";
+            public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryName}";
+            public const string RegisteredBusinessRegulationsPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessRegulationsName}";
             public const string RegisteredBusinessFboNumberPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboNumberName}";
             public const string RegisteredBusinessCanNotRegisterPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCanNotRegisterName}";
             public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklistName}";
