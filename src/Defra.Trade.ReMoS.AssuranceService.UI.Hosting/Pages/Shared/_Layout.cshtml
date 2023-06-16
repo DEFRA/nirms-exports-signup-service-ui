@@ -42,9 +42,10 @@
     </header>
 </head>
 <body class="govuk-template__body">
+    <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <div class="govuk-width-container">
     <partial name="_Breadcrumbs" />
-        <main role="main" class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
+        <main role="main" id="MainContent" class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
         @RenderBody()
     </main>
     </div>
