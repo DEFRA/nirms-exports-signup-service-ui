@@ -70,11 +70,12 @@ public class EstablishmentNameAndAddressModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
+        EstablishmentId = establishmentId ?? Guid.Empty;
 
         if (NI_GBFlag == "NI")
         {
@@ -95,7 +96,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, NI_GBFlag);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag);
         }
 
         var establishmentId = await SaveEstablishmentDetails();
@@ -108,21 +109,38 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = new LogisticsLocationDTO
+        //TODO - if existing estab, update, else create
+
+        if (EstablishmentId == Guid.Empty) 
         {
-            Id = EstablishmentId,
-            Name = EstablishmentName,
-            Address = new TradeAddressDTO
+            //Create establishment
+            var establishmentDto = new LogisticsLocationDTO
             {
-                LineOne = LineOne,
-                LineTwo = LineTwo,
-                CityName = CityName,
-                TradeCountry = Country,
-                PostCode = PostCode,
-            },
-            NI_GBFlag = NI_GBFlag,
-        };
-        return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
+                Id = EstablishmentId,
+                Name = EstablishmentName,
+                Address = new TradeAddressDTO
+                {
+                    LineOne = LineOne,
+                    LineTwo = LineTwo,
+                    CityName = CityName,
+                    TradeCountry = Country,
+                    PostCode = PostCode,
+                },
+                NI_GBFlag = NI_GBFlag,
+            };
+            return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
+        }
+        else
+        {
+            //Update establishment
+            var establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
+            establishment.Name = EstablishmentName;
+            establishment.Address.LineOne = LineOne;
+            establishment.Address.LineTwo = LineTwo;
+            establishment.Address.CityName = CityName;
+            establishment.Address.TradeCountry = Country;
+            establishment.Address.PostCode = PostCode;
+        }
     }
 
     private async Task RetrieveEstablishmentDetails()
