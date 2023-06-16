@@ -11,7 +11,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 {
     public class IsAuthorisedSignatoryModel : PageModel
     {
-        [BindProperty]
+        [BindProperty]      
         [Required(ErrorMessage = "Fill in Yes or No")]
         public string? IsAuthorisedSignatory { get; set; } = null;
 
@@ -27,8 +27,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
         public IsAuthorisedSignatoryModel(ITraderService traderService, ILogger<IsAuthorisedSignatoryModel> logger)
         {
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService)); ;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); ;
+            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
