@@ -970,5 +970,47 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             // Assert
             _mockHttpClientFactory.Verify();
         }
+
+        [Test]
+        public async Task Integration_Returns_True_When_Calling_UpdateEstablishment()
+        {
+            // Arrange
+            var logisticsLocationDto = new LogisticsLocationDTO
+            {
+                Id = Guid.NewGuid(),
+                Name = "testname",
+                NI_GBFlag = "GB",
+            };
+            var appConfigurationSettings = new AppConfigurationService();
+            appConfigurationSettings.SubscriptionKey = "testkey";
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var guid = Guid.NewGuid();
+
+            var jsonString = JsonConvert.SerializeObject(logisticsLocationDto);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NoContent,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.UpdateEstablishmentAsync(logisticsLocationDto);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue.Should().Be(true);
+        }
     }
 }

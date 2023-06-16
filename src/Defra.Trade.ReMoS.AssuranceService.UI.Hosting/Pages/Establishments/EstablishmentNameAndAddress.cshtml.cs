@@ -98,7 +98,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         var establishmentId = await SaveEstablishmentDetails();
@@ -111,8 +111,6 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        //TODO - if existing estab, update, else create
-
         var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
         establishmentDto.Name = EstablishmentName;
         establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDTO();
@@ -125,12 +123,10 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (EstablishmentId == Guid.Empty) 
         {
-            //Create establishment
             return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
         }
         else
         {
-            //Update establishment
             await _establishmentService.UpdateEstablishmentDetailsAsync(establishmentDto);
             return EstablishmentId;
         }

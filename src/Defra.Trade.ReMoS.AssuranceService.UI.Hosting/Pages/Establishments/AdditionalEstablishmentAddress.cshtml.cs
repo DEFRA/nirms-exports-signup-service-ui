@@ -84,7 +84,6 @@ public class AdditionalEstablishmentAddressModel : PageModel
     public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         bool establishmentAddedManually = await _establishmentService.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId);
-        //await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
 
         if (establishmentAddedManually)
         {   
@@ -93,7 +92,6 @@ public class AdditionalEstablishmentAddressModel : PageModel
                 new { id = tradePartyId, establishmentId, NI_GBFlag });
         }
 
-        //return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag});
         return await OnGetAsync(TradePartyId, NI_GBFlag);
     }
 
