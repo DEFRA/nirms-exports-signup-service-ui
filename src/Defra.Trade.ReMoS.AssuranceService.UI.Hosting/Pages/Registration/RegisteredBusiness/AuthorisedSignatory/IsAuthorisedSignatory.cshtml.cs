@@ -14,7 +14,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         [Required(ErrorMessage = "Fill in Yes or No")]
         public string? IsAuthorisedSignatory { get; set; } = null;
-        
+
         [BindProperty]
         public Guid TradePartyId { get; set; }
         [BindProperty]
@@ -58,7 +58,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId, SignatoryId = SignatoryId });
         }
-            
+
         private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
@@ -73,35 +73,33 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         }
 
         private async Task<TradePartyDTO> GenerateDTO()
-        {            
+        {
             var tradeParty = await GetIsAuthorisedSignatoryFromApiAsync();
-            
+
             var isSignatory = Convert.ToBoolean(IsAuthorisedSignatory);
-            if (isSignatory == true)
-            {                
-                if (tradeParty != null) 
+            if (isSignatory == true && tradeParty != null)
+            {
+                return new TradePartyDTO()
                 {
-                    return new TradePartyDTO()
+                    Id = TradePartyId,
+                    Contact = new TradeContactDTO()
                     {
-                        Id = TradePartyId,
-                        Contact = new TradeContactDTO()
-                        {
-                            Id = ContactId,
-                            PersonName = tradeParty?.Contact?.PersonName,
-                            Email = tradeParty?.Contact?.Email,
-                            Position = tradeParty?.Contact?.Position,
-                            TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
-                            IsAuthorisedSignatory = isSignatory
-                        },
-                       AuthorisedSignatory = new AuthorisedSignatoryDTO()
-                       {
-                           Id = SignatoryId,
-                           Name = tradeParty?.Contact?.PersonName,
-                           EmailAddress = tradeParty?.Contact?.Email,
-                           Position = tradeParty?.Contact?.Position,
-                       }
-                    };
-                }
+                        Id = ContactId,
+                        PersonName = tradeParty?.Contact?.PersonName,
+                        Email = tradeParty?.Contact?.Email,
+                        Position = tradeParty?.Contact?.Position,
+                        TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                        IsAuthorisedSignatory = isSignatory
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                    {
+                        Id = SignatoryId,
+                        Name = tradeParty?.Contact?.PersonName,
+                        EmailAddress = tradeParty?.Contact?.Email,
+                        Position = tradeParty?.Contact?.Position,
+                    }
+                };
+
             }
 
             return new TradePartyDTO()
@@ -112,14 +110,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     Id = ContactId,
                     IsAuthorisedSignatory = isSignatory
                 },
-                AuthorisedSignatory = new AuthorisedSignatoryDTO() 
+                AuthorisedSignatory = new AuthorisedSignatoryDTO()
                 {
                     Id = SignatoryId,
-                    Name = null, 
-                    EmailAddress = null, 
+                    Name = null,
+                    EmailAddress = null,
                     Position = null
                 }
-                
+
             };
         }
     }
