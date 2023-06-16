@@ -51,7 +51,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             var updatedTradeParty = await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
             IsAuthorisedSignatory = updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
-            if (Convert.ToBoolean(IsAuthorisedSignatory) == true)
+            if (Convert.ToBoolean(IsAuthorisedSignatory))
             {
                 return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId });
             }
@@ -77,7 +77,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = await GetIsAuthorisedSignatoryFromApiAsync();
 
             var isSignatory = Convert.ToBoolean(IsAuthorisedSignatory);
-            if (isSignatory == true && tradeParty != null)
+            if (isSignatory && tradeParty != null)
             {
                 return new TradePartyDTO()
                 {

@@ -81,7 +81,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             _systemUnderTest!.IsAuthorisedSignatory = "true";
             _systemUnderTest.TradePartyId = Guid.NewGuid();
             var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
-            
+
+            _mockTraderService
+               .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+               .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+               {
+                   Id = tradePartyId,
+                   Contact = new Core.DTOs.TradeContactDTO()
+                   {
+                       IsAuthorisedSignatory = true
+                   },
+                   AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                   {
+                       Id = Guid.NewGuid()
+                   }
+               });
+
             _mockTraderService
                 .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDTO>()).Result)
                 .Returns(new Core.DTOs.TradePartyDTO()
@@ -90,6 +105,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                     Contact = new Core.DTOs.TradeContactDTO()
                     {
                         IsAuthorisedSignatory = true
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                    {
+                        Id = Guid.NewGuid()
                     }
                 });
 
