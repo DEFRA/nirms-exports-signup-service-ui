@@ -83,4 +83,9 @@ public class EstablishmentService : IEstablishmentService
 
         return true;
     }
+
+    public async Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDTO establishmentDto)
+    {
+        return await _api.UpdateEstablishmentAsync(establishmentDto);
+    }
 }

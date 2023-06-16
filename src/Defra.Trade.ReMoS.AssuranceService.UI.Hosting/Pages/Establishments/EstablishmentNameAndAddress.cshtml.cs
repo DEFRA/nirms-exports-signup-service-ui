@@ -4,6 +4,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.AppService.Fluent.Models;
+using Microsoft.Azure.Management.Sql.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
@@ -111,37 +113,26 @@ public class EstablishmentNameAndAddressModel : PageModel
     {
         //TODO - if existing estab, update, else create
 
+        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
+        establishmentDto.Name = EstablishmentName;
+        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDTO();
+        establishmentDto.Address.LineOne = LineOne;
+        establishmentDto.Address.LineTwo = LineTwo;
+        establishmentDto.Address.CityName = CityName;
+        establishmentDto.Address.TradeCountry = Country;
+        establishmentDto.Address.PostCode = PostCode;
+        establishmentDto.NI_GBFlag = NI_GBFlag;
+
         if (EstablishmentId == Guid.Empty) 
         {
             //Create establishment
-            var establishmentDto = new LogisticsLocationDTO
-            {
-                Id = EstablishmentId,
-                Name = EstablishmentName,
-                Address = new TradeAddressDTO
-                {
-                    LineOne = LineOne,
-                    LineTwo = LineTwo,
-                    CityName = CityName,
-                    TradeCountry = Country,
-                    PostCode = PostCode,
-                },
-                NI_GBFlag = NI_GBFlag,
-            };
             return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
         }
         else
         {
             //Update establishment
-            var establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
-            establishment.Name = EstablishmentName;
-            establishment.Address.LineOne = LineOne;
-            establishment.Address.LineTwo = LineTwo;
-            establishment.Address.CityName = CityName;
-            establishment.Address.TradeCountry = Country;
-            establishment.Address.PostCode = PostCode;
-
-            return Guid.Empty;
+            await _establishmentService.UpdateEstablishmentDetailsAsync(establishmentDto);
+            return EstablishmentId;
         }
     }
 
