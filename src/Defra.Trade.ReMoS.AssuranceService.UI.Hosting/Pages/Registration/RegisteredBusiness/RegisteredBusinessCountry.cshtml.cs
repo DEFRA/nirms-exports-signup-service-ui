@@ -53,9 +53,9 @@ public class RegisteredBusinessCountryModel : PageModel
         await SaveCountryToApiAsync();
 
         return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath,
+            Routes.Pages.Path.RegisteredBusinessFboNumberPath,
             new { id = TraderId });
-    }
+            }
 
     private TradePartyDTO CreateDTO()
     {

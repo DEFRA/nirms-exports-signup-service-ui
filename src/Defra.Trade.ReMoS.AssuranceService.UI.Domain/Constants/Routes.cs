@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 public static class Routes
 {
     public const string RegisteredBusinessCountry = "/registered-business-country";
+    public const string RegisteredBusinessFboNumber = "/registered-business-fbo-number";
+    public const string RegisteredBusinessCanNotRegister = "/registered-business-cannot-register";
+    
     public const string RegistrationTasklist = "/registration-tasklist";
     public const string RegisteredBusinessContactName = "/registered-business-contact-name";
     public const string RegisteredBusinessContactPosition = "/registered-business-contact-position";
@@ -29,6 +26,8 @@ public static class Routes
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
+        (Pages.Path.RegisteredBusinessFboNumberPath, RegisteredBusinessFboNumber),
+        (Pages.Path.RegisteredBusinessCanNotRegisterPath, RegisteredBusinessCanNotRegister),
         (Pages.Path.RegistrationTaskListPath, RegistrationTasklist),
         (Pages.Path.RegisteredBusinessContactNamePath, RegisteredBusinessContactName),
         (Pages.Path.RegisteredBusinessContactPositionPath, RegisteredBusinessContactPosition),
@@ -52,6 +51,8 @@ public static class Routes
         public static class Names
         {
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
+            public const string RegisteredBusinessFboNumberName = "RegisteredBusinessFboNumber";
+            public const string RegisteredBusinessCanNotRegisterName = "RegisteredBusinessCanNotRegister";
             public const string RegistrationTasklistName = "RegistrationTaskList";
             public const string RegisteredBusinessContactNameName = "RegisteredBusinessContactName";
             public const string RegisteredBusinessContactPositionName = "RegisteredBusinessContactPosition";
@@ -73,6 +74,8 @@ public static class Routes
         public static class Path
         {
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCountryName}";
+            public const string RegisteredBusinessFboNumberPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboNumberName}";
+            public const string RegisteredBusinessCanNotRegisterPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCanNotRegisterName}";
             public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklistName}";
             public const string RegisteredBusinessContactNamePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactNameName}";
             public const string RegisteredBusinessContactPositionPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPositionName}";

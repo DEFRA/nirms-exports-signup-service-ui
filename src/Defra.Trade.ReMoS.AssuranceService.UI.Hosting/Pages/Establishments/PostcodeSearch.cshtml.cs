@@ -10,7 +10,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
     {
         #region UI Models
         [BindProperty]
-        [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Enter a real postcode.")]
+        [RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a valid postcode.")]
         [StringLength(100, ErrorMessage = "Postcode must be 100 characters or less")]
         [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
@@ -40,6 +40,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         {
             _logger.LogTrace("Establishment postcode search on get");
             TradePartyId = id;
+            this.NI_GBFlag = NI_GBFlag;
 
             if (NI_GBFlag == "NI") 
             {
@@ -61,7 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync(TradePartyId, NI_GBFlag);
+                return await OnGetAsync(TradePartyId, NI_GBFlag!);
             }
 
             return RedirectToPage(

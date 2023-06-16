@@ -1,14 +1,12 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
+using Defra.Trade.Common.Security.Authentication.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -16,20 +14,27 @@ public class ApiIntegration : IAPIIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly IOptions<AppConfigurationService> _appConfigurationSettings;
+    private readonly IAuthenticationService _authenticationService;
 
-    public ApiIntegration(IHttpClientFactory httpClientFactory)
+    public ApiIntegration(IHttpClientFactory httpClientFactory, IOptions<AppConfigurationService> appConfigurationSettings, IAuthenticationService authenticationService)
     {
         _httpClientFactory = httpClientFactory;
         _jsonSerializerOptions = new JsonSerializerOptions()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
+        _appConfigurationSettings = appConfigurationSettings;
+        _authenticationService = authenticationService;
     }
 
     public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
     {
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync("/TradeParties/Parties");
+        httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
+        httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
+        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
+        var response = await httpClient.GetAsync("v1/TradeParties/Parties");
         
         response.EnsureSuccessStatusCode();
 
@@ -40,8 +45,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid id)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/TradeParties/Parties/{id}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/TradeParties/Parties/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -58,8 +63,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PostAsync($"TradeParties/Party", requestBody);
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PostAsync($"v1/TradeParties/Party", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -84,8 +89,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PutAsync($"v1//TradeParties/Parties/{tradePartyToUpdate.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -110,8 +115,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PutAsync($"v1//TradeParties/Parties/Address/{tradePartyToUpdate.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -136,8 +141,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PutAsync($"v1//TradeParties/Parties/Contact/{tradePartyToUpdate.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -162,8 +167,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PostAsync($"Establishments", requestBody);
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PostAsync($"v1/Establishments", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -188,8 +193,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.PostAsync($"Relationships", requestBody);
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PostAsync($"v1/Relationships", requestBody);
 
         if (response.IsSuccessStatusCode)
         {
@@ -208,8 +213,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid id)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/Establishments/{id}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/Establishments/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -220,8 +225,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<List<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/Establishments/Party/{tradePartyId}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/Establishments/Party/{tradePartyId}");
 
         response.EnsureSuccessStatusCode();
 
@@ -232,8 +237,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/Establishments/Postcode/{postcode}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/Establishments/Postcode/{postcode}");
 
         response.EnsureSuccessStatusCode();
 
@@ -244,16 +249,16 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task RemoveEstablishmentFromPartyAsync(Guid tradePartyId, Guid locationId)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.DeleteAsync($"/Relationships?partyId={tradePartyId}&establishmentid={locationId}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.DeleteAsync($"v1/Relationships?partyId={tradePartyId}&establishmentid={locationId}");
 
         response.EnsureSuccessStatusCode();
     }
 
     public async Task<List<LogisticsLocationBusinessRelationshipDTO>?> GetAllRelationsForEstablishmentAsync(Guid id)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/Relationships/Establishment/{id}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/Relationships/Establishment/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -269,8 +274,8 @@ public class ApiIntegration : IAPIIntegration
             Encoding.UTF8,
             Application.Json);
 
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var httpResponseMessage = await httpClient.PutAsync($"/Relationships/{relationDto.RelationshipId}", requestBody);
+        var httpClient = CreateHttpClient();
+        var httpResponseMessage = await httpClient.PutAsync($"v1/Relationships/{relationDto.RelationshipId}", requestBody);
 
         if (httpResponseMessage.IsSuccessStatusCode)
             return true;
@@ -280,8 +285,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<LogisticsLocationBusinessRelationshipDTO> GetRelationshipById(Guid id)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/Relationships/{id}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/Relationships/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -292,8 +297,8 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<LogisticsLocationBusinessRelationshipDTO> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
-        var response = await httpClient.GetAsync($"/Relationships/Trader/{partyId}/Establishment/{establishmentId}");
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"v1/Relationships/Trader/{partyId}/Establishment/{establishmentId}");
 
         response.EnsureSuccessStatusCode();
 
@@ -341,5 +346,14 @@ public class ApiIntegration : IAPIIntegration
         //    return results;
         //}
         throw new BadHttpRequestException("null return from API");
+    }
+
+    public HttpClient CreateHttpClient()
+    {
+        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
+        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
+
+        return httpClient;
     }
 }

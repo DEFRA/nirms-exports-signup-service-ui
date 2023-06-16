@@ -8,6 +8,49 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+        @if (!ModelState.IsValid)
+        {
+            if (ModelState.Any(x => x.Key == nameof(Model.EstablishmentsList)))
+            {
+                <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="error-summary">
+                    <h2 class="govuk-error-summary__title" id="error-summary-title">
+                        There is a problem
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            @foreach (var modelError in ModelState)
+                            {
+                                var errorField = modelError.Key;
+                                if (errorField == nameof(Model.EstablishmentsList))
+                                {
+                                    <li>
+                                        No addresses found for this postcode. Try searching for
+                                        <a  asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath"
+                                           asp-route-id="@Model.TradePartyId"
+                                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                           a different postcode
+                                       </a> 
+                                       or
+                                        <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                                           asp-route-id="@Model.TradePartyId"
+                                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                           enter an address manually.
+                                       </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <partial name="_ErrorSummary" model="ModelState" />
+            }
+        }
+
+
+
         <form class="form" method="post">
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="NI_GBFlag" />
@@ -21,11 +64,17 @@
 
             <div class="govuk-form-group">
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
-                <p><span>@Model.Postcode</span> <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath asp-route-id="@Model.TradePartyId">Change</a></p>
+                <p><span>@Model.Postcode</span> 
+                    <a  asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath 
+                        asp-route-id="@Model.TradePartyId"
+                       asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                        Change
+                    </a>
+                </p>
 
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-!-font-weight-bold" for="points-of-departure-address-select">Select an address</label>
-                    <select class="govuk-select" id="points-of-departure-address-select" asp-for="@Model.SelectedLogisticsLocation" asp-items="@Model.LogisticsLocationsList"></select>
+                    <select class="govuk-select" id="points-of-departure-address-select" asp-for="@Model.SelectedEstablishment" asp-items="@Model.EstablishmentsList"></select>
                 </div>
             </div>
 
@@ -38,10 +87,9 @@
                     </span>
                 </summary>
                 <div class="govuk-details__text">
-                    <a 
-                        asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath 
-                        asp-route-id="@Model.TradePartyId"
-                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                    <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                       asp-route-id="@Model.TradePartyId"
+                       asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         Add the establishment address manually
                     </a>
                 </div>

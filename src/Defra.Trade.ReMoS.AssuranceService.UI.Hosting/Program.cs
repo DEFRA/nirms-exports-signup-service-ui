@@ -1,11 +1,8 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using GraphQL.Client.Abstractions;
-using GraphQL.Client.Http;
-using GraphQL.Client.Serializer.SystemTextJson;
-using Microsoft.ApplicationInsights.DependencyCollector;
 using System.Diagnostics.CodeAnalysis;
+using Defra.Trade.Common.AppConfig;
+using Defra.Trade.Common.Security.Authentication.Infrastructure;
 
 [ExcludeFromCodeCoverage]
 internal sealed class Program
@@ -22,8 +19,11 @@ internal sealed class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddMvc().AddCustomRouting();
-        builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApplicationInsightsTelemetry();
+        builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
+        builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));
+        builder.Services.AddServiceConfigurations(builder.Configuration);
+        builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
 
         var app = builder.Build();
 
@@ -42,5 +42,7 @@ internal sealed class Program
         app.MapRazorPages();
         
         app.Run();
+
+
     }
 }
