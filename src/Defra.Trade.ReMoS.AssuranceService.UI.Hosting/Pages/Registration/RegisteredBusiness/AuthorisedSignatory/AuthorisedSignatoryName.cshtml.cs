@@ -4,9 +4,11 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory
 {
+    [ExcludeFromCodeCoverage]
     public class AuthorisedSignatoryNameModel : PageModel
     {
         [BindProperty]
@@ -59,6 +61,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.AuthorisedSignatory!= null)
             {
+                SignatoryId = tradeParty.AuthorisedSignatory.Id;
                 Name = tradeParty.AuthorisedSignatory.Name ?? string.Empty;
             }
         }

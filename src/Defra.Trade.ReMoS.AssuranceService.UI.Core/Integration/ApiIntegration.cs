@@ -35,7 +35,7 @@ public class ApiIntegration : IAPIIntegration
         httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
         var response = await httpClient.GetAsync("v1/TradeParties/Parties");
-        
+
         response.EnsureSuccessStatusCode();
 
         return await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(
@@ -230,7 +230,7 @@ public class ApiIntegration : IAPIIntegration
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>> (
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>>(
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new List<LogisticsLocationDetailsDTO>();
     }
@@ -316,7 +316,7 @@ public class ApiIntegration : IAPIIntegration
         Application.Json);
 
         var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
-   
+
 
         response.EnsureSuccessStatusCode();
 
@@ -324,27 +324,6 @@ public class ApiIntegration : IAPIIntegration
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new TradePartyDTO();
 
-        //TradePartyDTO? results = new();
-        //var requestBody = new StringContent(
-        //    JsonSerializer.Serialize(tradePartyToUpdate),
-        //    Encoding.UTF8,
-        //    Application.Json);
-
-        //var httpClient = _httpClientFactory.CreateClient("Assurance");
-        //var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
-
-        //if (response.IsSuccessStatusCode)
-        //{
-        //    using var contentStream = await response.Content.ReadAsStreamAsync();
-        //    if (contentStream != null)
-        //    {
-        //        results = await JsonSerializer.DeserializeAsync<TradePartyDTO?>(contentStream);
-        //    }
-        //}
-        //if (results?.Id != Guid.Empty)
-        //{
-        //    return results;
-        //}
         throw new BadHttpRequestException("null return from API");
     }
 

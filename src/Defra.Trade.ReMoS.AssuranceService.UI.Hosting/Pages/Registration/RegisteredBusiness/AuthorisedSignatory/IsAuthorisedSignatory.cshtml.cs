@@ -22,8 +22,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         public Guid SignatoryId { get; set; }
 
-        //private bool? isSignatory { get; set; } = null;
-
         private readonly ITraderService _traderService;
         private readonly ILogger<IsAuthorisedSignatoryModel> _logger;
 
@@ -58,7 +56,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId });
             }
 
-            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId, SignatoryId = tradeParty?.AuthorisedSignatory?.Id });            
+            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId, SignatoryId = SignatoryId });
         }
             
         private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
