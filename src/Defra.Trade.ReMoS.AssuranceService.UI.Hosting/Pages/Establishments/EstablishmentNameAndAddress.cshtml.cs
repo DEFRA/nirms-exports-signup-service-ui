@@ -140,6 +140,8 @@ public class EstablishmentNameAndAddressModel : PageModel
             establishment.Address.CityName = CityName;
             establishment.Address.TradeCountry = Country;
             establishment.Address.PostCode = PostCode;
+
+            return Guid.Empty;
         }
     }
 
