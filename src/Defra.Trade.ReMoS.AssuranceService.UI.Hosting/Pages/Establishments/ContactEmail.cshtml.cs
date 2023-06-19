@@ -13,7 +13,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class ContactEmailModel : PageModel
 {
     #region UI Models
-    [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [RegularExpression(
+       @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+       ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDTO? Location { get; set; } = new LogisticsLocationDTO();

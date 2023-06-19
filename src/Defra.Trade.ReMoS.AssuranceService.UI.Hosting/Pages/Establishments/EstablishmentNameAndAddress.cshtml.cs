@@ -4,6 +4,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.AppService.Fluent.Models;
+using Microsoft.Azure.Management.Sql.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
@@ -70,11 +72,12 @@ public class EstablishmentNameAndAddressModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
+        EstablishmentId = establishmentId ?? Guid.Empty;
 
         if (NI_GBFlag == "NI")
         {
@@ -95,7 +98,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, NI_GBFlag);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         var establishmentId = await SaveEstablishmentDetails();
@@ -108,21 +111,25 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = new LogisticsLocationDTO
+        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
+        establishmentDto.Name = EstablishmentName;
+        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDTO();
+        establishmentDto.Address.LineOne = LineOne;
+        establishmentDto.Address.LineTwo = LineTwo;
+        establishmentDto.Address.CityName = CityName;
+        establishmentDto.Address.TradeCountry = Country;
+        establishmentDto.Address.PostCode = PostCode;
+        establishmentDto.NI_GBFlag = NI_GBFlag;
+
+        if (EstablishmentId == Guid.Empty) 
         {
-            Id = EstablishmentId,
-            Name = EstablishmentName,
-            Address = new TradeAddressDTO
-            {
-                LineOne = LineOne,
-                LineTwo = LineTwo,
-                CityName = CityName,
-                TradeCountry = Country,
-                PostCode = PostCode,
-            },
-            NI_GBFlag = NI_GBFlag,
-        };
-        return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
+            return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
+        }
+        else
+        {
+            await _establishmentService.UpdateEstablishmentDetailsAsync(establishmentDto);
+            return EstablishmentId;
+        }
     }
 
     private async Task RetrieveEstablishmentDetails()
