@@ -306,7 +306,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate)
     {
-        var httpClient = _httpClientFactory.CreateClient("Assurance");
+        var httpClient = CreateHttpClient();
         var requestBody = new StringContent(
         JsonSerializer.Serialize(tradePartyToUpdate),
         Encoding.UTF8,
