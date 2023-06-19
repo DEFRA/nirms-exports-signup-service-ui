@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Defra.Trade.Common.AppConfig;
 using Defra.Trade.Common.Security.Authentication.Infrastructure;
+#pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
 internal sealed class Program
@@ -10,9 +11,8 @@ internal sealed class Program
     private Program()
     {
     }
-#pragma warning disable CS1998
+
     private static async Task Main(string[] args)
-#pragma warning restore CS1998
     {
         var builder = WebApplication.CreateBuilder(args);
 
