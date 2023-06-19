@@ -304,6 +304,22 @@ public class ApiIntegration : IAPIIntegration
             options: _jsonSerializerOptions) ?? new LogisticsLocationBusinessRelationshipDTO();
     }
 
+    public async Task<bool> UpdateEstablishmentAsync(LogisticsLocationDTO establishmentDto)
+    {
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(establishmentDto),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PutAsync($"/Establishments/{establishmentDto.Id}", requestBody);
+
+        if (response.IsSuccessStatusCode)
+            return true;
+
+        throw new BadHttpRequestException("null return from API");
+    }
+
     public HttpClient CreateHttpClient()
     {
         var httpClient = _httpClientFactory.CreateClient("Assurance");

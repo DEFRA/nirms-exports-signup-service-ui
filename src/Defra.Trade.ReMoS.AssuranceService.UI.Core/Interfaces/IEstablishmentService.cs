@@ -20,4 +20,5 @@ public interface IEstablishmentService
     public Task<LogisticsLocationBusinessRelationshipDTO?> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId);
     Task<bool> RemoveEstablishmentFromPartyAsync(Guid partyId, Guid establishmentId);
     Task<bool> IsFirstTradePartyForEstablishment(Guid partyId, Guid establishmentId);
+    Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDTO establishmentDto);
 }

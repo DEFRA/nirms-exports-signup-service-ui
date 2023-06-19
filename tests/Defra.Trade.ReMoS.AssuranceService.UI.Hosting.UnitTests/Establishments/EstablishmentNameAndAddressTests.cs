@@ -26,7 +26,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //TODO: Add setup for returning values when API referenced
 
             //Act
-            await _systemUnderTest!.OnGetAsync(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"));
+            await _systemUnderTest!.OnGetAsync(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"), Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"));
 
             //Assert
             _systemUnderTest.EstablishmentName.Should().Be("");
@@ -99,7 +99,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var expectedHeading = "Add a point of destination";
 
             //Act
-            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
 
             //Assert
             _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
