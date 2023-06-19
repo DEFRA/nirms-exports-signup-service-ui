@@ -312,7 +312,7 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = CreateHttpClient();
-        var response = await httpClient.PutAsync($"/Establishments/{establishmentDto.Id}", requestBody);
+        var response = await httpClient.PutAsync($"Establishments/{establishmentDto.Id}", requestBody);
 
         if (response.IsSuccessStatusCode)
             return true;
