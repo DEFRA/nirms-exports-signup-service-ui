@@ -5,13 +5,13 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Eligibility;
 
 [TestFixture]
 public class RegisteredBusinessCountryTests : PageModelTestsBase
 {
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
-    private Mock<ITraderService> _mockTraderService = new();
+    private readonly Mock<ITraderService> _mockTraderService = new();
     private RegisteredBusinessCountryModel? _systemUnderTest;
 
     [SetUp]

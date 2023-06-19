@@ -60,7 +60,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
         {
             await SaveFboNumberToApiAsync();
             return RedirectToPage(
-                Routes.Pages.Path.RegistrationTaskListPath,
+                Routes.Pages.Path.RegisteredBusinessRegulationsPath,
                 new { id = TraderId });
         }
         else
