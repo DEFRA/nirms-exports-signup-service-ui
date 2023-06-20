@@ -31,6 +31,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 {
                     Name = "Test 2",
                     Id = Guid.NewGuid(),
+                    NI_GBFlag = "GB",
                     Address = new TradeAddressDTO()
                     {
                         LineOne = "line 1",

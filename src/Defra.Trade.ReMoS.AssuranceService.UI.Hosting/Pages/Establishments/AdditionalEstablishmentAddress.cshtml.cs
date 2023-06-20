@@ -49,7 +49,9 @@ public class AdditionalEstablishmentAddressModel : PageModel
             ContentText = "departure";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
+            .Where(x => x.NI_GBFlag == this.NI_GBFlag)
+            .ToList();
 
         return Page();
     }

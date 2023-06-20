@@ -69,7 +69,12 @@ public class PostcodeResultModel : PageModel
             establishments = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
         }
 
-        EstablishmentsList = establishments?.Count > 0 ? establishments.Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() }).ToList() : null!;
+        EstablishmentsList = establishments?.Count > 0 ? 
+            establishments
+            .Where(x => x.NI_GBFlag == NI_GBFlag)
+            .Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() })
+            .ToList() 
+            : null!;
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
