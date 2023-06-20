@@ -56,7 +56,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId });
             }
 
-            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId, SignatoryId = SignatoryId });
+            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
         }
 
         private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
@@ -97,6 +97,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         Name = tradeParty?.Contact?.PersonName,
                         EmailAddress = tradeParty?.Contact?.Email,
                         Position = tradeParty?.Contact?.Position,
+                        TradePartyId = TradePartyId
                     }
                 };
 

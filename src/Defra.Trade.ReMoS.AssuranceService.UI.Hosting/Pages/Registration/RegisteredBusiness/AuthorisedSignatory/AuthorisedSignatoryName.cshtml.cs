@@ -34,7 +34,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyId = id;
             _logger.LogInformation("Name OnGet");
 
-            await GetSignatoryNameFromApiAsync();
+           _ = await GetSignatoryNameFromApiAsync();
 
             return Page();
         }
@@ -48,7 +48,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TradePartyId);
             }
 
-            var tradeParty = GenerateDTO();
+            var tradeParty = await GenerateDTO();
             await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
 
             return RedirectToPage(
@@ -56,25 +56,32 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 new { id = TradePartyId });
         }
 
-        private async Task GetSignatoryNameFromApiAsync()
+        private async Task <TradePartyDTO?> GetSignatoryNameFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.AuthorisedSignatory!= null)
             {
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
-                Name = tradeParty.AuthorisedSignatory.Name ?? string.Empty;
+                Name = string.IsNullOrEmpty(Name) ? tradeParty.AuthorisedSignatory.Name ?? "" : Name;
+
+                return tradeParty;
             }
+
+            return null;
         }
 
-        private TradePartyDTO GenerateDTO()
+        private async Task<TradePartyDTO> GenerateDTO()
         {
+            var tradeParty = await GetSignatoryNameFromApiAsync();
             return new TradePartyDTO()
             {
                 Id = TradePartyId,
                 AuthorisedSignatory = new AuthorisedSignatoryDTO()
                 {
                     Id = SignatoryId,
-                    Name = Name
+                    Name = Name,
+                    Position = tradeParty?.AuthorisedSignatory?.Position,
+                    EmailAddress = tradeParty?.AuthorisedSignatory?.EmailAddress
                 }
             };
         }
