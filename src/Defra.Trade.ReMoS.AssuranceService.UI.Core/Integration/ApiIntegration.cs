@@ -328,7 +328,7 @@ public class ApiIntegration : IAPIIntegration
         Encoding.UTF8,
         Application.Json);
 
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
 
 
         response.EnsureSuccessStatusCode();
