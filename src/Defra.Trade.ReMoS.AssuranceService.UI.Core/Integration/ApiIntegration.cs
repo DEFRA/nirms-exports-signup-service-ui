@@ -328,7 +328,7 @@ public class ApiIntegration : IAPIIntegration
         Encoding.UTF8,
         Application.Json);
 
-        var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+        var response = await httpClient.PutAsync($"TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
 
 
         response.EnsureSuccessStatusCode();
@@ -343,8 +343,8 @@ public class ApiIntegration : IAPIIntegration
     public HttpClient CreateHttpClient()
     {
         var httpClient = _httpClientFactory.CreateClient("Assurance");
-        httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
-        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
+        //httpClient.DefaultRequestHeaders.Authorization = _authenticationService.GetAuthenticationHeaderAsync().Result;
+        //httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _appConfigurationSettings.Value.SubscriptionKey);
 
         return httpClient;
     }

@@ -3,19 +3,20 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.Sql.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory
 {
     [ExcludeFromCodeCoverage]
-    public class AuthorisedSignatoryNameModel : PageModel
+    public class AuthorisedSignatoryPositionModel : PageModel
     {
         [BindProperty]
-        [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Name must only include letters, numbers, and special characters -_./()&")]
-        [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-        [Required(ErrorMessage = "Enter a name.")]
-        public string Name { get; set; } = string.Empty;
+        [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Position must only include letters, numbers, and special characters -_./()&")]
+        [StringLength(50, ErrorMessage = "Position must be 50 characters or less")]
+        [Required(ErrorMessage = "Enter a position.")]
+        public string Position { get; set; } = string.Empty;
         [BindProperty]
         public Guid TradePartyId { get; set; }
         [BindProperty]
@@ -24,24 +25,25 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         private readonly ITraderService _traderService;
         private readonly ILogger<AuthorisedSignatoryNameModel> _logger;
 
-        public AuthorisedSignatoryNameModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
+        public AuthorisedSignatoryPositionModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
         {
             _traderService = traderService;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); ;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             TradePartyId = id;
-            _logger.LogInformation("Name OnGet");
+            _logger.LogInformation("Position OnGet");
 
-            await GetSignatoryNameFromApiAsync();
+            await GetSignatoryPositionFromApiAsync();
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
-            _logger.LogInformation("Signatory Name OnPostSubmit");
+            _logger.LogInformation("Signatory Position OnPostSubmit");
 
             if (!ModelState.IsValid)
             {
@@ -52,17 +54,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
 
             return RedirectToPage(
-                Routes.Pages.Path.AuthorisedSignatoryPositionPath,
+                Routes.Pages.Path.RegistrationTaskListPath,
                 new { id = TradePartyId });
         }
 
-        private async Task GetSignatoryNameFromApiAsync()
+        private async Task GetSignatoryPositionFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-            if (tradeParty != null && tradeParty.AuthorisedSignatory!= null)
+            if (tradeParty != null && tradeParty.AuthorisedSignatory != null)
             {
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
-                Name = tradeParty.AuthorisedSignatory.Name ?? string.Empty;
+                Position = tradeParty.AuthorisedSignatory.Position ?? string.Empty;
             }
         }
 
@@ -74,7 +76,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 AuthorisedSignatory = new AuthorisedSignatoryDTO()
                 {
                     Id = SignatoryId,
-                    Name = Name
+                    Position = Position
                 }
             };
         }
