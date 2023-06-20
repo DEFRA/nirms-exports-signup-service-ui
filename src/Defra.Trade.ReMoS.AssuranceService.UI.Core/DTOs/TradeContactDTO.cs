@@ -8,5 +8,6 @@
         public string? TelephoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Position { get; set; }
+        public bool? IsAuthorisedSignatory { get; set; }
     }
 }

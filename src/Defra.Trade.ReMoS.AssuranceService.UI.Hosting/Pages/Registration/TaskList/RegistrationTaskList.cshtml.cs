@@ -36,6 +36,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public string SPSAssuranceCommitment { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
+        public string AuthorisedSignatoryDetails { get; set; } = TaskListStatus.NOTSTART;
+        [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
         #endregion
 
@@ -90,6 +92,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                     if (tradeParty.Contact.Position != null)
                         ContactPosition = TaskListStatus.COMPLETE;
                 }
+                if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
+                {
+                    if (tradeParty.Contact?.IsAuthorisedSignatory == true)
+                    {
+                        AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
+                    }
+
+                    if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
+                    {
+                        AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
+                    }
+
+                }
+
 
                 //TODO - replace this call with a simple 'do establishments exist' functionality
                 var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);

@@ -96,6 +96,16 @@
                         </span>
                         <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactTelephone == "Completed" ? "green" : "grey")" id="contact-phone">@Model.ContactTelephone</strong>
                     </li>
+
+
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a asp-page=@Routes.Pages.Path.AuthorisedSignatoryDetailsPath asp-route-id="@Model.RegistrationID" aria-describedby="authorised-signatory-details">
+                                Authorised Signatory
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.AuthorisedSignatoryDetails == "Completed" ? "green" : "grey")" id="authorised-signatory-details">@Model.AuthorisedSignatoryDetails</strong>
+                    </li>
                 </ul>
             </li>
 

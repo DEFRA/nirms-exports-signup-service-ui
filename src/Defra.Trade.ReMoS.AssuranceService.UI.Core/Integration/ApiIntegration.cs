@@ -227,7 +227,7 @@ public class ApiIntegration : IAPIIntegration
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>> (
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDetailsDTO>>(
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new List<LogisticsLocationDetailsDTO>();
     }
@@ -316,6 +316,26 @@ public class ApiIntegration : IAPIIntegration
 
         if (response.IsSuccessStatusCode)
             return true;
+
+        throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate)
+    {
+        var httpClient = CreateHttpClient();
+        var requestBody = new StringContent(
+        JsonSerializer.Serialize(tradePartyToUpdate),
+        Encoding.UTF8,
+        Application.Json);
+
+        var response = await httpClient.PutAsync($"/TradeParties/Parties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new TradePartyDTO();
 
         throw new BadHttpRequestException("null return from API");
     }

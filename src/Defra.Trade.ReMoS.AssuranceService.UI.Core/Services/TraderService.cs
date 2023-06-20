@@ -46,5 +46,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             }
             return new TradePartyDTO();
         }
+
+        public async Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyDTO)
+        {
+            return await _apiIntegration.UpdateAuthorisedSignatoryAsync(tradePartyDTO);
+        }
     }
 }

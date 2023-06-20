@@ -9,4 +9,5 @@ public class TradePartyDTO
     public string? FboNumber { get; set; }
     public TradeAddressDTO? Address { get; set; }
     public TradeContactDTO? Contact { get; set; }
+    public AuthorisedSignatoryDTO? AuthorisedSignatory { get; set; }
 }
