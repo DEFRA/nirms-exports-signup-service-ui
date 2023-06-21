@@ -66,7 +66,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
                 return tradeParty;
             }
-
             return null;
         }
 

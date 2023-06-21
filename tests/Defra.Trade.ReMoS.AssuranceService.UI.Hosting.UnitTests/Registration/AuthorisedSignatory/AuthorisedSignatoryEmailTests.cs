@@ -53,7 +53,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         [Test]
         public async Task OnPostSubmit_InvalidInput()
-        {            
+        {
+            //Arrange
+            _systemUnderTest!.ModelState.AddModelError("Email", "Enter a email.");
+
             //Act
             await _systemUnderTest!.OnPostSubmitAsync();
 

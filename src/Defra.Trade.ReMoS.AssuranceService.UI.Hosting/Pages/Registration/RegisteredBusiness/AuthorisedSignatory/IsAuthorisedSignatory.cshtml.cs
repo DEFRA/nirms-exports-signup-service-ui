@@ -37,7 +37,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyId = id;
             _logger.LogInformation("IsAuthorisedSignatory onGet");
             var party = await GetIsAuthorisedSignatoryFromApiAsync();
-            BusinessName = party.PartyName;
+            BusinessName = party?.PartyName;
 
             return Page();
         }
@@ -67,7 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.Contact != null && tradeParty.AuthorisedSignatory != null)
             {
-                IsAuthorisedSignatory = IsAuthorisedSignatory == null ? tradeParty.Contact.IsAuthorisedSignatory.ToString() : IsAuthorisedSignatory;
+                IsAuthorisedSignatory ??= tradeParty.Contact.IsAuthorisedSignatory.ToString();
                 ContactId = tradeParty.Contact.Id;
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
             }
