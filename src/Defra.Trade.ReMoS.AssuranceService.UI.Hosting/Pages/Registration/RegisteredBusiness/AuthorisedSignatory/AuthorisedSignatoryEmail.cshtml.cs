@@ -12,6 +12,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     {
         [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [BindProperty]
+        [Required(ErrorMessage = "Enter a email.")]
         public string? Email { get; set; }
         [BindProperty]
         public string? BusinessName { get; set; }
@@ -34,7 +35,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TraderId = id;
             
             var party = await GetSignatoryEmailFromApiAsync();
-            BusinessName = party.PartyName;
+            BusinessName = party?.PartyName;
             return Page();
         }
 
