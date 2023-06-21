@@ -53,17 +53,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         [Test]
         public async Task OnPostSubmit_InvalidInput()
-        {
-            //Arrange
-            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
-
-            _mockTraderService
-                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
-                {
-                    AuthorisedSignatory = new AuthorisedSignatoryDTO { }
-                });
-
+        {            
             //Act
             await _systemUnderTest!.OnPostSubmitAsync();
 
