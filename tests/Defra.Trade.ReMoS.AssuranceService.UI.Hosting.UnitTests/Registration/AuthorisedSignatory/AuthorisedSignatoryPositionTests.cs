@@ -73,5 +73,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(1);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidPosition()
+        {
+            //Arrange
+            _systemUnderTest!.Position = "Software Developer";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
     }
 }

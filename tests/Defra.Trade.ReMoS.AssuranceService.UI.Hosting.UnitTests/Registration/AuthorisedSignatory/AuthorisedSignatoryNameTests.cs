@@ -74,5 +74,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(1);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidName()
+        {
+            //Arrange
+            _systemUnderTest!.Name = "John Bloggs";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
     }
 }

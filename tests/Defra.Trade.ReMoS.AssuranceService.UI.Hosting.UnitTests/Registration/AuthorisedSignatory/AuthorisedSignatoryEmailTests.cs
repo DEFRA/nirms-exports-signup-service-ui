@@ -65,5 +65,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(1);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidEmail()
+        {
+            //Arrange
+            _systemUnderTest!.Email = "Business-test@email.com";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
     }
 }
