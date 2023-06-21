@@ -18,6 +18,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [Required(ErrorMessage = "Enter a position.")]
         public string Position { get; set; } = string.Empty;
         [BindProperty]
+        public string? BusinessName { get; set; }
+        [BindProperty]
         public Guid TradePartyId { get; set; }
         [BindProperty]
         public Guid SignatoryId { get; set; }
@@ -36,7 +38,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyId = id;
             _logger.LogInformation("Position OnGet");
 
-            await GetSignatoryPositionFromApiAsync();
+            _ = await GetSignatoryPosFromApiAsync();
 
             return Page();
         }
@@ -50,33 +52,41 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TradePartyId);
             }
 
-            var tradeParty = GenerateDTO();
+            var tradeParty = await GenerateDTO();
             await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
 
             return RedirectToPage(
-                Routes.Pages.Path.RegistrationTaskListPath,
+                Routes.Pages.Path.AuthorisedSignatoryEmailPath,
                 new { id = TradePartyId });
         }
 
-        private async Task GetSignatoryPositionFromApiAsync()
+        private async Task<TradePartyDTO?> GetSignatoryPosFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.AuthorisedSignatory != null)
             {
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
-                Position = tradeParty.AuthorisedSignatory.Position ?? string.Empty;
+                Position = string.IsNullOrEmpty(Position) ? tradeParty.AuthorisedSignatory.Position ?? "" : Position;
+                BusinessName = tradeParty.PartyName;
+
+                return tradeParty;
             }
+
+            return null;
         }
 
-        private TradePartyDTO GenerateDTO()
+        private async Task<TradePartyDTO> GenerateDTO()
         {
+            var tradeParty = await GetSignatoryPosFromApiAsync();
             return new TradePartyDTO()
             {
                 Id = TradePartyId,
                 AuthorisedSignatory = new AuthorisedSignatoryDTO()
                 {
                     Id = SignatoryId,
-                    Position = Position
+                    Name = tradeParty?.AuthorisedSignatory?.Name,
+                    Position = Position,
+                    EmailAddress = tradeParty?.AuthorisedSignatory?.EmailAddress
                 }
             };
         }

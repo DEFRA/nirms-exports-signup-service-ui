@@ -48,8 +48,7 @@ public static class Routes
         (Pages.Path.EstablishmentContactEmailPath, EstablishmentContactEmail),
         (Pages.Path.AuthorisedSignatoryDetailsPath, AuthorisedSignatoryDetails),
         (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName),
-        (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail)
-        (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName),
+        (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition)
     };
 
