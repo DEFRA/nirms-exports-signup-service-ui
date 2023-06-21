@@ -14,6 +14,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]      
         [Required(ErrorMessage = "Fill in Yes or No")]
         public string? IsAuthorisedSignatory { get; set; } = null;
+        [BindProperty]
+        public string? BusinessName { get; set; }
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
@@ -34,7 +36,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             TradePartyId = id;
             _logger.LogInformation("IsAuthorisedSignatory onGet");
-            _ = await GetIsAuthorisedSignatoryFromApiAsync();
+            var party = await GetIsAuthorisedSignatoryFromApiAsync();
+            BusinessName = party.PartyName;
 
             return Page();
         }

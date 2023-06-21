@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.Compute.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -16,6 +17,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
         [Required(ErrorMessage = "Enter a name.")]
         public string Name { get; set; } = string.Empty;
+        [BindProperty]
+        public string? BusinessName { get; set; }
         [BindProperty]
         public Guid TradePartyId { get; set; }
         [BindProperty]
@@ -34,7 +37,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyId = id;
             _logger.LogInformation("Name OnGet");
 
-           _ = await GetSignatoryNameFromApiAsync();
+           var party = await GetSignatoryNameFromApiAsync();
+            BusinessName = party.PartyName;
 
             return Page();
         }
@@ -52,7 +56,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
 
             return RedirectToPage(
-                Routes.Pages.Path.RegistrationTaskListPath,
+                Routes.Pages.Path.AuthorisedSignatoryEmailPath,
                 new { id = TradePartyId });
         }
 
