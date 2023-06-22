@@ -82,11 +82,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         private void ContactAndAuthSignatoryStatuses(TradePartyDTO tradeParty)
         {
-            if (tradeParty.Contact != null)
-            {
-                if (tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
-                    ContactDetails = TaskListStatus.COMPLETE;
-            }
+            if (tradeParty.Contact != null && tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
+                ContactDetails = TaskListStatus.COMPLETE;
+
             if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
             {
                 if (tradeParty.Contact?.IsAuthorisedSignatory == true)
