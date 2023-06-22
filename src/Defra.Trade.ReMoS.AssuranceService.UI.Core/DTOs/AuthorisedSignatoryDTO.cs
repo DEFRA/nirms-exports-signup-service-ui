@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs
 {
-    public class AuthorisedSignatoryDTO
+    public class AuthorisedSignatoryDto
     {
         public Guid Id { get; set; }
         public Guid TradePartyId { get; set; }

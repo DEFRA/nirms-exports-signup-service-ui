@@ -10,8 +10,11 @@
             Sign up for the Northern Ireland Retail Movement Scheme
         </h1>
 
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-2" id="signUpStatus">Sign up incomplete</h2>
-
+        @if (Model.ReviewAnswers == TaskListStatus.CANNOTSTART)
+        {
+            <h2 class="govuk-heading-s govuk-!-margin-bottom-4" id="signUpStatus">Sign up incomplete</h2>
+        }
+        
         <ol class="app-task-list">
             <li>
                 <h2 class="app-task-list__section">
@@ -20,38 +23,20 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.RegistrationID" aria-describedby="business-country">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.RegistrationID" aria-describedby="eligibility">
                                 Check eligibility
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.EligibilityStatus == "Completed" ? "green" : "grey")" id="business-country">@Model.EligibilityStatus</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.EligibilityStatus == "Completed" ? "green" : "grey")" id="eligibility">@Model.EligibilityStatus</strong>
                     </li>
 
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-name">
+                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details">
                                 Business name
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.BusinessName == "Completed" ? "green" : "grey")" id="business-name">@Model.BusinessName</strong>
-                    </li>
-
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessNatureOfBusinessPath asp-route-id="@Model.RegistrationID" aria-describedby="business-type">
-                                Business type
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.NatureOfBusiness == "Completed" ? "green" : "grey")" id="business-type">@Model.NatureOfBusiness</strong>
-                    </li>
-
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessAddressPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-address">
-                                Registered address
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.RegisteredAddress == "Completed" ? "green" : "grey")" id="business-address">@Model.RegisteredAddress</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.BusinessDetails == "Completed" ? "green" : "grey")" id="business-details">@Model.BusinessDetails</strong>
                     </li>
                 </ul>
             </li>
@@ -63,40 +48,12 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.RegistrationID" aria-describedby="contact-name">
-                                Full name
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.RegistrationID" aria-describedby="contact-details">
+                                Contact Person
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactFullName == "Completed" ? "green" : "grey")" id="contact-name">@Model.ContactFullName</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactDetails == "Completed" ? "green" : "grey")" id="contact-details">@Model.ContactDetails</strong>
                     </li>
-
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPositionPath asp-route-id="@Model.RegistrationID" aria-describedby="contact-position">
-                                Position
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactPosition == "Completed" ? "green" : "grey")" id="contact-position">@Model.ContactPosition</strong>
-                    </li>
-
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactEmailPath asp-route-id="@Model.RegistrationID" aria-describedby="contact-email">
-                                Email address
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactEmailAddress == "Completed" ? "green" : "grey")" id="contact-email">@Model.ContactEmailAddress</strong>
-                    </li>
-
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactPhonePath asp-route-id="@Model.RegistrationID" aria-describedby="contact-phone">
-                                Telephone number
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactTelephone == "Completed" ? "green" : "grey")" id="contact-phone">@Model.ContactTelephone</strong>
-                    </li>
-
 
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
@@ -114,61 +71,41 @@
                     <span class="app-task-list__section-number">3. </span> Establishments
                 </h2>
                 <ul class="app-task-list__items">
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
-                               asp-route-id="@Model.RegistrationID"
-                               asp-route-NI_GBFlag="GB"
-                               aria-describedby="establistment-departure">
-                                Points of departure
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDeparture == "Completed" ? "green" : "grey")"
-                                id="establistment-departure">
-                            @Model.PointsOfDeparture
-                        </strong>
-                    </li>
+                    @if (Model.Country != "NI")
+                    {
+                        <li class="app-task-list__item">
+                            <span class="app-task-list__task-name">
+                                <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
+                                asp-route-id="@Model.RegistrationID"
+                                asp-route-NI_GBFlag="GB"
+                                aria-describedby="establistment-departure">
+                                    Points of departure
+                                </a>
+                            </span>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDeparture == "Completed" ? "green" : "grey")"
+                            id="establistment-departure">
+                                @Model.PointsOfDeparture
+                            </strong>
+                        </li>
+                    }
+                    @if (Model.Country == "NI")
+                    {
 
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
-                               asp-route-id="@Model.RegistrationID"
-                               asp-route-NI_GBFlag="NI"
-                               aria-describedby="establistment-destination">
-                                Points of destination (optional)
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDestination == "Completed" ? "green" : "grey")"
-                                id="establistment-destination">
-                            @Model.PointsOfDestination
-                        </strong>
-                    </li>
-                </ul>
-            </li>
-
-            <li>
-                <h2 class="app-task-list__section">
-                    <span class="app-task-list__section-number">4. </span> Sanitary and phytosanitary (SPS) details
-                </h2>
-                <ul class="app-task-list__items">
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a href="sps-food-categories" aria-describedby="sps-goods">
-                                SPS goods categories
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-goods">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
-                    </li>
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a href="sps-assurance-commitment" aria-describedby="sps-commitment">
-                                SPS assurance commitment
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-commitment">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
-                    </li>
+                        <li class="app-task-list__item">
+                            <span class="app-task-list__task-name">
+                                <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
+                                asp-route-id="@Model.RegistrationID"
+                                asp-route-NI_GBFlag="NI"
+                                aria-describedby="establistment-destination">
+                                    Points of destination
+                                </a>
+                            </span>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDestination == "Completed" ? "green" : "grey")"
+                            id="establistment-destination">
+                                @Model.PointsOfDestination
+                            </strong>
+                        </li>
+                    }
                 </ul>
             </li>
 
@@ -179,20 +116,20 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span id="checkNotComplete">
-                            <span class="app-task-list__task-name">
-                                Check answers and submit sign up
-                            </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="not-complete_submit">@TaskListStatus.NOTSTART</strong>
-                            <!--Add Status-->
-                        </span>
-                        <span id="checkComplete" style="display:none;">
-                            <span class="app-task-list__task-name">
-                                <a href="check-and-submit" aria-describedby="complete-submit">
+                            @if (Model.ReviewAnswers == TaskListStatus.CANNOTSTART)
+                            {
+                                <span class="app-task-list__task-name">
+                                    Check answers and submit sign up
+                                </span>
+                            }
+                            else
+                            {
+                                //Add asp-page tag when check answers exists
+                                <a href="check-and-submit" aria-describedby="complete_submit">
                                     Check answers and submit sign up
                                 </a>
-                            </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="complete-submit">@TaskListStatus.CANNOTSTART</strong>
-                            <!--Add Status-->
+                            }     
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ReviewAnswers == "Completed" ? "green" : "grey")" id="complete_submit">@Model.ReviewAnswers</strong>
                         </span>
                     </li>
                 </ul>

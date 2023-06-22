@@ -55,7 +55,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
             return RedirectToPage(
-                Routes.Pages.Path.RegistrationTaskListPath,
+                Routes.Pages.Path.RegisteredBusinessContactPhonePath,
                 new { id = TradePartyId });
         }
 

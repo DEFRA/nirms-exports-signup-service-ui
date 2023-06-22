@@ -63,7 +63,7 @@ public class RegisteredBusinessContactNameModel : PageModel
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
         return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath,
+            Routes.Pages.Path.RegisteredBusinessContactPositionPath,
             new { id = TradePartyId });
     }
 

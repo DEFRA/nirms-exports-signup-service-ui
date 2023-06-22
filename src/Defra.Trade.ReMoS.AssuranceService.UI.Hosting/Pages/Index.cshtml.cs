@@ -21,9 +21,14 @@ public class IndexModel : PageModel
     {
         if (Id == Guid.Empty)
         {
-            Id = Guid.NewGuid();
+            ModelState.AddModelError(nameof(Id), "Enter Guid");
         }
 
-        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = Id }); ;
+        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = Id });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
     }
 }

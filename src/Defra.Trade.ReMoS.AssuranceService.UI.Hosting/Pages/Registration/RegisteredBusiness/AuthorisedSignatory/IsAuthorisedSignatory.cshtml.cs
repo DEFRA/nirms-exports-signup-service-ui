@@ -94,7 +94,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
                         IsAuthorisedSignatory = isSignatory
                     },
-                    AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
                     {
                         Id = SignatoryId,
                         Name = tradeParty?.Contact?.PersonName,
@@ -114,7 +114,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     Id = ContactId,
                     IsAuthorisedSignatory = isSignatory
                 },
-                AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,
                     Name = null,

@@ -54,7 +54,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
     {
-        Guid results = new();
+        Guid results = Guid.Empty;
         var requestBody = new StringContent(
             JsonSerializer.Serialize(tradePartyToCreate),
             Encoding.UTF8,
@@ -80,7 +80,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid> UpdateTradePartyAsync(TradePartyDTO tradePartyToUpdate)
     {
-        Guid results = new();
+        Guid results = Guid.Empty;
         var requestBody = new StringContent(
             JsonSerializer.Serialize(tradePartyToUpdate),
             Encoding.UTF8,
@@ -106,7 +106,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid> UpdateTradePartyAddressAsync(TradePartyDTO tradePartyToUpdate)
     {
-        Guid results = new();
+        Guid results = Guid.Empty;
         var requestBody = new StringContent(
             JsonSerializer.Serialize(tradePartyToUpdate),
             Encoding.UTF8,
@@ -132,7 +132,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid> UpdateTradePartyContactAsync(TradePartyDTO tradePartyToUpdate)
     {
-        Guid results = new();
+        Guid results = Guid.Empty;
         var requestBody = new StringContent(
             JsonSerializer.Serialize(tradePartyToUpdate),
             Encoding.UTF8,
@@ -158,7 +158,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid?> CreateEstablishmentAsync(LogisticsLocationDTO logisticsLocationDTO)
     {
-        Guid results = new();
+        Guid results = Guid.Empty;
         var requestBody = new StringContent(
             JsonSerializer.Serialize(logisticsLocationDTO),
             Encoding.UTF8,
@@ -184,7 +184,7 @@ public class ApiIntegration : IAPIIntegration
 
     public async Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO relationDto)
     {
-        Guid results = new();
+        Guid results = Guid.Empty;
         var requestBody = new StringContent(
             JsonSerializer.Serialize(relationDto),
             Encoding.UTF8,

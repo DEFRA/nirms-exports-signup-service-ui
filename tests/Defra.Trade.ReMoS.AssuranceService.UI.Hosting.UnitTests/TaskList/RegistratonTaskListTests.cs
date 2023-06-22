@@ -134,7 +134,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public async Task GetAPIData_GivenCountryAndFboIsPopulated_EligibilityMarkedAsComplete()
         {
             //Arrange
-            TradePartyDTO tradePartyFromApi = new TradePartyDTO
+            TradePartyDTO tradePartyFromApi = new()
             {
                 Id = Guid.NewGuid(),
                 FboNumber = "fbonum-123456-fbonum",
@@ -155,7 +155,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public async Task GetAPIData_GivenFboNotPopulated_EligibilityMarkedAsNotStarted()
         {
             //Arrange
-            TradePartyDTO tradePartyFromApi = new TradePartyDTO
+            TradePartyDTO tradePartyFromApi = new()
             {
                 Id = Guid.NewGuid(),
                 Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" }
@@ -169,6 +169,170 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
 
             //Assert
             _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.NOTSTART);
+        }
+
+        [Test]
+        public async Task OnGet_StatusTestsAllComplete()
+        {
+            //Arrange
+            Guid guid = Guid.NewGuid();
+
+            var tradeContact = new TradeContactDTO
+            {
+                PersonName = "Test Name",
+                Email = "test@testmail.com",
+                Position = "Main Tester",
+                TelephoneNumber = "1234567890",
+                IsAuthorisedSignatory = false
+            };
+
+            var authorisedSignatory = new AuthorisedSignatoryDto
+            {
+                Name = "Test",
+                EmailAddress = "Test",
+                Id = Guid.NewGuid(),
+                Position = "CEO",
+                TradePartyId = guid
+            };
+
+            var tradeAddress = new TradeAddressDTO
+            {
+                TradeCountry = "Test Country",
+                LineOne = "1 Test Lane",
+                PostCode = "12345"
+            };
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact,
+                Address = tradeAddress,
+                AuthorisedSignatory = authorisedSignatory,
+                PartyName = "Test",
+                FboNumber = "123",
+                NatureOfBusiness = "Test nature"
+            };
+
+            var list = new List<LogisticsLocationDetailsDTO>
+            {
+                new LogisticsLocationDetailsDTO() { NI_GBFlag = "NI"}
+            };
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(guid);
+
+            //Assert
+            _systemUnderTest.BusinessDetails.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.NOTSTART);
+        }
+
+        [Test]
+        public async Task OnGet_StatusTestsNotAllComplete_NoReviewAnswers()
+        {
+            //Arrange
+            Guid guid = Guid.NewGuid();
+
+            var tradeContact = new TradeContactDTO
+            {
+                PersonName = "Test Name",
+                Email = "test@testmail.com",
+                Position = "Main Tester",
+                TelephoneNumber = "1234567890",
+                IsAuthorisedSignatory = false
+            };
+
+            var tradeAddress = new TradeAddressDTO
+            {
+                TradeCountry = "Test Country",
+                LineOne = "1 Test Lane",
+                PostCode = "12345"
+            };
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact,
+                Address = tradeAddress,
+                PartyName = "Test",
+                FboNumber = "123",
+                NatureOfBusiness = "Test nature"
+            };
+
+            var list = new List<LogisticsLocationDetailsDTO>
+            {
+                new LogisticsLocationDetailsDTO() { NI_GBFlag = "NI"}, new LogisticsLocationDetailsDTO() { NI_GBFlag = "GB"}
+            };
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(guid);
+
+            //Assert
+            _systemUnderTest.BusinessDetails.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.CANNOTSTART);
+        }
+
+        [Test]
+        public async Task OnGet_AuthorisedSignatoryIsContact()
+        {
+            //Arrange
+            Guid guid = Guid.NewGuid();
+
+            var tradeContact = new TradeContactDTO
+            {
+                PersonName = "Test Name",
+                Email = "test@testmail.com",
+                Position = "Main Tester",
+                TelephoneNumber = "1234567890",
+                IsAuthorisedSignatory = true
+            };
+
+            var authorisedSignatory = new AuthorisedSignatoryDto
+            {
+                Name = "Test",
+                EmailAddress = "Test",
+                Id = Guid.NewGuid(),
+                Position = "CEO",
+                TradePartyId = guid
+            };
+
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = guid,
+                Contact = tradeContact,
+                PartyName = "Test",
+                FboNumber = "123",
+                NatureOfBusiness = "Test nature"
+            };
+
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+            //Act
+            await _systemUnderTest!.OnGetAsync(guid);
+
+            //Assert
+            _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.CANNOTSTART);
         }
     }
 }

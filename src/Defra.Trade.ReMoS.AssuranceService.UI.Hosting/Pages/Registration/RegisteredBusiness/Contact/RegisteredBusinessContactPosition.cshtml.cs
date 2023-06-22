@@ -63,7 +63,7 @@ public class RegisteredBusinessContactPositionModel : PageModel
 
 
         return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath,
+            Routes.Pages.Path.RegisteredBusinessContactEmailPath,
             new { id = TradePartyId });
     }
     private async Task GetContactPositionFromApiAsync()

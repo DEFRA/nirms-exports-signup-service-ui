@@ -97,7 +97,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                    {
                        IsAuthorisedSignatory = true
                    },
-                   AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                   AuthorisedSignatory = new AuthorisedSignatoryDto()
                    {
                        Id = Guid.NewGuid(),
                        TradePartyId = tradePartyId
@@ -113,7 +113,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                     {
                         IsAuthorisedSignatory = true
                     },
-                    AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
                     {
                         Id = Guid.NewGuid()
                     }
