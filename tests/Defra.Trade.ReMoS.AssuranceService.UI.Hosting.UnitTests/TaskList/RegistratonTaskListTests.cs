@@ -155,7 +155,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public async Task GetAPIData_GivenFboNotPopulated_EligibilityMarkedAsNotStarted()
         {
             //Arrange
-            TradePartyDTO tradePartyFromApi = new TradePartyDTO
+            TradePartyDTO tradePartyFromApi = new()
             {
                 Id = Guid.NewGuid(),
                 Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" }

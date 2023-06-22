@@ -37,7 +37,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 .ReturnsAsync(new Core.DTOs.TradePartyDTO()
                 {
                     Id = tradePartyId,
-                    AuthorisedSignatory = new Core.DTOs.AuthorisedSignatoryDTO()
+                    AuthorisedSignatory = new Core.DTOs.AuthorisedSignatoryDto()
                     {
                         Id = Guid.NewGuid(),
                     }
