@@ -10,8 +10,11 @@
             Sign up for the Northern Ireland Retail Movement Scheme
         </h1>
 
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-4" id="signUpStatus">Sign up incomplete</h2>
-
+        @if (Model.ReviewAnswers == TaskListStatus.CANNOTSTART)
+        {
+            <h2 class="govuk-heading-s govuk-!-margin-bottom-4" id="signUpStatus">Sign up incomplete</h2>
+        }
+        
         <ol class="app-task-list">
             <li>
                 <h2 class="app-task-list__section">
