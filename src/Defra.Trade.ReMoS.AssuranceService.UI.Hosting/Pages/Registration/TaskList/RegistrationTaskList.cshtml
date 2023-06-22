@@ -122,11 +122,11 @@
                             else
                             {
                                 //Add asp-page tag when check answers exists
-                                <a href="check-and-submit" aria-describedby="complete-submit">
+                                <a href="check-and-submit" aria-describedby="complete_submit">
                                     Check answers and submit sign up
                                 </a>
                             }     
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ReviewAnswers == "Completed" ? "green" : "grey")" id="not-complete_submit">@Model.ReviewAnswers</strong>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ReviewAnswers == "Completed" ? "green" : "grey")" id="complete_submit">@Model.ReviewAnswers</strong>
                         </span>
                     </li>
                 </ul>
