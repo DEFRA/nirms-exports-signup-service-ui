@@ -23,6 +23,8 @@ public static class Routes
     public const string AdditionalEstablishmentAddress = "/additional-establishment-address";
     public const string AuthorisedSignatoryDetails = "/authorised-signatory-details";
     public const string AuthorisedSignatoryName = "/authorised-signatory-name";
+    public const string AuthorisedSignatoryPosition = "/authorised-signatory-position";
+    public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -45,7 +47,9 @@ public static class Routes
         (Pages.Path.EstablishmentPostcodeResultPath, EstablishmentPostcodeResult),
         (Pages.Path.EstablishmentContactEmailPath, EstablishmentContactEmail),
         (Pages.Path.AuthorisedSignatoryDetailsPath, AuthorisedSignatoryDetails),
-        (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName)
+        (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName),
+        (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
+        (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition)
     };
 
     public static class Pages
@@ -72,6 +76,8 @@ public static class Routes
             public const string EstablishmentContactEmailName = "ContactEmail";
             public const string AuthorisedSignatoryDetailsName = "IsAuthorisedSignatory";
             public const string AuthorisedSignatoryNameName = "AuthorisedSignatoryName";
+            public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
+            public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
         }
 
         public static class Path
@@ -96,6 +102,8 @@ public static class Routes
             public const string EstablishmentContactEmailPath = $"/Establishments/{Names.EstablishmentContactEmailName}";
             public const string AuthorisedSignatoryDetailsPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryDetailsName}";
             public const string AuthorisedSignatoryNamePath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryNameName}";
+            public const string AuthorisedSignatoryPositionPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryPositionName}";
+            public const string AuthorisedSignatoryEmailPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryEmailName}";
         }
     }
 }

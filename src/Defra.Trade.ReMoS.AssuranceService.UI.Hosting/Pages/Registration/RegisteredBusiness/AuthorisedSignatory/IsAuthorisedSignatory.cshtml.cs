@@ -14,6 +14,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]      
         [Required(ErrorMessage = "Fill in Yes or No")]
         public string? IsAuthorisedSignatory { get; set; } = null;
+        [BindProperty]
+        public string? BusinessName { get; set; }
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
@@ -34,7 +36,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             TradePartyId = id;
             _logger.LogInformation("IsAuthorisedSignatory onGet");
-            _ = await GetIsAuthorisedSignatoryFromApiAsync();
+            var party = await GetIsAuthorisedSignatoryFromApiAsync();
+            BusinessName = party?.PartyName;
 
             return Page();
         }
@@ -56,7 +59,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId });
             }
 
-            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId, SignatoryId = SignatoryId });
+            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
         }
 
         private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
@@ -64,7 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.Contact != null && tradeParty.AuthorisedSignatory != null)
             {
-                IsAuthorisedSignatory = IsAuthorisedSignatory == null ? tradeParty.Contact.IsAuthorisedSignatory.ToString() : IsAuthorisedSignatory;
+                IsAuthorisedSignatory ??= tradeParty.Contact.IsAuthorisedSignatory.ToString();
                 ContactId = tradeParty.Contact.Id;
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
             }
@@ -97,6 +100,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         Name = tradeParty?.Contact?.PersonName,
                         EmailAddress = tradeParty?.Contact?.Email,
                         Position = tradeParty?.Contact?.Position,
+                        TradePartyId = TradePartyId
                     }
                 };
 

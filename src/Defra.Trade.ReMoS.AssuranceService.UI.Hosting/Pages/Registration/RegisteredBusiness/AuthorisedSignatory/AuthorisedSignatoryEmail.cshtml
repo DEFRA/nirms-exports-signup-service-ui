@@ -1,0 +1,30 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.AuthorisedSignatoryEmailModel
+@{
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form class="form" method="post">
+
+            <div class="govuk-form-group">
+                <label for="authorised-signatory-email">
+                    <h1 class="govuk-heading-l">
+                        <span class="govuk-caption-l">Contact details</span>
+                        Email address of Authorised Signatory
+                    </h1>
+                </label>
+                <p class="govuk-hint" id="authorised-signatory-email-hint">The email address of the Authorised Signatory at @Model.BusinessName.</p>
+                <input class="govuk-input" id="authorised-signatory-email" type="email" spellcheck="false" asp-for="Email">
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+
+            <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="BusinessName" />
+            <input type="hidden" asp-for="SignatoryId" />
+        </form>
+
+    </div>
+</div>
