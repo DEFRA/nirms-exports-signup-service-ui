@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>bafd8af1-aa5a-4770-8608-4a11d4cc2efa</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\assets\fonts\bold-b542beb274-v2.woff2" />
+    <Content Remove="wwwroot\assets\fonts\light-94a07e06a1-v2.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\fonts\bold-b542beb274-v2.woff2" />
+    <None Include="wwwroot\assets\fonts\light-94a07e06a1-v2.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Defra.Trade.Common.Security" Version="2.0.5" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.16" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Defra.Trade.ReMoS.AssuranceService.UI.Core\Defra.Trade.ReMoS.AssuranceService.UI.Core.csproj" />
+    <ProjectReference Include="..\Defra.Trade.ReMoS.AssuranceService.UI.Domain\Defra.Trade.ReMoS.AssuranceService.UI.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

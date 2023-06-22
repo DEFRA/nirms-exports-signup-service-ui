@@ -1,0 +1,55 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessCountryModel
+@{
+    ViewData["Title"] = "Enter Business Country";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="POST" novalidate>
+            <input type="hidden" asp-for="TraderId" />
+            <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Country") ? "Country_Error": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Which country is your business based in?
+                        </h1>
+                    </legend>
+
+                    <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="radio-rbCountryEng" type="radio" asp-for="Country" value="England">
+                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryEng">
+                                England
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="radio-rbCountrySc" type="radio" asp-for="Country" value="Scotland">
+                            <label class="govuk-label govuk-radios__label" for="radio-rbCountrySc">
+                                Scotland
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="radio-rbCountryWal" type="radio" asp-for="Country" value="Wales">
+                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryWal">
+                                Wales
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="radio-rbCountryNI" type="radio" asp-for="Country" value="NI">
+                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryNI">
+                                Northern Ireland
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>            
+        </form>
+    </div>
+</div>
+

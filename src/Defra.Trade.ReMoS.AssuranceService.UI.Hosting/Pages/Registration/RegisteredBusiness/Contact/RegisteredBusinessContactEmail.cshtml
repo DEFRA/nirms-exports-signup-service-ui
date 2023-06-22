@@ -1,0 +1,32 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact.RegisteredBusinessContactEmailModel
+@{
+    ViewData["Title"] = "Enter Business Contact Email Address";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="ContactId" />
+            <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
+                <label for="Email">
+                    <h1 class="govuk-heading-l">
+                        <span class="govuk-caption-l">Contact Details</span>
+                        Email address
+                    </h1>
+                </label>
+                <p class="govuk-hint" id="email-hint">
+                    The email address of the contact person at the business responsible for Northern Ireland Retail Movement Scheme movements. We'll use this email to send the registration outcome and all communication relating to the scheme.
+                </p>
+                <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
+                <input class="govuk-input" asp-for="Email" id="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email" />
+            </div>
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+            </div>
+        </form>
+    </div>
+</div>
