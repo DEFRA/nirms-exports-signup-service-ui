@@ -34,7 +34,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TraderId = id;
             
             var party = await GetSignatoryEmailFromApiAsync();
-            BusinessName = party.PartyName;
+            BusinessName = party?.PartyName;
             return Page();
         }
 
@@ -75,7 +75,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return new TradePartyDTO()
             {
                 Id = TraderId,
-                AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,
                     Name = tradeParty?.AuthorisedSignatory?.Name,

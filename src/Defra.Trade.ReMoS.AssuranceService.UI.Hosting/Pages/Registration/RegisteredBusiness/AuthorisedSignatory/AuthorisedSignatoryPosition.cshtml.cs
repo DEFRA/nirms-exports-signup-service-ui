@@ -81,7 +81,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return new TradePartyDTO()
             {
                 Id = TradePartyId,
-                AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,
                     Name = tradeParty?.AuthorisedSignatory?.Name,
