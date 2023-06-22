@@ -56,7 +56,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             };
             await _traderService.UpdateTradePartyAsync(tradeParty);
 
-            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessAddressPath, new { id = TradePartyId });
         }
 
         private async Task GetNameAsync()

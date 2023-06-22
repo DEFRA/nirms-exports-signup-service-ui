@@ -14,31 +14,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public string EligibilityStatus { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
-        public string BusinessName { get; set; } = TaskListStatus.NOTSTART;
+        public string BusinessDetails { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
-        public string NatureOfBusiness { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string RegisteredAddress { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string ContactFullName { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string ContactPosition { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string ContactEmailAddress { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string ContactTelephone { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string PointsOfDeparture { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string PointsOfDestination { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string SPSGoodsCategories { get; set; } = TaskListStatus.NOTSTART;
-        [BindProperty]
-        public string SPSAssuranceCommitment { get; set; } = TaskListStatus.NOTSTART;
+        public string ContactDetails { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
         public string AuthorisedSignatoryDetails { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
+        public string PointsOfDeparture { get; set; } = TaskListStatus.NOTSTART;
+        [BindProperty]
+        public string PointsOfDestination { get; set; } = TaskListStatus.NOTSTART;      
+        [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
+        public string? Country { get; set; }
         #endregion
 
         private readonly ILogger<RegistrationTaskListModel> _logger;
@@ -57,6 +44,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             _logger.LogInformation("OnGet");
 
             RegistrationID = Id;
+
+            if(RegistrationID == Guid.Empty)
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessCountryPath,
+                    new { id = RegistrationID });
+            }
+
             await GetAPIData();
 
             return Page();
@@ -65,58 +60,73 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         public async Task GetAPIData()
         {
             TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+            Country = tradeParty?.Address?.TradeCountry;
 
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
-                if (tradeParty.PartyName != null)
-                    BusinessName = TaskListStatus.COMPLETE;
-                if (tradeParty.NatureOfBusiness != null)
-                    NatureOfBusiness = TaskListStatus.COMPLETE;
+                if (tradeParty.PartyName != null && tradeParty.Address != null)
+                    BusinessDetails = TaskListStatus.COMPLETE;
 
                 if (tradeParty.Address != null)
                 {
                     if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber))
                         EligibilityStatus = TaskListStatus.COMPLETE;
-                    if (tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
-                        RegisteredAddress = TaskListStatus.COMPLETE;
                 }
 
-                if (tradeParty.Contact != null)
+                ContactAndAuthSignatoryStatuses(tradeParty);
+                await EstablishmentsStatuses();
+                CheckAnswersStatus();
+
+            }
+        }
+
+        private void ContactAndAuthSignatoryStatuses(TradePartyDTO tradeParty)
+        {
+            if (tradeParty.Contact != null)
+            {
+                if (tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
+                    ContactDetails = TaskListStatus.COMPLETE;
+            }
+            if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
+            {
+                if (tradeParty.Contact?.IsAuthorisedSignatory == true)
                 {
-                    if (tradeParty.Contact.PersonName != null)
-                        ContactFullName = TaskListStatus.COMPLETE;
-                    if (tradeParty.Contact.Email != null)
-                        ContactEmailAddress = TaskListStatus.COMPLETE;
-                    if (tradeParty.Contact.TelephoneNumber != null)
-                        ContactTelephone = TaskListStatus.COMPLETE;
-                    if (tradeParty.Contact.Position != null)
-                        ContactPosition = TaskListStatus.COMPLETE;
+                    AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
                 }
-                if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
+
+                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
                 {
-                    if (tradeParty.Contact?.IsAuthorisedSignatory == true)
-                    {
-                        AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
-                    }
-
-                    if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
-                    {
-                        AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
-                    }
-
+                    AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
                 }
+            }
+        }
 
+        private async Task EstablishmentsStatuses()
+        {
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);
+            var gbEstablishments = establishments?.Where(x => x.NI_GBFlag == "GB");
+            var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
 
-                //TODO - replace this call with a simple 'do establishments exist' functionality
-                var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);
-                var gbEstablishments = establishments?.Where(x => x.NI_GBFlag == "GB");
-                var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
+            if (gbEstablishments != null && gbEstablishments.Any())
+                PointsOfDeparture = TaskListStatus.COMPLETE;
 
-                if (gbEstablishments != null && gbEstablishments.Count() > 0)
-                    PointsOfDeparture = TaskListStatus.COMPLETE;
+            if (niEstablishments != null && niEstablishments.Any())
+                PointsOfDestination = TaskListStatus.COMPLETE;
+        }
 
-                if (niEstablishments != null && niEstablishments.Count() > 0)
-                    PointsOfDestination = TaskListStatus.COMPLETE;
+        private void CheckAnswersStatus()
+        {
+            if (EligibilityStatus == TaskListStatus.COMPLETE 
+                && BusinessDetails == TaskListStatus.COMPLETE
+                && ContactDetails == TaskListStatus.COMPLETE
+                && AuthorisedSignatoryDetails == TaskListStatus.COMPLETE
+                && (PointsOfDeparture == TaskListStatus.COMPLETE || PointsOfDestination == TaskListStatus.COMPLETE))
+            {
+                ReviewAnswers = TaskListStatus.NOTSTART;
+            }
+            else
+            {
+                ReviewAnswers = TaskListStatus.CANNOTSTART;
             }
         }
     }
