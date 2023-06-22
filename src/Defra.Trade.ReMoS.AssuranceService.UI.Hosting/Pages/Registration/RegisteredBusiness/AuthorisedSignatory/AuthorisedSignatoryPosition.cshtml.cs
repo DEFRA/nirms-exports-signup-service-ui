@@ -25,9 +25,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public Guid SignatoryId { get; set; }
 
         private readonly ITraderService _traderService;
-        private readonly ILogger<AuthorisedSignatoryNameModel> _logger;
+        private readonly ILogger<AuthorisedSignatoryPositionModel> _logger;
 
-        public AuthorisedSignatoryPositionModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
+        public AuthorisedSignatoryPositionModel(ITraderService traderService, ILogger<AuthorisedSignatoryPositionModel> logger)
         {
             _traderService = traderService;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
