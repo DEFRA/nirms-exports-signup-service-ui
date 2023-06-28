@@ -15,7 +15,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         public Guid RegistrationID { get; set; }
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
-        public string? Country { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
         public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
         #endregion
@@ -74,7 +74,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
                 return RedirectToPage(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = tradePartyId, NI_GBFlag });
         }
 
-        public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+        public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
         {
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentNameAndAddressPath,
