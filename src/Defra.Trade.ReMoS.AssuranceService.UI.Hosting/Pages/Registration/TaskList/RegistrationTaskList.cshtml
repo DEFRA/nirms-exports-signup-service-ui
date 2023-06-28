@@ -124,8 +124,7 @@
                             }
                             else
                             {
-                                //Add asp-page tag when check answers exists
-                                <a href="check-and-submit" aria-describedby="complete_submit">
+                                <a asp-page=@Routes.Pages.Path.RegistrationCheckYourAnswersPath asp-route-id="@Model.RegistrationID" asp-route-Country="@Model.Country" aria-describedby="complete_submit">
                                     Check answers and submit sign up
                                 </a>
                             }     
