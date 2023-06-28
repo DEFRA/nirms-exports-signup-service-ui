@@ -123,7 +123,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (EstablishmentId == Guid.Empty) 
         {
-            return await _establishmentService.CreateEstablishmentAndAddToPartyAsync(TradePartyId, establishmentDto);
+            return await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, establishmentDto);
         }
         else
         {

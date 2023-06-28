@@ -113,9 +113,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDetailsDTO> 
+            var list = new List<LogisticsLocationDTO> 
             { 
-                new LogisticsLocationDetailsDTO() { NI_GBFlag = "NI"}
+                new LogisticsLocationDTO() { NI_GBFlag = "NI"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -213,9 +213,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDetailsDTO>
+            var list = new List<LogisticsLocationDTO>
             {
-                new LogisticsLocationDetailsDTO() { NI_GBFlag = "NI"}
+                new LogisticsLocationDTO() { NI_GBFlag = "NI"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -267,9 +267,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDetailsDTO>
+            var list = new List<LogisticsLocationDTO>
             {
-                new LogisticsLocationDetailsDTO() { NI_GBFlag = "NI"}, new LogisticsLocationDetailsDTO() { NI_GBFlag = "GB"}
+                new LogisticsLocationDTO() { NI_GBFlag = "NI"}, new LogisticsLocationDTO() { NI_GBFlag = "GB"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();

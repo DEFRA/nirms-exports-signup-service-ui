@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -92,14 +93,6 @@ public class PostcodeResultModel : PageModel
         {
             return await OnGetAsync(TradePartyId, Postcode);
         }
-
-        var logisticsLocationRelationshipDTO = new LogisticsLocationBusinessRelationshipDTO()
-        {
-            TradePartyId = TradePartyId,
-            LogisticsLocationId = Guid.Parse(SelectedEstablishment)
-        };
-
-        await _establishmentService.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,

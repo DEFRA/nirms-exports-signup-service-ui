@@ -18,23 +18,16 @@ public class EstablishmentService : IEstablishmentService
     {
         _api = api;
     }
-    public async Task<Guid?> CreateEstablishmentAndAddToPartyAsync(
+    public async Task<Guid?> CreateEstablishmentForTradePartyAsync(
         Guid partyId, 
         LogisticsLocationDTO logisticsLocationDTO)
     {
-        var establishmentId = await _api.CreateEstablishmentAsync(logisticsLocationDTO);
-
-        LogisticsLocationBusinessRelationshipDTO relationDto = new LogisticsLocationBusinessRelationshipDTO
-        {
-            TradePartyId = partyId,
-            LogisticsLocationId = establishmentId.Value,
-        };
-        Guid? relationId = await _api.AddEstablishmentToPartyAsync(relationDto);
+        var establishmentId = await _api.AddEstablishmentToPartyAsync(partyId, logisticsLocationDTO);
 
         return establishmentId;
     }
 
-    public async Task<IEnumerable<LogisticsLocationDetailsDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
         return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId);
     }
@@ -48,39 +41,9 @@ public class EstablishmentService : IEstablishmentService
         return await _api.GetEstablishmentsByPostcodeAsync(postcode);
     }
 
-    public async Task<Guid?> AddEstablishmentToPartyAsync(LogisticsLocationBusinessRelationshipDTO logisticsLocationRelationshipDTO)
+    public async Task<bool> RemoveEstablishmentAsync(Guid establishmentId)
     {
-        return await _api.AddEstablishmentToPartyAsync(logisticsLocationRelationshipDTO);
-    }
-
-    public async Task<bool> UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationshipDTO logisticsLocationBusinessRelationshipDTO)
-    {
-        return await _api.UpdateEstablishmentRelationship(logisticsLocationBusinessRelationshipDTO);
-    }
-
-    public async Task<LogisticsLocationBusinessRelationshipDTO?> GetRelationshipBetweenPartyAndEstablishment(Guid partyId, Guid establishmentId)
-    {
-        return await _api.GetRelationshipBetweenPartyAndEstablishment(partyId, establishmentId);
-    }
-
-    public async Task<bool> RemoveEstablishmentFromPartyAsync(Guid partyId, Guid establishmentId)
-    {
-        await _api.RemoveEstablishmentFromPartyAsync(partyId, establishmentId);
-        return true;
-    }
-
-    public async Task<bool> IsFirstTradePartyForEstablishment(Guid partyId, Guid establishmentId)
-    {
-        var relations = await _api.GetAllRelationsForEstablishmentAsync(establishmentId);
-
-        var firstParty = relations?
-            .OrderBy(x => x.ModifiedDate)
-            .Select(x => x.TradePartyId)
-            .First();
-
-        if (partyId != firstParty)
-            return false;
-
+        await _api.RemoveEstablishmentAsync(establishmentId);
         return true;
     }
 
