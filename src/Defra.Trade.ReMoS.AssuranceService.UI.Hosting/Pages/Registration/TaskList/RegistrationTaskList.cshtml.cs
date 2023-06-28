@@ -26,7 +26,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
         public string? Country { get; set; }
-        public string? NI_GBFlag { get; set; }
         #endregion
 
         private readonly ILogger<RegistrationTaskListModel> _logger;
