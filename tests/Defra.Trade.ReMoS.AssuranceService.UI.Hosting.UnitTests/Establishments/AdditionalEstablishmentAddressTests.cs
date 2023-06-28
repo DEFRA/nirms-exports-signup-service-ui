@@ -101,7 +101,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
 
-            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
+            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
@@ -117,7 +117,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetRemoveEstablishment_GivenNoExistingLocations_Redirect()
         {
             //Arrange
-            var list = new List<LogisticsLocationDetailsDTO> { };
+            var list = new List<LogisticsLocationDTO> { };
             _systemUnderTest!.AdditionalAddress = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
@@ -148,9 +148,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetChangeEstablishmentAddress_GivenAddedManually_SubmitIsValid()
         {
             //Arrange
-            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
+            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
-            _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(new Guid(), new Guid())).Returns(Task.FromResult(true));
 
             //Act
             await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
@@ -164,9 +163,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetChangeEstablishmentAddress_GivenNotAddedManually_Redirect()
         {
             //Arrange
-            var list = new List<LogisticsLocationDetailsDTO> { new LogisticsLocationDetailsDTO() };
+            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
-            _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(new Guid(), new Guid())).Returns(Task.FromResult(false));
 
             //Act
             await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());

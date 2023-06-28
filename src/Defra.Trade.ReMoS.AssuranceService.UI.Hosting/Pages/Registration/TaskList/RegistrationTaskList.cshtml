@@ -75,7 +75,7 @@
                     {
                         <li class="app-task-list__item">
                             <span class="app-task-list__task-name">
-                                <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
+                                <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
                                 asp-route-id="@Model.RegistrationID"
                                 asp-route-NI_GBFlag="GB"
                                 aria-describedby="establistment-departure">
@@ -93,11 +93,11 @@
 
                         <li class="app-task-list__item">
                             <span class="app-task-list__task-name">
-                                <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
-                                asp-route-id="@Model.RegistrationID"
-                                asp-route-NI_GBFlag="NI"
-                                aria-describedby="establistment-destination">
-                                    Points of destination
+                                <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                                    asp-route-id="@Model.RegistrationID"
+                                    asp-route-NI_GBFlag="NI"
+                                    aria-describedby="establistment-destination">
+                                    Points of destination (optional)
                                 </a>
                             </span>
                             <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDestination == "Completed" ? "green" : "grey")"
@@ -106,6 +106,32 @@
                             </strong>
                         </li>
                     }
+                </ul>
+            </li>
+
+            <li>
+                <h2 class="app-task-list__section">
+                    <span class="app-task-list__section-number">4. </span> Sanitary and phytosanitary (SPS) details
+                </h2>
+                <ul class="app-task-list__items">
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="sps-food-categories" aria-describedby="sps-goods">
+                                SPS goods categories
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-goods">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a href="sps-assurance-commitment" aria-describedby="sps-commitment">
+                                SPS assurance commitment
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-commitment">@TaskListStatus.NOTSTART</strong>
+                        <!--Add Status-->
+                    </li>
                 </ul>
             </li>
 

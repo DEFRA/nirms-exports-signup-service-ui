@@ -62,13 +62,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
-            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            var logisticsLocations = new LogisticsLocationDTO
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
-                LogisticsLocationId = Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
 
-            _mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
+            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -88,13 +88,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
 
-            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            var logisticsLocations = new LogisticsLocationDTO
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
-                LogisticsLocationId = Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
 
-            _mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
+            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

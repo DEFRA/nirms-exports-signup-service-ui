@@ -19,7 +19,6 @@ public class ContactEmailModel : PageModel
     [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDTO? Location { get; set; } = new LogisticsLocationDTO();
-    public LogisticsLocationBusinessRelationshipDTO? LogisticsLocationBusinessRelationship { get; set; } = new LogisticsLocationBusinessRelationshipDTO();
     public Guid TradePartyId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
@@ -59,11 +58,7 @@ public class ContactEmailModel : PageModel
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
         {
             Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
-            LogisticsLocationBusinessRelationship = await _establishmentService
-                .GetRelationshipBetweenPartyAndEstablishment(
-                TradePartyId,
-                EstablishmentId);
-            Email = LogisticsLocationBusinessRelationship?.ContactEmail;
+            Email = Location?.Email;
         }
 
         return Page();
@@ -87,12 +82,12 @@ public class ContactEmailModel : PageModel
 
     private async Task SaveEmailToApi()
     {
-        LogisticsLocationBusinessRelationship = await _establishmentService.GetRelationshipBetweenPartyAndEstablishment(TradePartyId, EstablishmentId);
+        Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
 
-        if (LogisticsLocationBusinessRelationship != null)
+        if (Location != null)
         {
-            LogisticsLocationBusinessRelationship.ContactEmail = Email;
-            await _establishmentService.UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationship);
+            Location.Email = Email;
+            await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
     }
 }

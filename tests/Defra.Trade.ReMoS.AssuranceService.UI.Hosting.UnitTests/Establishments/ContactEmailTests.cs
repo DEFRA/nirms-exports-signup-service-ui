@@ -29,8 +29,8 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         _mockEstablishmentService
-            .Setup(x => x.GetRelationshipBetweenPartyAndEstablishment(It.IsAny<Guid>(), It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationBusinessRelationshipDTO());
+            .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new Core.DTOs.LogisticsLocationDTO());
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());
