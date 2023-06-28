@@ -156,11 +156,11 @@
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.LocationName</h2>
+                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.Name</h2>
                         <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
                         asp-page-handler="RemoveEstablishment"
                         asp-route-tradepartyid="@Model.RegistrationID"
-                        asp-route-establishmentId="@location.LocationId"
+                        asp-route-establishmentId="@location.Id"
                         asp-route-NI_GBFlag="@Model.NI_GBFlag">
                             Remove
                         </a>
@@ -181,7 +181,7 @@
                                     <a class="govuk-link"
                                     asp-page-handler="ChangeEstablishmentAddress"
                                     asp-route-tradepartyid="@Model.RegistrationID"
-                                    asp-route-establishmentId="@location.LocationId"
+                                    asp-route-establishmentId="@location.Id"
                                     asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                         Change<span class="govuk-visually-hidden"> address</span>
                                     </a>
@@ -192,13 +192,13 @@
                                     Email address
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    @location.ContactEmail
+                                    @location.Email
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link"
                                     asp-page-handler="ChangeEmail"
                                     asp-route-tradepartyid="@Model.RegistrationID"
-                                    asp-route-establishmentId="@location.LocationId"
+                                    asp-route-establishmentId="@location.Id"
                                     asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                         Change<span class="govuk-visually-hidden"> email address</span>
                                     </a>

@@ -17,7 +17,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         public string? ContentText { get; set; } = string.Empty;
         public string? Country { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
-        public List<LogisticsLocationDetailsDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDetailsDTO>();
+        public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
         #endregion
 
         private readonly ILogger<CheckYourAnswersModel> _logger;
@@ -65,7 +65,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
         public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
         {
-            await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
+            await _establishmentService.RemoveEstablishmentAsync(establishmentId);
             LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
 
             if (LogisticsLocations?.Count > 0)
@@ -76,16 +76,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
         public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
         {
-            bool establishmentAddedManually = await _establishmentService.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId);
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = tradePartyId, establishmentId, NI_GBFlag });
 
-            if (establishmentAddedManually)
-            {
-                return RedirectToPage(
-                    Routes.Pages.Path.EstablishmentNameAndAddressPath,
-                    new { id = tradePartyId, establishmentId, NI_GBFlag });
-            }
-
-            return await OnGetAsync(tradePartyId, Country);
         }
 
         public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")

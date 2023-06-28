@@ -30,7 +30,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // arrange
             var tradePartyId = Guid.NewGuid();
             var country = "NI";
-            var logisticsLocations = new List<LogisticsLocationDetailsDTO>();
+            var logisticsLocations = new List<LogisticsLocationDTO>();
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
         
@@ -51,7 +51,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // arrange
             var tradePartyId = Guid.NewGuid();
             var country = "England";
-            var logisticsLocations = new List<LogisticsLocationDetailsDTO>();
+            var logisticsLocations = new List<LogisticsLocationDTO>();
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
 
@@ -73,9 +73,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var tradePartyId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
-            var logisticsLocations = new List<LogisticsLocationDetailsDTO> { };
+            var logisticsLocations = new List<LogisticsLocationDTO> { };
 
-            _mockEstablishmentService.Setup(x => x.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId).Result);
+            _mockEstablishmentService.Setup(x => x.RemoveEstablishmentAsync(establishmentId).Result);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
 
             // act
@@ -95,8 +95,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var tradePartyId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
-
-            _mockEstablishmentService.Setup(x => x.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId).Result).Returns(true);
 
             // act
             var result = await _systemUnderTest.OnGetChangeEstablishmentAddress(tradePartyId, establishmentId, NI_GBFlag);

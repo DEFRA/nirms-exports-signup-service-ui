@@ -81,7 +81,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
 
         [Test]
-        public async Task OnPostSubmit_SignatoryTrue_RedirectToEstablishmentPostcodeSearchPath()
+        public async Task OnPostSubmit_SignatoryTrue_RedirectToTaskList()
         {
             //Arrange
             _systemUnderTest!.IsAuthorisedSignatory = "true";
@@ -124,7 +124,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var redirectResult = result as RedirectToPageResult;
 
             //Assert
-            redirectResult!.PageName.Should().Be("/Establishments/PostcodeSearch");
+            redirectResult!.PageName.Should().Be("/Registration/TaskList/RegistrationTaskList");
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
         }
