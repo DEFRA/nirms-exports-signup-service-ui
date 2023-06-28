@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 public static class Routes
 {
