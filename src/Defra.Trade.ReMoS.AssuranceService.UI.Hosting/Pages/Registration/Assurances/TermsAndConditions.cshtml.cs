@@ -9,6 +9,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
     {
         public void OnGet()
         {
+            //here to make sure we can navigate to a page from sps assurance commitments
         }
     }
 }
