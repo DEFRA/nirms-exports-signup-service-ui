@@ -10,14 +10,14 @@
         <form method="post" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
             <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
-                <label for="business-name">
+                <label for="Name">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Business details</span>
                         What is the name of your business?
-                    </h1>
+                    </h1> 
                 </label>
                 <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
-                <input class="govuk-input" id="business-name" asp-for="Name" type="text"/>
+                <input class="govuk-input" id="Name" asp-for="Name" type="text"/>
             </div>
             <button class="govuk-button" asp-page-handler="submit">Save and continue</button>            
         </form>

@@ -10,7 +10,7 @@
 
         <form method="post" novalidate>
             <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
-                <label for="authorised-signatory-name">
+                <label for="Name">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
                         Full name of Authorised Signatory
@@ -18,11 +18,11 @@
                 </label>
 
                 <div class="govuk-form-group">
-                    <p class="govuk-hint" for="name">
+                    <p class="govuk-hint" for="Name">
                         The full name of the Authorised Signatory at @Model.BusinessName.
                     </p>
                     <p id="name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
-                    <input class="govuk-input" id="name" asp-for="Name" type="text">
+                    <input class="govuk-input" id="Name" asp-for="Name" type="text">
                 </div>                
             </div>
             <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
