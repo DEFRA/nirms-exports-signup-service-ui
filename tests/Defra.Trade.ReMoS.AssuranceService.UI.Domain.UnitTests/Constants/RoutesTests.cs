@@ -26,6 +26,7 @@ public class RoutesTests
     [TestCase(Routes.EstablishmentContactEmail, Routes.Pages.Path.EstablishmentContactEmailPath)]
     [TestCase(Routes.AuthorisedSignatoryPosition, Routes.Pages.Path.AuthorisedSignatoryPositionPath)]
     [TestCase(Routes.RegistrationCheckYourAnswers, Routes.Pages.Path.RegistrationCheckYourAnswersPath)]
+    [TestCase(Routes.RegistrationSpsAssurance, Routes.Pages.Path.RegistrationSpsAssurancePath)]
     public void TestRoutesMatchPaths(string routeName, string routePath)
     {
         //arrange
@@ -53,7 +54,7 @@ public class RoutesTests
     [TestCase(Routes.Pages.Names.EstablishmentPostcodeSearchName, Routes.Pages.Path.EstablishmentPostcodeSearchPath)]
     [TestCase(Routes.Pages.Names.EstablishmentContactEmailName, Routes.Pages.Path.EstablishmentContactEmailPath)]
     [TestCase(Routes.Pages.Names.AuthorisedSignatoryPositionName, Routes.Pages.Path.AuthorisedSignatoryPositionPath)]
-    [TestCase(Routes.Pages.Names.RegistrationCheckYourAnwersName, Routes.Pages.Path.RegistrationCheckYourAnswersPath)]
+    [TestCase(Routes.Pages.Names.RegistrationSpsAssuranceName, Routes.Pages.Path.RegistrationSpsAssurancePath)]
     public void TestPathsContainPageNames(string pageName, string path)
     {
         //assert

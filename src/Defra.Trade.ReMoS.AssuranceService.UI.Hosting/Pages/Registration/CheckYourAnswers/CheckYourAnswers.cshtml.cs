@@ -93,5 +93,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
                 new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
         }
 
+        public IActionResult OnPostSubmitAsync()
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.RegistrationSpsAssurancePath);
+        }
+
     }
 }

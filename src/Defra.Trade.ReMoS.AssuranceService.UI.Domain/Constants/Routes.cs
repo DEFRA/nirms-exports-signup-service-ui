@@ -26,6 +26,7 @@ public static class Routes
     public const string AuthorisedSignatoryPosition = "/authorised-signatory-position";
     public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
+    public const string RegistrationSpsAssurance = "/registration-sps-assurance";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -51,7 +52,8 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName),
         (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
-        (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers)
+        (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
+        (Pages.Path.RegistrationSpsAssurancePath, RegistrationSpsAssurance)
     };
 
     public static class Pages
@@ -81,6 +83,7 @@ public static class Routes
             public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
             public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
+            public const string RegistrationSpsAssuranceName = "SpsAssurance";
         }
 
         public static class Path
@@ -108,6 +111,7 @@ public static class Routes
             public const string AuthorisedSignatoryPositionPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryPositionName}";
             public const string AuthorisedSignatoryEmailPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryEmailName}";
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
+            public const string RegistrationSpsAssurancePath = $"/Registration/CheckYourAnswers/{Names.RegistrationSpsAssuranceName}";
         }
     }
 }
