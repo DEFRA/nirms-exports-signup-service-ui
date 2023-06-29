@@ -15,17 +15,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
 public class SPSAssuranceCommitmentTests : PageModelTestsBase
 {
-    private SPSAssuranceCommitmentsModel? _systemUnderTest;
+    private SpsAssuranceCommitmentsModel? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new SPSAssuranceCommitmentsModel(_mockTraderService.Object);
+        _systemUnderTest = new SpsAssuranceCommitmentsModel(_mockTraderService.Object);
     }
 
     [Test]
-    public async Task OnGet_ReturnsId()
+    public void OnGet_ReturnsId()
     {
         // arrange
         var tradePartyId = Guid.NewGuid();
@@ -47,13 +47,12 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             Id = tradePartyId,
             PartyName = "Test"
         };
-        var assurance = false;
 
         //act
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
 
-        await _systemUnderTest.OnPostSubmitAsync();
+        await _systemUnderTest!.OnPostSubmitAsync();
 
         //assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);

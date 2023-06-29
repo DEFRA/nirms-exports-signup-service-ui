@@ -84,7 +84,7 @@ public static class Routes
             public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
             public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
-            public const string SPSAssuranceCommitmentsName = "SPSAssuranceCommitments";
+            public const string SPSAssuranceCommitmentsName = "SpsAssuranceCommitments";
             public const string TermsAndConditionsName = "TermsAndConditions";
         }
 

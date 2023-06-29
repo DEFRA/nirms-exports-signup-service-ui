@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances
 {
-    public class SPSAssuranceCommitmentsModel : PageModel
+    public class SpsAssuranceCommitmentsModel : PageModel
     {
         #region UI Model
         [BindProperty]
@@ -18,7 +18,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         private readonly ITraderService _traderService;
 
-        public SPSAssuranceCommitmentsModel(ITraderService traderService)
+        public SpsAssuranceCommitmentsModel(ITraderService traderService)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
         }
@@ -40,7 +40,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             }
 
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
-            dto.AssuranceCommitmentsSignedDate = DateTime.UtcNow;
+            dto!.AssuranceCommitmentsSignedDate = DateTime.UtcNow;
 
             await _traderService.UpdateTradePartyAsync(dto);
 
