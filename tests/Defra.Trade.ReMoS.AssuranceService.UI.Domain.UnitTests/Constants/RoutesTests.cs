@@ -54,6 +54,7 @@ public class RoutesTests
     [TestCase(Routes.Pages.Names.EstablishmentPostcodeSearchName, Routes.Pages.Path.EstablishmentPostcodeSearchPath)]
     [TestCase(Routes.Pages.Names.EstablishmentContactEmailName, Routes.Pages.Path.EstablishmentContactEmailPath)]
     [TestCase(Routes.Pages.Names.AuthorisedSignatoryPositionName, Routes.Pages.Path.AuthorisedSignatoryPositionPath)]
+    [TestCase(Routes.Pages.Names.RegistrationCheckYourAnwersName, Routes.Pages.Path.RegistrationCheckYourAnswersPath)]
     [TestCase(Routes.Pages.Names.RegistrationSpsAssuranceName, Routes.Pages.Path.RegistrationSpsAssurancePath)]
     public void TestPathsContainPageNames(string pageName, string path)
     {
