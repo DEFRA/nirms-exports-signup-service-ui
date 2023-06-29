@@ -7,6 +7,8 @@ public class TradePartyDTO
     public string? CountryName { get; set; }
     public string? NatureOfBusiness { get; set; }
     public string? FboNumber { get; set; }
+    public DateTime AssuranceCommitmentsSignedDate { get; set; }
+    public DateTime TermsAndConditionsSignedDate { get; set; }
     public TradeAddressDTO? Address { get; set; }
     public TradeContactDTO? Contact { get; set; }
     public AuthorisedSignatoryDto? AuthorisedSignatory { get; set; }

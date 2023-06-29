@@ -6,7 +6,6 @@ public static class Routes
     public const string RegisteredBusinessRegulations = "/registered-business-regulations";
     public const string RegisteredBusinessFboNumber = "/registered-business-fbo-number";
     public const string RegisteredBusinessCanNotRegister = "/registered-business-cannot-register";
-    
     public const string RegistrationTasklist = "/registration-tasklist";
     public const string RegisteredBusinessContactName = "/registered-business-contact-name";
     public const string RegisteredBusinessContactPosition = "/registered-business-contact-position";
@@ -26,6 +25,8 @@ public static class Routes
     public const string AuthorisedSignatoryPosition = "/authorised-signatory-position";
     public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
+    public const string SPSAssuranceCommitments = "/registration-assurance-commitments";
+    public const string TermsAndConditions = "/registration-terms-and-conditions";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -51,7 +52,9 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryNamePath, AuthorisedSignatoryName),
         (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
-        (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers)
+        (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
+        (Pages.Path.SPSAssuranceCommitmentsPath, SPSAssuranceCommitments),
+        (Pages.Path.TermsAndConditionsPath, TermsAndConditions)
     };
 
     public static class Pages
@@ -81,6 +84,8 @@ public static class Routes
             public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
             public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
+            public const string SPSAssuranceCommitmentsName = "SPSAssuranceCommitments";
+            public const string TermsAndConditionsName = "TermsAndConditions";
         }
 
         public static class Path
@@ -108,6 +113,8 @@ public static class Routes
             public const string AuthorisedSignatoryPositionPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryPositionName}";
             public const string AuthorisedSignatoryEmailPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryEmailName}";
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
+            public const string SPSAssuranceCommitmentsPath = $"/Registration/Assurances/{Names.SPSAssuranceCommitmentsName}";
+            public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
         }
     }
 }

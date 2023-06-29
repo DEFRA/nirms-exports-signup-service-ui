@@ -1,0 +1,31 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances.SPSAssuranceCommitmentsModel
+@{
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">  
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <h1 class="govuk-heading-xl">
+            Sanitary and phytosanitary (SPS) assurance commitment
+        </h1>
+
+        <form class="form" method="post">
+            <h2 class="govuk-heading-s"> Placeholder text for regulations -- THIS LINE IS NOT TO BE TESTED</h2>
+
+
+            <p>Date of declaration: @DateTime.Now.Date</p>
+            <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
+                <p id="AssuranceCommitment_Error" class="govuk-error-message" gds-validation-for="AssuranceCommitment"></p>
+                <input class="govuk-checkboxes__input" id="AssuranceCommitment" asp-for="AssuranceCommitment" type="checkbox" value="true">
+                <label class="govuk-label govuk-checkboxes__label govuk-!-font-weight-bold" for="AssuranceCommitment">
+                    On behalf of the Authorised Signatory, I confirm that the above requirements will be met and that they are accountable for following them.
+                </label>
+            </div>
+
+            <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-assuranceSubmit">Continue</button>
+            <input type="hidden" asp-for="TraderId" />
+        </form>
+    </div>
+</div>
