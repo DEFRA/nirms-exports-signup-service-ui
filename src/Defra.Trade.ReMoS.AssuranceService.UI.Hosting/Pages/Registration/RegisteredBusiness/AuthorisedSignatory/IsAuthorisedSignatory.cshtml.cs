@@ -56,7 +56,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             IsAuthorisedSignatory = updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
             if (Convert.ToBoolean(IsAuthorisedSignatory))
             {
-                return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId });
+                return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
             }
 
             return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
