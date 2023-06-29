@@ -111,32 +111,6 @@
 
             <li>
                 <h2 class="app-task-list__section">
-                    <span class="app-task-list__section-number">4. </span> Sanitary and phytosanitary (SPS) details
-                </h2>
-                <ul class="app-task-list__items">
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a href="sps-food-categories" aria-describedby="sps-goods">
-                                SPS goods categories
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-goods">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
-                    </li>
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a href="sps-assurance-commitment" aria-describedby="sps-commitment">
-                                SPS assurance commitment
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--grey" id="sps-commitment">@TaskListStatus.NOTSTART</strong>
-                        <!--Add Status-->
-                    </li>
-                </ul>
-            </li>
-
-            <li>
-                <h2 class="app-task-list__section">
                     <span class="app-task-list__section-number">5. </span> Check and submit sign up
                 </h2>
                 <ul class="app-task-list__items">
@@ -150,8 +124,7 @@
                             }
                             else
                             {
-                                //Add asp-page tag when check answers exists
-                                <a href="check-and-submit" aria-describedby="complete_submit">
+                                <a asp-page=@Routes.Pages.Path.RegistrationCheckYourAnswersPath asp-route-id="@Model.RegistrationID" aria-describedby="complete_submit">
                                     Check answers and submit sign up
                                 </a>
                             }     
