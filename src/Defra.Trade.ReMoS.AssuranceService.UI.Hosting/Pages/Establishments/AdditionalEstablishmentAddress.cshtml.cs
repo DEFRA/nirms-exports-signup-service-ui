@@ -82,7 +82,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
 
         if (LogisticsLocations?.Count > 0)
-            return await OnGetAsync(tradePartyId);
+            return await OnGetAsync(tradePartyId, NI_GBFlag);
         else
         {
             return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId });
