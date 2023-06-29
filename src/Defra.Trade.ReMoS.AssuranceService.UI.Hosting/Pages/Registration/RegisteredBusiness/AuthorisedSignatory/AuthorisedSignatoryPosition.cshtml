@@ -10,7 +10,7 @@
 
         <form method="post" novalidate>
             <div class="govuk-form-group @(ModelState.HasError("Position") ? "govuk-form-group--error" : null)">
-                <label for="authorised-signatory-position">
+                <label for="Position">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
                         Position of Authorised Signatory
@@ -22,7 +22,7 @@
                         The position of the Authorised Signatory person at @Model.BusinessName, for example 'COO'.
                     </p>
                     <p id="name_Error" class="govuk-error-message" gds-validation-for="Position"></p>
-                    <input class="govuk-input" id="name" asp-for="Position" type="text">
+                    <input class="govuk-input" id="Position" asp-for="Position" type="text">
                 </div>
             </div>
             <button class="govuk-button" asp-page-handler="submit">Save and continue</button>

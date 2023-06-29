@@ -82,8 +82,9 @@
                         </h3>
                     </legend>
 
-                    <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                    <p id="AdditionalAddress_Error" class="govuk-error-message" gds-validation-for="AdditionalAddress"></p>
 
+                    <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios" id="AdditionalAddress">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="add-point-of-departure-yes" asp-for="AdditionalAddress" type="radio" value="yes">
                             <label class="govuk-label govuk-radios__label" for="add-point-of-departure-yes">
