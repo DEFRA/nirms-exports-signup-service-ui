@@ -5,26 +5,30 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
 
-        <form class="form" method="post">
-
-            <div class="govuk-form-group">
-                <label for="authorised-signatory-email">
-                    <h1 class="govuk-heading-l">
-                        <span class="govuk-caption-l">Contact details</span>
-                        Email address of Authorised Signatory
-                    </h1>
-                </label>
-                <p class="govuk-hint" id="authorised-signatory-email-hint">The email address of the Authorised Signatory at @Model.BusinessName.</p>
-                <input class="govuk-input" id="authorised-signatory-email" type="email" spellcheck="false" asp-for="Email">
+        <form class="form" method="post" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
+                <div class="govuk-form-group">
+                    <label for="authorised-signatory-email">
+                        <h1 class="govuk-heading-l">
+                            <span class="govuk-caption-l">Contact details</span>
+                            Email address of Authorised Signatory
+                        </h1>
+                    </label>
+                    <p class="govuk-hint" id="authorised-signatory-email-hint">The email address of the Authorised Signatory at @Model.BusinessName.</p>
+                    <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
+                    <input class="govuk-input" id="authorised-signatory-email" type="email" spellcheck="false" asp-for="Email" aria-describedby="email-hint" autocomplete="email">
+                </div>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+            </div>
 
             <input type="hidden" asp-for="TraderId" />
             <input type="hidden" asp-for="BusinessName" />
             <input type="hidden" asp-for="SignatoryId" />
         </form>
-
     </div>
 </div>
