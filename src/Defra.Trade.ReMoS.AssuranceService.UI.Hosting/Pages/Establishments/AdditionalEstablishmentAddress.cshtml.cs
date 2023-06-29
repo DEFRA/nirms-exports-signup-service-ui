@@ -67,9 +67,13 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (AdditionalAddress == "yes")
         {
-            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId, NI_GBFlag });
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath, 
+                new { id = TradePartyId, NI_GBFlag });
         }
-        else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+        else return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath, 
+            new { id = TradePartyId });
     }
 
     public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
