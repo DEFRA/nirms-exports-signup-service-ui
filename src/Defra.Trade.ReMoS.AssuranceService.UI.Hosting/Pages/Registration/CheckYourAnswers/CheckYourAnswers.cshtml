@@ -9,7 +9,6 @@
     <div class="govuk-grid-column-two-thirds">
         <form class="form" method="post" novalidate="">
             <input type="hidden" asp-for="RegistrationID" />
-            <input type="hidden" asp-for="Country" />
             <input type="hidden" asp-for="NI_GBFlag" />
 
             <h1 class="govuk-heading-xl">Check your answers</h1>
@@ -25,8 +24,8 @@
                     <dt class="govuk-summary-list__key">
                     Business name
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-details-name">
+                        @Model.TradeParty?.PartyName
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-name">
@@ -38,8 +37,11 @@
                     <dt class="govuk-summary-list__key">
                     Business address
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-details-address">
+                        @(Model.TradeParty?.Address?.LineOne != null ? $"{Model.TradeParty.Address?.LineOne}" : string.Empty) @if (Model.TradeParty?.Address?.LineOne != null) {<br />}
+                        @(Model.TradeParty?.Address?.LineTwo != null ? $"{Model.TradeParty.Address?.LineTwo}" : string.Empty) @if (Model.TradeParty?.Address?.LineTwo != null) {<br />}
+                        @(Model.TradeParty?.Address?.CityName != null ? $"{Model.TradeParty.Address?.CityName}" : string.Empty) @if (Model.TradeParty?.Address?.CityName != null) {<br />}
+                        @(Model.TradeParty?.Address?.PostCode != null ? $"{Model.TradeParty.Address?.PostCode}" : string.Empty)
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessAddressPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-address">
@@ -51,8 +53,8 @@
                     <dt class="govuk-summary-list__key">
                     Country
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-details-country">
+                        @Model.TradeParty?.Address?.TradeCountry
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessCountryPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-country">
@@ -64,8 +66,8 @@
                     <dt class="govuk-summary-list__key">
                     FBO number
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-details-fbo">
+                        @Model.TradeParty?.FboNumber
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
@@ -81,8 +83,8 @@
                     <dt class="govuk-summary-list__key">
                     Contact name
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-contact-name">
+                        @Model.TradeParty?.Contact?.PersonName
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-name">
@@ -94,8 +96,8 @@
                     <dt class="govuk-summary-list__key">
                     Contact position
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-contact-position">
+                        @Model.TradeParty?.Contact?.Position
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-position">
@@ -107,8 +109,8 @@
                     <dt class="govuk-summary-list__key">
                     Contact email address
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-contact-email">
+                        @Model.TradeParty?.Contact?.Email
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-email">
@@ -120,8 +122,8 @@
                     <dt class="govuk-summary-list__key">
                     Contact telephone number
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
+                    <dd class="govuk-summary-list__value" id="business-contact-phone">
+                        @Model.TradeParty?.Contact?.TelephoneNumber
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPhonePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-phone">
@@ -137,9 +139,14 @@
                     <dt class="govuk-summary-list__key">
                     Contact person is the Authorised Signatory
                     </dt>
-                    <dd class="govuk-summary-list__value">
-
-                    </dd>
+                        @if (Model.TradeParty?.Contact?.IsAuthorisedSignatory == true)
+                        {
+                        <dd class="govuk-summary-list__value" id="business-authorisied-signatory">Yes</dd>
+                        }
+                        else
+                        {
+                        <dd class="govuk-summary-list__value" id="business-authorisied-signatory">No</dd>
+                        }
                     <dd class="govuk-summary-list__actions">
                     <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryDetailsPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
                         Edit<span class="govuk-visually-hidden"> Authorised Signatory name</span>

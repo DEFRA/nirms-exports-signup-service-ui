@@ -17,11 +17,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         private CheckYourAnswersModel? _systemUnderTest;
         protected Mock<ILogger<CheckYourAnswersModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object);
+            _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
         }
 
         [Test]
@@ -29,18 +30,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var country = "NI";
             var logisticsLocations = new List<LogisticsLocationDTO>();
+            var tradeParty = new TradePartyDTO { Address = new TradeAddressDTO { TradeCountry = "NI" } };
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
-        
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+
             // act
-            await _systemUnderTest!.OnGetAsync(tradePartyId, country);
+            await _systemUnderTest!.OnGetAsync(tradePartyId);
 
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("NI");
             _systemUnderTest.RegistrationID.Should().Be(tradePartyId);
-            _systemUnderTest.Country.Should().Be(country);
             _systemUnderTest.ContentHeading.Should().Be("Points of destination");
             _systemUnderTest.ContentText.Should().Be("destination");
         }
@@ -50,18 +51,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var country = "England";
             var logisticsLocations = new List<LogisticsLocationDTO>();
+            var tradeParty = new TradePartyDTO { Address = new TradeAddressDTO { TradeCountry = "England" } };
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
 
             // act
-            await _systemUnderTest!.OnGetAsync(tradePartyId, country);
+            await _systemUnderTest!.OnGetAsync(tradePartyId);
 
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("GB");
             _systemUnderTest.RegistrationID.Should().Be(tradePartyId);
-            _systemUnderTest.Country.Should().Be(country);
             _systemUnderTest.ContentHeading.Should().Be("Points of departure");
             _systemUnderTest.ContentText.Should().Be("departure");
         }
