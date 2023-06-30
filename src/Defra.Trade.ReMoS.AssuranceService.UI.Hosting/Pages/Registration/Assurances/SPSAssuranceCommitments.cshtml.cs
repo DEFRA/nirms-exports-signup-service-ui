@@ -45,7 +45,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             await _traderService.UpdateTradePartyAsync(dto);
 
             return RedirectToPage(
-                Routes.Pages.Path.TermsAndConditionsPath,
+                Routes.Pages.Path.SignUpConfirmationPath,
                 new { id = TraderId });
         }
     }
