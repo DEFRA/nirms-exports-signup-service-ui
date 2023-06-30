@@ -1,10 +1,9 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics.Metrics;
+#pragma warning disable CS1998
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers
 {
@@ -93,10 +92,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
                 new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
         }
 
-        public IActionResult OnPostSubmitAsync()
+
+        public async Task<IActionResult> OnPostSubmitAsync()
         {
             return RedirectToPage(
-                Routes.Pages.Path.RegistrationSpsAssurancePath);
+                Routes.Pages.Path.SPSAssuranceCommitmentsPath,
+                new { id = RegistrationID });
         }
 
     }

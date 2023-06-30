@@ -61,7 +61,6 @@ public class ApiIntegration : IAPIIntegration
             Application.Json);
 
         var httpClient = CreateHttpClient();
-        //var response = await httpClient.PostAsync($"TradeParties/Party", requestBody);
         var response = await httpClient.PostAsync($"TradeParties", requestBody);
 
         if (response.IsSuccessStatusCode)
