@@ -118,7 +118,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 && BusinessDetails == TaskListStatus.COMPLETE
                 && ContactDetails == TaskListStatus.COMPLETE
                 && AuthorisedSignatoryDetails == TaskListStatus.COMPLETE
-                && (PointsOfDeparture == TaskListStatus.COMPLETE || PointsOfDestination == TaskListStatus.COMPLETE))
+                && ((PointsOfDeparture == TaskListStatus.COMPLETE && Country != "NI") || (PointsOfDestination == TaskListStatus.COMPLETE && Country == "NI")))
             {
                 ReviewAnswers = TaskListStatus.NOTSTART;
             }

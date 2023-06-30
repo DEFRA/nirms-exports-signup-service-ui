@@ -197,7 +197,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
 
             var tradeAddress = new TradeAddressDTO
             {
-                TradeCountry = "Test Country",
+                TradeCountry = "NI",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
