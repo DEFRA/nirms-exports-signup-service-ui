@@ -59,8 +59,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             }
             else
             {
-                ContentHeading = "Points of departure";
-                ContentText = "departure";
+                ContentHeading = "Places of dispatch";
+                ContentText = "dispatch";
             }
 
             return Page();

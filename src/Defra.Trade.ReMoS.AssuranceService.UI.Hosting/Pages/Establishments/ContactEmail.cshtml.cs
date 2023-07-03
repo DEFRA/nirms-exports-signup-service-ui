@@ -39,19 +39,19 @@ public class ContactEmailModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment departure destination OnGetAsync");
+        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
         TradePartyId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a point of destination (optional)";
+            ContentHeading = "Add a place of destination (optional)";
             ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
         }
         else
         {
-            ContentHeading = "Add a point of departure";
+            ContentHeading = "Add a place of dispatch";
             ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
         }
 

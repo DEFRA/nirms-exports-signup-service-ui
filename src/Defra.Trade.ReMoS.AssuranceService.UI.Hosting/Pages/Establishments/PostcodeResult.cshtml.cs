@@ -55,12 +55,12 @@ public class PostcodeResultModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a point of destination (optional)";
+            ContentHeading = "Add a place of destination (optional)";
             ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
         }
         else
         {
-            ContentHeading = "Add a point of departure";
+            ContentHeading = "Add a place of dispatch";
             ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
         }
 

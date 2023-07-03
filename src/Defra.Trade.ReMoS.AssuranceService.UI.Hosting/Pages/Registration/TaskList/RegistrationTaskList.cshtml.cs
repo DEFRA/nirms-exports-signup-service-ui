@@ -20,9 +20,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public string AuthorisedSignatoryDetails { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
-        public string PointsOfDeparture { get; set; } = TaskListStatus.NOTSTART;
+        public string PlacesOfDispatch { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
-        public string PointsOfDestination { get; set; } = TaskListStatus.NOTSTART;      
+        public string PlacesOfDestination { get; set; } = TaskListStatus.NOTSTART;      
         [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
         public string? Country { get; set; }
@@ -106,10 +106,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
 
             if (gbEstablishments != null && gbEstablishments.Any())
-                PointsOfDeparture = TaskListStatus.COMPLETE;
+                PlacesOfDispatch = TaskListStatus.COMPLETE;
 
             if (niEstablishments != null && niEstablishments.Any())
-                PointsOfDestination = TaskListStatus.COMPLETE;
+                PlacesOfDestination = TaskListStatus.COMPLETE;
         }
 
         private void CheckAnswersStatus()
@@ -118,7 +118,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 && BusinessDetails == TaskListStatus.COMPLETE
                 && ContactDetails == TaskListStatus.COMPLETE
                 && AuthorisedSignatoryDetails == TaskListStatus.COMPLETE
-                && ((PointsOfDeparture == TaskListStatus.COMPLETE && Country != "NI") || (PointsOfDestination == TaskListStatus.COMPLETE && Country == "NI")))
+                && ((PlacesOfDispatch == TaskListStatus.COMPLETE && Country != "NI") || (PlacesOfDestination == TaskListStatus.COMPLETE && Country == "NI")))
             {
                 ReviewAnswers = TaskListStatus.NOTSTART;
             }

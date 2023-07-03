@@ -12,7 +12,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
-    [Required(ErrorMessage = "Select yes if you want to add another point of departure")]
+    [Required(ErrorMessage = "Select yes if you want to add another place of dispatch")]
     public string AdditionalAddress { get; set; } = string.Empty;
     public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
     public Guid TradePartyId { get; set; }
@@ -45,8 +45,8 @@ public class AdditionalEstablishmentAddressModel : PageModel
         }
         else
         {
-            ContentHeading = "Points of departure";
-            ContentText = "departure";
+            ContentHeading = "Places of dispatch";
+            ContentText = "dispatch";
         }
 
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?

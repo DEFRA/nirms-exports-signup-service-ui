@@ -58,7 +58,7 @@
                 <span class="govuk-caption-l">Establishments</span>
                 @Model.ContentHeading
             </h1>
-            <p class="govuk-hint" id="search-points-of-departure">
+            <p class="govuk-hint" id="search-places-of-dispatch">
                 @Model.ContentText
             </p>
 
@@ -73,8 +73,8 @@
                 </p>
 
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-!-font-weight-bold" for="points-of-departure-address-select">Select an address</label>
-                    <select class="govuk-select" id="points-of-departure-address-select" asp-for="@Model.SelectedEstablishment" asp-items="@Model.EstablishmentsList"></select>
+                    <label class="govuk-label govuk-!-font-weight-bold" for="places-of-dispatch-address-select">Select an address</label>
+                    <select class="govuk-select" id="places-of-dispatch-address-select" asp-for="@Model.SelectedEstablishment" asp-items="@Model.EstablishmentsList"></select>
                 </div>
             </div>
 

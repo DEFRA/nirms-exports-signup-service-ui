@@ -54,7 +54,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             _systemUnderTest!.AdditionalAddress = "";
-            var expectedResult = "Select yes if you want to add another point of departure";
+            var expectedResult = "Select yes if you want to add another place of dispatch";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -70,7 +70,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             _systemUnderTest!.AdditionalAddress = "";
-            var expectedResult = "Select yes if you want to add another point of departure";
+            var expectedResult = "Select yes if you want to add another place of dispatch";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
             //Act
