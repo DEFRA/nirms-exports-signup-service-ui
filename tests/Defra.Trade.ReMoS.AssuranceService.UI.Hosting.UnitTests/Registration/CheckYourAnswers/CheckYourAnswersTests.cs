@@ -42,7 +42,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("NI");
             _systemUnderTest.RegistrationID.Should().Be(tradePartyId);
-            _systemUnderTest.ContentHeading.Should().Be("Points of destination");
+            _systemUnderTest.ContentHeading.Should().Be("Places of destination");
             _systemUnderTest.ContentText.Should().Be("destination");
         }
 

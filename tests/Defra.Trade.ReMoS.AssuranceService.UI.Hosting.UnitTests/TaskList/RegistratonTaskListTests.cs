@@ -84,7 +84,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         }
 
         [Test]
-        public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPointsOfDispatchComplete()
+        public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPlacesOfDispatchComplete()
         {
             //Arrange
             Guid guid = Guid.NewGuid();
@@ -127,7 +127,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
 
             //Assert
             _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.NOTSTART);
-            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.COMPLETE);
         }
 
         [Test]
