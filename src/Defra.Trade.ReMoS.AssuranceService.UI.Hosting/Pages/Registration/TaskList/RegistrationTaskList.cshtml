@@ -78,13 +78,13 @@
                                 <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
                                 asp-route-id="@Model.RegistrationID"
                                 asp-route-NI_GBFlag="GB"
-                                aria-describedby="establistment-departure">
-                                    Points of departure
+                                aria-describedby="establistment-dispatch">
+                                    Places of dispatch
                                 </a>
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDeparture == "Completed" ? "green" : "grey")"
-                            id="establistment-departure">
-                                @Model.PointsOfDeparture
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PlacesOfDispatch == "Completed" ? "green" : "grey")"
+                            id="establistment-dispatch">
+                                @Model.PlacesOfDispatch
                             </strong>
                         </li>
                     }
@@ -97,12 +97,12 @@
                                     asp-route-id="@Model.RegistrationID"
                                     asp-route-NI_GBFlag="NI"
                                     aria-describedby="establistment-destination">
-                                    Points of destination
+                                    Places of destination
                                 </a>
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PointsOfDestination == "Completed" ? "green" : "grey")"
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PlacesOfDestination == "Completed" ? "green" : "grey")"
                             id="establistment-destination">
-                                @Model.PointsOfDestination
+                                @Model.PlacesOfDestination
                             </strong>
                         </li>
                     }

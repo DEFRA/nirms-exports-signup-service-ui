@@ -81,11 +81,11 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a point of destination";
+            ContentHeading = "Add a place of destination";
         }
         else
         {
-            ContentHeading = "Add a point of departure";
+            ContentHeading = "Add a place of dispatch";
         }
 
         await RetrieveEstablishmentDetails();

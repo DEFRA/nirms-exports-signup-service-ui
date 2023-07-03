@@ -84,7 +84,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         }
 
         [Test]
-        public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPointsOfDepartureComplete()
+        public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPlacesOfDispatchComplete()
         {
             //Arrange
             Guid guid = Guid.NewGuid();
@@ -126,8 +126,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
-            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.NOTSTART);
-            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.COMPLETE);
         }
 
         [Test]
@@ -230,8 +230,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.COMPLETE);
-            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.NOTSTART);
-            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.NOTSTART);
         }
 
@@ -284,8 +284,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.NOTSTART);
-            _systemUnderTest.PointsOfDeparture.Should().Be(TaskListStatus.COMPLETE);
-            _systemUnderTest.PointsOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.CANNOTSTART);
         }
 

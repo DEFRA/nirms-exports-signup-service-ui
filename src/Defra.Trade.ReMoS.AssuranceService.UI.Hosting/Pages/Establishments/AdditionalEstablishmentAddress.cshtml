@@ -1,7 +1,7 @@
 ﻿@page
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.AdditionalEstablishmentAddressModel
 @{
-    ViewData["Title"] = "Points of departure";
+    ViewData["Title"] = "Places of dispatch";
 }
 
 <div class="govuk-grid-row">
@@ -78,7 +78,7 @@
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AdditionalAddress") ? "AdditionalAddress_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
                         <h3 class="govuk-fieldset__heading">
-                            Do you want to add another point of @Model.ContentText?
+                            Do you want to add another place of @Model.ContentText?
                         </h3>
                     </legend>
 
@@ -86,15 +86,15 @@
 
                     <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios" id="AdditionalAddress">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="add-point-of-departure-yes" asp-for="AdditionalAddress" type="radio" value="yes">
-                            <label class="govuk-label govuk-radios__label" for="add-point-of-departure-yes">
-                                Yes, add another point of @Model.ContentText
+                            <input class="govuk-radios__input" id="add-place-of-dispatch-yes" asp-for="AdditionalAddress" type="radio" value="yes">
+                            <label class="govuk-label govuk-radios__label" for="add-place-of-dispatch-yes">
+                                Yes, add another place of @Model.ContentText
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="add-point-of-departure-no" asp-for="AdditionalAddress" type="radio" value="no">
-                            <label class="govuk-label govuk-radios__label" for="add-point-of-departure-no">
-                                No, I have finished adding points of @Model.ContentText
+                            <input class="govuk-radios__input" id="add-place-of-dispatch-no" asp-for="AdditionalAddress" type="radio" value="no">
+                            <label class="govuk-label govuk-radios__label" for="add-place-of-dispatch-no">
+                                No, I have finished adding places of @Model.ContentText
                             </label>
                         </div>
                     </div>

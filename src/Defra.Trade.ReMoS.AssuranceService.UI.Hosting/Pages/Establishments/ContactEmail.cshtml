@@ -21,7 +21,7 @@
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint" id="search-points-of-departure">
+                    <p class="govuk-hint" id="search-places-of-dispatch">
                         @Model.ContentText
                         </p>
 
@@ -33,7 +33,7 @@
                             @(Model.Location.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
                             @(Model.Location.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
                             @(Model.Location.Address?.PostCode != null ? $"{Model.Location.Address?.PostCode} " : string.Empty)
-                        </span> <a href="points-of-departure-address">Change</a>
+                        </span> <a href="places-of-dispatch-address">Change</a>
                     </p>
 
                     <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">

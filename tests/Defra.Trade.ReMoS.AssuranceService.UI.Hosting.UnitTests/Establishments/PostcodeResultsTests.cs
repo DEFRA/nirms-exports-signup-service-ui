@@ -108,7 +108,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGet_HeadingSetToParameter_Successfully()
         {
             //Arrange
-            var expectedHeading = "Add a point of destination (optional)";
+            var expectedHeading = "Add a place of destination (optional)";
             var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))

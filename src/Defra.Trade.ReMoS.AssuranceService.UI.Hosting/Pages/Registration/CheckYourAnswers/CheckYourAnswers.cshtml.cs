@@ -54,13 +54,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
             if (NI_GBFlag == "NI")
             {
-                ContentHeading = "Points of destination";
+                ContentHeading = "Places of destination";
                 ContentText = "destination";
             }
             else
             {
-                ContentHeading = "Points of departure";
-                ContentText = "departure";
+                ContentHeading = "Places of dispatch";
+                ContentText = "dispatch";
             }
 
             return Page();
