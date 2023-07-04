@@ -1,7 +1,31 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.EstablishmentNameAndAddressModel
 @{
     ViewData["Title"] = "Add a place of dispatch";
+}
+
+@section Back{
+    @{
+        var referer = ViewContext.HttpContext.Request.Headers["Referer"].ToString();
+        if (referer.Contains(Routes.RegistrationCheckYourAnswers))
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+               asp-route-id="@Model.TradePartyId"
+               class="govuk-back-link">Back</a>
+        }
+        else if (referer.Contains(Routes.AdditionalEstablishmentAddress))
+        {
+            <a asp-page="@Routes.Pages.Path.AdditionalEstablishmentAddressPath" 
+                asp-route-id="@Model.TradePartyId" 
+                asp-route-NI_GBFlag="@Model.NI_GBFlag" 
+                class="govuk-back-link">Back</a>
+        }
+        else
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+        }
+    }
 }
 
 <div class="govuk-grid-row">

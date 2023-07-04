@@ -89,7 +89,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         }
     }
 
-    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
 
         return RedirectToPage(

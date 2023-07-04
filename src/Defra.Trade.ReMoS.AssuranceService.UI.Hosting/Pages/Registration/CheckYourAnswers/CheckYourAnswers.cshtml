@@ -5,6 +5,10 @@
     ViewData["Title"] = "Check Your Answers";
 }
 
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.RegistrationID" class="govuk-back-link">Back</a>
+}
+
 <div class="govuk-grid-row" id="checkYourAnswers">
     <div class="govuk-grid-column-two-thirds">
         <form class="form" method="post" novalidate="">

@@ -1,7 +1,18 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessFboNumberModel
 @{
     ViewData["Title"] = "Enter FBO Number";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TraderId"
+           class="govuk-back-link">Back</a>
+    }
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessCountryPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">

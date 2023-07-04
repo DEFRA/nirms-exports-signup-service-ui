@@ -70,7 +70,7 @@ public class ContactEmailModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         await SaveEmailToApi();

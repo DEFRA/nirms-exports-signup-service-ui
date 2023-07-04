@@ -1,6 +1,11 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.AuthorisedSignatoryEmailModel
 @{
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.AuthorisedSignatoryPositionPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">

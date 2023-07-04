@@ -1,7 +1,20 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.IsAuthorisedSignatoryModel
 @{
     ViewData["Title"] = "Fill in Yes or No for the contact person to be the Authorised Signatory";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TradePartyId"
+           class="govuk-back-link">Back</a>
+    }
+    else{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">

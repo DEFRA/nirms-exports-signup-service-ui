@@ -1,4 +1,13 @@
 ﻿@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
-@if (!ViewContext.RouteData.Values.Any(p => p.Value!.ToString()!.Contains("Index"))){
+@if (!ViewContext.RouteData.Values.Any(p => p.Value!.ToString()!.Contains("Index")))
+{
     <a href="javascript:window.history.back()" class="govuk-back-link">Back</a>
 }
+
+
+@*@if (!ViewContext.RouteData.Values.Any(p => p.Value!.ToString()!.Contains("Index")))
+{
+    var returnUrl = ViewContext.HttpContext.Request.Headers["Referer"].ToString();
+    var returnUrlMethod = ViewContext.HttpContext.Request.Method;
+    <a href="@returnUrl" class="govuk-back-link">Back</a>
+}*@

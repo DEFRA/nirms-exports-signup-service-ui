@@ -1,7 +1,20 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessContactNameModel
 @{
     ViewData["Title"] = "Enter Business Contact Name";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TradePartyId"
+           class="govuk-back-link">Back</a>
+    }
+    else{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -27,7 +40,7 @@
                 
             </div>
             <div class="govuk-form-group">
-                <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>                
+                <button type="submit" class="govuk-button" id="button-rbCountrySubmit">Save and continue</button>                
             </div>
         </form>
     </div>

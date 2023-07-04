@@ -131,13 +131,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
 
         [Test]
-        public async Task OnGetChangeEstablishmentAddress_SubmitIsValid()
+        public void OnGetChangeEstablishmentAddress_SubmitIsValid()
         {
             //Arrange
             _systemUnderTest!.AdditionalAddress = "yes";
 
             //Act
-            await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
+            _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -145,14 +145,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnGetChangeEstablishmentAddress_GivenAddedManually_SubmitIsValid()
+        public void OnGetChangeEstablishmentAddress_GivenAddedManually_SubmitIsValid()
         {
             //Arrange
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
 
             //Act
-            await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
+            _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -160,14 +160,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnGetChangeEstablishmentAddress_GivenNotAddedManually_Redirect()
+        public void OnGetChangeEstablishmentAddress_GivenNotAddedManually_Redirect()
         {
             //Arrange
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
             _systemUnderTest!.AdditionalAddress = "yes";
 
             //Act
-            await _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
+            _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -182,10 +182,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             string NI_GBFlag = "GB";
             var expected = new RedirectToPageResult(
                 Routes.Pages.Path.EstablishmentContactEmailPath, 
-                new { id = tradePartyId, locationId = establishmentId, NI_GBFlag = string.Empty });
+                new { id = tradePartyId, locationId = establishmentId, NI_GBFlag});
 
             // Act
-            var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId, string.Empty);
+            var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId, NI_GBFlag);
 
             // Assert
             result.Should().NotBeNull();
