@@ -23,12 +23,12 @@
                     </label>
                     <p class="govuk-hint" id="authorised-signatory-email-hint">The email address of the Authorised Signatory at @Model.BusinessName.</p>
                     <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
-                    <input class="govuk-input" id="Email" type="email" spellcheck="false" asp-for="Email" aria-describedby="email-hint" autocomplete="email">
+                    <input class="govuk-input" id="Email" type="email" spellcheck="false" asp-for="Email" autocomplete="email">
                 </div>
             </div>
 
             <div class="govuk-form-group">
-                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button" id="btn_emailSubmit" asp-page-handler="submit">Save and continue</button>
             </div>
 
             <input type="hidden" asp-for="TraderId" />
