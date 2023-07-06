@@ -40,7 +40,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Places of destination (optional)";
+            ContentHeading = "Places of destination";
             ContentText = "destination";
         }
         else

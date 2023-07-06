@@ -198,7 +198,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGet_HeadingSetToParameter_Successfully()
         {
             //Arrange
-            var expectedHeading = "Places of destination (optional)";
+            var expectedHeading = "Places of destination";
             var expectedContentText = "destination";
 
             //Act
