@@ -22,6 +22,7 @@ public class RegisteredBusinessContactPositionModel : PageModel
 
     [BindProperty]
     public Guid ContactId { get; set; }
+    public bool? IsAuthorisedSignatory { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessContactPositionModel> _logger;
@@ -58,8 +59,9 @@ public class RegisteredBusinessContactPositionModel : PageModel
             return await OnGetAsync(TradePartyId);
         }
 
+        await GetIsAuthorisedSignatoryFromApiAsync();
         TradePartyDTO tradeParty = GenerateDTO();
-         await _traderService.UpdateTradePartyContactAsync(tradeParty);
+        await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
 
         return RedirectToPage(
@@ -74,6 +76,16 @@ public class RegisteredBusinessContactPositionModel : PageModel
             Position = tradeParty.Contact.Position ?? string.Empty;
         }
     }
+
+    private async Task GetIsAuthorisedSignatoryFromApiAsync()
+    {
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (tradeParty != null && tradeParty.Contact != null)
+        {
+            IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+        }
+    }
+
     private TradePartyDTO GenerateDTO()
     {
         return new TradePartyDTO()
@@ -82,7 +94,8 @@ public class RegisteredBusinessContactPositionModel : PageModel
             Contact = new TradeContactDTO()
             {
                 Id = ContactId,
-                Position = Position
+                Position = Position,
+                IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
     }

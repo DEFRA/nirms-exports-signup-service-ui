@@ -68,7 +68,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         }
 
         [Test]
-        public async Task OnGetRemoveEstablishment_Redirect_Successfully()
+        public async Task OnGetRemoveEstablishment__NoneLeft_Redirect_Successfully()
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
@@ -83,7 +83,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var result = await _systemUnderTest!.OnGetRemoveEstablishment(tradePartyId, establishmentId, NI_GBFlag);
 
             // assert
-            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = tradePartyId, NI_GBFlag });
+            var expected = new RedirectToPageResult(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId, NI_GBFlag });
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
         }

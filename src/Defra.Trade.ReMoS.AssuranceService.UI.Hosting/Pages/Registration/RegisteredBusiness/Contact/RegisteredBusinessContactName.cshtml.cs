@@ -21,6 +21,7 @@ public class RegisteredBusinessContactNameModel : PageModel
     public Guid TradePartyId { get; set; }
     [BindProperty]
     public Guid ContactId { get; set; }
+    public bool? IsAuthorisedSignatory { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessContactNameModel> _logger;
@@ -59,6 +60,7 @@ public class RegisteredBusinessContactNameModel : PageModel
             return await OnGetAsync(TradePartyId);
         }
 
+        await GetIsAuthorisedSignatoryFromApiAsync();
         TradePartyDTO tradeParty = GenerateDTO();
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
@@ -76,6 +78,15 @@ public class RegisteredBusinessContactNameModel : PageModel
         }
     }
 
+    private async Task GetIsAuthorisedSignatoryFromApiAsync()
+    {
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (tradeParty != null && tradeParty.Contact != null)
+        {
+            IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+        }
+    }
+
     private TradePartyDTO GenerateDTO()
     {
         return new TradePartyDTO()
@@ -84,7 +95,8 @@ public class RegisteredBusinessContactNameModel : PageModel
             Contact = new TradeContactDTO()
             {
                 Id = ContactId,
-                PersonName = Name
+                PersonName = Name,
+                IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
     }
