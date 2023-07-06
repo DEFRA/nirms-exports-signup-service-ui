@@ -55,7 +55,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             _systemUnderTest!.AdditionalAddress = "";
-            var expectedResult = "Select yes if you want to add another place of dispatch";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
