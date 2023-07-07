@@ -53,12 +53,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyDTO tradeParty = await GenerateDTO();
 
             var updatedTradeParty = await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
-            IsAuthorisedSignatory = updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
+
+            if (IsAuthorisedSignatory == null)
+            {
+                IsAuthorisedSignatory = updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
+            }
+
             if (Convert.ToBoolean(IsAuthorisedSignatory))
             {
                 return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
             }
 
+
+            await _traderService.UpdateTradePartyAsync(tradeParty);
             return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
         }
 
