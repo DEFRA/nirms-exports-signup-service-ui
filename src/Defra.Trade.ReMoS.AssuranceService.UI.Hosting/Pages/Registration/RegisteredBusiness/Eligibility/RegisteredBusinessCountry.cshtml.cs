@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
+[Authorize]
 public class RegisteredBusinessCountryModel : PageModel
 {
     #region ui model variables
@@ -32,6 +34,11 @@ public class RegisteredBusinessCountryModel : PageModel
     {
         _logger.LogInformation("Country OnGet");
         TraderId = Id;
+
+        if (!User.Claims.Any())
+        {
+            var claims = "";
+        }
 
         if (Id != Guid.Empty)
         {

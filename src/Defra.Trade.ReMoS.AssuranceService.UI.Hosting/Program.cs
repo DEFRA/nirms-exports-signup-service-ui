@@ -3,8 +3,9 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Defra.Trade.Common.AppConfig;
 using Defra.Trade.Common.Security.Authentication.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -27,6 +28,22 @@ internal sealed class Program
         builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
 
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.EventsType = typeof(CustomCookieAuthenticationEvents);
+            });
+
+        //builder.Services.AddAuthorization(options =>
+        //{
+        //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        //        .RequireAuthenticatedUser()
+        //        .Build();
+        //});
+
+        builder.Services.AddScoped<CustomCookieAuthenticationEvents>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+
         builder.Services.AddMvc(config =>
         {
             var policy = new AuthorizationPolicyBuilder()
@@ -44,6 +61,9 @@ internal sealed class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
