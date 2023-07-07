@@ -20,6 +20,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
+        public bool? IsAuthorisedSignatory { get; set; }
 
 
         public RegisteredBusinessContactPhoneModel(ILogger<RegisteredBusinessContactPhoneModel> logger, ITraderService traderService)
@@ -46,6 +47,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TradePartyId);
             }
 
+            await GetIsAuthorisedSignatoryFromApiAsync();
             TradePartyDTO tradeParty = GenerateDTO();
             TradePartyId = await _traderService.UpdateTradePartyContactAsync(tradeParty);
 
@@ -64,6 +66,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             }
         }
 
+        private async Task GetIsAuthorisedSignatoryFromApiAsync()
+        {
+            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+            if (tradeParty != null && tradeParty.Contact != null)
+            {
+                IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+            }
+        }
+
         private TradePartyDTO GenerateDTO()
         {
             return new TradePartyDTO()
@@ -71,7 +82,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 Id = TradePartyId,
                 Contact = new TradeContactDTO()
                 {
-                    TelephoneNumber = PhoneNumber
+                    TelephoneNumber = PhoneNumber,
+                    IsAuthorisedSignatory = IsAuthorisedSignatory
                 }
             };
         }

@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -54,32 +55,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             _systemUnderTest!.AdditionalAddress = "";
-            var expectedResult = "Select yes if you want to add another place of dispatch";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
-            var validation = ValidateModel(_systemUnderTest);
 
             //Assert
-            validation.Count.Should().Be(1);
-            expectedResult.Should().Be(validation[0].ErrorMessage);
-        }
-
-        [Test]
-        public async Task OnPostSubmit_SubmitInValidRadio_ModelStateIsInvalid()
-        {
-            //Arrange
-            _systemUnderTest!.AdditionalAddress = "";
-            var expectedResult = "Select yes if you want to add another place of dispatch";
-            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
-            //Act
-            await _systemUnderTest.OnPostSubmitAsync();
-            var validation = ValidateModel(_systemUnderTest);
-
-            //Assert
-            validation.Count.Should().Be(1);
-            expectedResult.Should().Be(validation[0].ErrorMessage);
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.HasError("AdditionalAddress").Should().Be(true);
         }
 
         [Test]

@@ -226,7 +226,8 @@
                 </a>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">
+            
+            <button class="govuk-button" asp-page-handler="submit" disabled="@(!Model.LogisticsLocations.Any())">
                 Continue
             </button>
 

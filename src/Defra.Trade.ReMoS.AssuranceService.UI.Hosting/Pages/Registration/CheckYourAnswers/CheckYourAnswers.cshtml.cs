@@ -74,7 +74,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             if (LogisticsLocations?.Count > 0)
                 return await OnGetAsync(tradePartyId);
             else
-                return RedirectToPage(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = tradePartyId, NI_GBFlag });
+                return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId, NI_GBFlag });
         }
 
         public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
