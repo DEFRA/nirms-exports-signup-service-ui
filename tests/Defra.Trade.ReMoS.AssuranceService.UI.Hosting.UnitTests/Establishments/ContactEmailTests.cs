@@ -1,6 +1,9 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using FluentAssertions.Primitives;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -66,5 +69,21 @@ public class ContactEmailTests : PageModelTestsBase
         //Assert
         _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
         _systemUnderTest.ContentText.Should().Be(expectedContentText);
+    }
+
+    [Test]
+    public void OnGetChangeEstablishmentAddress_Returns_RedirectResult()
+    {
+        //Arrange
+        var tradePartyId = new Guid();
+        var establishmentId = new Guid();
+        string NI_GBFlag = "GB";
+
+        //Act
+        var result = _systemUnderTest?.OnGetChangeEstablishmentAddress(tradePartyId, establishmentId, NI_GBFlag);
+
+        //Assert
+        result?.GetType().Should().Be(typeof(RedirectToPageResult));
+        (result as RedirectToPageResult)?.PageName?.Equals(Routes.Pages.Path.EstablishmentNameAndAddressPath);
     }
 }
