@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 {
-    [Authorize]
     public class RegistrationTaskListModel : PageModel
     {
         #region ui model variables

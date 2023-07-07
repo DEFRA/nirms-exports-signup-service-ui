@@ -7,18 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Azure.Management.BatchAI.Fluent.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 #pragma warning disable CS1998
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
 //Remove when start page added
 [ExcludeFromCodeCoverage]
+[AllowAnonymous]
 [IgnoreAntiforgeryToken(Order = 1001)]
 public class IndexModel : PageModel
 {
     [BindProperty]
     public Guid? Id { get; set; }
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
     private readonly ILogger<IndexModel> _logger;
 
@@ -27,22 +29,28 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
-    public async void OnGet()
+    public async Task<IActionResult> OnGet(bool auth = true)
     {
         // check if token valid
 
         // if valid go to business page (or other)
 
         // if not valid redirect
+        if (auth)
+        {
+            await Task.Run(() => { });
 
-        await Task.Run(() => { });
+            var correlationId = Guid.NewGuid().ToString();
 
-        var correlationId = Guid.NewGuid().ToString();
+            var redirect = $"http://exports-authentication-exp-14943.azurewebsites.net/b2c/remos_signup/login-or-refresh?correlationId={correlationId}";
 
-        var redirect = $"http://exports-authentication-exp-14943.azurewebsites.net/b2c/remos_signup/login-or-refresh?correlationId={correlationId}";
+            Response.Redirect(redirect);
+        }
 
-        Response.Redirect(redirect);
 
+
+
+        return Page();
     }
 
     public async Task<IActionResult> OnPostSubmitAsync()
@@ -60,7 +68,7 @@ public class IndexModel : PageModel
         return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
     }
 
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         ReturnUrl = returnUrl;
 
@@ -92,7 +100,7 @@ public class IndexModel : PageModel
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(30),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(3000),
                 // The time at which the authentication ticket expires. A 
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.
@@ -119,6 +127,7 @@ public class IndexModel : PageModel
             _logger.LogInformation("User {Email} logged in at {Time}.", "user.Email", DateTime.UtcNow);
 
             return LocalRedirect(Url.GetLocalUrl(returnUrl));
+            //return await OnGet(false);
         }
 
         // Something failed. Redisplay the form.

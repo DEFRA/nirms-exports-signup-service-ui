@@ -20,4 +20,17 @@
             <button class="govuk-button" asp-page-handler="save" id="button-rbIndexSave">Start new</button>
         </form>
     </div>
+
+    <div>
+        @if (User.Identity.IsAuthenticated!)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Hello @User.Claims.FirstOrDefault(c => c.Type == "name")?.Value!</h1>
+                    <p>Contact Id: @User.Claims.FirstOrDefault(c => c.Type == "contactId")?.Value!</p>
+                </div>
+            </div>
+        }
+    </div>
 </container>
+
