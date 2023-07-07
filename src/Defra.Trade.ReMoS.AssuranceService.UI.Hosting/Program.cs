@@ -3,6 +3,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Defra.Trade.Common.AppConfig;
 using Defra.Trade.Common.Security.Authentication.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -24,6 +26,14 @@ internal sealed class Program
         builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
+
+        builder.Services.AddMvc(config =>
+        {
+            var policy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
+            config.Filters.Add(new AuthorizeFilter(policy));
+        });
 
         var app = builder.Build();
 
