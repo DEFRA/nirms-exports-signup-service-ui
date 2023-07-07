@@ -52,7 +52,7 @@
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
                     <p>
                         <span>
-                            @(Model.Location?.Name != null ? $"{Model.Location.Name}," : string.Empty),
+                            @(Model.Location?.Name != null ? $"{Model.Location.Name}," : string.Empty)
                             @(Model.Location?.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
                             @(Model.Location?.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
                             @(Model.Location?.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
