@@ -46,10 +46,6 @@ public class IndexModel : PageModel
 
             Response.Redirect(redirect);
         }
-
-
-
-
         return Page();
     }
 
@@ -126,8 +122,8 @@ public class IndexModel : PageModel
 
             _logger.LogInformation("User {Email} logged in at {Time}.", "user.Email", DateTime.UtcNow);
 
-            return LocalRedirect(Url.GetLocalUrl(returnUrl));
-            //return await OnGet(false);
+            //return LocalRedirect(Url.GetLocalUrl(returnUrl));
+            return await OnGet(false);
         }
 
         // Something failed. Redisplay the form.

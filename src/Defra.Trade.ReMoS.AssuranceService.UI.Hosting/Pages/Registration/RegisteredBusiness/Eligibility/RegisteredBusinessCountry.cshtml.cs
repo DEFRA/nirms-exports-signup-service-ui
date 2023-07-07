@@ -9,7 +9,6 @@ using System.Runtime.CompilerServices;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
-[Authorize]
 public class RegisteredBusinessCountryModel : PageModel
 {
     #region ui model variables

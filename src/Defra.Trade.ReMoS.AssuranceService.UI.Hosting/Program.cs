@@ -6,6 +6,7 @@ using Defra.Trade.Common.Security.Authentication.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -33,13 +34,6 @@ internal sealed class Program
             {
                 options.EventsType = typeof(CustomCookieAuthenticationEvents);
             });
-
-        //builder.Services.AddAuthorization(options =>
-        //{
-        //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        //        .RequireAuthenticatedUser()
-        //        .Build();
-        //});
 
         builder.Services.AddScoped<CustomCookieAuthenticationEvents>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
