@@ -26,6 +26,7 @@ internal sealed class Program
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
         builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));
+        builder.Services.Configure<EhcoIntegrationSettings>(builder.Configuration.GetSection("EhcoIntegrationSettings"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
 

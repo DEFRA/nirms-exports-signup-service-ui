@@ -87,6 +87,7 @@ extends:
         dev: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
           -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
+          -EhcoIntegrationSettings:EhcoAuthEndpoint "https://exports-authentication-exp-14995.azurewebsites.net/b2c/remos_signup/login-or-refresh?correlationId="
         tst: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
           -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"

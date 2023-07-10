@@ -28,6 +28,7 @@ public static class Routes
     public const string SPSAssuranceCommitments = "/registration-assurance-commitments";
     public const string TermsAndConditions = "/registration-terms-and-conditions";
     public const string SignUpConfirmation = "/confirmation";
+    public const string RegisteredBusiness = "/registration-business";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -56,7 +57,8 @@ public static class Routes
         (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
         (Pages.Path.SPSAssuranceCommitmentsPath, SPSAssuranceCommitments),
         (Pages.Path.TermsAndConditionsPath, TermsAndConditions),
-        (Pages.Path.SignUpConfirmationPath, SignUpConfirmation)
+        (Pages.Path.SignUpConfirmationPath, SignUpConfirmation),
+        (Pages.Path.RegisteredBusinessPath, RegisteredBusiness)
     };
 
     public static class Pages
@@ -89,6 +91,7 @@ public static class Routes
             public const string SPSAssuranceCommitmentsName = "SpsAssuranceCommitments";
             public const string TermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
+            public const string RegisteredBusinessName = "RegisteredBusiness";
         }
 
         public static class Path
@@ -119,6 +122,7 @@ public static class Routes
             public const string SPSAssuranceCommitmentsPath = $"/Registration/Assurances/{Names.SPSAssuranceCommitmentsName}";
             public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
+            public const string RegisteredBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessName}";
         }
     }
 }

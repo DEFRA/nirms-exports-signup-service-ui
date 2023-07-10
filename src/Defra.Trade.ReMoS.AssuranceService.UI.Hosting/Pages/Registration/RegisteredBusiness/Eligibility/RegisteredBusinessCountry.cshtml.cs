@@ -34,11 +34,6 @@ public class RegisteredBusinessCountryModel : PageModel
         _logger.LogInformation("Country OnGet");
         TraderId = Id;
 
-        if (!User.Claims.Any())
-        {
-            var claims = "";
-        }
-
         if (Id != Guid.Empty)
         {
             Country = await GetCountryFromApiAsync();

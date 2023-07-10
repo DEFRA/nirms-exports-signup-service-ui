@@ -8,6 +8,8 @@ using Microsoft.Azure.Management.BatchAI.Fluent.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Microsoft.Extensions.Options;
 #pragma warning disable CS1998
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
@@ -23,17 +25,19 @@ public class IndexModel : PageModel
     public string? ReturnUrl { get; set; }
 
     private readonly ILogger<IndexModel> _logger;
+    private readonly IOptions<EhcoIntegrationSettings> _ehcoIntegrationSettings;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(ILogger<IndexModel> logger, IOptions<EhcoIntegrationSettings> ehcoIntegrationSettings)
     {
         _logger = logger;
+        _ehcoIntegrationSettings = ehcoIntegrationSettings;
     }
 
     public async Task<IActionResult> OnGet(bool auth = true)
     {
         // check if token valid
 
-        // if valid go to business page (or other)
+        // if valid go to business page
 
         // if not valid redirect
         if (auth)
@@ -42,7 +46,7 @@ public class IndexModel : PageModel
 
             var correlationId = Guid.NewGuid().ToString();
 
-            var redirect = $"http://exports-authentication-exp-14943.azurewebsites.net/b2c/remos_signup/login-or-refresh?correlationId={correlationId}";
+            var redirect = _ehcoIntegrationSettings.Value.EhcoAuthEndpoint + correlationId;
 
             Response.Redirect(redirect);
         }
@@ -64,10 +68,8 @@ public class IndexModel : PageModel
         return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
     }
 
-    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+    public async Task<IActionResult> OnPostAsync()
     {
-        ReturnUrl = returnUrl;
-
         if (ModelState.IsValid)
         {
             var token = Request.Form["token"];
@@ -122,8 +124,7 @@ public class IndexModel : PageModel
 
             _logger.LogInformation("User {Email} logged in at {Time}.", "user.Email", DateTime.UtcNow);
 
-            //return LocalRedirect(Url.GetLocalUrl(returnUrl));
-            return await OnGet(false);
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPath);
         }
 
         // Something failed. Redisplay the form.
