@@ -128,6 +128,6 @@ public class IndexModel : PageModel
         }
 
         // Something failed. Redisplay the form.
-        return Page();
+        return RedirectToPage("/Error");
     }
 }

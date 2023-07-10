@@ -25,7 +25,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         //Arrange
         //TODO: Add setup for returning values when API referenced
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Empty;
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -54,6 +54,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Country = "";
+        _systemUnderTest!.TraderId = Guid.Empty;
         var expectedResult = "Enter a country";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
@@ -71,11 +72,11 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnGet_NoCountryPresentIfNoSavedData_ReturnTradePartyDto()
     {
         //Arrange
-        //TODO: Add setup for returning values when API referenced
         Guid guid = Guid.NewGuid();
 
         var tradeContact = new TradeContactDTO();
         var tradeAddress = new TradeAddressDTO();
+        tradeAddress.TradeCountry = "England";
 
         var tradePartyDto = new TradePartyDTO
         {
@@ -91,7 +92,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         _ = await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
-        _ = _systemUnderTest.Country.Should().Be("");
+        _ = _systemUnderTest.Country.Should().Be("England");
     }
 }
 
