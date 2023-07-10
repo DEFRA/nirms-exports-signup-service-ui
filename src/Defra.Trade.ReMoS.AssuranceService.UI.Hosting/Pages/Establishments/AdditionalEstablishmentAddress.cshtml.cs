@@ -68,7 +68,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(TradePartyId, NI_GBFlag);
         }
 
         if (AdditionalAddress == "yes")
