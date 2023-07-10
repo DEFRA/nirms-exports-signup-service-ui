@@ -88,7 +88,7 @@ public static class Routes
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
             public const string TermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
-            public const string RegisteredBusinessName = "RegisteredBusiness";
+            public const string RegisteredBusinessBusinessName = "RegisteredBusiness";
         }
 
         public static class Path
@@ -118,7 +118,7 @@ public static class Routes
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
             public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
-            public const string RegisteredBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessName}";
+            public const string RegisteredBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessBusinessName}";
         }
     }
 }

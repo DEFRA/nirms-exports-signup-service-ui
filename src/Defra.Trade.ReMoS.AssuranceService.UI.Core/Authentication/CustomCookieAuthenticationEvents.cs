@@ -16,14 +16,14 @@ public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
     {
         var userPrincipal = context.Principal;
 
-        var contactId = userPrincipal.Claims.FirstOrDefault(c => c.Type == "contactId");
+        var contactId = userPrincipal!.Claims.FirstOrDefault(c => c.Type == "contactId");
 
         if (contactId == null)
         {
             await RejectAndSignOut(context);
         }
 
-        var enrolledOrganisationsCount = userPrincipal.Claims.FirstOrDefault(c => c.Type == "enrolledOrganisationsCount");
+        var enrolledOrganisationsCount = userPrincipal!.Claims.FirstOrDefault(c => c.Type == "enrolledOrganisationsCount");
 
         if (enrolledOrganisationsCount == null)
         {
@@ -31,7 +31,7 @@ public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
         }
     }
 
-    private async Task RejectAndSignOut(CookieValidatePrincipalContext context)
+    private async static Task RejectAndSignOut(CookieValidatePrincipalContext context)
     {
         context.RejectPrincipal();
 

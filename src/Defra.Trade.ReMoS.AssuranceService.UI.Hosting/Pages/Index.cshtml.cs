@@ -20,10 +20,6 @@ namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 [IgnoreAntiforgeryToken(Order = 1001)]
 public class IndexModel : PageModel
 {
-    [BindProperty]
-    public Guid? Id { get; set; }
-    public string? ReturnUrl { get; set; }
-
     private readonly ILogger<IndexModel> _logger;
     private readonly IOptions<EhcoIntegrationSettings> _ehcoIntegrationSettings;
 
@@ -51,21 +47,6 @@ public class IndexModel : PageModel
         }
 
         return Page();
-    }
-
-    public async Task<IActionResult> OnPostSubmitAsync()
-    {
-        if (Id == Guid.Empty)
-        {
-            ModelState.AddModelError(nameof(Id), "Enter Guid");
-        }
-
-        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = Id });
-    }
-
-    public async Task<IActionResult> OnPostSaveAsync()
-    {
-        return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
     }
 
     public async Task<IActionResult> OnPostAsync()

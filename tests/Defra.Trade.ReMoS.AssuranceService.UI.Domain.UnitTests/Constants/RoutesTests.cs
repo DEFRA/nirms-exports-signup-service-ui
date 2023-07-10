@@ -57,7 +57,7 @@ public class RoutesTests
     [TestCase(Routes.Pages.Names.AuthorisedSignatoryPositionName, Routes.Pages.Path.AuthorisedSignatoryPositionPath)]
     [TestCase(Routes.Pages.Names.RegistrationCheckYourAnwersName, Routes.Pages.Path.RegistrationCheckYourAnswersPath)]
     [TestCase(Routes.Pages.Names.TermsAndConditionsName, Routes.Pages.Path.TermsAndConditionsPath)]
-    [TestCase(Routes.Pages.Names.RegisteredBusinessName, Routes.Pages.Path.RegisteredBusinessPath)]
+    [TestCase(Routes.Pages.Names.RegisteredBusinessBusinessName, Routes.Pages.Path.RegisteredBusinessPath)]
     public void TestPathsContainPageNames(string pageName, string path)
     {
         //assert

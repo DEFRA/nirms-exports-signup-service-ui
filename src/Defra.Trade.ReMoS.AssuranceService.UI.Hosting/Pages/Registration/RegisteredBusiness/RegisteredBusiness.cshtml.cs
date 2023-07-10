@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness
 {
@@ -9,10 +10,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         public Guid? Id { get; set; }
 
-        public void OnGet()
-        {
-        }
-        public async Task<IActionResult> OnPostSubmitAsync()
+        public IActionResult OnPostSubmit()
         {
             if (Id == Guid.Empty)
             {
@@ -22,7 +20,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = Id });
         }
 
-        public async Task<IActionResult> OnPostSaveAsync()
+        public IActionResult OnPostSave()
         {
             return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
         }
