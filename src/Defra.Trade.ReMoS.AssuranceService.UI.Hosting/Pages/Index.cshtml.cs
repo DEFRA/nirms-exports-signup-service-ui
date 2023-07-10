@@ -33,14 +33,9 @@ public class IndexModel : PageModel
         _ehcoIntegrationSettings = ehcoIntegrationSettings;
     }
 
-    public async Task<IActionResult> OnGet(bool auth = true)
+    public async Task<IActionResult> OnGet()
     {
-        // check if token valid
-
-        // if valid go to business page
-
-        // if not valid redirect
-        if (auth)
+        if (User.Identity == null || !User.Identity.IsAuthenticated)
         {
             await Task.Run(() => { });
 
@@ -50,6 +45,11 @@ public class IndexModel : PageModel
 
             Response.Redirect(redirect);
         }
+        else
+        {
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPath);
+        }
+
         return Page();
     }
 
