@@ -1,7 +1,12 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessCountryModel
 @{
     ViewData["Title"] = "Enter Business Country";
+}
+
+@section Back{
+    <a href="javascript:window.history.back()" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">

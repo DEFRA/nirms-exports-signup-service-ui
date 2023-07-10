@@ -5,6 +5,10 @@
     ViewData["Title"] = "Check Your Answers";
 }
 
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.RegistrationID" class="govuk-back-link">Back</a>
+}
+
 <div class="govuk-grid-row" id="checkYourAnswers">
     <div class="govuk-grid-column-two-thirds">
         <form class="form" method="post" novalidate="">
@@ -182,7 +186,7 @@
                                     @(location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty)
                                     @(location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty)
                                     @(location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty)
-                                    @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}," : string.Empty)
+                                    @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty)
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link"
@@ -222,7 +226,8 @@
                 </a>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">
+            
+            <button class="govuk-button" asp-page-handler="submit" disabled="@(!Model.LogisticsLocations.Any())">
                 Continue
             </button>
 

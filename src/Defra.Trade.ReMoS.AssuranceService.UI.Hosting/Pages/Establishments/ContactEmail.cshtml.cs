@@ -70,7 +70,7 @@ public class ContactEmailModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         await SaveEmailToApi();
@@ -89,5 +89,12 @@ public class ContactEmailModel : PageModel
             Location.Email = Email;
             await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
+    }
+
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = tradePartyId, establishmentId, NI_GBFlag });
     }
 }

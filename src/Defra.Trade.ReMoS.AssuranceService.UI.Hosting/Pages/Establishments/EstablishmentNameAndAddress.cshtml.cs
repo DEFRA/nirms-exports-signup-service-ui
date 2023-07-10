@@ -37,9 +37,9 @@ public class EstablishmentNameAndAddressModel : PageModel
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a country using only letters, numbers, hyphens (-) and apostrophes (').")]
-    [StringLength(100, ErrorMessage = "Country must be 100 characters or less")]
-    public string? Country { get; set; } = string.Empty;
+    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a county using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
+    public string? County { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Enter a real postcode.")]
@@ -117,7 +117,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         establishmentDto.Address.LineOne = LineOne;
         establishmentDto.Address.LineTwo = LineTwo;
         establishmentDto.Address.CityName = CityName;
-        establishmentDto.Address.TradeCountry = Country;
+        establishmentDto.Address.County = County;
         establishmentDto.Address.PostCode = PostCode;
         establishmentDto.NI_GBFlag = NI_GBFlag;
 
@@ -141,7 +141,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         LineOne = establishment?.Address?.LineOne ?? string.Empty;
         LineTwo = establishment?.Address?.LineTwo ?? string.Empty;
         CityName = establishment?.Address?.CityName ?? string.Empty;
-        Country = establishment?.Address?.TradeCountry ?? string.Empty;
+        County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
 
     }

@@ -12,8 +12,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
-    [Required(ErrorMessage = "Select yes if you want to add another place of dispatch")]
-    public string AdditionalAddress { get; set; } = string.Empty;
+    public string? AdditionalAddress { get; set; } = string.Empty;
     public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
     public Guid TradePartyId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
@@ -40,7 +39,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Places of destination (optional)";
+            ContentHeading = "Places of destination";
             ContentText = "destination";
         }
         else
@@ -59,6 +58,13 @@ public class AdditionalEstablishmentAddressModel : PageModel
     public async Task<IActionResult> OnPostSubmitAsync()
     {
         _logger.LogInformation("Additional establishment manual address OnPostSubmit");
+
+        if (String.IsNullOrWhiteSpace(AdditionalAddress))
+        {
+            var baseError = "Select yes if you want to add another place of ";
+            var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
+            ModelState.AddModelError(nameof(AdditionalAddress), errorMessage);
+        }
 
         if (!ModelState.IsValid)
         {
@@ -89,7 +95,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         }
     }
 
-    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
 
         return RedirectToPage(

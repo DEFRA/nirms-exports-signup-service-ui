@@ -19,6 +19,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public Guid TradePartyId { get; set; }
         [BindProperty]
         public Guid ContactId { get; set; }
+        public bool? IsAuthorisedSignatory { get; set; }
         #endregion
 
         private readonly ITraderService _traderService;
@@ -50,6 +51,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TradePartyId);
             }
 
+            await GetIsAuthorisedSignatoryFromApiAsync();
             TradePartyDTO tradeParty = GenerateDTO();
 
             await _traderService.UpdateTradePartyContactAsync(tradeParty);
@@ -69,6 +71,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             }
         }
 
+        private async Task GetIsAuthorisedSignatoryFromApiAsync()
+        {
+            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+            if (tradeParty != null && tradeParty.Contact != null)
+            {
+                IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+            }
+        }
+
         private TradePartyDTO GenerateDTO()
         {
             return new TradePartyDTO()
@@ -77,7 +88,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 Contact = new TradeContactDTO()
                 {
                     Id = ContactId,
-                    Email = Email
+                    Email = Email,
+                    IsAuthorisedSignatory = IsAuthorisedSignatory
                 }
             };
         }

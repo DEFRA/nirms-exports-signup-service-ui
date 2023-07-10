@@ -33,7 +33,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.LineOne.Should().Be("");
             _systemUnderTest.LineTwo.Should().Be("");
             _systemUnderTest.CityName.Should().Be("");
-            _systemUnderTest.Country.Should().Be("");
+            _systemUnderTest.County.Should().Be("");
             _systemUnderTest.PostCode.Should().Be("");
         }
 
@@ -45,7 +45,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineOne = "Line one";
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
-            _systemUnderTest!.Country = "UK";
+            _systemUnderTest!.County = "Berkshire";
             _systemUnderTest!.PostCode = "TES1";
 
             //Act

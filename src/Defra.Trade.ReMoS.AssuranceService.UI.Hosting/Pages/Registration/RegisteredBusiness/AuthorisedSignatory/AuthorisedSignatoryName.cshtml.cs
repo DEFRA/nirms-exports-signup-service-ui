@@ -37,7 +37,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyId = id;
             _logger.LogInformation("Name OnGet");
 
-           var party = await GetSignatoryNameFromApiAsync();
+            var party = await GetSignatoryNameFromApiAsync();
             BusinessName = party?.PartyName;
 
             return Page();

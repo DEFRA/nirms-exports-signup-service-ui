@@ -1,7 +1,12 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.AuthorisedSignatoryPositionModel
 @{
     ViewData["Title"] = "Enter Contact Position";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.AuthorisedSignatoryNamePath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">

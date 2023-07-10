@@ -1,7 +1,31 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.EstablishmentNameAndAddressModel
 @{
     ViewData["Title"] = "Add a place of dispatch";
+}
+
+@section Back{
+    @{
+        var referer = ViewContext.HttpContext.Request.Headers["Referer"].ToString();
+        if (referer.Contains(Routes.RegistrationCheckYourAnswers))
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+               asp-route-id="@Model.TradePartyId"
+               class="govuk-back-link">Back</a>
+        }
+        else if (referer.Contains(Routes.AdditionalEstablishmentAddress))
+        {
+            <a asp-page="@Routes.Pages.Path.AdditionalEstablishmentAddressPath" 
+                asp-route-id="@Model.TradePartyId" 
+                asp-route-NI_GBFlag="@Model.NI_GBFlag" 
+                class="govuk-back-link">Back</a>
+        }
+        else
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+        }
+    }
 }
 
 <div class="govuk-grid-row">
@@ -54,11 +78,11 @@
                     </div>
 
                     <div class="govuk-form-group">
-                        <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
-                        <label class="govuk-label" asp-for="Country">
-                            Country (optional)
+                        <p id="County_Error" class="govuk-error-message" gds-validation-for="County"></p>
+                        <label class="govuk-label" asp-for="County">
+                            County (optional)
                         </label>
-                        <input class="govuk-input govuk-!-width-two-thirds" asp-for="Country" asp-for="Country" type="text">
+                        <input class="govuk-input govuk-!-width-two-thirds" asp-for="County" type="text">
                     </div>
 
                     <div class="govuk-form-group">
