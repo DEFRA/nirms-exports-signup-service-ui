@@ -6,19 +6,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances
 {
-    public class SpsAssuranceCommitmentsModel : PageModel
+    public class TermsAndConditions : PageModel
     {
         #region UI Model
         [BindProperty]
         public Guid TraderId { get; set; }
 
         [BindProperty]
-        public bool AssuranceCommitment { get; set; }
+        public bool TandCs { get; set; }
         #endregion
 
         private readonly ITraderService _traderService;
 
-        public SpsAssuranceCommitmentsModel(ITraderService traderService)
+        public TermsAndConditions(ITraderService traderService)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
         }
@@ -31,8 +31,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
-            if (!AssuranceCommitment)
-                ModelState.AddModelError(nameof(AssuranceCommitment), "Confirm that the above requirements will be met");
+            if (!TandCs)
+                ModelState.AddModelError(nameof(TandCs), "Confirm that the above requirements will be met");
 
             if (!ModelState.IsValid)
             {
@@ -40,7 +40,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             }
 
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
-            dto!.AssuranceCommitmentsSignedDate = DateTime.UtcNow;
+            dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
 
             await _traderService.UpdateTradePartyAsync(dto);
 

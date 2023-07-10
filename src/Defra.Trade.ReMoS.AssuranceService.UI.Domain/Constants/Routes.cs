@@ -25,7 +25,7 @@ public static class Routes
     public const string AuthorisedSignatoryPosition = "/authorised-signatory-position";
     public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
-    public const string SPSAssuranceCommitments = "/registration-assurance-commitments";
+    public const string TermsAndConditions = "/registration-terms-and-conditions";
     public const string SignUpConfirmation = "/confirmation";
     public const string RegisteredBusiness = "/registration-business";
 
@@ -54,7 +54,7 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
         (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
-        (Pages.Path.SPSAssuranceCommitmentsPath, SPSAssuranceCommitments),
+        (Pages.Path.TermsAndConditionsPath, TermsAndConditions),
         (Pages.Path.SignUpConfirmationPath, SignUpConfirmation),
         (Pages.Path.RegisteredBusinessPath, RegisteredBusiness)
     };
@@ -86,7 +86,7 @@ public static class Routes
             public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
             public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
-            public const string SPSAssuranceCommitmentsName = "SpsAssuranceCommitments";
+            public const string TermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
             public const string RegisteredBusinessName = "RegisteredBusiness";
         }
@@ -116,7 +116,7 @@ public static class Routes
             public const string AuthorisedSignatoryPositionPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryPositionName}";
             public const string AuthorisedSignatoryEmailPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryEmailName}";
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
-            public const string SPSAssuranceCommitmentsPath = $"/Registration/Assurances/{Names.SPSAssuranceCommitmentsName}";
+            public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
             public const string RegisteredBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessName}";
         }
