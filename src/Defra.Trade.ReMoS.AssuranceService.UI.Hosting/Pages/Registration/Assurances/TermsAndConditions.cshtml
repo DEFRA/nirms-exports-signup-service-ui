@@ -1,6 +1,11 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances.TermsAndConditions
 @{
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -8,14 +13,14 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <h1 class="govuk-heading-xl">
-            Terms and Conditions
+            Terms and conditions
         </h1>
 
         <form class="form" method="post">
             <h2 class="govuk-heading-s"> Placeholder text for regulations -- THIS LINE IS NOT TO BE TESTED</h2>
 
 
-            <p>Date of declaration: @DateTime.Now.ToLongDateString()</p>
+            <p>Date of declaration: @DateTime.Now.ToString("d MMMM yyyy")</p>
             <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
                 <p id="TandCs_Error" class="govuk-error-message" gds-validation-for="TandCs"></p>
                 <input class="govuk-checkboxes__input" id="TandCs" asp-for="TandCs" type="checkbox" value="true">
@@ -24,7 +29,7 @@
                 </label>
             </div>
 
-            <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-assuranceSubmit">Submit signup</button>
+            <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-assuranceSubmit">Submit sign up</button>
             <input type="hidden" asp-for="TraderId" />
         </form>
     </div>

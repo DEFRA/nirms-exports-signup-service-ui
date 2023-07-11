@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h1>Hello @User.Claims.FirstOrDefault(c => c.Type == "name")?.Value!</h1>
-                <p>Contact Id: @User.Claims.FirstOrDefault(c => c.Type == "contactId")?.Value!</p>
+                <p>Contact Id: @User.Claims.FirstOrDefault(c => c.Type == "contactId")?.Value</p>
                 <p>Org ID: @User.Claims.FirstOrDefault(c => c.Type == "userEnrolledOrganisations")?.Value</p>
             </div>
         </div>

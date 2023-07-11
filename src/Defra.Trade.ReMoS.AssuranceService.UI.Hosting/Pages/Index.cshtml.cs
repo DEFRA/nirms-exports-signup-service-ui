@@ -23,10 +23,6 @@ namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 [IgnoreAntiforgeryToken(Order = 1001)]
 public class IndexModel : PageModel
 {
-    [BindProperty]
-    public Guid? Id { get; set; }
-    public string? ReturnUrl { get; set; }
-
     private readonly ILogger<IndexModel> _logger;
     private readonly IOptions<EhcoIntegrationSettings> _ehcoIntegrationSettings;
 
@@ -36,14 +32,9 @@ public class IndexModel : PageModel
         _ehcoIntegrationSettings = ehcoIntegrationSettings;
     }
 
-    public async Task<IActionResult> OnGet(bool auth = true)
+    public async Task<IActionResult> OnGet()
     {
-        // check if token valid
-
-        // if valid go to business page
-
-        // if not valid redirect
-        if (auth)
+        if (User.Identity == null || !User.Identity.IsAuthenticated)
         {
             await Task.Run(() => { });
 
@@ -53,22 +44,12 @@ public class IndexModel : PageModel
 
             Response.Redirect(redirect);
         }
-        return Page();
-    }
-
-    public async Task<IActionResult> OnPostSubmitAsync()
-    {
-        if (Id == Guid.Empty)
+        else
         {
-            ModelState.AddModelError(nameof(Id), "Enter Guid");
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPath);
         }
 
-        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = Id });
-    }
-
-    public async Task<IActionResult> OnPostSaveAsync()
-    {
-        return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
+        return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -84,7 +65,7 @@ public class IndexModel : PageModel
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new Exception("Empty Token");
+                return RedirectToPage("/Error");
             }
 
             var decodedToken = DecodeJwt(token);
@@ -95,7 +76,7 @@ public class IndexModel : PageModel
 
             if (string.IsNullOrWhiteSpace(userEnrolledOrganisationsClaims))
             {
-                throw new Exception("Empty User Enrolled Organisations Token");
+                return RedirectToPage("/Error");
             }
 
             claims?.AddRange(userEnrolledOrganisationsClaims.ToString().GetClaims());
@@ -108,7 +89,7 @@ public class IndexModel : PageModel
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(3000),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(3), // TODO change to 300
                 // The time at which the authentication ticket expires. A 
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.

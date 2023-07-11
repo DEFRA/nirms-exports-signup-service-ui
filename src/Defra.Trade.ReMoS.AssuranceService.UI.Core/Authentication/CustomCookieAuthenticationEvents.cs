@@ -5,25 +5,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 
 public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
 {
-    private readonly IUserRepository _userRepository;
-
-    public CustomCookieAuthenticationEvents(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
-
     public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
     {
         var userPrincipal = context.Principal;
 
-        var contactId = userPrincipal.Claims.FirstOrDefault(c => c.Type == "contactId");
+        var contactId = userPrincipal!.Claims.FirstOrDefault(c => c.Type == "contactId");
 
         if (contactId == null)
         {
             await RejectAndSignOut(context);
         }
 
-        var enrolledOrganisationsCount = userPrincipal.Claims.FirstOrDefault(c => c.Type == "enrolledOrganisationsCount");
+        var enrolledOrganisationsCount = userPrincipal!.Claims.FirstOrDefault(c => c.Type == "enrolledOrganisationsCount");
 
         if (enrolledOrganisationsCount == null)
         {
@@ -31,7 +24,7 @@ public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
         }
     }
 
-    private async Task RejectAndSignOut(CookieValidatePrincipalContext context)
+    private async static Task RejectAndSignOut(CookieValidatePrincipalContext context)
     {
         context.RejectPrincipal();
 
