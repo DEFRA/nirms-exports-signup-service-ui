@@ -46,7 +46,7 @@ public class ContactEmailModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a place of destination (optional)";
+            ContentHeading = "Add a place of destination";
             ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
         }
         else
