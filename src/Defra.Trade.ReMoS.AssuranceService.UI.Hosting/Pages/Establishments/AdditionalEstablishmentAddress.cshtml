@@ -2,7 +2,11 @@
 @using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.AdditionalEstablishmentAddressModel
 @{
-    ViewData["Title"] = "Places of dispatch";
+    ViewData["Title"] = $"Places of {@Model.ContentText}";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
