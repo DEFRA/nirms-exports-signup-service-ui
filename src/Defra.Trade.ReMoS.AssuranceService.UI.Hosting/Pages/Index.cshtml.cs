@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Management.BatchAI.Fluent.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+
 #pragma warning disable CS1998
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
@@ -51,8 +54,13 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (ModelState.IsValid)
+        try
         {
+            if (!ModelState.IsValid)
+            {
+                throw new Exception("Model is invalid");
+            }
+
             var token = Request.Form["token"];
 
             if (string.IsNullOrWhiteSpace(token))
@@ -60,7 +68,9 @@ public class IndexModel : PageModel
                 return RedirectToPage("/Error");
             }
 
-            var claims = token.ToString().GetClaims().ToList();
+            var decodedToken = DecodeJwt(token);
+
+            var claims = ((JwtSecurityToken)decodedToken).Claims.ToList();            
 
             var userEnrolledOrganisationsClaims = Request.Form["userEnrolledOrganisationsJWT"];
 
@@ -69,7 +79,7 @@ public class IndexModel : PageModel
                 return RedirectToPage("/Error");
             }
 
-            claims.AddRange(userEnrolledOrganisationsClaims.ToString().GetClaims());
+            claims?.AddRange(userEnrolledOrganisationsClaims.ToString().GetClaims());
 
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -106,9 +116,34 @@ public class IndexModel : PageModel
             _logger.LogInformation("User {Email} logged in at {Time}.", "user.Email", DateTime.UtcNow);
 
             return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPath);
-        }
 
-        // Something failed. Redisplay the form.
-        return RedirectToPage("/Error");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString(), ex);
+            // Something failed. Redisplay the form.
+            return RedirectToPage("/Error");
+        }
+    }
+
+    public SecurityToken DecodeJwt(string token)
+    {
+        var pubKey = "-----BEGIN RSA PUBLIC KEY-----\r\nMIIBCgKCAQEArymNG/U2so2NtU6ledOoO1Rff5gfHam2prsA+iV7NXgUfMOuMH/I\r\nwunTiPz/ZAmmPIwWzaIaqv2b093IH/PDG8AnrFZr75CXVo/Q4XSPdrTHSOIarGNz\r\nZvPBROlnMZQNu+sCzHOieYYX55SHx3mYh5tAivmxXnr37J3ZtGPVES1DemhWpdbG\r\nsQcJMbS90ElAgm+4YFOCrUlIkgDJptDR3YJ+c2mX4F6iLfctmeTzmoruYzyGeRz4\r\nEZ4Ak3Pf6XSJERpO7JDx6GKOlHr/F6SMQjb9SsSuaDM6GptjcFPROwoSN6wCbqr9\r\napC8K+1RzQ4sioxmeV/GAdxnANgajcsdXQIDAQAB\r\n-----END RSA PUBLIC KEY-----";
+        var rsaPublicKey = RSA.Create();
+        rsaPublicKey.ImportFromPem(pubKey.ToCharArray());
+
+        var secHandler = new JwtSecurityTokenHandler();
+
+        secHandler.ValidateToken(token, new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidateLifetime = false,
+            ValidateIssuer = true,    
+            ValidAudience = "6c496a6d-d460-40b7-8878-7972b2e53542",
+            ValidIssuer = "https://exports-authentication-exp-14995.azurewebsites.net",
+            IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
+        }, out var decodedToken);
+
+        return decodedToken;
     }
 }
