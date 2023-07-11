@@ -17,6 +17,8 @@ public class RegisteredBusinessCountryModel : PageModel
 
     [BindProperty]
     public Guid TraderId { get; set; }
+    [BindProperty]
+    public bool CountrySaved { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessCountryModel> _logger;
@@ -36,6 +38,7 @@ public class RegisteredBusinessCountryModel : PageModel
         if (Id != Guid.Empty)
         {
             Country = await GetCountryFromApiAsync();
+            CountrySaved = !string.IsNullOrEmpty(Country);
         }
 
         return Page();
@@ -44,6 +47,13 @@ public class RegisteredBusinessCountryModel : PageModel
     public async Task<IActionResult> OnPostSubmitAsync()
     {
         _logger.LogInformation("Country OnPostSubmit");
+
+        if (CountrySaved)
+        {
+            return RedirectToPage(
+            Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+            new { id = TraderId });
+        }
 
         if (!ModelState.IsValid)
         {
@@ -55,7 +65,7 @@ public class RegisteredBusinessCountryModel : PageModel
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessFboNumberPath,
             new { id = TraderId });
-            }
+    }
 
     private TradePartyDTO CreateDTO()
     {
