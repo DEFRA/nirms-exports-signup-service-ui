@@ -26,6 +26,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
         public string? Country { get; set; }
+        public bool EstablishmentsAdded { get; set; }
         #endregion
 
         private readonly ILogger<RegistrationTaskListModel> _logger;
@@ -110,6 +111,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             if (niEstablishments != null && niEstablishments.Any())
                 PlacesOfDestination = TaskListStatus.COMPLETE;
+
+            if (Country != "NI" && establishments != null && establishments!.Any(x => x.NI_GBFlag == "GB"))
+            {
+                EstablishmentsAdded = true;
+            }
+
+            if (Country == "NI" && establishments != null && establishments!.Any(x => x.NI_GBFlag == "NI"))
+            {
+                EstablishmentsAdded = true;
+            }
+
         }
 
         private void CheckAnswersStatus()

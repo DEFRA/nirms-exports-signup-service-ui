@@ -99,7 +99,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
 
             var tradeAddress = new TradeAddressDTO
             {
-                TradeCountry = "Test Country",
+                TradeCountry = "NI",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
@@ -126,6 +126,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
+            _systemUnderTest.EstablishmentsAdded.Should().Be(true);
             _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.NOTSTART);
             _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.COMPLETE);
         }
@@ -197,7 +198,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
 
             var tradeAddress = new TradeAddressDTO
             {
-                TradeCountry = "NI",
+                TradeCountry = "GB",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
@@ -210,12 +211,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 AuthorisedSignatory = authorisedSignatory,
                 PartyName = "Test",
                 FboNumber = "123",
-                NatureOfBusiness = "Test nature"
+                NatureOfBusiness = "Test nature",
             };
 
             var list = new List<LogisticsLocationDTO>
             {
-                new LogisticsLocationDTO() { NI_GBFlag = "NI"}
+                new LogisticsLocationDTO() { NI_GBFlag = "GB"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -226,12 +227,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
+            _systemUnderTest.EstablishmentsAdded.Should().Be(true);
             _systemUnderTest.BusinessDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.COMPLETE);
-            _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.NOTSTART);
-            _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDispatch.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.PlacesOfDestination.Should().Be(TaskListStatus.NOTSTART);
             _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.NOTSTART);
         }
 

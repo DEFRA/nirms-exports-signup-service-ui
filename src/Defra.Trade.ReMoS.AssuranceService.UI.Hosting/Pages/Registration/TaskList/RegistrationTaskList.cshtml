@@ -75,12 +75,24 @@
                     {
                         <li class="app-task-list__item">
                             <span class="app-task-list__task-name">
-                                <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
-                                asp-route-id="@Model.RegistrationID"
-                                asp-route-NI_GBFlag="GB"
-                                aria-describedby="establistment-dispatch">
-                                    Places of dispatch
-                                </a>
+                                @if (Model.EstablishmentsAdded)
+                                {
+                                    <a asp-page=@Routes.Pages.Path.AdditionalEstablishmentAddressPath
+                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-NI_GBFlag="GB"
+                                       aria-describedby="establistment-dispatch">
+                                        Places of dispatch
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-NI_GBFlag="GB"
+                                       aria-describedby="establistment-dispatch">
+                                        Places of dispatch
+                                    </a>
+                                }
                             </span>
                             <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PlacesOfDispatch == "Completed" ? "green" : "grey")"
                             id="establistment-dispatch">
@@ -90,15 +102,26 @@
                     }
                     @if (Model.Country == "NI")
                     {
-
                         <li class="app-task-list__item">
                             <span class="app-task-list__task-name">
-                                <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
-                                    asp-route-id="@Model.RegistrationID"
-                                    asp-route-NI_GBFlag="NI"
-                                    aria-describedby="establistment-destination">
-                                    Places of destination
-                                </a>
+                                @if (Model.EstablishmentsAdded)
+                                {
+                                    <a asp-page=@Routes.Pages.Path.AdditionalEstablishmentAddressPath
+                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-NI_GBFlag="NI"
+                                       aria-describedby="establistment-destination">
+                                        Places of destination
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-NI_GBFlag="NI"
+                                       aria-describedby="establistment-destination">
+                                        Places of destination
+                                    </a>
+                                }
                             </span>
                             <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PlacesOfDestination == "Completed" ? "green" : "grey")"
                             id="establistment-destination">
