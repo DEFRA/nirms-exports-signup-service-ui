@@ -57,7 +57,7 @@ public class IndexModel : PageModel
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new Exception("Empty Token");
+                return RedirectToPage("/Error");
             }
 
             var claims = token.ToString().GetClaims().ToList();
@@ -66,7 +66,7 @@ public class IndexModel : PageModel
 
             if (string.IsNullOrWhiteSpace(userEnrolledOrganisationsClaims))
             {
-                throw new Exception("Empty User Enrolled Organisations Token");
+                return RedirectToPage("/Error");
             }
 
             claims.AddRange(userEnrolledOrganisationsClaims.ToString().GetClaims());
@@ -79,7 +79,7 @@ public class IndexModel : PageModel
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(3000),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(3), // TODO change to 300
                 // The time at which the authentication ticket expires. A 
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.

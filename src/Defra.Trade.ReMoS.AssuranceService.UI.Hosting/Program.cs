@@ -34,10 +34,10 @@ internal sealed class Program
             .AddCookie(options =>
             {
                 options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                options.LoginPath = "/Index";
             });
 
         builder.Services.AddScoped<CustomCookieAuthenticationEvents>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddMvc(config =>
         {
