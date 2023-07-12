@@ -68,7 +68,20 @@ public class IndexModel : PageModel
                 return RedirectToPage("/Error");
             }
 
-            var decodedToken = DecodeJwt(token);
+            var pubKey = "-----BEGIN RSA PUBLIC KEY-----\r\nMIIBCgKCAQEArymNG/U2so2NtU6ledOoO1Rff5gfHam2prsA+iV7NXgUfMOuMH/I\r\nwunTiPz/ZAmmPIwWzaIaqv2b093IH/PDG8AnrFZr75CXVo/Q4XSPdrTHSOIarGNz\r\nZvPBROlnMZQNu+sCzHOieYYX55SHx3mYh5tAivmxXnr37J3ZtGPVES1DemhWpdbG\r\nsQcJMbS90ElAgm+4YFOCrUlIkgDJptDR3YJ+c2mX4F6iLfctmeTzmoruYzyGeRz4\r\nEZ4Ak3Pf6XSJERpO7JDx6GKOlHr/F6SMQjb9SsSuaDM6GptjcFPROwoSN6wCbqr9\r\napC8K+1RzQ4sioxmeV/GAdxnANgajcsdXQIDAQAB\r\n-----END RSA PUBLIC KEY-----";
+            var rsaPublicKey = RSA.Create();
+            rsaPublicKey.ImportFromPem(pubKey);
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuer = true,
+                ValidAudience = "6c496a6d-d460-40b7-8878-7972b2e53542",
+                ValidIssuer = "https://exports-authentication-exp-14995.azurewebsites.net",
+                IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
+            };
+
+            var decodedToken = DecodeJwt(token, validationParameters);
 
             var claims = ((JwtSecurityToken)decodedToken).Claims.ToList();            
 
@@ -126,23 +139,11 @@ public class IndexModel : PageModel
         }
     }
 
-    public SecurityToken DecodeJwt(string token)
-    {
-        var pubKey = "-----BEGIN RSA PUBLIC KEY-----\r\nMIIBCgKCAQEArymNG/U2so2NtU6ledOoO1Rff5gfHam2prsA+iV7NXgUfMOuMH/I\r\nwunTiPz/ZAmmPIwWzaIaqv2b093IH/PDG8AnrFZr75CXVo/Q4XSPdrTHSOIarGNz\r\nZvPBROlnMZQNu+sCzHOieYYX55SHx3mYh5tAivmxXnr37J3ZtGPVES1DemhWpdbG\r\nsQcJMbS90ElAgm+4YFOCrUlIkgDJptDR3YJ+c2mX4F6iLfctmeTzmoruYzyGeRz4\r\nEZ4Ak3Pf6XSJERpO7JDx6GKOlHr/F6SMQjb9SsSuaDM6GptjcFPROwoSN6wCbqr9\r\napC8K+1RzQ4sioxmeV/GAdxnANgajcsdXQIDAQAB\r\n-----END RSA PUBLIC KEY-----";
-        var rsaPublicKey = RSA.Create();
-        rsaPublicKey.ImportFromPem(pubKey.ToCharArray());
-
+    public SecurityToken DecodeJwt(string token, TokenValidationParameters tokenValidationParameters)
+    {       
         var jwtHandler = new JwtSecurityTokenHandler();
 
-        jwtHandler.ValidateToken(token, new TokenValidationParameters
-        {
-            ValidateAudience = true,
-            ValidateLifetime = false,
-            ValidateIssuer = true,    
-            ValidAudience = "6c496a6d-d460-40b7-8878-7972b2e53542",
-            ValidIssuer = "https://exports-authentication-exp-14995.azurewebsites.net",
-            IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
-        }, out var decodedToken);
+        jwtHandler.ValidateToken(token, tokenValidationParameters, out var decodedToken);
 
         return decodedToken;
     }
