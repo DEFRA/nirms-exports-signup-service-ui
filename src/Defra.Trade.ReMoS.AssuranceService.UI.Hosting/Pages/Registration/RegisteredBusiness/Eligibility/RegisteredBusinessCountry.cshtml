@@ -79,7 +79,14 @@
 
                 </fieldset>
             </div>
-            <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>            
+            @if(Model.CountrySaved)
+            {
+                <button class="govuk-button" asp-page-handler="submit">Continue</button>
+            }
+            else 
+            {
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>            
+            }
         </form>
     </div>
 </div>
