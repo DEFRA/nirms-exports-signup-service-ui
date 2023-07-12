@@ -157,42 +157,45 @@
                     </a>
                     </dd>
                 </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Authorised Signatory name
-                    </dt>
-                    <dd class="govuk-summary-list__value" id="authorised-signatory-name">
-                        @Model.TradeParty?.AuthorisedSignatory?.Name
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
-                            Edit<span class="govuk-visually-hidden">Authorised Signatory name</span>
-                        </a>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Authorised Signatory position
-                    </dt>
-                    <dd class="govuk-summary-list__value" id="authorised-signatory-position">
-                        @Model.TradeParty?.AuthorisedSignatory?.Position
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
-                            Edit<span class="govuk-visually-hidden">Authorised Signatory Position</span>
-                        </a>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Authorised Signatory email address
-                    </dt>
-                    <dd class="govuk-summary-list__value" id="authorised-signatory-email">
-                        @Model.TradeParty?.AuthorisedSignatory?.EmailAddress
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
-                            Edit<span class="govuk-visually-hidden">Authorised Signatory email address</span>
-                        </a>
-                </div>
+                @if (Model.TradeParty?.Contact?.IsAuthorisedSignatory == false)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Authorised Signatory name
+                        </dt>
+                        <dd class="govuk-summary-list__value" id="authorised-signatory-name">
+                            @Model.TradeParty?.AuthorisedSignatory?.Name
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                                Edit<span class="govuk-visually-hidden">Authorised Signatory name</span>
+                            </a>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Authorised Signatory position
+                        </dt>
+                        <dd class="govuk-summary-list__value" id="authorised-signatory-position">
+                            @Model.TradeParty?.AuthorisedSignatory?.Position
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                                Edit<span class="govuk-visually-hidden">Authorised Signatory Position</span>
+                            </a>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Authorised Signatory email address
+                        </dt>
+                        <dd class="govuk-summary-list__value" id="authorised-signatory-email">
+                            @Model.TradeParty?.AuthorisedSignatory?.EmailAddress
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                                Edit<span class="govuk-visually-hidden">Authorised Signatory email address</span>
+                            </a>
+                    </div>
+                }
             </dl>
 
             <h2 class="govuk-heading-m">Establishments</h2>
