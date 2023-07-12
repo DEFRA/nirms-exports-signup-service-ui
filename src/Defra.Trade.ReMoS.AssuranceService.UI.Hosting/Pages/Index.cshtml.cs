@@ -65,7 +65,7 @@ public class IndexModel : PageModel
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/AuthorizationError");
             }
 
             var pubKey = "-----BEGIN RSA PUBLIC KEY-----\r\nMIIBCgKCAQEArymNG/U2so2NtU6ledOoO1Rff5gfHam2prsA+iV7NXgUfMOuMH/I\r\nwunTiPz/ZAmmPIwWzaIaqv2b093IH/PDG8AnrFZr75CXVo/Q4XSPdrTHSOIarGNz\r\nZvPBROlnMZQNu+sCzHOieYYX55SHx3mYh5tAivmxXnr37J3ZtGPVES1DemhWpdbG\r\nsQcJMbS90ElAgm+4YFOCrUlIkgDJptDR3YJ+c2mX4F6iLfctmeTzmoruYzyGeRz4\r\nEZ4Ak3Pf6XSJERpO7JDx6GKOlHr/F6SMQjb9SsSuaDM6GptjcFPROwoSN6wCbqr9\r\napC8K+1RzQ4sioxmeV/GAdxnANgajcsdXQIDAQAB\r\n-----END RSA PUBLIC KEY-----";
@@ -77,7 +77,7 @@ public class IndexModel : PageModel
                 ValidateLifetime = false,
                 ValidateIssuer = true,
                 ValidAudience = "6c496a6d-d460-40b7-8878-7972b2e53542",
-                ValidIssuer = "https://exports-authentication-exp-14995.azurewebsites.net",
+                ValidIssuer = _ehcoIntegrationSettings.Value.ValidIssuer,
                 IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
             };
 
@@ -89,7 +89,7 @@ public class IndexModel : PageModel
 
             if (string.IsNullOrWhiteSpace(userEnrolledOrganisationsClaims))
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/AuthorizationError");
             }
 
             claims?.AddRange(userEnrolledOrganisationsClaims.ToString().GetClaims());
@@ -135,7 +135,7 @@ public class IndexModel : PageModel
         {
             _logger.LogError(ex.ToString(), ex);
             // Something failed. Redisplay the form.
-            return RedirectToPage("/Error");
+            return RedirectToPage("/AuthorizationError");
         }
     }
 

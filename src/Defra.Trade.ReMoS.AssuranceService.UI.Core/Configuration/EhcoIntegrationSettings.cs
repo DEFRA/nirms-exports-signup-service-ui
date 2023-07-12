@@ -10,5 +10,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration
     public class EhcoIntegrationSettings
     {
         public string EhcoAuthEndpoint { get; set; } = string.Empty;
+        public string ValidIssuer { get; set; } = string.Empty;
     }
 }
