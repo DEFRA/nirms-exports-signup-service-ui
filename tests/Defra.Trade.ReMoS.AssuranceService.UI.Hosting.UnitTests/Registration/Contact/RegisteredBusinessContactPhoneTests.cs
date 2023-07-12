@@ -51,6 +51,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             validation.Count.Should().Be(0);
         }
 
+        public async Task OnPostSave_SubmitValidPhoneNumber(string phoneNumber)
+        {
+            //Arrange
+            _systemUnderTest!.PhoneNumber = phoneNumber;
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
         [Test]
         public async Task OnPostSubmit_SubmitInvalidRegex()
         {
@@ -60,6 +73,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
+        public async Task OnPostSave_SubmitInvalidRegex()
+        {
+            //Arrange
+            _systemUnderTest!.PhoneNumber = "07343 242 9802";
+            var expectedResult = "Enter a telephone number in the correct format, like 01632 960 001, 07700 900 982 or +44 808 157 019";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert            
@@ -84,6 +113,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         }
 
         [Test]
+        public async Task OnPostSave_SubmitInValid_PhoneNumberNotPresent()
+        {
+            //Arrange
+            _systemUnderTest!.PhoneNumber = "";
+            var expectedResult = "Enter the phone number of the contact person";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
         public async Task OnPostSubmit_SubmitInvalidInput()
         {
             //Arrange
@@ -94,6 +139,24 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert            
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
+        public async Task OnPostSave_SubmitInvalidInput()
+        {
+            //Arrange
+            _systemUnderTest!.PhoneNumber = "";
+            var expectedResult = "Enter the phone number of the contact person";
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert            

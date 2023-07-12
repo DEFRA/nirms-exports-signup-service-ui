@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
@@ -59,14 +58,33 @@ public class RegisteredBusinessContactPositionModel : PageModel
             return await OnGetAsync(TradePartyId);
         }
 
-        await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
-        await _traderService.UpdateTradePartyContactAsync(tradeParty);
-
-
+        await SubmitPosition();
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessContactEmailPath,
             new { id = TradePartyId });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("Contact Position OnPostSave");
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TradePartyId);
+        }
+
+        await SubmitPosition();
+        return RedirectToPage(
+            Routes.Pages.Path.RegisteredBusinessContactEmailPath,
+            new { id = TradePartyId });
+    }
+
+    #region private methods
+    private async Task SubmitPosition()
+    {
+        await GetIsAuthorisedSignatoryFromApiAsync();
+        TradePartyDTO tradeParty = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
     private async Task GetContactPositionFromApiAsync()
     {
@@ -99,4 +117,5 @@ public class RegisteredBusinessContactPositionModel : PageModel
             }
         };
     }
+    #endregion
 }

@@ -35,7 +35,8 @@
                 <input class="govuk-input" asp-for="PhoneNumber" id="PhoneNumber" aria-describedby="" type="telephone-hint" spellcheck="false" />
             </div>
             <div class="govuk-form-group">
-                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>                
+                <button asp-page-handler="submit" class="govuk-button" id="buttonContactPhoneSubmit">Save and continue</button>
+                <button asp-page-handler="save" class="govuk-button govuk-button--secondary" id="buttonContactPhoneSave">Save and return to dashboard</button>
             </div>
         </form>
     </div>
