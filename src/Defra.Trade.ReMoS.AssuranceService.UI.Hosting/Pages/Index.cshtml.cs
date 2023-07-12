@@ -132,9 +132,9 @@ public class IndexModel : PageModel
         var rsaPublicKey = RSA.Create();
         rsaPublicKey.ImportFromPem(pubKey.ToCharArray());
 
-        var secHandler = new JwtSecurityTokenHandler();
+        var jwtHandler = new JwtSecurityTokenHandler();
 
-        secHandler.ValidateToken(token, new TokenValidationParameters
+        jwtHandler.ValidateToken(token, new TokenValidationParameters
         {
             ValidateAudience = true,
             ValidateLifetime = false,
