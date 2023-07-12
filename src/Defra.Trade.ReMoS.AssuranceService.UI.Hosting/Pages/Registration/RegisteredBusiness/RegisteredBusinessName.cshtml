@@ -34,7 +34,11 @@
                 <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
                 <input class="govuk-input" id="Name" asp-for="Name" type="text" />
             </div>
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+            <div class="govuk-button-group">
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save">Save and return to dashboard</button>
+            </div>
+            
         </form>
     </div>
 </div>

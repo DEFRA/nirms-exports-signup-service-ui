@@ -65,7 +65,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
-                if (tradeParty.PartyName != null && tradeParty.Address != null)
+                if (tradeParty.PartyName != null && tradeParty.Address != null 
+                    && tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
                     BusinessDetails = TaskListStatus.COMPLETE;
 
                 if (tradeParty.Address != null)

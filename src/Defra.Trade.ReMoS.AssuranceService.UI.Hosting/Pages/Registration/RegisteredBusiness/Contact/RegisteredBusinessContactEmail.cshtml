@@ -38,7 +38,8 @@
                 <input class="govuk-input" asp-for="Email" id="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email" />
             </div>
             <div class="govuk-form-group">
-                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbContactEmailSubmit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbContactEmailSave">Save and return to dashboard</button>
             </div>
         </form>
     </div>
