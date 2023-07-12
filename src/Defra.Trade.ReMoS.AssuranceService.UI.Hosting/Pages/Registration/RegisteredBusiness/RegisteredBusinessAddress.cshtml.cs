@@ -78,13 +78,12 @@ public class RegisteredBusinessAddressModel : PageModel
         }
 
         await SubmitAddress();
-
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessContactNamePath, 
             new { id = TraderId });
     }
 
-    public async Task<IActionResult> OnPostSsaveAsync()
+    public async Task<IActionResult> OnPostSaveAsync()
     {
         _logger.LogInformation("Address OnPostSubmit");
 
@@ -94,9 +93,8 @@ public class RegisteredBusinessAddressModel : PageModel
         }
 
         await SubmitAddress();
-
         return RedirectToPage(
-            Routes.Pages.Path.RegisteredBusinessContactNamePath,
+            Routes.Pages.Path.RegistrationTaskListPath,
             new { id = TraderId });
     }
 
