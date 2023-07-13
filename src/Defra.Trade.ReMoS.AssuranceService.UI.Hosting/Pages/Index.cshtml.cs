@@ -29,6 +29,6 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryPath, new { id = Guid.Empty });
+        return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath, new { id = Guid.Empty });
     }
 }
