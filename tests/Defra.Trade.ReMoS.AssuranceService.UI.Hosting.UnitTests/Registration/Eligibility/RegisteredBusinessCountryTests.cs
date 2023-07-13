@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -32,6 +33,43 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         //Assert
         _ = _systemUnderTest.Country.Should().Be("");
+    }
+
+    [Test]
+    public async Task OnGet_CountrySavedSetToFalse_IfNoSavedData()
+    {        
+        //Act
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+
+        //Assert
+        _systemUnderTest.CountrySaved.Should().Be(false);
+    }
+
+    [Test]
+    public async Task OnGet_CountrySavedSetToTrue_IfDataPresentInApi()
+    {
+        //Arrange
+        Guid guid = Guid.NewGuid();
+
+        var tradeContact = new TradeContactDTO();
+        var tradeAddress = new TradeAddressDTO { TradeCountry = "GB"};
+
+        var tradePartyDto = new TradePartyDTO
+        {
+            Id = guid,
+            Contact = tradeContact,
+            Address = tradeAddress
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+        //Act
+        _ = await _systemUnderTest!.OnGetAsync(guid);
+
+        //Assert
+        _ = _systemUnderTest.Country.Should().Be("GB");
+        _ = _systemUnderTest.CountrySaved.Should().Be(true);
     }
 
     [Test]
@@ -69,7 +107,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnGet_NoCountryPresentIfNoSavedData_ReturnTradePartyDto()
+    public async Task OnGet_IfNoSavedData_ReturnTradePartyDto()
     {
         //Arrange
         Guid guid = Guid.NewGuid();
@@ -93,6 +131,19 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         //Assert
         _ = _systemUnderTest.Country.Should().Be("England");
+    }
+
+    [Test]
+    public async Task OnPost_IfCountrySaved_ReturnRedirectToPage()
+    {
+        //Arrange
+        _systemUnderTest!.CountrySaved = true;
+
+        //Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        //Assert
+        result.Should().BeOfType<RedirectToPageResult>();
     }
 }
 

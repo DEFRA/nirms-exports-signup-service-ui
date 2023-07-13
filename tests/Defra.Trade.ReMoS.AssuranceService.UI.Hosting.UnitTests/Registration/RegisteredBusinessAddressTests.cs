@@ -62,6 +62,23 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         validation.Count.Should().Be(0);
     }
 
+    [Test]
+    public async Task OnPostSave_SubmitValidInformation()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "Line 1 - '";
+        _systemUnderTest.LineTwo = "Line 2 - '";
+        _systemUnderTest.CityName = "City - '";
+        _systemUnderTest.PostCode = "P0S1 C0DE";
+
+        // act 
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+    }
+
     public async Task OnPostSubmit_SubmitInvalidCharacterInformation()
     {
         // arrange 
@@ -72,6 +89,22 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(4);
+    }
+
+    public async Task OnPostSave_SubmitInvalidCharacterInformation()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "*";
+        _systemUnderTest.LineTwo = "*";
+        _systemUnderTest.CityName = "*";
+        _systemUnderTest.PostCode = "*";
+
+        // act 
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         // assert
@@ -92,6 +125,29 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(3);
+        expectedResultOne.Should().Be(validation[0].ErrorMessage);
+        expectedResultTwo.Should().Be(validation[1].ErrorMessage);
+        expectedResultThree.Should().Be(validation[2].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "";
+        var expectedResultOne = "Enter address line 1.";
+        var expectedResultTwo = "Enter a town or city.";
+        var expectedResultThree = "Enter a post code.";
+
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert            
@@ -148,6 +204,23 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPostSave_GivenValidGuid_SubmitValidInput()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "Line 1 - '";
+        _systemUnderTest.LineTwo = "Line 2 - '";
+        _systemUnderTest.CityName = "City - '";
+        _systemUnderTest.PostCode = "P0S1 C0DE";
+
+        // act 
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         // assert

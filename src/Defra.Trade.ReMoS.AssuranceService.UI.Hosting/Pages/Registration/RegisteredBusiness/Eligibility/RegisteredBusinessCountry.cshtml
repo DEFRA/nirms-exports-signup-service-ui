@@ -15,45 +15,78 @@
 
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="CountrySaved" />
             <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Country") ? "Country_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            Which country is your business based in?
+                            Where is your business based?
                         </h1>
                     </legend>
 
+                    <p class="govuk-hint">This is the location of your business’ main address, for example the head office.</p>
                     <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
+
+                    @if (Model.CountrySaved)
+                    {
+                        <div class="govuk-error-summary" data-module="govuk-error-summary" id="businessPickerError">
+                            <div role="alert">
+                                <h2 class="govuk-error-summary__title">
+                                    You cannot change this answer
+                                </h2>
+                                <div class="govuk-error-summary__body govuk-!-margin-bottom-5">
+                                    <ul class="govuk-list govuk-error-summary__list">
+                                        <li>
+                                            If you need to change your business nation, contact us.
+                                        </li>
+                                    </ul>
+                                </div>
+                                <h2 class="govuk-heading-m" id="help-with-your-application">Help with the Northern Ireland Retail Movement Scheme</h2>
+                                <p class="govuk-body">In England, Scotland and Wales, call APHA on 03000 200 301.</p>
+                                <p class="govuk-body">In Northern Ireland, call DAERA on 02877 442 060.</p>
+                                <p class="govuk-body"><a href="https://www.gov.uk/call-charges">Find out about call charges</a>.</p>
+                            </div>
+                        </div>
+                    }
 
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-rbCountryEng" type="radio" asp-for="Country" value="England">
+                            <input class="govuk-radios__input" id="radio-rbCountryEng" type="radio" name="Country" value="England" @(Model.CountrySaved ? "disabled" : "")>
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountryEng">
                                 England
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-rbCountrySc" type="radio" asp-for="Country" value="Scotland">
+                        <input class="govuk-radios__input" id="radio-rbCountrySc" type="radio" name="Country" value="Scotland" @(Model.CountrySaved ? "disabled" : "")>
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountrySc">
                                 Scotland
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-rbCountryWal" type="radio" asp-for="Country" value="Wales">
+                        <input class="govuk-radios__input" id="radio-rbCountryWal" type="radio" name="Country" value="Wales" @(Model.CountrySaved ? "disabled" : "")>
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountryWal">
                                 Wales
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-rbCountryNI" type="radio" asp-for="Country" value="NI">
+                        <input class="govuk-radios__input" id="radio-rbCountryNI" type="radio" name="Country" value="NI" @(Model.CountrySaved ? "disabled" : "")>
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountryNI">
                                 Northern Ireland
                             </label>
                         </div>
                     </div>
+                   
+
                 </fieldset>
             </div>
-            <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>            
+            @if(Model.CountrySaved)
+            {
+                <button class="govuk-button" asp-page-handler="submit">Continue</button>
+            }
+            else 
+            {
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>            
+            }
         </form>
     </div>
 </div>

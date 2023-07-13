@@ -10,22 +10,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
 public class RegisteredBusinessContactNameModel : PageModel
 {
+    private readonly ILogger<RegisteredBusinessContactNameModel> _logger;
+    private readonly ITraderService _traderService;
+
     #region ui model variables
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Name must only include letters, numbers, and special characters -_./()&")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter a name.")]
     public string Name { get; set; } = string.Empty;
-    
+
     [BindProperty]
     public Guid TradePartyId { get; set; }
     [BindProperty]
     public Guid ContactId { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
     #endregion
-
-    private readonly ILogger<RegisteredBusinessContactNameModel> _logger;
-    private readonly ITraderService _traderService;
 
     /// <summary>
     /// Constructor
@@ -60,13 +60,35 @@ public class RegisteredBusinessContactNameModel : PageModel
             return await OnGetAsync(TradePartyId);
         }
 
-        await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
-        await _traderService.UpdateTradePartyContactAsync(tradeParty);
+        await SubmitName();
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessContactPositionPath,
             new { id = TradePartyId });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("Contact Name OnPostSave");
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TradePartyId);
+        }
+
+        await SubmitName();
+
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath,
+            new { id = TradePartyId });
+    }
+
+    #region private methods
+    private async Task SubmitName()
+    {
+        await GetIsAuthorisedSignatoryFromApiAsync();
+        TradePartyDTO tradeParty = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
     private async Task GetContactNameFromApiAsync()
@@ -100,5 +122,5 @@ public class RegisteredBusinessContactNameModel : PageModel
             }
         };
     }
-
+    #endregion
 }

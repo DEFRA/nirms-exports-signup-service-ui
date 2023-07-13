@@ -77,20 +77,33 @@ public class RegisteredBusinessAddressModel : PageModel
             return await OnGetAsync();
         }
 
+        await SubmitAddress();
+        return RedirectToPage(
+            Routes.Pages.Path.RegisteredBusinessContactNamePath, 
+            new { id = TraderId });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("Address OnPostSubmit");
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync();
+        }
+
+        await SubmitAddress();
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath,
+            new { id = TraderId });
+    }
+
+    #region private methods
+    private async Task SubmitAddress()
+    {
         TradePartyDTO tradePartyDto = GenerateDTO(CreateAddressDto());
 
-        if (tradePartyDto.Id == Guid.Empty)
-        {
-            TraderId = await _traderService.CreateTradePartyAsync(tradePartyDto);
-        }
-        else
-        {
-            await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
-        }
-
-        return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath, 
-            new { id = TraderId });
+        await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
     }
 
     private TradeAddressDTO CreateAddressDto()
@@ -127,4 +140,5 @@ public class RegisteredBusinessAddressModel : PageModel
             PostCode = tradeParty.Address.PostCode ?? string.Empty;
         }
     }
+    #endregion
 }

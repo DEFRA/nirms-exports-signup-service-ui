@@ -13,9 +13,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class ContactEmailModel : PageModel
 {
     #region UI Models
-    [RegularExpression(
-       @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-       ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDTO? Location { get; set; } = new LogisticsLocationDTO();
@@ -46,7 +44,7 @@ public class ContactEmailModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a place of destination (optional)";
+            ContentHeading = "Add a place of destination";
             ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
         }
         else

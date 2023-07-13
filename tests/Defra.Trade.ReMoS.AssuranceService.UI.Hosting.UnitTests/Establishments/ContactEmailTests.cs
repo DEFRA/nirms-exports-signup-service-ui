@@ -60,7 +60,7 @@ public class ContactEmailTests : PageModelTestsBase
     public async Task OnGet_HeadingSetToParameter_Successfully()
     {
         //Arrange
-        var expectedHeading = "Add a place of destination (optional)";
+        var expectedHeading = "Add a place of destination";
         var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
 
         //Act
