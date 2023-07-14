@@ -22,7 +22,7 @@ internal sealed class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
-        //builder.Services.AddMvc().AddCustomRouting();
+        builder.Services.AddMvc().AddCustomRouting();
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
         builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));

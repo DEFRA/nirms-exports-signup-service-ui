@@ -40,7 +40,7 @@ public class IndexModel : PageModel
 
             var correlationId = Guid.NewGuid().ToString();
 
-            var redirect = _ehcoIntegrationSettings.Value.EhcoAuthEndpoint + correlationId;
+            var redirect = "https://exports-authentication-exp-14995.azurewebsites.net/b2c/remos_signup/login-or-refresh?correlationId=" + correlationId;
 
             Response.Redirect(redirect);
         }
@@ -77,7 +77,7 @@ public class IndexModel : PageModel
                 ValidateLifetime = false,
                 ValidateIssuer = true,
                 ValidAudience = _ehcoIntegrationSettings.Value.ValidAudience,
-                ValidIssuer = _ehcoIntegrationSettings.Value.ValidIssuer,
+                ValidIssuer = "https://exports-authentication-exp-14995.azurewebsites.net",
                 IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
             };
 
