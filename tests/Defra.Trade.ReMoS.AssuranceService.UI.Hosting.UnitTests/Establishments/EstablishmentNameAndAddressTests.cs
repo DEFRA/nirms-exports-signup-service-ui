@@ -48,7 +48,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "EC1N 2PB";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

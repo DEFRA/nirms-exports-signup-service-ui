@@ -168,7 +168,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         {
             TradeCountry = "Test Country",
             LineOne = "1 Test Lane",
-            PostCode = "12345"
+            PostCode = "EC1N 2PB"
         };
 
         var tradePartyDto = new TradePartyDTO
