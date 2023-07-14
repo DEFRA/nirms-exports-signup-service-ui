@@ -24,9 +24,9 @@ namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private readonly IOptions<EhcoIntegrationSettings> _ehcoIntegrationSettings;
+    private readonly IOptions<EhcoIntegration> _ehcoIntegrationSettings;
 
-    public IndexModel(ILogger<IndexModel> logger, IOptions<EhcoIntegrationSettings> ehcoIntegrationSettings)
+    public IndexModel(ILogger<IndexModel> logger, IOptions<EhcoIntegration> ehcoIntegrationSettings)
     {
         _logger = logger;
         _ehcoIntegrationSettings = ehcoIntegrationSettings;
@@ -58,7 +58,7 @@ public class IndexModel : PageModel
         {
             if (!ModelState.IsValid)
             {
-                throw new Exception("Model is invalid");
+                return RedirectToPage("/AuthorizationError");
             }
 
             var token = Request.Form["token"];
@@ -68,7 +68,7 @@ public class IndexModel : PageModel
                 return RedirectToPage("/AuthorizationError");
             }
 
-            var pubKey = "-----BEGIN RSA PUBLIC KEY-----\r\nMIIBCgKCAQEArymNG/U2so2NtU6ledOoO1Rff5gfHam2prsA+iV7NXgUfMOuMH/I\r\nwunTiPz/ZAmmPIwWzaIaqv2b093IH/PDG8AnrFZr75CXVo/Q4XSPdrTHSOIarGNz\r\nZvPBROlnMZQNu+sCzHOieYYX55SHx3mYh5tAivmxXnr37J3ZtGPVES1DemhWpdbG\r\nsQcJMbS90ElAgm+4YFOCrUlIkgDJptDR3YJ+c2mX4F6iLfctmeTzmoruYzyGeRz4\r\nEZ4Ak3Pf6XSJERpO7JDx6GKOlHr/F6SMQjb9SsSuaDM6GptjcFPROwoSN6wCbqr9\r\napC8K+1RzQ4sioxmeV/GAdxnANgajcsdXQIDAQAB\r\n-----END RSA PUBLIC KEY-----";
+            var pubKey = _ehcoIntegrationSettings.Value.PublicKey.ToString();
             var rsaPublicKey = RSA.Create();
             rsaPublicKey.ImportFromPem(pubKey);
             var validationParameters = new TokenValidationParameters
@@ -76,7 +76,7 @@ public class IndexModel : PageModel
                 ValidateAudience = true,
                 ValidateLifetime = false,
                 ValidateIssuer = true,
-                ValidAudience = "6c496a6d-d460-40b7-8878-7972b2e53542",
+                ValidAudience = _ehcoIntegrationSettings.Value.ValidAudience,
                 ValidIssuer = _ehcoIntegrationSettings.Value.ValidIssuer,
                 IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
             };
