@@ -157,15 +157,19 @@ public class EstablishmentNameAndAddressModel : PageModel
     {
         var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
-        if (existingEstablishments!.Select(x => x.Name!.ToUpper()).Contains(EstablishmentName.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.LineOne!.ToUpper()).Contains(LineOne.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.LineTwo?.ToUpper()).Contains(LineTwo?.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.CityName!.ToUpper()).Contains(CityName.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.County?.ToUpper()).Contains(County?.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.PostCode!.ToUpper()).Contains(PostCode.ToUpper()))
-        {
+        var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper() 
+        || x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
+        || x.Address!.LineTwo!.ToUpper() == LineTwo?.ToUpper()
+        || x.Address!.CityName!.ToUpper() == CityName.ToUpper()
+        || x.Address!.County?.ToUpper() == County?.ToUpper()
+        || x.Address!.PostCode!.ToUpper() == PostCode.ToUpper());
 
-            return true;
+        if (duplicates.Any())
+        {
+            if(duplicates.Where(x => x.Id != EstablishmentId).Any())
+            {
+                return true;
+            }
         }
 
 
