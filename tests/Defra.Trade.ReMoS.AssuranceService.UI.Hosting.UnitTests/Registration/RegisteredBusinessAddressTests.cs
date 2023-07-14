@@ -190,7 +190,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // assert
         _systemUnderTest.LineOne.Should().Be("1 Test Lane");
-        _systemUnderTest.PostCode.Should().Be("12345");
+        _systemUnderTest.PostCode.Should().Be("EC1N 2PB");
     }
 
     [Test]
