@@ -93,7 +93,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.Country = "";
         _systemUnderTest!.TraderId = Guid.Empty;
-        var expectedResult = "Enter a country";
+        var expectedResult = "Select a country";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
 

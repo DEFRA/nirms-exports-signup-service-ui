@@ -13,7 +13,7 @@ public class RegisteredBusinessCountryModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [Required(ErrorMessage = "Enter a country")]
+    [Required(ErrorMessage = "Select a country")]
     public string Country { get; set; } = string.Empty;
 
     [BindProperty]
