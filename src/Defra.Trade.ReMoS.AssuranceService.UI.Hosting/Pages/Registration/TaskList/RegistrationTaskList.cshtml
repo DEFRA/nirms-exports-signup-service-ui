@@ -2,6 +2,18 @@
 @using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList.RegistrationTaskListModel
 @{
+    string GetStatusColour(string progressStatus)
+    {
+        switch(progressStatus)
+        {
+            case "Completed":
+                return "green";                
+            case "In Progress":
+                return "yellow";
+            default:
+                return "grey";
+        }
+    }
 }
 
 <div class="govuk-grid-row" id="signUpTaskList">
@@ -27,7 +39,7 @@
                                 Check eligibility
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.EligibilityStatus == "Completed" ? "green" : "grey")" id="eligibility">@Model.EligibilityStatus</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.EligibilityStatus)" id="eligibility">@Model.EligibilityStatus</strong>
                     </li>
 
                     <li class="app-task-list__item">
@@ -36,7 +48,7 @@
                                 Business details
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.BusinessDetails == "Completed" ? "green" : "grey")" id="business-details">@Model.BusinessDetails</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.BusinessDetails)" id="business-details">@Model.BusinessDetails</strong>
                     </li>
                 </ul>
             </li>
@@ -52,7 +64,7 @@
                                 Contact person
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ContactDetails == "Completed" ? "green" : "grey")" id="contact-details">@Model.ContactDetails</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.ContactDetails)" id="contact-details">@Model.ContactDetails</strong>
                     </li>
 
                     <li class="app-task-list__item">
@@ -61,7 +73,7 @@
                                 Authorised signatory
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.AuthorisedSignatoryDetails == "Completed" ? "green" : "grey")" id="authorised-signatory-details">@Model.AuthorisedSignatoryDetails</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.AuthorisedSignatoryDetails)" id="authorised-signatory-details">@Model.AuthorisedSignatoryDetails</strong>
                     </li>
                 </ul>
             </li>
@@ -94,7 +106,7 @@
                                     </a>
                                 }
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PlacesOfDispatch == "Completed" ? "green" : "grey")"
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDispatch)"
                             id="establistment-dispatch">
                                 @Model.PlacesOfDispatch
                             </strong>
@@ -123,7 +135,7 @@
                                     </a>
                                 }
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.PlacesOfDestination == "Completed" ? "green" : "grey")"
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDestination)"
                             id="establistment-destination">
                                 @Model.PlacesOfDestination
                             </strong>
@@ -151,7 +163,7 @@
                                     Check answers and submit sign up
                                 </a>
                             }     
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@(Model.ReviewAnswers == "Completed" ? "green" : "grey")" id="complete_submit">@Model.ReviewAnswers</strong>
+                            <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.ReviewAnswers)" id="complete_submit">@Model.ReviewAnswers</strong>
                         </span>
                     </li>
                 </ul>
