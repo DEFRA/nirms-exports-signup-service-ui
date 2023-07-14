@@ -52,7 +52,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
@@ -69,7 +69,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSaveAsync();
@@ -200,7 +200,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
@@ -217,7 +217,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSaveAsync();
