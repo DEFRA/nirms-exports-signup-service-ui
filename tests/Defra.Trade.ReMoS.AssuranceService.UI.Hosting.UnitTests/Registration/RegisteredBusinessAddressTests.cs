@@ -52,7 +52,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
@@ -69,7 +69,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSaveAsync();
@@ -168,7 +168,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         {
             TradeCountry = "Test Country",
             LineOne = "1 Test Lane",
-            PostCode = "12345"
+            PostCode = "EC1N 2PB"
         };
 
         var tradePartyDto = new TradePartyDTO
@@ -190,7 +190,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // assert
         _systemUnderTest.LineOne.Should().Be("1 Test Lane");
-        _systemUnderTest.PostCode.Should().Be("12345");
+        _systemUnderTest.PostCode.Should().Be("EC1N 2PB");
     }
 
     [Test]
@@ -200,7 +200,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
@@ -217,7 +217,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSaveAsync();

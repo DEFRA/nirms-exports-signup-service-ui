@@ -48,7 +48,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "EC1N 2PB";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -64,9 +64,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
 
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO { Name = "Test name",
-                Address = new TradeAddressDTO { LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
+                Address = new TradeAddressDTO { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
+            _systemUnderTest!.EstablishmentId = Guid.NewGuid();
             _systemUnderTest!.EstablishmentName = "Test name";
             _systemUnderTest!.LineOne = "Line one";
             _systemUnderTest!.LineTwo = "Line two";
