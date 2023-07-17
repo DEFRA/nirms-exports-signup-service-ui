@@ -40,7 +40,7 @@ public class IndexModel : PageModel
 
             var correlationId = Guid.NewGuid().ToString();
 
-            var redirect = "https://exports-authentication-integration.azurewebsites.net/b2c/exporter/login-or-refresh?correlationId=" + correlationId;
+            var redirect = _ehcoIntegrationSettings.Value.EhcoAuthEndpoint + correlationId;
 
             Response.Redirect(redirect);
         }
@@ -77,7 +77,7 @@ public class IndexModel : PageModel
                 ValidateLifetime = false,
                 ValidateIssuer = true,
                 ValidAudience = _ehcoIntegrationSettings.Value.ValidAudience,
-                ValidIssuer = "https://exports-authentication-integration.azurewebsites.net/",
+                ValidIssuer = _ehcoIntegrationSettings.Value.ValidIssuer,
                 IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
             };
 
