@@ -164,15 +164,10 @@ public class EstablishmentNameAndAddressModel : PageModel
         || x.Address!.County?.ToUpper() == County?.ToUpper()
         || x.Address!.PostCode!.ToUpper() == PostCode.ToUpper());
 
-        if (duplicates.Any())
+        if (duplicates.Any(x => x.Id != EstablishmentId))
         {
-            if(duplicates.Where(x => x.Id != EstablishmentId).Any())
-            {
-                return true;
-            }
+            return true;
         }
-
-
         return false;
     }
 }
