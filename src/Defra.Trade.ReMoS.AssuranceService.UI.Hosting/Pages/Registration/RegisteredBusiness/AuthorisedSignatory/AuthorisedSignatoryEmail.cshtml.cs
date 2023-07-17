@@ -23,7 +23,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         public Guid SignatoryId { get; set; }
         [BindProperty]
-        public string Country { get; set; }
+        public string? Country { get; set; }
         #endregion
 
         private readonly ITraderService _traderService;
