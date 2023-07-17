@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Azure.Management.EventHub.Fluent.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -335,6 +336,89 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.NOTSTART);
             _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.CANNOTSTART);
+        }
+
+        [Test]
+        public void GetBusinessDetailsProgress_Status_InProgress()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO { PartyName = "Test" };
+            var expectedStatus = TaskListStatus.INPROGRESS;
+
+            var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetBusinessDetailsProgress_Status_NotStarted()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO();
+            var expectedStatus = TaskListStatus.NOTSTART;
+
+            var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetContactDetailsProgress_Status_InProgress()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO
+            {
+                Contact = new TradeContactDTO() { PersonName = "Test" }
+            };
+
+            var expectedStatus = TaskListStatus.INPROGRESS;
+
+            var status = _systemUnderTest!.GetContactDetailsProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetContactDetailsProgress_Status_NotStarted()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO();
+
+            var expectedStatus = TaskListStatus.NOTSTART;
+
+            var status = _systemUnderTest!.GetContactDetailsProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetAuthorisedSignatoryProgress_Status_InProgress()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO
+            {
+                Contact = new TradeContactDTO() { IsAuthorisedSignatory = false },
+                AuthorisedSignatory = new AuthorisedSignatoryDto() { Name = "Test" }
+            };
+
+            var expectedStatus = TaskListStatus.INPROGRESS;
+
+            var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetAuthorisedSignatoryProgress_Status_NoStarted()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO();
+
+            var expectedStatus = TaskListStatus.NOTSTART;
+
+            var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
         }
     }
 }

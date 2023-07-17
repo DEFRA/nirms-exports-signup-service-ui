@@ -22,7 +22,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public string PlacesOfDispatch { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
-        public string PlacesOfDestination { get; set; } = TaskListStatus.NOTSTART;      
+        public string PlacesOfDestination { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
         public string? Country { get; set; }
@@ -46,7 +46,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             RegistrationID = Id;
 
-            if(RegistrationID == Guid.Empty)
+            if (RegistrationID == Guid.Empty)
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessCountryPath,
@@ -65,39 +65,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
-                if (tradeParty.PartyName != null && tradeParty.Address != null 
-                    && tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
-                    BusinessDetails = TaskListStatus.COMPLETE;
-
-                if (tradeParty.Address != null)
+                if (tradeParty?.Address != null)
                 {
                     if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber))
                         EligibilityStatus = TaskListStatus.COMPLETE;
                 }
 
-                ContactAndAuthSignatoryStatuses(tradeParty);
+                BusinessDetails = GetBusinessDetailsProgress(tradeParty!);
+                ContactDetails = GetContactDetailsProgress(tradeParty!);
+                AuthorisedSignatoryDetails = GetAuthorisedSignatoryProgress(tradeParty!);
+                
                 await EstablishmentsStatuses();
                 CheckAnswersStatus();
-
-            }
-        }
-
-        private void ContactAndAuthSignatoryStatuses(TradePartyDTO tradeParty)
-        {
-            if (tradeParty.Contact != null && tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
-                ContactDetails = TaskListStatus.COMPLETE;
-
-            if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
-            {
-                if (tradeParty.Contact?.IsAuthorisedSignatory == true)
-                {
-                    AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
-                {
-                    AuthorisedSignatoryDetails = TaskListStatus.COMPLETE;
-                }
             }
         }
 
@@ -127,7 +106,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         private void CheckAnswersStatus()
         {
-            if (EligibilityStatus == TaskListStatus.COMPLETE 
+            if (EligibilityStatus == TaskListStatus.COMPLETE
                 && BusinessDetails == TaskListStatus.COMPLETE
                 && ContactDetails == TaskListStatus.COMPLETE
                 && AuthorisedSignatoryDetails == TaskListStatus.COMPLETE
@@ -139,6 +118,61 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             {
                 ReviewAnswers = TaskListStatus.CANNOTSTART;
             }
+        }
+
+        public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
+        {
+            if (tradeParty.PartyName != null && tradeParty.Address != null
+                && tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
+            {
+                return TaskListStatus.COMPLETE;
+            }
+
+            if (tradeParty?.PartyName != null || tradeParty?.Address != null
+                || tradeParty?.Address?.LineOne != null || tradeParty?.Address?.PostCode != null)
+            {
+                return TaskListStatus.INPROGRESS;                
+            }
+
+            return TaskListStatus.NOTSTART;
+        }
+
+        public string GetContactDetailsProgress(TradePartyDTO tradeParty)
+        {
+            if (tradeParty.Contact != null && tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
+            {
+                return TaskListStatus.COMPLETE;
+            }
+
+            if (tradeParty.Contact != null || tradeParty?.Contact?.PersonName != null || tradeParty?.Contact?.Email != null || tradeParty?.Contact?.TelephoneNumber != null || tradeParty?.Contact?.Position != null)
+            {
+                return TaskListStatus.INPROGRESS;
+            }
+
+            return TaskListStatus.NOTSTART;
+        }
+
+        public string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty)
+        {
+            if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
+            {
+                if (tradeParty.Contact?.IsAuthorisedSignatory == true)
+                {
+                    return TaskListStatus.COMPLETE;
+                }
+
+                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
+                {
+                    return TaskListStatus.COMPLETE;
+                }
+
+                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null || tradeParty.AuthorisedSignatory.Position != null || tradeParty.AuthorisedSignatory.EmailAddress != null)
+                {
+                    return TaskListStatus.INPROGRESS;
+                }
+            }
+
+            return TaskListStatus.NOTSTART;
         }
     }
 }
