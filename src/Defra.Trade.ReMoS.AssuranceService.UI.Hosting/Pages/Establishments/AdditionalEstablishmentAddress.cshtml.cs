@@ -78,7 +78,28 @@ public class AdditionalEstablishmentAddressModel : PageModel
                 new { id = TradePartyId, NI_GBFlag });
         }
         else return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath, 
+            Routes.Pages.Path.RegistrationCheckYourAnswersPath, 
+            new { id = TradePartyId });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("Additional establishment manual address OnPostSave");
+
+        if (String.IsNullOrWhiteSpace(AdditionalAddress))
+        {
+            var baseError = "Select yes if you want to add another place of ";
+            var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
+            ModelState.AddModelError(nameof(AdditionalAddress), errorMessage);
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TradePartyId, NI_GBFlag!);
+        }
+
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath,
             new { id = TradePartyId });
     }
 

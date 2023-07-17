@@ -34,10 +34,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new TradePartyDTO()
                 {
                     Id = tradePartyId,
-                    AuthorisedSignatory = new Core.DTOs.AuthorisedSignatoryDto()
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
                     {
                         Id = Guid.NewGuid(),
                     }
@@ -55,6 +59,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         public async Task OnPostSubmit_InvalidInput()
         {
             //Arrange
+            var tradePartyId = Guid.NewGuid();
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new TradePartyDTO()
+                {
+                    Id = tradePartyId,
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
+                    {
+                        Id = Guid.NewGuid(),
+                    }
+                });
             _systemUnderTest!.ModelState.AddModelError("Email", "Enter a email.");
 
             //Act
@@ -67,13 +86,87 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         }
 
         [Test]
+        public async Task OnPostSave_InvalidInput()
+        {
+            //Arrange
+            var tradePartyId = Guid.NewGuid();
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new TradePartyDTO()
+                {
+                    Id = tradePartyId,
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
+                    {
+                        Id = Guid.NewGuid(),
+                    }
+                });
+            _systemUnderTest!.ModelState.AddModelError("Email", "Enter a email.");
+
+            //Act
+            await _systemUnderTest!.OnPostSaveAsync();
+
+            //Assert
+
+            var validation = ValidateModel(_systemUnderTest);
+            validation.Count.Should().Be(1);
+        }
+
+        [Test]
         public async Task OnPostSubmit_SubmitValidEmail()
         {
             //Arrange
+            var tradePartyId = Guid.NewGuid();
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new TradePartyDTO()
+                {
+                    Id = tradePartyId,
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
+                    {
+                        Id = Guid.NewGuid(),
+                    }
+                });
             _systemUnderTest!.Email = "Business-test@email.com";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSave_SubmitValidEmail()
+        {
+            //Arrange
+            var tradePartyId = Guid.NewGuid();
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new TradePartyDTO()
+                {
+                    Id = tradePartyId,
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
+                    {
+                        Id = Guid.NewGuid(),
+                    }
+                });
+            _systemUnderTest!.Email = "Business-test@email.com";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
