@@ -50,23 +50,35 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TradePartyId);
             }
 
+            await SubmitAuthSignatory();
+            if (Convert.ToBoolean(IsAuthorisedSignatory))
+            {
+                return RedirectToPage(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = TradePartyId });
+            }
+
+            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
+        }
+
+        public async Task<IActionResult> OnPostSaveAsync()
+        {
+            _logger.LogInformation("IsAuthorisedSignatory OnPostSave");
+            if (!ModelState.IsValid)
+            {
+                return await OnGetAsync(TradePartyId);
+            }
+
+            await SubmitAuthSignatory();
+            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+        }
+
+        #region private methods
+        private async Task SubmitAuthSignatory()
+        {
             TradePartyDTO tradeParty = await GenerateDTO();
 
             var updatedTradeParty = await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
 
-            if (IsAuthorisedSignatory == null)
-            {
-                IsAuthorisedSignatory = updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
-            }
-
-            if (Convert.ToBoolean(IsAuthorisedSignatory))
-            {
-                return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
-            }
-
-
-            await _traderService.UpdateTradePartyAsync(tradeParty);
-            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
+            IsAuthorisedSignatory ??= updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
         }
 
         private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
@@ -131,5 +143,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             };
         }
+        #endregion
     }
 }

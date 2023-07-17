@@ -14,19 +14,19 @@ public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter establishment name using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter establishment name using only letters, numbers, hyphens (-) and apostrophes (').")]
     [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
     [Required(ErrorMessage = "Enter establishment name.")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (').")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
     [Required(ErrorMessage = "Enter address line 1.")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (').")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
@@ -42,7 +42,7 @@ public class EstablishmentNameAndAddressModel : PageModel
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Enter a real postcode.")]
+    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode.")]
     [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a post code.")]
     public string PostCode { get; set; } = string.Empty;
@@ -157,18 +157,17 @@ public class EstablishmentNameAndAddressModel : PageModel
     {
         var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
-        if (existingEstablishments!.Select(x => x.Name!.ToUpper()).Contains(EstablishmentName.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.LineOne!.ToUpper()).Contains(LineOne.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.LineTwo?.ToUpper()).Contains(LineTwo?.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.CityName!.ToUpper()).Contains(CityName.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.County?.ToUpper()).Contains(County?.ToUpper())
-            && existingEstablishments!.Select(x => x.Address!.PostCode!.ToUpper()).Contains(PostCode.ToUpper()))
-        {
+        var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper() 
+        || x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
+        || x.Address!.LineTwo!.ToUpper() == LineTwo?.ToUpper()
+        || x.Address!.CityName!.ToUpper() == CityName.ToUpper()
+        || x.Address!.County?.ToUpper() == County?.ToUpper()
+        || x.Address!.PostCode!.ToUpper() == PostCode.ToUpper());
 
+        if (duplicates.Any(x => x.Id != EstablishmentId))
+        {
             return true;
         }
-
-
         return false;
     }
 }

@@ -34,10 +34,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new TradePartyDTO()
                 {
                     Id = tradePartyId,
-                    AuthorisedSignatory = new Core.DTOs.AuthorisedSignatoryDto()
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
                     {
                         Id = Guid.NewGuid(),
                     }
@@ -60,13 +64,44 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new TradePartyDTO()
                 {
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });
 
             //Act
             await _systemUnderTest!.OnPostSubmitAsync();
+
+            //Assert
+
+            var validation = ValidateModel(_systemUnderTest);
+            validation.Count.Should().Be(1);
+        }
+
+        [Test]
+        public async Task OnPostSave_InvalidInput()
+        {
+            //Arrange
+            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
+            _systemUnderTest!.ModelState.AddModelError("Position", "Enter a position.");
+
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new TradePartyDTO()
+                {
+                    Address = new TradeAddressDTO()
+                    {
+                        TradeCountry = "GB"
+                    },
+                    AuthorisedSignatory = new AuthorisedSignatoryDto { }
+                });
+
+            //Act
+            await _systemUnderTest!.OnPostSaveAsync();
 
             //Assert
 
@@ -82,6 +117,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSave_SubmitValidPosition()
+        {
+            //Arrange
+            _systemUnderTest!.Position = "Software Developer";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert

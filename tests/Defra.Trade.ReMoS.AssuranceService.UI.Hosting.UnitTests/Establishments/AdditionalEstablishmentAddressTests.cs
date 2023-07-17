@@ -51,6 +51,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
+        public async Task OnPostSave_SubmitValidRadio()
+        {
+            //Arrange
+            _systemUnderTest!.AdditionalAddress = "yes";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
         public async Task OnPostSubmit_SubmitInValidRadio()
         {
             //Arrange
@@ -58,6 +72,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+
+            //Assert
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.HasError("AdditionalAddress").Should().Be(true);
+        }
+
+        [Test]
+        public async Task OnPostSave_SubmitInValidRadio()
+        {
+            //Arrange
+            _systemUnderTest!.AdditionalAddress = "";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);

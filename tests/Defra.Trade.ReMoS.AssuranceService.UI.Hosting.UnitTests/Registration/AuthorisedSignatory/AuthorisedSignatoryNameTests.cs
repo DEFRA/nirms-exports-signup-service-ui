@@ -76,6 +76,29 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         }
 
         [Test]
+        public async Task OnPostSave_InvalidInput()
+        {
+            //Arrange
+            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
+            _systemUnderTest!.ModelState.AddModelError("Name", "Enter a name.");
+
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                {
+                    AuthorisedSignatory = new AuthorisedSignatoryDto { }
+                });
+
+            //Act
+            await _systemUnderTest!.OnPostSaveAsync();
+
+            //Assert
+
+            var validation = ValidateModel(_systemUnderTest);
+            validation.Count.Should().Be(1);
+        }
+
+        [Test]
         public async Task OnPostSubmit_SubmitValidName()
         {
             //Arrange
@@ -83,6 +106,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSave_SubmitValidName()
+        {
+            //Arrange
+            _systemUnderTest!.Name = "John Bloggs";
+
+            //Act
+            await _systemUnderTest.OnPostSaveAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
