@@ -28,12 +28,14 @@
             </div>
 
             <div class="govuk-form-group">
-                <button class="govuk-button" id="btn_emailSubmit" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbNatureSubmit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbNatureSave">Save and return to dashboard</button>
             </div>
 
             <input type="hidden" asp-for="TraderId" />
             <input type="hidden" asp-for="BusinessName" />
             <input type="hidden" asp-for="SignatoryId" />
+            <input type="hidden" asp-for="Country" />
         </form>
     </div>
 </div>

@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Azure.Management.Sql.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
+#pragma warning disable CS8602, CS8601
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory
 {
     public class AuthorisedSignatoryEmailModel : PageModel
     {
+        #region ui model
         [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [BindProperty]
         [Required(ErrorMessage = "Enter the email address of the authorised signatory.")]
@@ -20,6 +22,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public Guid TraderId { get; set; }
         [BindProperty]
         public Guid SignatoryId { get; set; }
+        [BindProperty]
+        public string Country { get; set; }
+        #endregion
 
         private readonly ITraderService _traderService;
         private readonly ILogger<AuthorisedSignatoryEmailModel> _logger;
@@ -48,12 +53,39 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TraderId);
             }
 
-            var tradeParty = await GenerateDTO();
-            await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
+            await SubmitEmail();
 
+            string countryFlag = "GB";
+
+            if (Country != "NI")
+            {
+                countryFlag = "NI";
+            }
+
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = TraderId, NI_GBFlag = countryFlag });
+        }
+
+        public async Task<IActionResult> OnPostSaveAsync()
+        {
+            _logger.LogInformation("Signatory Email OnPostSave");
+
+            if (!ModelState.IsValid)
+            {
+                return await OnGetAsync(TraderId);
+            }
+
+            await SubmitEmail();
             return RedirectToPage(
                 Routes.Pages.Path.RegistrationTaskListPath,
                 new { id = TraderId });
+        }
+
+        private async Task SubmitEmail()
+        {
+            var tradeParty = await GenerateDTO();
+            await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
         }
 
         private async Task<TradePartyDTO?> GetSignatoryEmailFromApiAsync()
@@ -63,6 +95,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             {
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
                 Email = string.IsNullOrEmpty(Email) ? tradeParty.AuthorisedSignatory.EmailAddress ?? "" : Email;
+                Country = tradeParty.Address.TradeCountry;
 
                 return tradeParty;
             }

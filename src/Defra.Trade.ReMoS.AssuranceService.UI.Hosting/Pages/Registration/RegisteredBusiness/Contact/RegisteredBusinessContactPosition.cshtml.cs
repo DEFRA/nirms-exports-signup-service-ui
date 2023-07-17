@@ -75,7 +75,7 @@ public class RegisteredBusinessContactPositionModel : PageModel
 
         await SubmitPosition();
         return RedirectToPage(
-            Routes.Pages.Path.RegisteredBusinessContactEmailPath,
+            Routes.Pages.Path.RegistrationTaskListPath,
             new { id = TradePartyId });
     }
 
