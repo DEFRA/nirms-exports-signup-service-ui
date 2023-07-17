@@ -48,6 +48,20 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitValidInformation()
+    {
+        // arrange
+        _systemUnderTest.Name = "John Doe";
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitInvalidCharacterInformation()
     {
         // arrange
@@ -55,6 +69,20 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 
         // act
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // asser
+        validation.Count.Should().Be(1);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidCharacterInformation()
+    {
+        // arrange
+        _systemUnderTest.Name = "*";
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         // asser
@@ -76,6 +104,20 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitTooManyCharactersInformation()
+    {
+        // arrange
+        _systemUnderTest.Name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(1);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitInvalidInput()
     {
         //Arrange
@@ -86,6 +128,24 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.Name = "";
+        var expectedResult = "Enter a name.";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert            

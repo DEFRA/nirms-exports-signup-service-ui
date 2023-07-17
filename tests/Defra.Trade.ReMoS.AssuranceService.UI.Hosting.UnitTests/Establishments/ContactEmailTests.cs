@@ -1,6 +1,9 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using FluentAssertions.Primitives;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -29,8 +32,8 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         _mockEstablishmentService
-            .Setup(x => x.GetRelationshipBetweenPartyAndEstablishment(It.IsAny<Guid>(), It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationBusinessRelationshipDTO());
+            .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new Core.DTOs.LogisticsLocationDTO());
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());
@@ -57,7 +60,7 @@ public class ContactEmailTests : PageModelTestsBase
     public async Task OnGet_HeadingSetToParameter_Successfully()
     {
         //Arrange
-        var expectedHeading = "Add a point of destination (optional)";
+        var expectedHeading = "Add a place of destination";
         var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
 
         //Act
@@ -66,5 +69,21 @@ public class ContactEmailTests : PageModelTestsBase
         //Assert
         _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
         _systemUnderTest.ContentText.Should().Be(expectedContentText);
+    }
+
+    [Test]
+    public void OnGetChangeEstablishmentAddress_Returns_RedirectResult()
+    {
+        //Arrange
+        var tradePartyId = new Guid();
+        var establishmentId = new Guid();
+        string NI_GBFlag = "GB";
+
+        //Act
+        var result = _systemUnderTest?.OnGetChangeEstablishmentAddress(tradePartyId, establishmentId, NI_GBFlag);
+
+        //Assert
+        result?.GetType().Should().Be(typeof(RedirectToPageResult));
+        (result as RedirectToPageResult)?.PageName?.Equals(Routes.Pages.Path.EstablishmentNameAndAddressPath);
     }
 }

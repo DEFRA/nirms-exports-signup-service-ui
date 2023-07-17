@@ -1,7 +1,12 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.AdditionalEstablishmentAddressModel
 @{
-    ViewData["Title"] = "Points of departure";
+    ViewData["Title"] = $"Places of {@Model.ContentText}";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -16,15 +21,15 @@
                 @Model.ContentHeading
 
             </h1>
-            @foreach (var location in Model.LogisticsLocations)
+            @foreach (var location in Model.LogisticsLocations!)
             {
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.LocationName</h2>
+                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.Name</h2>
                         <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
                            asp-page-handler="RemoveEstablishment"
                            asp-route-tradepartyid="@Model.TradePartyId"
-                           asp-route-establishmentId="@location.LocationId"
+                           asp-route-establishmentId="@location.Id"
                         asp-route-NI_GBFlag="@Model.NI_GBFlag">
                             Remove
                         </a>
@@ -39,13 +44,13 @@
                                     @(location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty)
                                     @(location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty)
                                     @(location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty)
-                                    @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}," : string.Empty)
+                                    @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty)
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link"
                                         asp-page-handler="ChangeEstablishmentAddress"
                                         asp-route-tradepartyid="@Model.TradePartyId"
-                                        asp-route-establishmentId="@location.LocationId"
+                                        asp-route-establishmentId="@location.Id"
                                         asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                         Change<span class="govuk-visually-hidden"> address</span>
                                     </a>
@@ -56,13 +61,13 @@
                                     Email address
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    @location.ContactEmail
+                                    @location.Email
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link"
                                        asp-page-handler="ChangeEmail"
                                        asp-route-tradepartyid="@Model.TradePartyId"
-                                       asp-route-establishmentId="@location.LocationId"
+                                       asp-route-establishmentId="@location.Id"
                                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                         Change<span class="govuk-visually-hidden"> email address</span>
                                     </a>
@@ -78,29 +83,33 @@
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AdditionalAddress") ? "AdditionalAddress_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
                         <h3 class="govuk-fieldset__heading">
-                            Do you want to add another point of @Model.ContentText?
+                            Do you want to add another place of @Model.ContentText?
                         </h3>
                     </legend>
 
-                    <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                    <p id="AdditionalAddress_Error" class="govuk-error-message" gds-validation-for="AdditionalAddress"></p>
 
+                    <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios" id="AdditionalAddress">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="add-point-of-departure-yes" asp-for="AdditionalAddress" type="radio" value="yes">
-                            <label class="govuk-label govuk-radios__label" for="add-point-of-departure-yes">
-                                Yes, add another point of @Model.ContentText
+                            <input class="govuk-radios__input" id="add-place-of-dispatch-yes" asp-for="AdditionalAddress" type="radio" value="yes">
+                            <label class="govuk-label govuk-radios__label" for="add-place-of-dispatch-yes">
+                                Yes, add another place of @Model.ContentText
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="add-point-of-departure-no" asp-for="AdditionalAddress" type="radio" value="no">
-                            <label class="govuk-label govuk-radios__label" for="add-point-of-departure-no">
-                                No, I have finished adding points of @Model.ContentText
+                            <input class="govuk-radios__input" id="add-place-of-dispatch-no" asp-for="AdditionalAddress" type="radio" value="no">
+                            <label class="govuk-label govuk-radios__label" for="add-place-of-dispatch-no">
+                                No, I have finished adding places of @Model.ContentText
                             </label>
                         </div>
                     </div>
                 </fieldset>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>            
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save">Save and return to dashboard</button>
+            </div>
         </form>
     </div>
 </div>

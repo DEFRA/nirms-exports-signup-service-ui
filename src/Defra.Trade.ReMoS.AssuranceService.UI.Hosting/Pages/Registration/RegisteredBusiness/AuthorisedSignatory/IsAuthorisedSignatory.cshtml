@@ -1,7 +1,20 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.IsAuthorisedSignatoryModel
 @{
     ViewData["Title"] = "Fill in Yes or No for the contact person to be the Authorised Signatory";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TradePartyId"
+           class="govuk-back-link">Back</a>
+    }
+    else{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -16,7 +29,7 @@
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Contact details</span>
-                            Is the contact person the Authorised Signatory at ACME Trading?
+                            Is the contact person the Authorised Signatory at @Model.BusinessName?
                         </h1>
                     </legend>
 
@@ -26,7 +39,7 @@
                         The Authorised Signatory is the person who is authorised by a company to sign contracts and other legal documents on behalf of the company. This person has the legal authority to bind the company to agreements and make other decisions on behalf of the company.
                     </p>
                     
-                    <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios" data-module="govuk-radios" id="IsAuthorisedSignatory">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="business-type" asp-for="IsAuthorisedSignatory" type="radio" value="true">
                             <label class="govuk-label govuk-radios__label" for="business-type">
@@ -43,7 +56,10 @@
                 </fieldset>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit" id="button-rbNatureSubmit">Save and continue</button>
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbNatureSubmit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbNatureSave">Save and return to dashboard</button>
+            </div>
             <input type="hidden" asp-for="TradePartyId" />
         </form>
     </div>

@@ -5,6 +5,30 @@
     ViewData["Title"] = "Enter Establishment contact email";
 }
 
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TradePartyId"
+           class="govuk-back-link">Back</a>
+    }
+    else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.AdditionalEstablishmentAddress))
+    {
+        <a asp-page="@Routes.Pages.Path.AdditionalEstablishmentAddressPath"
+           asp-route-id="@Model.TradePartyId"
+           asp-route-NI_GBFlag="@Model.NI_GBFlag"
+           class="govuk-back-link">Back</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.EstablishmentNameAndAddressPath" 
+            asp-route-id="@Model.TradePartyId"
+            asp-route-establishmentId="@Model.EstablishmentId"
+            asp-route-NI_GBFlag="@Model.NI_GBFlag"
+            class="govuk-back-link">Back</a>
+    }
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -21,19 +45,26 @@
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint" id="search-points-of-departure">
+                    <p class="govuk-hint" id="search-places-of-dispatch">
                         @Model.ContentText
                         </p>
 
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
                     <p>
                         <span>
-                            @(Model.Location.Name != null ? $"{Model.Location.Name}," : string.Empty),
-                            @(Model.Location.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
-                            @(Model.Location.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
-                            @(Model.Location.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
-                            @(Model.Location.Address?.PostCode != null ? $"{Model.Location.Address?.PostCode} " : string.Empty)
-                        </span> <a href="points-of-departure-address">Change</a>
+                            @(Model.Location?.Name != null ? $"{Model.Location.Name}," : string.Empty)
+                            @(Model.Location?.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
+                            @(Model.Location?.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
+                            @(Model.Location?.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
+                            @(Model.Location?.Address?.PostCode != null ? $"{Model.Location.Address?.PostCode} " : string.Empty)
+                        </span>
+                        <a class="govuk-link"
+                           asp-page-handler="ChangeEstablishmentAddress"
+                           asp-route-tradepartyid="@Model.TradePartyId"
+                           asp-route-establishmentId="@Model.EstablishmentId"
+                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
                     </p>
 
                     <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">

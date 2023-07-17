@@ -119,6 +119,7 @@ public class TradeAddressTests
             LineFive = String.Empty,
             PostCode = "EC1N 2PB",
             CityName = "London",
+            County = "Surrey",
             TradeCountry = "United Kingdom", 
         };
 
@@ -131,6 +132,7 @@ public class TradeAddressTests
         tradeAddress.LineFive.Should().Be(String.Empty);
         tradeAddress.PostCode.Should().Be("EC1N 2PB");
         tradeAddress.CityName.Should().Be("London");
+        tradeAddress.County.Should().Be("Surrey");
         tradeAddress.TradeCountry.Should().Be("United Kingdom");
     }
 }

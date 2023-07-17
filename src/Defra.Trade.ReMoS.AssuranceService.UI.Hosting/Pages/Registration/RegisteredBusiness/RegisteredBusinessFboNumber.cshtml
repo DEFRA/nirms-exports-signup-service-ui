@@ -1,7 +1,21 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessFboNumberModel
 @{
     ViewData["Title"] = "Enter FBO Number";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TraderId"
+        class="govuk-back-link">Back</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessCountryPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+    }  
 }
 
 <div class="govuk-grid-row">
@@ -18,7 +32,7 @@
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint">You will have one if you've registered with your local authority for a <a href="https://www.gov.uk/food-business-registration" target="_blank">food business license</a>.</p>
+                    <p class="govuk-hint">You will have one if you've registered with your local authority for a <a href="https://www.gov.uk/food-business-registration" target="_blank" rel="noopener">food business license</a>.</p>
                     <p id="OptionSelected_Error" class="govuk-error-message" gds-validation-for="OptionSelected"></p>
 
 

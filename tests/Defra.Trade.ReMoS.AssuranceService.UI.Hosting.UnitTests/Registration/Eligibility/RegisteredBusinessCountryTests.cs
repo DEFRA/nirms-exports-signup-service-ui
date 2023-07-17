@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -35,6 +36,43 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnGet_CountrySavedSetToFalse_IfNoSavedData()
+    {        
+        //Act
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+
+        //Assert
+        _systemUnderTest.CountrySaved.Should().Be(false);
+    }
+
+    [Test]
+    public async Task OnGet_CountrySavedSetToTrue_IfDataPresentInApi()
+    {
+        //Arrange
+        Guid guid = Guid.NewGuid();
+
+        var tradeContact = new TradeContactDTO();
+        var tradeAddress = new TradeAddressDTO { TradeCountry = "GB"};
+
+        var tradePartyDto = new TradePartyDTO
+        {
+            Id = guid,
+            Contact = tradeContact,
+            Address = tradeAddress
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+        //Act
+        _ = await _systemUnderTest!.OnGetAsync(guid);
+
+        //Assert
+        _ = _systemUnderTest.Country.Should().Be("GB");
+        _ = _systemUnderTest.CountrySaved.Should().Be(true);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
@@ -54,7 +92,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Country = "";
-        var expectedResult = "Enter a country";
+        var expectedResult = "Select a country";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
 
@@ -68,10 +106,9 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnGet_NoCountryPresentIfNoSavedData_ReturnTradePartyDto()
+    public async Task OnGet_IfNoSavedData_ReturnTradePartyDto()
     {
         //Arrange
-        //TODO: Add setup for returning values when API referenced
         Guid guid = Guid.NewGuid();
 
         var tradeContact = new TradeContactDTO();
@@ -92,6 +129,19 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         //Assert
         _ = _systemUnderTest.Country.Should().Be("");
+    }
+
+    [Test]
+    public async Task OnPost_IfCountrySaved_ReturnRedirectToPage()
+    {
+        //Arrange
+        _systemUnderTest!.CountrySaved = true;
+
+        //Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        //Assert
+        result.Should().BeOfType<RedirectToPageResult>();
     }
 }
 

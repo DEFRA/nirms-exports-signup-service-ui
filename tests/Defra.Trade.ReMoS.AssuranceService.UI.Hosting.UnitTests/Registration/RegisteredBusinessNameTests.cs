@@ -50,6 +50,20 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitValidName()
+    {
+        //Arrange
+        _systemUnderTest.Name = "Business-Name1";
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitInValidNameNotPresent()
     {
         //Arrange
@@ -58,6 +72,22 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInValidNameNotPresent()
+    {
+        //Arrange
+        _systemUnderTest.Name = "";
+        var expectedResult = "Enter your business name";
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -82,6 +112,22 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitInvalidRegex()
+    {
+        //Arrange
+        _systemUnderTest.Name = "Business%%Name1";
+        var expectedResult = "Enter your business name using only letters, numbers, and special characters -_./()&";
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitInvalidLength()
     {
         //Arrange
@@ -98,7 +144,41 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitInvalidLength()
+    {
+        //Arrange
+        _systemUnderTest.Name = new string('a', 101);
+        var expectedResult = "Business name is too long";
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.Name = "";
+        var expectedResult = "Enter your business name";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidInput()
     {
         //Arrange
         _systemUnderTest!.Name = "";

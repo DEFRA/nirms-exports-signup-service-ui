@@ -62,13 +62,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
-            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            var logisticsLocations = new LogisticsLocationDTO
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
-                LogisticsLocationId = Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
 
-            _mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
+            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -88,13 +88,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
 
-            var logisticsLocations = new LogisticsLocationBusinessRelationshipDTO
+            var logisticsLocations = new LogisticsLocationDTO
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
-                LogisticsLocationId = Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
 
-            _mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
+            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -108,7 +108,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGet_HeadingSetToParameter_Successfully()
         {
             //Arrange
-            var expectedHeading = "Add a point of destination (optional)";
+            var expectedHeading = "Add a place of destination (optional)";
             var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))

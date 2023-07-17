@@ -1,0 +1,41 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.AuthorisedSignatoryEmailModel
+@{
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.AuthorisedSignatoryPositionPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form class="form" method="post" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
+                <div class="govuk-form-group">
+                    <label for="Email">
+                        <h1 class="govuk-heading-l">
+                            <span class="govuk-caption-l">Contact details</span>
+                            Email address of Authorised Signatory
+                        </h1>
+                    </label>
+                    <p class="govuk-hint" id="authorised-signatory-email-hint">The email address of the Authorised Signatory at @Model.BusinessName.</p>
+                    <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
+                    <input class="govuk-input" id="Email" type="email" spellcheck="false" asp-for="Email" autocomplete="email">
+                </div>
+            </div>
+
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbNatureSubmit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbNatureSave">Save and return to dashboard</button>
+            </div>
+
+            <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="BusinessName" />
+            <input type="hidden" asp-for="SignatoryId" />
+            <input type="hidden" asp-for="Country" />
+        </form>
+    </div>
+</div>

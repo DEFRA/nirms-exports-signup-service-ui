@@ -13,13 +13,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class ContactEmailModel : PageModel
 {
     #region UI Models
-    [RegularExpression(
-       @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-       ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDTO? Location { get; set; } = new LogisticsLocationDTO();
-    public LogisticsLocationBusinessRelationshipDTO? LogisticsLocationBusinessRelationship { get; set; } = new LogisticsLocationBusinessRelationshipDTO();
     public Guid TradePartyId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
@@ -40,30 +37,26 @@ public class ContactEmailModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment departure destination OnGetAsync");
+        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
         TradePartyId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a point of destination (optional)";
+            ContentHeading = "Add a place of destination";
             ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
         }
         else
         {
-            ContentHeading = "Add a point of departure";
+            ContentHeading = "Add a place of dispatch";
             ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
         }
 
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
         {
             Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
-            LogisticsLocationBusinessRelationship = await _establishmentService
-                .GetRelationshipBetweenPartyAndEstablishment(
-                TradePartyId,
-                EstablishmentId);
-            Email = LogisticsLocationBusinessRelationship?.ContactEmail;
+            Email = Location?.Email;
         }
 
         return Page();
@@ -75,7 +68,7 @@ public class ContactEmailModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag);
+            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         await SaveEmailToApi();
@@ -87,12 +80,19 @@ public class ContactEmailModel : PageModel
 
     private async Task SaveEmailToApi()
     {
-        LogisticsLocationBusinessRelationship = await _establishmentService.GetRelationshipBetweenPartyAndEstablishment(TradePartyId, EstablishmentId);
+        Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
 
-        if (LogisticsLocationBusinessRelationship != null)
+        if (Location != null)
         {
-            LogisticsLocationBusinessRelationship.ContactEmail = Email;
-            await _establishmentService.UpdateEstablishmentRelationship(LogisticsLocationBusinessRelationship);
+            Location.Email = Email;
+            await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
+    }
+
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = tradePartyId, establishmentId, NI_GBFlag });
     }
 }

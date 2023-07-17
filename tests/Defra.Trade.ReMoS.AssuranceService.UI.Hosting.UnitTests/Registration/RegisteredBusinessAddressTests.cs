@@ -52,10 +52,27 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitValidInformation()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "Line 1 - '";
+        _systemUnderTest.LineTwo = "Line 2 - '";
+        _systemUnderTest.CityName = "City - '";
+        _systemUnderTest.PostCode = "SW1W 0NY";
+
+        // act 
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         // assert
@@ -72,6 +89,22 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(4);
+    }
+
+    public async Task OnPostSave_SubmitInvalidCharacterInformation()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "*";
+        _systemUnderTest.LineTwo = "*";
+        _systemUnderTest.CityName = "*";
+        _systemUnderTest.PostCode = "*";
+
+        // act 
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         // assert
@@ -102,6 +135,29 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitInvalidInput()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "";
+        var expectedResultOne = "Enter address line 1.";
+        var expectedResultTwo = "Enter a town or city.";
+        var expectedResultThree = "Enter a post code.";
+
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(3);
+        expectedResultOne.Should().Be(validation[0].ErrorMessage);
+        expectedResultTwo.Should().Be(validation[1].ErrorMessage);
+        expectedResultThree.Should().Be(validation[2].ErrorMessage);
+    }
+
+    [Test]
     public async Task OnGet_NoAddressPresentIfNoSavedData_GetTradeParty()
     {
         //Arrange
@@ -112,7 +168,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         {
             TradeCountry = "Test Country",
             LineOne = "1 Test Lane",
-            PostCode = "12345"
+            PostCode = "EC1N 2PB"
         };
 
         var tradePartyDto = new TradePartyDTO
@@ -134,7 +190,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // assert
         _systemUnderTest.LineOne.Should().Be("1 Test Lane");
-        _systemUnderTest.PostCode.Should().Be("12345");
+        _systemUnderTest.PostCode.Should().Be("EC1N 2PB");
     }
 
     [Test]
@@ -144,10 +200,27 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest.LineOne = "Line 1 - '";
         _systemUnderTest.LineTwo = "Line 2 - '";
         _systemUnderTest.CityName = "City - '";
-        _systemUnderTest.PostCode = "P0S1 C0DE";
+        _systemUnderTest.PostCode = "SW1W 0NY";
 
         // act 
         await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPostSave_GivenValidGuid_SubmitValidInput()
+    {
+        // arrange 
+        _systemUnderTest.LineOne = "Line 1 - '";
+        _systemUnderTest.LineTwo = "Line 2 - '";
+        _systemUnderTest.CityName = "City - '";
+        _systemUnderTest.PostCode = "SW1W 0NY";
+
+        // act 
+        await _systemUnderTest.OnPostSaveAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         // assert

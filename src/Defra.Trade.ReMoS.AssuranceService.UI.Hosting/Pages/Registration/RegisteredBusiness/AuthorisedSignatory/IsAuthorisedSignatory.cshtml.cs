@@ -14,6 +14,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]      
         [Required(ErrorMessage = "Fill in Yes or No")]
         public string? IsAuthorisedSignatory { get; set; } = null;
+        [BindProperty]
+        public string? BusinessName { get; set; }
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
@@ -34,7 +36,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             TradePartyId = id;
             _logger.LogInformation("IsAuthorisedSignatory onGet");
-            _ = await GetIsAuthorisedSignatoryFromApiAsync();
+            var party = await GetIsAuthorisedSignatoryFromApiAsync();
+            BusinessName = party?.PartyName;
 
             return Page();
         }
@@ -47,16 +50,35 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TradePartyId);
             }
 
+            await SubmitAuthSignatory();
+            if (Convert.ToBoolean(IsAuthorisedSignatory))
+            {
+                return RedirectToPage(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = TradePartyId });
+            }
+
+            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
+        }
+
+        public async Task<IActionResult> OnPostSaveAsync()
+        {
+            _logger.LogInformation("IsAuthorisedSignatory OnPostSave");
+            if (!ModelState.IsValid)
+            {
+                return await OnGetAsync(TradePartyId);
+            }
+
+            await SubmitAuthSignatory();
+            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+        }
+
+        #region private methods
+        private async Task SubmitAuthSignatory()
+        {
             TradePartyDTO tradeParty = await GenerateDTO();
 
             var updatedTradeParty = await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
-            IsAuthorisedSignatory = updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
-            if (Convert.ToBoolean(IsAuthorisedSignatory))
-            {
-                return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId });
-            }
 
-            return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId, SignatoryId = SignatoryId });
+            IsAuthorisedSignatory ??= updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
         }
 
         private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
@@ -64,7 +86,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.Contact != null && tradeParty.AuthorisedSignatory != null)
             {
-                IsAuthorisedSignatory = IsAuthorisedSignatory == null ? tradeParty.Contact.IsAuthorisedSignatory.ToString() : IsAuthorisedSignatory;
+                IsAuthorisedSignatory ??= tradeParty.Contact.IsAuthorisedSignatory.ToString();
                 ContactId = tradeParty.Contact.Id;
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
             }
@@ -91,12 +113,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
                         IsAuthorisedSignatory = isSignatory
                     },
-                    AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
                     {
                         Id = SignatoryId,
                         Name = tradeParty?.Contact?.PersonName,
                         EmailAddress = tradeParty?.Contact?.Email,
                         Position = tradeParty?.Contact?.Position,
+                        TradePartyId = TradePartyId
                     }
                 };
 
@@ -110,7 +133,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     Id = ContactId,
                     IsAuthorisedSignatory = isSignatory
                 },
-                AuthorisedSignatory = new AuthorisedSignatoryDTO()
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,
                     Name = null,
@@ -120,5 +143,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             };
         }
+        #endregion
     }
 }

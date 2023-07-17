@@ -1,7 +1,20 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessAddressModel
 @{
     ViewData["Title"] = "Enter Business Address";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TraderId"
+           class="govuk-back-link">Back</a>
+    }
+    else{
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -11,7 +24,7 @@
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TraderId" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
-                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("LineOne") ? "LineOne": null)">
+                <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Business details</span>
@@ -21,40 +34,44 @@
 
                    
                     <div class="govuk-form-group">
-                        <label class="govuk-label" for="address-line-1">
+                        <label class="govuk-label" for="LineOne">
                           Address line 1
                         </label>
                         <p id="LineOne_Error" class="govuk-error-message" gds-validation-for="LineOne"></p>
-                        <input class="govuk-input" id="address-line-1" asp-for="LineOne" type="text">
+                        <input class="govuk-input" id="LineOne" asp-for="LineOne" type="text">
                     </div>
 
                     <div class="govuk-form-group">
-                        <label class="govuk-label" for="address-line-2">
+                        <label class="govuk-label" for="LineTwo">
                           Address line 2 (optional)
                         </label>
-                        <input class="govuk-input" id="address-line-2" asp-for="LineTwo" type="text">
+                        <input class="govuk-input" id="LineTwo" asp-for="LineTwo" type="text">
                     </div>
 
                     <div class="govuk-form-group">
-                        <label class="govuk-label" for="address-city">
+                        <label class="govuk-label" for="CityName">
                           Town or city
                         </label>
                         <p id="CityName_Error" class="govuk-error-message" gds-validation-for="CityName"></p>
-                        <input class="govuk-input" id="address-city" asp-for="CityName" type="text">
+                        <input class="govuk-input" id="CityName" asp-for="CityName" type="text">
                     </div>
 
                     <div class="govuk-form-group">
-                        <label class="govuk-label" for="address-postcode">
+                        <label class="govuk-label" for="PostCode">
                           Postcode
                         </label>
                         <p id="PostCode_Error" class="govuk-error-message" gds-validation-for="PostCode"></p>
-                        <input class="govuk-input" id="address-postcode" asp-for="PostCode" type="text">
+                        <input class="govuk-input" id="PostCode" asp-for="PostCode" type="text">
                     </div>
 
                 </fieldset>
                 <br>
             </div>
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>            
+            <div class="govuk-button-group">
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save">Save and return to dashboard</button>
+            </div>
+
             <input type="hidden" asp-for="TraderId" />
             <input type="hidden" asp-for="AddressId" />
         </form>

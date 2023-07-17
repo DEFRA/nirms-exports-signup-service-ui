@@ -12,13 +12,13 @@ public class RegisteredBusinessAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-'&]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (').")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
     [Required(ErrorMessage = "Enter address line 1.")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-'&]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (').")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
@@ -29,7 +29,7 @@ public class RegisteredBusinessAddressModel : PageModel
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Enter a real postcode.")]
+    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode.")]
     [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a post code.")]
     public string PostCode { get; set; } = string.Empty;
@@ -77,20 +77,33 @@ public class RegisteredBusinessAddressModel : PageModel
             return await OnGetAsync();
         }
 
+        await SubmitAddress();
+        return RedirectToPage(
+            Routes.Pages.Path.RegisteredBusinessContactNamePath, 
+            new { id = TraderId });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("Address OnPostSubmit");
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync();
+        }
+
+        await SubmitAddress();
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath,
+            new { id = TraderId });
+    }
+
+    #region private methods
+    private async Task SubmitAddress()
+    {
         TradePartyDTO tradePartyDto = GenerateDTO(CreateAddressDto());
 
-        if (tradePartyDto.Id == Guid.Empty)
-        {
-            TraderId = await _traderService.CreateTradePartyAsync(tradePartyDto);
-        }
-        else
-        {
-            await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
-        }
-
-        return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath, 
-            new { id = TraderId });
+        await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
     }
 
     private TradeAddressDTO CreateAddressDto()
@@ -127,4 +140,5 @@ public class RegisteredBusinessAddressModel : PageModel
             PostCode = tradeParty.Address.PostCode ?? string.Empty;
         }
     }
+    #endregion
 }

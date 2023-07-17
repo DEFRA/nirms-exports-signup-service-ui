@@ -1,0 +1,77 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessBusinessPickerModel
+@{
+    ViewData["Title"] = "Pick business to sign up";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- Dont display error summary if its an unregistered business error -->
+        @if (!ModelState.HasError("UnregisteredBusiness"))
+        {
+            <partial name="_ErrorSummary" model="ModelState" />
+        }        
+
+        <form method="POST" novalidate>
+            <input type="hidden" asp-for="TraderId" />
+            <div class="govuk-form-group @(ModelState.HasError("Business") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Business") ? "Business_Error": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Which business do you want to sign up for the Northern Ireland Retail Movement Scheme?
+                        </h1>
+                    </legend>
+
+                    <p id="Business_Error" class="govuk-error-message" gds-validation-for="Business"></p>
+
+                    @if (ModelState.HasError("UnregisteredBusiness"))
+                    {
+                        <div class="govuk-error-summary" data-module="govuk-error-summary" id="businessPickerError">
+                            <div role="alert">
+                                <h2 class="govuk-error-summary__title">
+                                    You cannot sign up
+                                </h2>
+                                <div class="govuk-error-summary__body">
+                                    <ul class="govuk-list govuk-error-summary__list">
+                                        <li>
+                                            Before signing up, you will need to add the business to your Defra account, or be given access if the business has already been registered with Defra services.
+                                        </li>
+                                        <li>
+                                            <a rel="noopener" href="https://www.gov.uk/government/publications/how-to-register-for-export-health-certificate-ehc-online/ehc-online-manage-access-using-your-defra-account" target="_blank">Read more about managing access using your Defra account</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+
+                        @foreach (var business in Model.Businesses)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" asp-for="Business" value="@business" id="Business_@(business)">
+                                <label class="govuk-label govuk-radios__label" asp-for="Business">
+                                    @business
+                                </label>
+                            </div>
+                        }
+                        <div class="govuk-radios__divider">or</div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" type="radio" asp-for="Business" value="Another business" id="Business_Anotherbusiness">
+                            <label class="govuk-label govuk-radios__label" asp-for="Business">
+                                Another business
+                            </label>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+            </div>
+            <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>
+        </form>
+    </div>
+</div>
+
+

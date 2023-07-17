@@ -12,12 +12,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
-    [Required(ErrorMessage = "Select yes if you want to add another point of departure")]
-    public string AdditionalAddress { get; set; } = string.Empty;
-    public List<LogisticsLocationDetailsDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDetailsDTO>();
+    public string? AdditionalAddress { get; set; } = string.Empty;
+    public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
     public Guid TradePartyId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
-    public string?ContentText { get; set; } = string.Empty;
+    public string? ContentText { get; set; } = string.Empty;
     public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
@@ -40,13 +39,13 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Points of destination (optional)";
+            ContentHeading = "Places of destination";
             ContentText = "destination";
         }
         else
         {
-            ContentHeading = "Points of departure";
-            ContentText = "departure";
+            ContentHeading = "Places of dispatch";
+            ContentText = "dispatch";
         }
 
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
@@ -60,45 +59,74 @@ public class AdditionalEstablishmentAddressModel : PageModel
     {
         _logger.LogInformation("Additional establishment manual address OnPostSubmit");
 
+        if (String.IsNullOrWhiteSpace(AdditionalAddress))
+        {
+            var baseError = "Select yes if you want to add another place of ";
+            var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
+            ModelState.AddModelError(nameof(AdditionalAddress), errorMessage);
+        }
+
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(TradePartyId, NI_GBFlag!);
         }
 
         if (AdditionalAddress == "yes")
         {
-            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = TradePartyId, NI_GBFlag });
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath, 
+                new { id = TradePartyId, NI_GBFlag });
         }
-        else return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+        else return RedirectToPage(
+            Routes.Pages.Path.RegistrationCheckYourAnswersPath, 
+            new { id = TradePartyId });
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("Additional establishment manual address OnPostSave");
+
+        if (String.IsNullOrWhiteSpace(AdditionalAddress))
+        {
+            var baseError = "Select yes if you want to add another place of ";
+            var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
+            ModelState.AddModelError(nameof(AdditionalAddress), errorMessage);
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TradePartyId, NI_GBFlag!);
+        }
+
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath,
+            new { id = TradePartyId });
     }
 
     public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
-        await _establishmentService.RemoveEstablishmentFromPartyAsync(tradePartyId, establishmentId);
+        await _establishmentService.RemoveEstablishmentAsync(establishmentId);
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
 
         if (LogisticsLocations?.Count > 0)
-            return await OnGetAsync(tradePartyId);
+            return await OnGetAsync(tradePartyId, NI_GBFlag);
         else
-            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag });
+        {
+            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId });
+        }
     }
 
-    public async Task<IActionResult> OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
-        bool establishmentAddedManually = await _establishmentService.IsFirstTradePartyForEstablishment(tradePartyId, establishmentId);
 
-        if (establishmentAddedManually)
-        {   
-            return RedirectToPage(
-                Routes.Pages.Path.EstablishmentNameAndAddressPath,
-                new { id = tradePartyId, establishmentId, NI_GBFlag });
-        }
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = tradePartyId, establishmentId, NI_GBFlag });
 
-        return await OnGetAsync(TradePartyId, NI_GBFlag);
     }
 
     public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
-    {        
+    {
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });

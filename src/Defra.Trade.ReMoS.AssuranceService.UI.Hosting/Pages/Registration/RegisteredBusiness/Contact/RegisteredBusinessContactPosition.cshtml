@@ -1,7 +1,20 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.RegisteredBusinessContactPositionModel
 @{
     ViewData["Title"] = "Enter Business Contact Position";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.TradePartyId"
+           class="govuk-back-link">Back</a>
+    }
+    else{
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">
@@ -11,7 +24,7 @@
         <form method="post" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
             <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
-                <label for="contact-position">
+                <label for="Position">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
                         Position
@@ -22,11 +35,12 @@
                 </p>
 
                 <p id="Name_Error" class="govuk-error-message" gds-validation-for="Position"></p>
-                <input class="govuk-input" asp-for="Position" id="contact-position" aria-describedby="name-hint" type="text">
+                <input class="govuk-input" asp-for="Position" id="Position" aria-describedby="name-hint" type="text">
 
             </div>
             <div class="govuk-form-group">
-                <button class="govuk-button" asp-page-handler="submit" id="button-rbPositionSubmit">Save and continue</button>                
+                <button class="govuk-button" asp-page-handler="submit" id="button-rbPositionSubmit">Save and continue</button> 
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbPositionSave">Save and return to dashboard</button>
             </div>
         </form>
     </div>

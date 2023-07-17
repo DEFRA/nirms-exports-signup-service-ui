@@ -1,0 +1,40 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory.AuthorisedSignatoryPositionModel
+@{
+    ViewData["Title"] = "Enter Contact Position";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.AuthorisedSignatoryNamePath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form method="post" novalidate>
+            <div class="govuk-form-group @(ModelState.HasError("Position") ? "govuk-form-group--error" : null)">
+                <label for="Position">
+                    <h1 class="govuk-heading-l">
+                        <span class="govuk-caption-l">Contact details</span>
+                        Position of Authorised Signatory
+                    </h1>
+                </label>
+
+                <div class="govuk-form-group">
+                    <p class="govuk-hint" for="name">
+                        The position of the Authorised Signatory person at @Model.BusinessName, for example 'COO'.
+                    </p>
+                    <p id="name_Error" class="govuk-error-message" gds-validation-for="Position"></p>
+                    <input class="govuk-input" id="Position" asp-for="Position" type="text">
+                </div>
+            </div>
+            <div class="govuk-form-group">
+                <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save">Save and return to dashboard</button>
+            </div>
+            <input type="hidden" asp-for="TradePartyId" />
+        </form>
+    </div>
+</div>
