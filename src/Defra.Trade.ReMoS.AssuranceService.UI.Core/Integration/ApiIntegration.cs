@@ -7,6 +7,7 @@ using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 

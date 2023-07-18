@@ -1,26 +1,25 @@
-﻿@page
+﻿@page "{code?}"
 @model ErrorModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = Model.ErrorTitle;
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
-
-<h3>Development Mode</h3>
-<p>
-    Swapping to the <strong>Development</strong> environment displays detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-l">@Model.ErrorTitle</h1>
+                <p class="govuk-body">
+                    @Model.ErrorLineOne
+                </p>
+                <p class="govuk-body">
+                    @Model.ErrorLineTwo
+                </p>
+                <p class="govuk-body">
+                    @Model.ErrorContactLineOne <a class="govuk-link" href="@Model.ErrorContactLink">@Model.ErrorContactTitle</a> @Model.ErrorContactLineTwo
+                </p>
+                </p>
+            </div>
+        </div>
+    </main>
+</div>

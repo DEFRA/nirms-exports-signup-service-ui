@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Defra.Trade.Common.AppConfig;
 using Defra.Trade.Common.Security.Authentication.Infrastructure;
+using static System.Net.Mime.MediaTypeNames;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -34,15 +35,15 @@ internal sealed class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
         app.MapRazorPages();
-        
+
+
         app.Run();
-
-
     }
 }
