@@ -35,6 +35,7 @@ internal sealed class Program
             {
                 options.EventsType = typeof(CustomCookieAuthenticationEvents);
                 options.LoginPath = "/Index";
+                options.SlidingExpiration = true;
             });
 
         builder.Services.AddScoped<CustomCookieAuthenticationEvents>();

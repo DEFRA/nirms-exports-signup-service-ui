@@ -27,7 +27,6 @@ public static class Routes
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
     public const string TermsAndConditions = "/registration-terms-and-conditions";
     public const string SignUpConfirmation = "/confirmation";
-    public const string RegisteredBusiness = "/registration-business";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -55,8 +54,7 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
         (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
         (Pages.Path.TermsAndConditionsPath, TermsAndConditions),
-        (Pages.Path.SignUpConfirmationPath, SignUpConfirmation),
-        (Pages.Path.RegisteredBusinessPath, RegisteredBusiness)
+        (Pages.Path.SignUpConfirmationPath, SignUpConfirmation)
     };
 
     public static class Pages
@@ -88,7 +86,6 @@ public static class Routes
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
             public const string TermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
-            public const string RegisteredBusinessBusinessName = "RegisteredBusiness";
         }
 
         public static class Path
@@ -118,7 +115,6 @@ public static class Routes
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
             public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
-            public const string RegisteredBusinessPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessBusinessName}";
         }
     }
 }

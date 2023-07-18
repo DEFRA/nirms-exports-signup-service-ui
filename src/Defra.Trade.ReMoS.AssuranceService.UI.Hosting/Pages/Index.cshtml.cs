@@ -46,7 +46,7 @@ public class IndexModel : PageModel
         }
         else
         {
-            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPath);
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath);
         }
 
         return Page();
@@ -102,7 +102,7 @@ public class IndexModel : PageModel
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(3), // TODO change to 900
+                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(900),
                 // The time at which the authentication ticket expires. A 
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.
@@ -128,7 +128,7 @@ public class IndexModel : PageModel
 
             _logger.LogInformation("User {Email} logged in at {Time}.", "user.Email", DateTime.UtcNow);
 
-            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPath);
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath);
 
         }
         catch (Exception ex)
