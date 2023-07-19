@@ -36,8 +36,6 @@ public class IndexModel : PageModel
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated)
         {
-            await Task.Run(() => { });
-
             var correlationId = Guid.NewGuid().ToString();
 
             var redirect = _ehcoIntegrationSettings.Value.EhcoAuthEndpoint + correlationId;
@@ -83,7 +81,15 @@ public class IndexModel : PageModel
 
             var decodedToken = DecodeJwt(token, validationParameters);
 
-            var claims = ((JwtSecurityToken)decodedToken).Claims.ToList();            
+            var claims = ((JwtSecurityToken)decodedToken).Claims.ToList();
+
+            var contactId = claims.FirstOrDefault(c => c.Type == "contactId")!.Value;
+            var enrolledOrganisationsCount = claims.FirstOrDefault(c => c.Type == "enrolledOrganisationsCount")!.Value;
+
+            if (contactId == null || enrolledOrganisationsCount == null)
+            {
+                return RedirectToPage("/AuthorizationError");
+            }
 
             var userEnrolledOrganisationsClaims = Request.Form["userEnrolledOrganisationsJWT"];
 
@@ -92,7 +98,8 @@ public class IndexModel : PageModel
                 return RedirectToPage("/AuthorizationError");
             }
 
-            claims?.AddRange(userEnrolledOrganisationsClaims.ToString().GetClaims());
+            var userEnrolledOrganisationsClaimsList = userEnrolledOrganisationsClaims.ToString().GetClaims();
+            claims?.AddRange(userEnrolledOrganisationsClaimsList);
 
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
