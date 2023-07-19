@@ -83,8 +83,8 @@ public class IndexModel : PageModel
 
             var claims = ((JwtSecurityToken)decodedToken).Claims.ToList();
 
-            var contactId = claims.FirstOrDefault(c => c.Type == "contactId")!.Value;
-            var enrolledOrganisationsCount = claims.FirstOrDefault(c => c.Type == "enrolledOrganisationsCount")!.Value;
+            var contactId = claims.Find(c => c.Type == "contactId")!.Value;
+            var enrolledOrganisationsCount = claims.Find(c => c.Type == "enrolledOrganisationsCount")!.Value;
 
             if (contactId == null || enrolledOrganisationsCount == null)
             {
