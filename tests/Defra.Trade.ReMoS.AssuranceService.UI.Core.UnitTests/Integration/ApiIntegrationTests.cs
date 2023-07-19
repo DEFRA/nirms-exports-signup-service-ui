@@ -780,5 +780,42 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             _mockHttpClientFactory.Verify();
             returnedValue.Should().Be(true);
         }
+
+        [Test]
+        [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
+        public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateEstablishmentAsync()
+        {
+            // Arrange
+            var logisticsLocationDto = new LogisticsLocationDTO
+            {
+            };
+
+            var appConfigurationSettings = new AppConfigurationService();
+            appConfigurationSettings.SubscriptionKey = "testkey";
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var jsonString = JsonConvert.SerializeObject(logisticsLocationDto);
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.NotFound
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateEstablishmentAsync(logisticsLocationDto));
+
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
     }
 }

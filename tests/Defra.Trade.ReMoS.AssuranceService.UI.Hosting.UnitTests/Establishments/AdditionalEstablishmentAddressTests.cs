@@ -65,6 +65,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
+        public async Task OnPostSubmit_SubmitValidRadio_AnsweredNo()
+        {
+            //Arrange
+            _systemUnderTest!.AdditionalAddress = "No";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
         public async Task OnPostSubmit_SubmitInValidRadio()
         {
             //Arrange
