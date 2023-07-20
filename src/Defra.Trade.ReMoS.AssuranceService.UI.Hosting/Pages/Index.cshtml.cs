@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
+using Microsoft.Extensions.Primitives;
 
 #pragma warning disable CS1998
 
@@ -25,11 +27,13 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
     private readonly IOptions<EhcoIntegration> _ehcoIntegrationSettings;
+    private readonly IValidationParameters _validationParameters;
 
-    public IndexModel(ILogger<IndexModel> logger, IOptions<EhcoIntegration> ehcoIntegrationSettings)
+    public IndexModel(ILogger<IndexModel> logger, IOptions<EhcoIntegration> ehcoIntegrationSettings, IValidationParameters validationParameters)
     {
         _logger = logger;
         _ehcoIntegrationSettings = ehcoIntegrationSettings;
+        _validationParameters = validationParameters;
     }
 
     public async Task<IActionResult> OnGet()
@@ -38,7 +42,7 @@ public class IndexModel : PageModel
         {
             var correlationId = Guid.NewGuid().ToString();
 
-            var redirect = _ehcoIntegrationSettings.Value.EhcoAuthEndpoint + correlationId;
+            var redirect = _ehcoIntegrationSettings.Value.ValidIssuer + "/b2c/remos_signup/login-or-refresh?correlationId=" + correlationId;
 
             Response.Redirect(redirect);
         }
@@ -66,40 +70,20 @@ public class IndexModel : PageModel
                 return RedirectToPage("/AuthorizationError");
             }
 
-            var pubKey = _ehcoIntegrationSettings.Value.PublicKey.ToString();
-            var rsaPublicKey = RSA.Create();
-            rsaPublicKey.ImportFromPem(pubKey);
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = true,
-                ValidateLifetime = false,
-                ValidateIssuer = true,
-                ValidAudience = _ehcoIntegrationSettings.Value.ValidAudience,
-                ValidIssuer = _ehcoIntegrationSettings.Value.ValidIssuer,
-                IssuerSigningKey = new RsaSecurityKey(rsaPublicKey)
-            };
-
-            var decodedToken = DecodeJwt(token, validationParameters);
+            var decodedToken = DecodeJwt(token, _validationParameters.TokenValidationParameters);
 
             var claims = ((JwtSecurityToken)decodedToken).Claims.ToList();
 
-            var contactId = claims.Find(c => c.Type == "contactId")!.Value;
-            var enrolledOrganisationsCount = claims.Find(c => c.Type == "enrolledOrganisationsCount")!.Value;
-
-            if (contactId == null || enrolledOrganisationsCount == null)
-            {
-                return RedirectToPage("/AuthorizationError");
-            }
-
             var userEnrolledOrganisationsClaims = Request.Form["userEnrolledOrganisationsJWT"];
-
-            if (string.IsNullOrWhiteSpace(userEnrolledOrganisationsClaims))
-            {
-                return RedirectToPage("/AuthorizationError");
-            }
 
             var userEnrolledOrganisationsClaimsList = userEnrolledOrganisationsClaims.ToString().GetClaims();
             claims?.AddRange(userEnrolledOrganisationsClaimsList);
+
+            var IsValid = ValidatePrincipal(claims!);
+            if (!IsValid) 
+            {
+                RedirectToPage("/AuthorizationError");
+            }
 
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -154,4 +138,24 @@ public class IndexModel : PageModel
 
         return decodedToken;
     }
+
+    public bool ValidatePrincipal(List<Claim> claims)
+    {
+        var contactId = claims.Find(c => c.Type == "contactId")!.Value;
+        var enrolledOrganisationsCount = claims.Find(c => c.Type == "enrolledOrganisationsCount")!.Value;
+        var validAudience = claims.Find(c => c.Type == "aud")!.Value;
+        var userEnrolledOrganisations = claims.Find(c => c.Type == "userEnrolledOrganisations")!.Value;
+
+        if (string.IsNullOrWhiteSpace(contactId)
+            || string.IsNullOrWhiteSpace(enrolledOrganisationsCount)
+            || enrolledOrganisationsCount == "0"
+            || validAudience != _validationParameters.TokenValidationParameters.ValidAudience
+            || string.IsNullOrEmpty(userEnrolledOrganisations))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }

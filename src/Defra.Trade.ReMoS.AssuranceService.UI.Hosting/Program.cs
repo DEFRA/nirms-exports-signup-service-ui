@@ -33,12 +33,12 @@ internal sealed class Program
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                options.EventsType = typeof(CookieAuthenticationEvents);
                 options.LoginPath = "/Index";
                 options.SlidingExpiration = true;
             });
 
-        builder.Services.AddScoped<CustomCookieAuthenticationEvents>();
+        builder.Services.AddScoped<CookieAuthenticationEvents>();
 
         builder.Services.AddMvc(config =>
         {

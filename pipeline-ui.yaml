@@ -86,24 +86,12 @@ extends:
     appSettingsEnv:
         dev: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
-          -EhcoIntegration:EhcoAuthEndpoint "https://exports-authentication-integration.azurewebsites.net/b2c/remos_signup/login-or-refresh?correlationId="
-          -EhcoIntegration:ValidIssuer "https://exports-authentication-integration.azurewebsites.net"
         tst: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
-          -EhcoIntegration:EhcoAuthEndpoint "https://apply-export-health-certificate-exporter-snd.azure.defra.cloud/b2c/remos_signup/login-or-refresh?correlationId="
-          -EhcoIntegration:ValidIssuer "https://apply-export-health-certificate-exporter-snd.azure.defra.cloud"
         pre: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
-          -EhcoIntegration:EhcoAuthEndpoint "https://apply-export-health-certificate-exporter-pre.azure.defra.cloud/b2c/remos_signup/login-or-refresh?correlationId="
-          -EhcoIntegration:ValidIssuer "https://apply-export-health-certificate-exporter-pre.azure.defra.cloud"
         prd: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
-          -EhcoIntegration:EhcoAuthEndpoint "https://apply-export-health-certificate.service.gov.uk/b2c/exporter/login-or-refresh?correlationId="
-          -EhcoIntegration:ValidIssuer "https://apply-export-health-certificate.service.gov.uk"
     runSonarScan: true
     runVulnerabilityScan: false
     sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/www**,src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Node**'
