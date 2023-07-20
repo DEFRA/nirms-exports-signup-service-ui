@@ -52,7 +52,7 @@
                         {
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" asp-for="Business" value="@business" id="Business_@(business)">
-                                <label class="govuk-label govuk-radios__label" asp-for="Business">
+                                <label class="govuk-label govuk-radios__label" asp-for="Business" for="Business_@(business)">
                                     @business
                                 </label>
                             </div>
@@ -60,7 +60,7 @@
                         <div class="govuk-radios__divider">or</div>
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" type="radio" asp-for="Business" value="Another business" id="Business_Anotherbusiness">
-                            <label class="govuk-label govuk-radios__label" asp-for="Business">
+                            <label class="govuk-label govuk-radios__label" asp-for="Business" for="Business_Anotherbusiness">
                                 Another business
                             </label>
                         </div>

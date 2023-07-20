@@ -72,7 +72,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
@@ -158,11 +158,8 @@ public class EstablishmentNameAndAddressModel : PageModel
         var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
         var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper() 
-        || x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
-        || x.Address!.LineTwo!.ToUpper() == LineTwo?.ToUpper()
-        || x.Address!.CityName!.ToUpper() == CityName.ToUpper()
-        || x.Address!.County?.ToUpper() == County?.ToUpper()
-        || x.Address!.PostCode!.ToUpper() == PostCode.ToUpper());
+        && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
+        && x.Address!.PostCode!.ToUpper() == PostCode.ToUpper());
 
         if (duplicates.Any(x => x.Id != EstablishmentId))
         {

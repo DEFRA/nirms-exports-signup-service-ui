@@ -44,32 +44,32 @@
                                 <h2 class="govuk-heading-m" id="help-with-your-application">Help with the Northern Ireland Retail Movement Scheme</h2>
                                 <p class="govuk-body">In England, Scotland and Wales, call APHA on 03000 200 301.</p>
                                 <p class="govuk-body">In Northern Ireland, call DAERA on 02877 442 060.</p>
-                                <p class="govuk-body"><a href="https://www.gov.uk/call-charges">Find out about call charges</a>.</p>
+                                <p class="govuk-body"><a href="https://www.gov.uk/call-charges" target="_blank" rel="noopener noreferrer">Find out about call charges</a>.</p>
                             </div>
                         </div>
                     }
 
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-rbCountryEng" type="radio" name="Country" value="England" @(Model.CountrySaved ? "disabled" : "")>
+                            <input class="govuk-radios__input" id="radio-rbCountryEng" type="radio" asp-for="Country" value="England" disabled="@(Model.CountrySaved)">
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountryEng">
                                 England
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-rbCountrySc" type="radio" name="Country" value="Scotland" @(Model.CountrySaved ? "disabled" : "")>
+                            <input class="govuk-radios__input" id="radio-rbCountrySc" type="radio" asp-for="Country" value="Scotland" disabled="@(Model.CountrySaved)">
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountrySc">
                                 Scotland
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-rbCountryWal" type="radio" name="Country" value="Wales" @(Model.CountrySaved ? "disabled" : "")>
+                            <input class="govuk-radios__input" id="radio-rbCountryWal" type="radio" asp-for="Country" value="Wales" disabled="@(Model.CountrySaved)">
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountryWal">
                                 Wales
                             </label>
                         </div>
                         <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-rbCountryNI" type="radio" name="Country" value="NI" @(Model.CountrySaved ? "disabled" : "")>
+                            <input class="govuk-radios__input" id="radio-rbCountryNI" type="radio" asp-for="Country" value="NI" disabled="@(Model.CountrySaved)">
                             <label class="govuk-label govuk-radios__label" for="radio-rbCountryNI">
                                 Northern Ireland
                             </label>
