@@ -160,15 +160,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 {
                     return TaskListStatus.COMPLETE;
                 }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
+                else
                 {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null || tradeParty.AuthorisedSignatory.Position != null || tradeParty.AuthorisedSignatory.EmailAddress != null)
-                {
-                    return TaskListStatus.INPROGRESS;
+                    if (tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
+                    {
+                        return TaskListStatus.COMPLETE;
+                    }
+                    else
+                    {
+                        return TaskListStatus.INPROGRESS;
+                    }
                 }
             }
 
