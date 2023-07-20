@@ -354,7 +354,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_NotStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDTO
+            {
+                Contact = new TradeContactDTO() { IsAuthorisedSignatory = false },
+            };
             var expectedStatus = TaskListStatus.NOTSTART;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
