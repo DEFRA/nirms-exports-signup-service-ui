@@ -16,14 +16,14 @@
         }
         else if (referer.Contains(Routes.AdditionalEstablishmentAddress))
         {
-            <a asp-page="@Routes.Pages.Path.AdditionalEstablishmentAddressPath" 
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
                 asp-route-id="@Model.TradePartyId" 
-                asp-route-NI_GBFlag="@Model.NI_GBFlag" 
-                class="govuk-back-link">Back</a>
+                asp-route-NI_GBFlag="@Model.NI_GBFlag"
+           class="govuk-back-link">Back to dashboard</a>
         }
         else
         {
-            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
         }
     }
 }
