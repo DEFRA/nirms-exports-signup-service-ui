@@ -121,12 +121,8 @@ public class RegisteredBusinessCountryModel : PageModel
             return;
         }
 
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        var tradeAddress = new TradeAddressDTO { TradeCountry = Country };
+        await _traderService.AddTradePartyAddressAsync(TraderId, tradeAddress);
 
-        if (tradeParty != null && tradeParty.Address != null)
-        {
-            tradeParty.Address.TradeCountry = Country;
-            await _traderService.UpdateTradePartyAddressAsync(tradeParty);
-        }
     }
 }

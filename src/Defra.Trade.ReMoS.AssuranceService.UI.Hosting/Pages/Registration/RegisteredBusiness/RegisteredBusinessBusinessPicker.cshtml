@@ -23,22 +23,24 @@
                         </h1>
                     </legend>
 
-                    <p id="Business_Error" class="govuk-error-message" gds-validation-for="Business"></p>
+                    <p id="Business_Error" class="govuk-error-message" gds-validation-for="SelectedBusiness"></p>
 
                     @if (ModelState.HasError("UnregisteredBusiness"))
                     {
-                        <div class="govuk-error-summary" data-module="govuk-error-summary" id="businessPickerError">
+                        <div class="govuk-error-summary" data-module="govuk-error-summary" id="anotherBusinessError">
                             <div role="alert">
                                 <h2 class="govuk-error-summary__title">
-                                    You cannot sign up
+                                    You do not have access to any other businesses
                                 </h2>
                                 <div class="govuk-error-summary__body">
                                     <ul class="govuk-list govuk-error-summary__list">
-                                        <li>
-                                            Before signing up, you will need to add the business to your Defra account, or be given access if the business has already been registered with Defra services.
+                                        <li class="govuk-!-margin-bottom-4">
+                                            If the business you want to select already has a Defra account, you'll need to contact your business' account administrator so they can give you access. To learn more about account access, you can read about how to <a rel="noopener" href="https://www.gov.uk/government/publications/how-to-register-for-export-health-certificate-ehc-online/ehc-online-manage-access-using-your-defra-account" target="_blank">manage access using your Defra account</a>.
                                         </li>
                                         <li>
-                                            <a rel="noopener" href="https://www.gov.uk/government/publications/how-to-register-for-export-health-certificate-ehc-online/ehc-online-manage-access-using-your-defra-account" target="_blank">Read more about managing access using your Defra account</a>
+                                            If your business does not have a Defra account, you'll need to <a href="" target="_blank">
+                                                add a business to your individual account
+                                            </a>.
                                         </li>
                                     </ul>
                                 </div>
@@ -48,19 +50,19 @@
 
                     <div class="govuk-radios" data-module="govuk-radios">
 
-                        @foreach (var business in Model.Businesses)
+                        @foreach (KeyValuePair<Guid, string> business in Model.Businesses)
                         {
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="Business" value="@business" id="Business_@(business)">
-                                <label class="govuk-label govuk-radios__label" asp-for="Business">
-                                    @business
+                                <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="@business.Key" id="@business.Key" onchange="RemoveUnregisteredBusinessError()">
+                                <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="@business.Key">
+                                    @business.Value
                                 </label>
                             </div>
                         }
                         <div class="govuk-radios__divider">or</div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" asp-for="Business" value="Another business" id="Business_Anotherbusiness">
-                            <label class="govuk-label govuk-radios__label" asp-for="Business">
+                            <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="Another business" id="anotherBusiness">
+                            <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="anotherBusiness">
                                 Another business
                             </label>
                         </div>
@@ -73,5 +75,14 @@
         </form>
     </div>
 </div>
+
+@section scripts
+{
+    <script>
+        function RemoveUnregisteredBusinessError(){
+            document.getElementById("anotherBusinessError").style.display = 'none';
+        }
+    </script>
+}
 
 

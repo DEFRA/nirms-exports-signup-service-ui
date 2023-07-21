@@ -1,5 +1,6 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -161,6 +162,26 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         //Assert
         result.Should().BeOfType<RedirectToPageResult>();
+    }
+
+    [Test]
+    public async Task OnPost_IfModelValid_ReturnRedirectToFboNumberPage()
+    {
+        //Arrange
+        _systemUnderTest!.CountrySaved = false;
+        _systemUnderTest.Country = "GB";
+        var traderId = Guid.NewGuid();
+        _systemUnderTest.TraderId = traderId;
+        _mockTraderService
+            .Setup(action => action.AddTradePartyAddressAsync(It.IsAny<Guid>(), It.IsAny<TradeAddressDTO>()))
+            .ReturnsAsync(traderId);
+
+        //Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        result.Should().BeOfType<RedirectToPageResult>();
+        ((RedirectToPageResult)result!).PageName.Should().Be(Routes.Pages.Path.RegisteredBusinessFboNumberPath);
     }
 }
 

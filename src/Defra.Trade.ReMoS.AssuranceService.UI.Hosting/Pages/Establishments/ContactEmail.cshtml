@@ -14,18 +14,18 @@
     }
     else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.AdditionalEstablishmentAddress))
     {
-        <a asp-page="@Routes.Pages.Path.AdditionalEstablishmentAddressPath"
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
            asp-route-id="@Model.TradePartyId"
            asp-route-NI_GBFlag="@Model.NI_GBFlag"
            class="govuk-back-link">Back</a>
     }
     else
     {
-        <a asp-page="@Routes.Pages.Path.EstablishmentNameAndAddressPath" 
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
             asp-route-id="@Model.TradePartyId"
             asp-route-establishmentId="@Model.EstablishmentId"
             asp-route-NI_GBFlag="@Model.NI_GBFlag"
-            class="govuk-back-link">Back</a>
+           class="govuk-back-link">Back to dashboard</a>
     }
 }
 
