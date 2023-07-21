@@ -199,61 +199,72 @@
 
             <h3 class="govuk-heading-s">@Model.ContentHeading</h3>
 
-            @foreach (var location in Model.LogisticsLocations)
+            @if (Model.LogisticsLocations != null && Model.LogisticsLocations.Any())
             {
-                <div class="govuk-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.Name</h2>
-                        <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
-                        asp-page-handler="RemoveEstablishment"
-                        asp-route-tradepartyid="@Model.RegistrationID"
-                        asp-route-establishmentId="@location.Id"
-                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
-                            Remove
-                        </a>
+                @foreach (var location in Model.LogisticsLocations)
+                {
+                    <div class="govuk-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.Name</h2>
+                            <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
+                            asp-page-handler="RemoveEstablishment"
+                            asp-route-tradepartyid="@Model.RegistrationID"
+                            asp-route-establishmentId="@location.Id"
+                            asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                Remove
+                            </a>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Address
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @(
+                                        location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty
+                                        )
+                                        @(
+                                        location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty
+                                        )
+                                        @(
+                                        location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty
+                                        )
+                                        @(
+                                        location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty
+                                        )
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link"
+                                        asp-page-handler="ChangeEstablishmentAddress"
+                                        asp-route-tradepartyid="@Model.RegistrationID"
+                                        asp-route-establishmentId="@location.Id"
+                                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                            Change<span class="govuk-visually-hidden"> address</span>
+                                        </a>
+                                    </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        Email address
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        @location.Email
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link"
+                                        asp-page-handler="ChangeEmail"
+                                        asp-route-tradepartyid="@Model.RegistrationID"
+                                        asp-route-establishmentId="@location.Id"
+                                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                            Change<span class="govuk-visually-hidden">email address</span>
+                                        </a>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Address
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @(location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty)
-                                    @(location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty)
-                                    @(location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty)
-                                    @(location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty)
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link"
-                                    asp-page-handler="ChangeEstablishmentAddress"
-                                    asp-route-tradepartyid="@Model.RegistrationID"
-                                    asp-route-establishmentId="@location.Id"
-                                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
-                                        Change<span class="govuk-visually-hidden"> address</span>
-                                    </a>
-                                </dd>
-                            </div>
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    Email address
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    @location.Email
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link"
-                                    asp-page-handler="ChangeEmail"
-                                    asp-route-tradepartyid="@Model.RegistrationID"
-                                    asp-route-establishmentId="@location.Id"
-                                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
-                                        Change<span class="govuk-visually-hidden">email address</span>
-                                    </a>
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                }
             }
 
             <div style="text-align:right" class="govuk-!-margin-bottom-6">
@@ -263,7 +274,7 @@
             </div>
 
             
-            <button class="govuk-button" asp-page-handler="submit" disabled="@(!Model.LogisticsLocations.Any())">
+            <button class="govuk-button" asp-page-handler="submit" disabled="@(!Model.LogisticsLocations?.Any())">
                 Continue
             </button>
 

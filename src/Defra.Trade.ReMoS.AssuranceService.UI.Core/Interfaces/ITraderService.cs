@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
 {
@@ -10,5 +11,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         public Task<Guid> UpdateTradePartyContactAsync(TradePartyDTO tradePartyDTO);
         public Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyDTO);
         public Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid Id);
+        Task<Guid> AddTradePartyAddressAsync(Guid partyId, TradeAddressDTO addressDTO);
+        Task<(TradePartyDTO? tradeParty, TradePartySignupStatus signupStatus)> GetDefraOrgBusinessSignupStatus(Guid orgId);
     }
 }

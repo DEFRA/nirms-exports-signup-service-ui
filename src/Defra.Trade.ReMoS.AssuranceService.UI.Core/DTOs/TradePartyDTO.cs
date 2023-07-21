@@ -4,6 +4,8 @@ public class TradePartyDTO
 {
     public Guid Id { get; set; }
     public string? PartyName { get; set; }
+    public Guid OrgId { get; set; }
+    public string? PracticeName { get; set; }
     public string? CountryName { get; set; }
     public string? NatureOfBusiness { get; set; }
     public string? FboNumber { get; set; }

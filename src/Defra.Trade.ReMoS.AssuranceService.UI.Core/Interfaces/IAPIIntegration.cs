@@ -17,4 +17,6 @@ public interface IAPIIntegration
     Task RemoveEstablishmentAsync(Guid locationId);
     public Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate);
     Task<bool> UpdateEstablishmentAsync(LogisticsLocationDTO establishmentDto);
+    Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDTO addressDTO);
+    Task<TradePartyDTO?> GetTradePartyByOrgIdAsync(Guid orgId);
 }
