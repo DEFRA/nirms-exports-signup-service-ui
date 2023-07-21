@@ -16,16 +16,8 @@
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TraderId" />
             <input type="hidden" asp-for="CountrySaved" />
-            <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)">
-                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Country") ? "Country_Error": null)">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-fieldset__heading">
-                            Where is your business based?
-                        </h1>
-                    </legend>
-
-                    <p class="govuk-hint">This is the location of your business’ main address, for example the head office.</p>
-                    <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
+            <div class="govuk-form-group @(ModelState.HasError("GBChosen") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("GBChosen") ? "GBChosen_Error": null)">
 
                     @if (Model.CountrySaved)
                     {
@@ -37,46 +29,70 @@
                                 <div class="govuk-error-summary__body govuk-!-margin-bottom-5">
                                     <ul class="govuk-list govuk-error-summary__list">
                                         <li>
-                                            If you need to change your business nation, contact us.
+                                            If you need to change it, contact us.
                                         </li>
                                     </ul>
                                 </div>
-                                <h2 class="govuk-heading-m" id="help-with-your-application">Help with the Northern Ireland Retail Movement Scheme</h2>
-                                <p class="govuk-body">In England, Scotland and Wales, call APHA on 03000 200 301.</p>
-                                <p class="govuk-body">In Northern Ireland, call DAERA on 02877 442 060.</p>
-                                <p class="govuk-body"><a href="https://www.gov.uk/call-charges">Find out about call charges</a>.</p>
+                                <partial name="_ContactDetailsPartial" />
                             </div>
                         </div>
                     }
 
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-rbCountryEng" type="radio" name="Country" value="England" @(Model.CountrySaved ? "disabled" : "")>
-                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryEng">
-                                England
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-rbCountrySc" type="radio" name="Country" value="Scotland" @(Model.CountrySaved ? "disabled" : "")>
-                            <label class="govuk-label govuk-radios__label" for="radio-rbCountrySc">
-                                Scotland
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-rbCountryWal" type="radio" name="Country" value="Wales" @(Model.CountrySaved ? "disabled" : "")>
-                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryWal">
-                                Wales
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="radio-rbCountryNI" type="radio" name="Country" value="NI" @(Model.CountrySaved ? "disabled" : "")>
-                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryNI">
-                                Northern Ireland
-                            </label>
-                        </div>
-                    </div>
+                    <fieldset class="govuk-fieldset govuk-!-margin-bottom-5">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                What will your business do under the Northern Ireland Retail Movement Scheme?
+                            </h1>
+                        </legend>
                    
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <p id="GBChosen_Error" class="govuk-error-message" gds-validation-for="GBChosen"></p>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="GBChosen" type="radio" value="send" aria-controls="conditional-gb" asp-for="GBChosen" disabled="@(Model.CountrySaved)">
+                                <label class="govuk-label govuk-radios__label" for="GBChosen">
+                                    Send consignments from Great Britain to Northern Ireland<br>
+                                </label>
+                                <div class="govuk-hint govuk-radios__hint" id="gb-hint">You will only be able to enter business addresses and places of dispatch in Great Britain if you select this option.</div>
+                            </div>
 
+                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-gb">
+                                <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)" id="Country">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            What is the location of your business' main address, for example the head office?
+                                        </legend>
+                                        <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="radio-rbCountryEng" asp-for="Country" type="radio" value="England" disabled="@(Model.CountrySaved)">
+                                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryEng">
+                                                England
+                                            </label>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="radio-rbCountrySc" asp-for="Country" type="radio" value="Scotland" disabled="@(Model.CountrySaved)">
+                                            <label class="govuk-label govuk-radios__label" for="radio-rbCountrySc">
+                                                Scotland
+                                            </label>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="radio-rbCountryWal" asp-for="Country" type="radio" value="Wales" disabled="@(Model.CountrySaved)">
+                                            <label class="govuk-label govuk-radios__label" for="radio-rbCountryWal">
+                                                Wales
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="radio-rbCountryNi" type="radio" value="receive" asp-for="GBChosen" disabled="@(Model.CountrySaved)">
+                                <label class="govuk-label govuk-radios__label" for="radio-rbCountryNi">
+                                    Receive consignments from Great Britain to Northern Ireland<br>
+                                </label>
+                                <div class="govuk-hint govuk-radios__hint" id="ni-hint">You will only be able to enter business addresses and places of destination in Northern Ireland if you select this option.</div>
+                            </div>
+                        </div>
+                    </fieldset>
                 </fieldset>
             </div>
             @if(Model.CountrySaved)
@@ -88,6 +104,17 @@
                 <button class="govuk-button" asp-page-handler="submit" id="button-rbCountrySubmit">Save and continue</button>            
             }
         </form>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    What to do if you send and receive consignments
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                You will need to submit two separate sign-up requests – one for your Great Britain business and one for your Northern Ireland business.
+            </div>
+        </details>
     </div>
 </div>
 

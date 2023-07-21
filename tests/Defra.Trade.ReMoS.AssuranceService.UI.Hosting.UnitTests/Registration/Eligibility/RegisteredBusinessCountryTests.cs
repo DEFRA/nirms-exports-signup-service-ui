@@ -68,6 +68,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         _ = await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
+        _ = _systemUnderTest.GBChosen.Should().Be("send");
         _ = _systemUnderTest.Country.Should().Be("GB");
         _ = _systemUnderTest.CountrySaved.Should().Be(true);
     }
@@ -93,6 +94,24 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.Country = "";
         var expectedResult = "Select a country";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInvalidFirstInput()
+    {
+        //Arrange
+        _systemUnderTest!.GBChosen = "";
+        var expectedResult = "Select what your business will do under the scheme";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
 

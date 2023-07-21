@@ -12,8 +12,11 @@ public class RegisteredBusinessCountryModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [Required(ErrorMessage = "Select a country")]
-    public string Country { get; set; } = string.Empty;
+    public string? Country { get; set; } = string.Empty;
+
+    [BindProperty]
+    [Required(ErrorMessage = "Select what your business will do under the scheme")]
+    public string GBChosen { get; set; }
 
     [BindProperty]
     public Guid TraderId { get; set; }
@@ -41,6 +44,15 @@ public class RegisteredBusinessCountryModel : PageModel
             CountrySaved = !string.IsNullOrEmpty(Country);
         }
 
+        if (Country != "")
+        {
+            if (Country == "NI")
+            {
+                GBChosen = "recieved";
+            }
+            GBChosen = "send";
+        }
+
         return Page();
     }
 
@@ -48,16 +60,27 @@ public class RegisteredBusinessCountryModel : PageModel
     {
         _logger.LogInformation("Country OnPostSubmit");
 
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TraderId);
+        }
+
+        if (GBChosen == "receive")
+        {
+            Country = "NI";
+        }
+
+        if (Country == "")
+        {
+            ModelState.AddModelError(nameof(Country), "Select a location");
+            return await OnGetAsync(TraderId);
+        }
+
         if (CountrySaved)
         {
             return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessFboNumberPath,
             new { id = TraderId });
-        }
-
-        if (!ModelState.IsValid)
-        {
-            return await OnGetAsync(TraderId);
         }
 
         await SaveCountryToApiAsync();
