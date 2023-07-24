@@ -90,26 +90,8 @@ public class IndexModel : PageModel
 
             var authProperties = new AuthenticationProperties
             {
-                //AllowRefresh = <bool>,
-                // Refreshing the authentication session should be allowed.
-
-                ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(900),
-                // The time at which the authentication ticket expires. A 
-                // value set here overrides the ExpireTimeSpan option of 
-                // CookieAuthenticationOptions set with AddCookie.
-
-                //IsPersistent = true,
-                // Whether the authentication session is persisted across 
-                // multiple requests. When used with cookies, controls
-                // whether the cookie's lifetime is absolute (matching the
-                // lifetime of the authentication ticket) or session-based.
-
-                //IssuedUtc = <DateTimeOffset>,
-                // The time at which the authentication ticket was issued.
-
-                //RedirectUri = <string>
-                // The full path or absolute URI to be used as an http 
-                // redirect response value.
+                ExpiresUtc = UnixSecondsToDateTime(claims!.Find(c => c.Type == "exp")!.Value),
+                IssuedUtc = DateTimeOffset.UtcNow
             };
 
             await HttpContext.SignInAsync(
@@ -156,6 +138,12 @@ public class IndexModel : PageModel
         }
 
         return true;
+    }
+
+    public DateTime UnixSecondsToDateTime(string timestamp)
+    {
+        var offset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(timestamp));
+        return offset.UtcDateTime;
     }
 
 }
