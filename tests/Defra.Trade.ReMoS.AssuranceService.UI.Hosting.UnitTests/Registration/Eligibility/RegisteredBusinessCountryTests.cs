@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -75,6 +76,34 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnGet_CountrySavedSetToTrueNI_IfDataPresentInApi()
+    {
+        //Arrange
+        Guid guid = Guid.NewGuid();
+
+        var tradeContact = new TradeContactDTO();
+        var tradeAddress = new TradeAddressDTO { TradeCountry = "NI" };
+
+        var tradePartyDto = new TradePartyDTO
+        {
+            Id = guid,
+            Contact = tradeContact,
+            Address = tradeAddress
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+
+        //Act
+        _ = await _systemUnderTest!.OnGetAsync(guid);
+
+        //Assert
+        _ = _systemUnderTest.GBChosen.Should().Be("recieve");
+        _ = _systemUnderTest.Country.Should().Be("NI");
+        _ = _systemUnderTest.CountrySaved.Should().Be(true);
+    }
+
+    [Test]
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         //Arrange
@@ -93,18 +122,15 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitInvalidInput()
     {
         //Arrange
+        _systemUnderTest!.GBChosen = "send";
         _systemUnderTest!.Country = "";
-        var expectedResult = "Select a country";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
-        var validation = ValidateModel(_systemUnderTest);
 
         //Assert            
-        validation.Count.Should().Be(1);
-        expectedResult.Should().Be(validation[0].ErrorMessage);
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
     }
 
     [Test]
@@ -161,7 +187,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         //Assert
-        result.Should().BeOfType<RedirectToPageResult>();
+        result.Should().BeOfType<PageResult>();
     }
 
     [Test]

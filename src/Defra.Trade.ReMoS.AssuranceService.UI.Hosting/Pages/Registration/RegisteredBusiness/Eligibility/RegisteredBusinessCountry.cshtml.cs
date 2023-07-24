@@ -48,9 +48,11 @@ public class RegisteredBusinessCountryModel : PageModel
         {
             if (Country == "NI")
             {
-                GBChosen = "recieved";
+                GBChosen = "recieve";
             }
-            GBChosen = "send";
+            else{
+                GBChosen = "send";
+            }
         }
 
         return Page();
@@ -65,7 +67,7 @@ public class RegisteredBusinessCountryModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        if (GBChosen == "receive")
+        if (GBChosen == "recieve")
         {
             Country = "NI";
         }
