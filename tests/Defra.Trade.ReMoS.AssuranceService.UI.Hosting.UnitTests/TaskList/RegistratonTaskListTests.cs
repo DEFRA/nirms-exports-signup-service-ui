@@ -354,7 +354,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_NotStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDTO
+            {
+                Contact = new TradeContactDTO() { IsAuthorisedSignatory = false },
+            };
             var expectedStatus = TaskListStatus.NOTSTART;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
@@ -391,17 +394,25 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             Assert.AreEqual(expectedStatus, status);
         }
 
-        [Test]
-        public void GetAuthorisedSignatoryProgress_Status_InProgress()
+        [TestCase(false, "TestName", null, null, TaskListStatus.INPROGRESS)]
+        [TestCase(false, null, "TestPosition", null, TaskListStatus.INPROGRESS)]
+        [TestCase(false, null, null, "TestEmail", TaskListStatus.INPROGRESS)]
+        [TestCase(false, null, null, null, TaskListStatus.INPROGRESS)]
+        [TestCase(true, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
+        [TestCase(false, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
+        public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
         {
             // Arrange
             var tradeParty = new TradePartyDTO
             {
-                Contact = new TradeContactDTO() { IsAuthorisedSignatory = false },
-                AuthorisedSignatory = new AuthorisedSignatoryDto() { Name = "Test" }
+                Contact = new TradeContactDTO() { IsAuthorisedSignatory = isAuthSig },
+                AuthorisedSignatory = new AuthorisedSignatoryDto() 
+                { 
+                    Name = name,
+                    Position = position,
+                    EmailAddress = email
+                }
             };
-
-            var expectedStatus = TaskListStatus.INPROGRESS;
 
             var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
