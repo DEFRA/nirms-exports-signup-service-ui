@@ -77,6 +77,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
                 Routes.Pages.Path.EstablishmentNameAndAddressPath, 
                 new { id = TradePartyId, NI_GBFlag });
         }
+
         else return RedirectToPage(
             Routes.Pages.Path.RegistrationCheckYourAnswersPath, 
             new { id = TradePartyId });
