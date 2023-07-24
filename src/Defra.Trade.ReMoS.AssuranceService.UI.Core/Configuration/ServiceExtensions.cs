@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ public static class ServiceExtensions
         services.AddTransient<IAPIIntegration, ApiIntegration>();
         services.AddTransient<ITraderService, TraderService>();
         services.AddTransient<IEstablishmentService, EstablishmentService>();
+        services.AddSingleton<IValidationParameters, ValidationParameters>();
 
         return services;
     }

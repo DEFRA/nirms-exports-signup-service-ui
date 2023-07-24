@@ -57,7 +57,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             string countryFlag = "NI";
 
-            if (Country != "NI")
+            if (Country == "NI")
             {
                 countryFlag = "`GB";
             }
