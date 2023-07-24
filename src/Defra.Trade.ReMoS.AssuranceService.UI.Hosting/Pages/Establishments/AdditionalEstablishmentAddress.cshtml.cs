@@ -1,10 +1,13 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.BatchAI.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -22,13 +25,19 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
     private readonly ILogger<AdditionalEstablishmentAddressModel> _logger;
     private readonly IEstablishmentService _establishmentService;
+    private readonly ITraderService _traderService;
+    private readonly ICheckAnswersService _checkAnswersService;
 
     public AdditionalEstablishmentAddressModel(
         ILogger<AdditionalEstablishmentAddressModel> logger,
-        IEstablishmentService establishmentService)
+        IEstablishmentService establishmentService, 
+        ITraderService traderService,
+        ICheckAnswersService checkAnswersService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
+        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+        _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
@@ -78,8 +87,15 @@ public class AdditionalEstablishmentAddressModel : PageModel
                 new { id = TradePartyId, NI_GBFlag });
         }
 
-        else return RedirectToPage(
-            Routes.Pages.Path.RegistrationCheckYourAnswersPath, 
+        if (await ReadyForCheckAnswersAsync())
+        {
+           return RedirectToPage(
+            Routes.Pages.Path.RegistrationCheckYourAnswersPath,
+            new { id = TradePartyId });
+        }
+
+        return RedirectToPage(
+            Routes.Pages.Path.RegistrationTaskListPath, 
             new { id = TradePartyId });
     }
 
@@ -131,5 +147,32 @@ public class AdditionalEstablishmentAddressModel : PageModel
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
+    }
+
+   private async Task<bool> ReadyForCheckAnswersAsync()
+    {
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+
+        if (tradeParty == null)
+        {
+            return false;
+        }
+
+        if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+        {
+            return false;
+        }
+
+        if (_checkAnswersService.GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
+        {
+            return false;
+        }
+
+        if (_checkAnswersService.GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

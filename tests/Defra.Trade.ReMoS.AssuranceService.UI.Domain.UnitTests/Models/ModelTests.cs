@@ -334,7 +334,7 @@ public class LogisticsLocationTests
             TradeAddressId = tradeAddressId,
             CreatedDate = created,
             LastModifiedDate = lastModified,
-            NI_GBFlag = "true",
+            NI_GBFlag = "GB",
 
         };
 
@@ -353,6 +353,6 @@ public class LogisticsLocationTests
         logisticsLocation.TradeAddressId.Should().Be(tradeAddressId);
         logisticsLocation.CreatedDate.Should().Be(created);
         logisticsLocation.LastModifiedDate.Should().Be(lastModified);
-        logisticsLocation.NI_GBFlag.Should().Be("true");
+        logisticsLocation.NI_GBFlag.Should().Be("GB");
     }
 }
