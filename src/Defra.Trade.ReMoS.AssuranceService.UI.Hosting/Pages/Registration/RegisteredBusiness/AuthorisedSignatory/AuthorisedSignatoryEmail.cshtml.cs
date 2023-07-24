@@ -55,11 +55,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             await SubmitEmail();
 
-            string countryFlag = "NI";
+            string countryFlag = "GB";
 
             if (Country == "NI")
             {
-                countryFlag = "`GB";
+                countryFlag = "NI";
             }
 
             return RedirectToPage(
