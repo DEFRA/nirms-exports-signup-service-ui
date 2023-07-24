@@ -7,6 +7,7 @@ using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -50,6 +51,27 @@ public class ApiIntegration : IAPIIntegration
         return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new TradePartyDTO();
+    }
+
+    public async Task<TradePartyDTO?> GetTradePartyByOrgIdAsync(Guid orgId)
+    {
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"TradeParties/Organisation/{orgId}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+                await response.Content.ReadAsStreamAsync(),
+                options: _jsonSerializerOptions) ?? new TradePartyDTO();
+        }
+        else if ((int)response.StatusCode == StatusCodes.Status404NotFound)
+        {
+            return null;
+        }
+        else
+        {
+            throw new BadHttpRequestException("null return from API");
+        }
     }
 
     public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
@@ -121,6 +143,32 @@ public class ApiIntegration : IAPIIntegration
             if (contentStream != null)
             {
                 results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
+
+    public async Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDTO addressDTO)
+    {
+        Guid results = Guid.Empty;
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(addressDTO),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PostAsync($"TradeParties/{partyId}/Address", requestBody);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var contentStream = await response.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
         if (results != Guid.Empty)

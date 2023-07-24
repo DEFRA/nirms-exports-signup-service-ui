@@ -19,6 +19,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using System.Runtime.Intrinsics.X86;
+using Microsoft.Azure.Management.ContainerInstance.Fluent.Models;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 {
@@ -93,7 +95,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 CountryName = "United Kingdom"
             };
 
-            _mockApiIntegration.Setup( x => x.GetTradePartyByIdAsync(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"))).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"))).Verifiable();
             _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"))).Returns(Task.FromResult(tradePartyDTO)!);
 
             // Act
@@ -153,6 +155,29 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
+        public async Task Service_ReturnsGuid_When_Calling_AddTradePartyAddressAsync()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var partyId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
+
+            var tradeAddressDto = new TradeAddressDTO
+            {
+                TradeCountry = "GB",
+            };
+
+            _mockApiIntegration.Setup(x => x.AddAddressToPartyAsync(partyId, tradeAddressDto)).Verifiable();
+            _mockApiIntegration.Setup(x => x.AddAddressToPartyAsync(partyId, tradeAddressDto)).Returns(Task.FromResult(partyId)!);
+
+            // Act
+            var returnedValue = await _traderService.AddTradePartyAddressAsync(partyId, tradeAddressDto);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().Be(partyId);
+        }
+
+        [Test]
         public async Task Service_Follows_Correct_Route_When_Calling_UpdateTradePartyContactAsync()
         {
             // Arrange
@@ -204,5 +229,135 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _mockApiIntegration.Verify();
             returnedValue.Should().Be(tradePartyDTO);
         }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_New_WhenPartyIsNull()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            //var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid() };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync((TradePartyDTO)null!);
+            var expectedResult = ((TradePartyDTO)null!, TradePartySignupStatus.New);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_New_WhenAddressIsNull()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid() };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.New);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_Complete_When_TAndCSigned()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid(), Address = new TradeAddressDTO { TradeCountry = "GB"}, TermsAndConditionsSignedDate = DateTime.Now };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.Complete);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgress_When_CountryAndFboFilled()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDTO { TradeCountry = "GB" },
+                FboNumber = "1234",
+            };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgress);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityCountry_When_Country_Is_Null()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDTO { Id = Guid.NewGuid() },
+            };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityCountry);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityFboNumber_When_FboNumber_Is_Null()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" },
+            };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityFboNumber);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+        }
+
     }
 }
