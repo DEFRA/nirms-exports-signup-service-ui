@@ -1,5 +1,6 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
@@ -22,12 +23,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         private readonly Mock<ITraderService> _mockTraderService = new();
         private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();
         private readonly Mock<ICheckAnswersService> _mockCheckAnswersService = new();
+        private readonly ICheckAnswersService _checkAnswersService = new CheckAnswersService();
         protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
+            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService);
         }
 
         [Test]
@@ -398,7 +400,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         [TestCase(false, "TestName", null, null, TaskListStatus.INPROGRESS)]
         [TestCase(false, null, "TestPosition", null, TaskListStatus.INPROGRESS)]
         [TestCase(false, null, null, "TestEmail", TaskListStatus.INPROGRESS)]
-        [TestCase(false, null, null, null, TaskListStatus.INPROGRESS)]
+        [TestCase(false, null, null, null, TaskListStatus.NOTSTART)]
         [TestCase(true, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
         [TestCase(false, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
         public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
