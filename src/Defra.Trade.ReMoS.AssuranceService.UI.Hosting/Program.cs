@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using static System.Net.Mime.MediaTypeNames;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -54,6 +55,7 @@ internal sealed class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
         app.UseAuthentication();
         app.UseAuthorization();
@@ -63,9 +65,8 @@ internal sealed class Program
         app.UseRouting();
         app.UseAuthorization();
         app.MapRazorPages();
-        
+
+
         app.Run();
-
-
     }
 }

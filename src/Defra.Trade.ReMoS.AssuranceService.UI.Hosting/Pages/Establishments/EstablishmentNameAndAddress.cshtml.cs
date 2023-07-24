@@ -103,7 +103,18 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if(await CheckForDuplicateAsync())
         {
-            var baseError = "The entered establishment address is a duplicate of one already entered";
+
+            var baseError = "This address has already been added as a place of ";
+
+            if (NI_GBFlag == "NI")
+            {
+                baseError += "destination";
+            }
+            else
+            {
+                baseError += "dispatch";
+            }
+
             ModelState.AddModelError(nameof(EstablishmentName), baseError);
             return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
