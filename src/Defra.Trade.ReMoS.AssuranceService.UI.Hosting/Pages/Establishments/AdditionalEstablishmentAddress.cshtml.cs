@@ -153,6 +153,12 @@ public class AdditionalEstablishmentAddressModel : PageModel
     {
         TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
+
+        if (tradeParty == null)
+        {
+            return false;
+        }
+
         if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
         {
             return false;
