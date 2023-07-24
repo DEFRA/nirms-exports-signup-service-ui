@@ -4,7 +4,6 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
@@ -16,7 +15,7 @@ public class RegisteredBusinessCountryModel : PageModel
 
     [BindProperty]
     [Required(ErrorMessage = "Select what your business will do under the scheme")]
-    public string GBChosen { get; set; }
+    public string? GBChosen { get; set; }
 
     [BindProperty]
     public Guid TraderId { get; set; }
