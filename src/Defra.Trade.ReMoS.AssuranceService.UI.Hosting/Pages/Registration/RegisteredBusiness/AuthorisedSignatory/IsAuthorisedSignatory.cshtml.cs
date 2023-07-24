@@ -5,6 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Registere
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 using System.Reflection.Metadata.Ecma335;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory
@@ -51,9 +52,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             }
 
             await SubmitAuthSignatory();
+
             if (Convert.ToBoolean(IsAuthorisedSignatory))
             {
-                return RedirectToPage(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = TradePartyId });
+                var party = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+
+                string countryFlag = "GB";
+
+                if (party.Address.TradeCountry == "NI")
+                {
+                    countryFlag = "NI";
+                }
+
+                return RedirectToPage(
+                    Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                    new { id = TradePartyId, NI_GBFlag = countryFlag });
             }
 
             return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });

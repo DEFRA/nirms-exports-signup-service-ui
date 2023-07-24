@@ -13,7 +13,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class CheckAnswersService : ICheckAnswersService
     {
-
         public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
         {
             if (tradeParty.PartyName != null && tradeParty.Address != null

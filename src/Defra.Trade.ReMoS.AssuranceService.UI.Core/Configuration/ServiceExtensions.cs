@@ -23,6 +23,7 @@ public static class ServiceExtensions
         services.AddTransient<IAPIIntegration, ApiIntegration>();
         services.AddTransient<ITraderService, TraderService>();
         services.AddTransient<IEstablishmentService, EstablishmentService>();
+        services.AddTransient<ICheckAnswersService, CheckAnswersService>();
         services.AddSingleton<IValidationParameters, ValidationParameters>();
 
         return services;
