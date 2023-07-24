@@ -127,12 +127,14 @@ public class IndexModel : PageModel
         var enrolledOrganisationsCount = claims.Find(c => c.Type == "enrolledOrganisationsCount")!.Value;
         var validAudience = claims.Find(c => c.Type == "aud")!.Value;
         var userEnrolledOrganisations = claims.Find(c => c.Type == "userEnrolledOrganisations")!.Value;
+        var exp = claims.Find(c => c.Type == "exp")!.Value;
 
         if (string.IsNullOrWhiteSpace(contactId)
             || string.IsNullOrWhiteSpace(enrolledOrganisationsCount)
             || enrolledOrganisationsCount == "0"
             || validAudience != _validationParameters.TokenValidationParameters.ValidAudience
-            || string.IsNullOrEmpty(userEnrolledOrganisations))
+            || string.IsNullOrEmpty(userEnrolledOrganisations)
+            || string.IsNullOrWhiteSpace(exp))
         {
             return false;
         }

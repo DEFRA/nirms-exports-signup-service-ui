@@ -30,12 +30,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests
             _systemUnderTest = new IndexModel(_mockLogger.Object, _mockEhcoIntegrationSettings.Object, _mockValidationParameters.Object);
         }
 
-        [TestCase("testContactId", "1", "testAud", "testUserEnrolledOrganisation", true)]
-        [TestCase("", "1", "testAud", "testUserEnrolledOrganisation", false)]
-        [TestCase("testContactId", "0", "testAud", "testUserEnrolledOrganisation", false)]
-        [TestCase("testContactId", "1", "incorrectTestAud", "testUserEnrolledOrganisation", false)]
-        [TestCase("testContactId", "1", "testAud", "", false)]
-        public void ValidatePrincipal_IsValid(string contactId, string enrolledOrganisationCount, string aud, string userEnrolledOrganisation, bool exptectedResult)
+        [TestCase("testContactId", "1", "testAud", "testUserEnrolledOrganisation", "testUnix", true)]
+        [TestCase("", "1", "testAud", "testUserEnrolledOrganisation", "testUnix", false)]
+        [TestCase("testContactId", "0", "testAud", "testUserEnrolledOrganisation", "testUnix", false)]
+        [TestCase("testContactId", "1", "incorrectTestAud", "testUserEnrolledOrganisation", "testUnix", false)]
+        [TestCase("testContactId", "1", "testAud", "testUserEnrolledOrganisation", "", false)]
+        [TestCase("testContactId", "1", "testAud", "", "testUnix", false)]
+        public void ValidatePrincipal_IsValid(string contactId, string enrolledOrganisationCount, string aud, string userEnrolledOrganisation, string exp, bool exptectedResult)
         {
             // arrange
             List<Claim> claims = new List<Claim>
@@ -43,7 +44,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests
                 new Claim(type: "contactId", value: contactId),
                 new Claim(type: "enrolledOrganisationsCount", value: enrolledOrganisationCount),
                 new Claim(type: "aud", value: aud),
-                new Claim(type: "userEnrolledOrganisations", value: userEnrolledOrganisation)
+                new Claim(type: "userEnrolledOrganisations", value: userEnrolledOrganisation),
+                new Claim(type: "exp", value: exp)
             };
             var validationParameters = new TokenValidationParameters();
             validationParameters.ValidAudience = "testAud";
