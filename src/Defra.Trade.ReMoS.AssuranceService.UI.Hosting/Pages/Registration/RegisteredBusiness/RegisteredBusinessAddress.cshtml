@@ -9,10 +9,11 @@
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
     {
         <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
-           asp-route-id="@Model.TraderId"
+   asp-route-id="@Model.TraderId"
            class="govuk-back-link">Back</a>
     }
-    else{
+    else
+    {
         <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back to dashboard</a>
     }
 }
@@ -28,14 +29,16 @@
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Business details</span>
-                            What is the registered address of your business?
+                            What is the address of your business?
                         </h1>
                     </legend>
+                    <p class="govuk-hint">
+                        This is your business' main address – for example, the head office. If the business is registered on Companies House, you can give the same address that was used to register.
+                    </p>
 
-                   
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="LineOne">
-                          Address line 1
+                            Address line 1
                         </label>
                         <p id="LineOne_Error" class="govuk-error-message" gds-validation-for="LineOne"></p>
                         <input class="govuk-input" id="LineOne" asp-for="LineOne" type="text">
@@ -43,7 +46,7 @@
 
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="LineTwo">
-                          Address line 2 (optional)
+                            Address line 2 (optional)
                         </label>
                         <p id="LineTwo_Error" class="govuk-error-message" gds-validation-for="LineTwo"></p>
                         <input class="govuk-input" id="LineTwo" asp-for="LineTwo" type="text">
@@ -51,7 +54,7 @@
 
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="CityName">
-                          Town or city
+                            Town or city
                         </label>
                         <p id="CityName_Error" class="govuk-error-message" gds-validation-for="CityName"></p>
                         <input class="govuk-input" id="CityName" asp-for="CityName" type="text">
@@ -59,7 +62,7 @@
 
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="PostCode">
-                          Postcode
+                            Postcode
                         </label>
                         <p id="PostCode_Error" class="govuk-error-message" gds-validation-for="PostCode"></p>
                         <input class="govuk-input" id="PostCode" asp-for="PostCode" type="text">
