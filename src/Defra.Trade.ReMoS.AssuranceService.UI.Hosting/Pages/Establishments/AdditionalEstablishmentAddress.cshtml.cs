@@ -152,7 +152,6 @@ public class AdditionalEstablishmentAddressModel : PageModel
    private async Task<bool> ReadyForCheckAnswersAsync()
     {
         TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        var country = tradeParty?.Address?.TradeCountry;
 
         if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
         {
