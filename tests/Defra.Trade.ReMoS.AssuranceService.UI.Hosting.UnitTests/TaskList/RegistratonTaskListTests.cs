@@ -21,12 +21,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         private RegistrationTaskListModel? _systemUnderTest;
         private readonly Mock<ITraderService> _mockTraderService = new();
         private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();
+        private readonly Mock<ICheckAnswersService> _mockCheckAnswersService = new();
         protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object);
+            _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
         }
 
         [Test]
