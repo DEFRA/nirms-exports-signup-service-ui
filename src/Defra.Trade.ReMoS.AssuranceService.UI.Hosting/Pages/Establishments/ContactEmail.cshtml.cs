@@ -45,12 +45,12 @@ public class ContactEmailModel : PageModel
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
-            ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+            ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
         else
         {
             ContentHeading = "Add a place of dispatch";
-            ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
+            ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)

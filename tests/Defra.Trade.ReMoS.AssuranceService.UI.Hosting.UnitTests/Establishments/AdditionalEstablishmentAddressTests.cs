@@ -33,14 +33,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
 
             //Assert
-            _systemUnderTest.AdditionalAddress.Should().Be("");
+            _systemUnderTest.AddAddressesComplete.Should().Be("");
         }
 
         [Test]
         public async Task OnPostSubmit_SubmitValidRadio()
         {
             //Arrange
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -54,7 +54,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSave_SubmitValidRadio()
         {
             //Arrange
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
@@ -68,35 +68,35 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSubmit_SubmitInValidRadio()
         {
             //Arrange
-            _systemUnderTest!.AdditionalAddress = "";
+            _systemUnderTest!.AddAddressesComplete = "";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.HasError("AdditionalAddress").Should().Be(true);
+            _systemUnderTest.ModelState.HasError("AddAddressesComplete").Should().Be(true);
         }
 
         [Test]
         public async Task OnPostSave_SubmitInValidRadio()
         {
             //Arrange
-            _systemUnderTest!.AdditionalAddress = "";
+            _systemUnderTest!.AddAddressesComplete = "";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.HasError("AdditionalAddress").Should().Be(true);
+            _systemUnderTest.ModelState.HasError("AddAddressesComplete").Should().Be(true);
         }
 
         [Test]
         public async Task OnGetRemoveEstablishment_SubmitIsValid()
         {
             //Arrange
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
@@ -112,7 +112,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
 
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
             //Act
@@ -128,7 +128,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var list = new List<LogisticsLocationDTO> { };
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
             //Act
@@ -144,7 +144,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public void OnGetChangeEstablishmentAddress_SubmitIsValid()
         {
             //Arrange
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
             _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
@@ -159,7 +159,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
             _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
@@ -174,7 +174,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
-            _systemUnderTest!.AdditionalAddress = "yes";
+            _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
             _systemUnderTest.OnGetChangeEstablishmentAddress(new Guid(), new Guid());
