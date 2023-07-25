@@ -16,11 +16,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         private AdditionalEstablishmentAddressModel? _systemUnderTest;
         protected Mock<ILogger<AdditionalEstablishmentAddressModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+        protected Mock<ITraderService> _mockTraderService = new();
+        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
+
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object);
+            _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
         }
 
         [Test]
@@ -58,6 +61,86 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidRadio_AnsweredNo()
+        {
+            //Arrange
+            var tradeParty = new TradePartyDTO();
+            _systemUnderTest!.AdditionalAddress = "No";
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+            _mockCheckAnswersService.Setup(x => x.GetBusinessDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+            _mockCheckAnswersService.Setup(x => x.GetAuthorisedSignatoryProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidRadio_Redirected_ContactDetails()
+        {
+            //Arrange
+            var tradeParty = new TradePartyDTO();
+            _systemUnderTest!.AdditionalAddress = "No";
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.NOTSTART);
+            _mockCheckAnswersService.Setup(x => x.GetBusinessDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+            _mockCheckAnswersService.Setup(x => x.GetAuthorisedSignatoryProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidRadio_Redirected_BusinessDetails()
+        {
+            //Arrange
+            var tradeParty = new TradePartyDTO();
+            _systemUnderTest!.AdditionalAddress = "No";
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+            _mockCheckAnswersService.Setup(x => x.GetBusinessDetailsProgress(tradeParty)).Returns(TaskListStatus.NOTSTART);
+            _mockCheckAnswersService.Setup(x => x.GetAuthorisedSignatoryProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitValidRadio_Redirected_AuthorisedSignatoryDetails()
+        {
+            //Arrange
+            var tradeParty = new TradePartyDTO();
+            _systemUnderTest!.AdditionalAddress = "No";
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+            _mockCheckAnswersService.Setup(x => x.GetBusinessDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
+            _mockCheckAnswersService.Setup(x => x.GetAuthorisedSignatoryProgress(tradeParty)).Returns(TaskListStatus.NOTSTART);
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -110,11 +193,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetRemoveEstablishment_GivenExistingLocations_SubmitIsValid()
         {
             //Arrange
-
             var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
             _systemUnderTest!.AddAddressesComplete = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);

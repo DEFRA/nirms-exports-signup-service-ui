@@ -1,13 +1,13 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
-[ExcludeFromCodeCoverage]
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
+[AllowAnonymous]
 public class ErrorModel : PageModel
 {
     public string? RequestId { get; set; }
@@ -24,7 +24,6 @@ public class ErrorModel : PageModel
     public void OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-        _logger.LogError("Error page");
     }
 }
 

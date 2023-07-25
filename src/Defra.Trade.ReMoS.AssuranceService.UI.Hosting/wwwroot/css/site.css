@@ -4963,7 +4963,7 @@
     margin-bottom: 20px;
   }
 }
-.js-enabled .govuk-radios__conditional--hidden {
+.govuk-radios__conditional--hidden {
   display: none;
 }
 .govuk-radios__conditional > :last-child {

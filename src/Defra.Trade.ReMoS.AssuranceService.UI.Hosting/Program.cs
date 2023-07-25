@@ -3,6 +3,11 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Defra.Trade.Common.AppConfig;
 using Defra.Trade.Common.Security.Authentication.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using static System.Net.Mime.MediaTypeNames;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -22,8 +27,24 @@ internal sealed class Program
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
         builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));
+        builder.Services.Configure<EhcoIntegration>(builder.Configuration.GetSection("EhcoIntegration"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
+
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Index";
+                options.SlidingExpiration = true;
+            });
+
+        builder.Services.AddMvc(config =>
+        {
+            var policy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
+            config.Filters.Add(new AuthorizeFilter(policy));
+        });
 
         var app = builder.Build();
 
@@ -34,15 +55,18 @@ internal sealed class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
         app.MapRazorPages();
-        
+
+
         app.Run();
-
-
     }
 }

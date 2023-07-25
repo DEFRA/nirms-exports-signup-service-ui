@@ -9,8 +9,8 @@
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
     {
         <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
-   asp-route-id="@Model.TraderId"
-           class="govuk-back-link">Back</a>
+           asp-route-id="@Model.TraderId"
+           class="govuk-back-link">Back to dashboard</a>
     }
     else
     {

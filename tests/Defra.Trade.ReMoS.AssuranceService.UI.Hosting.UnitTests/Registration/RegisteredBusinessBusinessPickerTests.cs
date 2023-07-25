@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,11 +21,12 @@ public class RegisteredBusinessBusinessPickerTests
     private RegisteredBusinessBusinessPickerModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessBusinessPickerModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
+    protected Mock<IUserService> _mockUserService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessBusinessPickerModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest = new RegisteredBusinessBusinessPickerModel(_mockLogger.Object, _mockTraderService.Object, _mockUserService.Object);
     }
 
     [Test]
@@ -54,14 +56,19 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
-    public async Task OnPostSubmitAsync_When_SignupSTatus_Is_New_RedirectToCountryPage()
+    public async Task OnPostSubmitAsync_When_SignupStatus_Is_New_RedirectToCountryPage()
     {
         // Arrange
+        var userOrgs = new Dictionary<Guid, string>();
+        userOrgs.Add(Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), "org1");
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDTO)null!, Core.Enums.TradePartySignupStatus.New));
+        _mockUserService
+            .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
+            .Returns(userOrgs);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
             new { id = _systemUnderTest.TraderId });
@@ -78,11 +85,16 @@ public class RegisteredBusinessBusinessPickerTests
     public async Task OnPostSubmitAsync_When_SignupSTatus_Is_Complete_RedirectToAlreadyRegisteredPage()
     {
         // Arrange
+        var userOrgs = new Dictionary<Guid, string>();
+        userOrgs.Add(Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), "org1");
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid()}, Core.Enums.TradePartySignupStatus.Complete));
+        _mockUserService
+            .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
+            .Returns(userOrgs);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
             new { id = _systemUnderTest.TraderId });
@@ -99,11 +111,16 @@ public class RegisteredBusinessBusinessPickerTests
     public async Task OnPostSubmitAsync_When_SignupSTatus_Is_InProgress_RedirectToTaskListPage()
     {
         // Arrange
+        var userOrgs = new Dictionary<Guid, string>();
+        userOrgs.Add(Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), "org1");
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgress));
+        _mockUserService
+            .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
+            .Returns(userOrgs);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegistrationTaskListPath,
             new { id = _systemUnderTest.TraderId });
