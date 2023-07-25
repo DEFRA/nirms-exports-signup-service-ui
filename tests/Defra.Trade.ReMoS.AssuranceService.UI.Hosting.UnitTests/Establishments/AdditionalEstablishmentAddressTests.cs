@@ -72,7 +72,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var tradeParty = new TradePartyDTO();
-            _systemUnderTest!.AdditionalAddress = "No";
+            _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
             _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
@@ -92,7 +92,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var tradeParty = new TradePartyDTO();
-            _systemUnderTest!.AdditionalAddress = "No";
+            _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
             _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.NOTSTART);
@@ -112,7 +112,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var tradeParty = new TradePartyDTO();
-            _systemUnderTest!.AdditionalAddress = "No";
+            _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
             _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);
@@ -132,7 +132,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var tradeParty = new TradePartyDTO();
-            _systemUnderTest!.AdditionalAddress = "No";
+            _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
             _mockCheckAnswersService.Setup(x => x.GetContactDetailsProgress(tradeParty)).Returns(TaskListStatus.COMPLETE);

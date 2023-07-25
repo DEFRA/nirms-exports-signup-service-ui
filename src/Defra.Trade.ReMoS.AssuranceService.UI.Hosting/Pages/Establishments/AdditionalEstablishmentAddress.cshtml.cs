@@ -80,10 +80,10 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return await OnGetAsync(TradePartyId, NI_GBFlag!);
         }
 
-        if (AddAddressesComplete == "yes")
+        if (AddAddressesComplete == "no")
         {
             return RedirectToPage(
-                Routes.Pages.Path.RegistrationCheckYourAnswersPath, 
+                Routes.Pages.Path.EstablishmentNameAndAddressPath, 
                 new { id = TradePartyId, NI_GBFlag });
         }
 
