@@ -27,8 +27,7 @@ public static class Routes
     public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
     public const string TermsAndConditions = "/registration-terms-and-conditions";
-    public const string SignUpConfirmation = "/confirmation";    
-    
+    public const string SignUpConfirmation = "/confirmation";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
