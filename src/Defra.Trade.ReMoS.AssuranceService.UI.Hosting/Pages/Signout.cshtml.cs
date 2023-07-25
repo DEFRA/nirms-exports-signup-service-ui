@@ -19,7 +19,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages
         public async Task<IActionResult> OnGet()
         {
             _logger.LogInformation("User {Name} logged out at {Time}.",
-                User.Identity.Name, DateTime.UtcNow);
+                User.Identity!.Name, DateTime.UtcNow);
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);         
 
