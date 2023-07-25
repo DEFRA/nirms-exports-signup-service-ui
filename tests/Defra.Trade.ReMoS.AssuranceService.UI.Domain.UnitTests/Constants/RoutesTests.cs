@@ -27,6 +27,11 @@ public class RoutesTests
     [TestCase(Routes.AuthorisedSignatoryPosition, Routes.Pages.Path.AuthorisedSignatoryPositionPath)]
     [TestCase(Routes.RegistrationCheckYourAnswers, Routes.Pages.Path.RegistrationCheckYourAnswersPath)]
     [TestCase(Routes.TermsAndConditions, Routes.Pages.Path.TermsAndConditionsPath)]
+    [TestCase(Routes.ContactDetails, Routes.Pages.Path.ContactDetailsPath)]
+    [TestCase(Routes.AccessibilityStatement, Routes.Pages.Path.AccessibilityStatementPath)]
+    [TestCase(Routes.PrivacyPolicy, Routes.Pages.Path.PrivacyPolicyPath)]
+    [TestCase(Routes.FooterTermsAndConditions, Routes.Pages.Path.FooterTermsAndConditionsPath)]
+    [TestCase(Routes.Cookies, Routes.Pages.Path.CookiesPath)]
     public void TestRoutesMatchPaths(string routeName, string routePath)
     {
         //arrange
@@ -56,6 +61,11 @@ public class RoutesTests
     [TestCase(Routes.Pages.Names.AuthorisedSignatoryPositionName, Routes.Pages.Path.AuthorisedSignatoryPositionPath)]
     [TestCase(Routes.Pages.Names.RegistrationCheckYourAnwersName, Routes.Pages.Path.RegistrationCheckYourAnswersPath)]
     [TestCase(Routes.Pages.Names.TermsAndConditionsName, Routes.Pages.Path.TermsAndConditionsPath)]
+    [TestCase(Routes.Pages.Names.ContactDetailsName, Routes.Pages.Path.ContactDetailsPath)]
+    [TestCase(Routes.Pages.Names.AccessibilityStatementName, Routes.Pages.Path.AccessibilityStatementPath)]
+    [TestCase(Routes.Pages.Names.PrivacyPolicyName, Routes.Pages.Path.PrivacyPolicyPath)]
+    [TestCase(Routes.Pages.Names.TermsAndConditionsName, Routes.Pages.Path.TermsAndConditionsPath)]
+    [TestCase(Routes.Pages.Names.CookiesName, Routes.Pages.Path.CookiesPath)]
     public void TestPathsContainPageNames(string pageName, string path)
     {
         //assert

@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
+    <partial name="_CookieConsentPartial" />
+
     <header class="govuk-header " role="banner" data-module="govuk-header">
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__logo">
@@ -54,7 +56,37 @@
 <footer class="govuk-footer " role="contentinfo">
     <div class="govuk-width-container ">
         <div class="govuk-footer__meta">
+
             <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+                <h2 class="govuk-visually-hidden">Support links</h2>
+                <ul class="govuk-footer__inline-list">
+                    <li class="govuk-footer__inline-list-item">
+                        <a class="govuk-footer__link" href="/privacy-policy">
+                            Privacy
+                        </a>
+                    </li>
+                    <li class="govuk-footer__inline-list-item">
+                        <a class="govuk-footer__link" href="/cookies">
+                            Cookies
+                        </a>
+                    </li>
+                    <li class="govuk-footer__inline-list-item">
+                        <a class="govuk-footer__link" href="/accessibility-statement">
+                            Accessibility statement
+                        </a>
+                    </li>
+                    <li class="govuk-footer__inline-list-item">
+                        <a class="govuk-footer__link" href="/contact">
+                            Contact
+                        </a>
+                    </li>
+                    <li class="govuk-footer__inline-list-item">
+                        <a class="govuk-footer__link" href="/terms-and-conditions">
+                            Terms and conditions
+                        </a>
+                    </li>
+                </ul>
+
                 <svg aria-hidden="true"
                      focusable="false"
                      class="govuk-footer__licence-logo"
@@ -72,6 +104,7 @@
                        rel="license">Open Government Licence v3.0</a>, except where otherwise stated
                 </span>
             </div>
+
             <div class="govuk-footer__meta-item">
                 <a class="govuk-footer__link govuk-footer__copyright-logo"
                    href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>

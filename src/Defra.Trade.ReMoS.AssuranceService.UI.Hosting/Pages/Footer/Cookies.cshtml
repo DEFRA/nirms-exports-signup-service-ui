@@ -1,0 +1,48 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Footer.CookiesModel
+@{
+    ViewData["Title"] = "Cookies";
+}
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <h1 class="govuk-heading-l">
+                    Cookies TODO ADD
+                </h1>
+
+                <form>
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset js-cookies-page-form-fieldset" id="analytics">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                Do you want to accept analytics cookies?
+                            </legend>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="radio-analytics" name="analytics" type="radio" value="yes">
+                                    <label class="govuk-label govuk-radios__label" for="radio-analytics">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="radio-analytics-2" name="analytics" type="radio" value="no">
+                                    <label class="govuk-label govuk-radios__label" for="radio-analytics-2">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                    <button class="govuk-button js-cookies-form-button" data-module="govuk-button">
+                        Save cookie settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
