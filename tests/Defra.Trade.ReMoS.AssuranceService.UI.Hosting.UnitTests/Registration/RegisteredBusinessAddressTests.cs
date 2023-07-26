@@ -116,9 +116,9 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.LineOne = "";
-        var expectedResultOne = "Enter address line 1.";
-        var expectedResultTwo = "Enter a town or city.";
-        var expectedResultThree = "Enter a post code.";
+        var expectedResultOne = "Enter address line 1";
+        var expectedResultTwo = "Enter a town or city";
+        var expectedResultThree = "Enter a postcode";
 
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
@@ -139,9 +139,9 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.LineOne = "";
-        var expectedResultOne = "Enter address line 1.";
-        var expectedResultTwo = "Enter a town or city.";
-        var expectedResultThree = "Enter a post code.";
+        var expectedResultOne = "Enter address line 1";
+        var expectedResultTwo = "Enter a town or city";
+        var expectedResultThree = "Enter a postcode";
 
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 

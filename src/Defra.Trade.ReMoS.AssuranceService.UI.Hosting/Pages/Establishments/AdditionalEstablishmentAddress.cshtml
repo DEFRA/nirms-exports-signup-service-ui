@@ -79,8 +79,8 @@
             }
 
 
-            <div class="govuk-form-group @(ModelState.HasError("AdditionalAddress") ? "govuk-form-group--error" : null)">
-                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AdditionalAddress") ? "AdditionalAddress_Error": null)">
+            <div class="govuk-form-group @(ModelState.HasError("AddAddressesComplete") ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AddAddressesComplete") ? "AdditionalAddress_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
                         <h3 class="govuk-fieldset__heading">
                             Have you added all your business’ places of @Model.ContentText?
