@@ -40,7 +40,13 @@ internal sealed class Program
             {
                 options.LoginPath = "/Index";
                 options.SlidingExpiration = true;
+                options.Cookie.Name = "authentication";
             });
+
+        builder.Services.AddAntiforgery(options =>
+        {
+            options.Cookie.Name = "anti-forgery";
+        });
 
         builder.Services.AddMvc(config =>
         {
@@ -49,6 +55,14 @@ internal sealed class Program
                              .Build();
             config.Filters.Add(new AuthorizeFilter(policy));
         }).AddCustomRouting(); ;
+
+        builder.Services.Configure<CookiePolicyOptions>(options =>
+        {
+            // This lambda determines whether user consent for non-essential 
+            // cookies is needed for a given request.
+            options.CheckConsentNeeded = context => true;
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+        });
 
         var app = builder.Build();
 
@@ -64,6 +78,7 @@ internal sealed class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseTradeHealthChecks();
+        app.UseCookiePolicy();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
