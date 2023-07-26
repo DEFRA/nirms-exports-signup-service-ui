@@ -21,12 +21,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<IsAuthorisedSignatoryModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
-
+        protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockLogger.Object);
+            _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockEstablishmentService.Object, _mockLogger.Object);
         }
 
         [Test]
