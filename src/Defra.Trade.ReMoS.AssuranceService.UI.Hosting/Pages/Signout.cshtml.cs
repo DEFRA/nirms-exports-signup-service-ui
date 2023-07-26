@@ -31,8 +31,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages
 
             Response.Redirect(_ehcoIntegrationSettings.Value.ValidIssuer + "/b2c/remos_signup/correlationId/" + correlationId + "/logout");
 
-            //Response.Redirect("https://www.gov.uk/export-health-certificates/general-certificate-for-moving-goods-under-the-ni-retail-movement-scheme");
-
             return Page();
         }
     }
