@@ -25,6 +25,7 @@ public static class ServiceExtensions
         services.AddTransient<IEstablishmentService, EstablishmentService>();
         services.AddTransient<ICheckAnswersService, CheckAnswersService>();
         services.AddSingleton<IValidationParameters, ValidationParameters>();
+        services.AddTransient<IUserService, UserService>();
 
         return services;
     }

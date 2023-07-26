@@ -28,6 +28,7 @@ public static class Routes
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
     public const string RegistrationTermsAndConditions = "/registration-terms-and-conditions";
     public const string SignUpConfirmation = "/confirmation";
+    public const string TermsAndConditions = "/terms-conditions";
     public const string ContactDetails = "/contact";
     public const string AccessibilityStatement = "/accessibility-statement";
     public const string PrivacyPolicy = "/privacy-policy";
@@ -59,6 +60,7 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
         (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
+        (Pages.Path.TermsAndConditionsPath, TermsAndConditions),
         (Pages.Path.RegistrationTermsAndConditionsPath, RegistrationTermsAndConditions),
         (Pages.Path.SignUpConfirmationPath, SignUpConfirmation),
         (Pages.Path.ContactDetailsPath, ContactDetails),
@@ -97,6 +99,7 @@ public static class Routes
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
             public const string RegistrationTermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
+            public const string TermsAndConditionsName = "TermsConditions";
             public const string ContactDetailsName = "Contact";
             public const string AccessibilityStatementName = "AccessibilityStatement";
             public const string PrivacyPolicyName = "Privacy";
@@ -131,6 +134,7 @@ public static class Routes
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
             public const string RegistrationTermsAndConditionsPath = $"/Registration/Assurances/{Names.RegistrationTermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
+            public const string TermsAndConditionsPath = $"/{Names.TermsAndConditionsName}";
             public const string ContactDetailsPath = $"/Footer/{Names.ContactDetailsName}";
             public const string AccessibilityStatementPath = $"/Footer/{Names.AccessibilityStatementName}";
             public const string PrivacyPolicyPath = $"/{Names.PrivacyPolicyName}";

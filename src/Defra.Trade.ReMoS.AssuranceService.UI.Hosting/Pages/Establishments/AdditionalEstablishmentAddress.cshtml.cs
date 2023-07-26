@@ -15,7 +15,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
-    public string? AdditionalAddress { get; set; } = string.Empty;
+    public string? AddAddressesComplete { get; set; } = string.Empty;
     public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
     public Guid TradePartyId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
@@ -68,11 +68,11 @@ public class AdditionalEstablishmentAddressModel : PageModel
     {
         _logger.LogInformation("Additional establishment manual address OnPostSubmit");
 
-        if (String.IsNullOrWhiteSpace(AdditionalAddress))
+        if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
             var baseError = "Select yes if you want to add another place of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
-            ModelState.AddModelError(nameof(AdditionalAddress), errorMessage);
+            ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }
 
         if (!ModelState.IsValid)
@@ -80,7 +80,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return await OnGetAsync(TradePartyId, NI_GBFlag!);
         }
 
-        if (AdditionalAddress == "yes")
+        if (AddAddressesComplete == "no")
         {
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentNameAndAddressPath, 
@@ -103,11 +103,11 @@ public class AdditionalEstablishmentAddressModel : PageModel
     {
         _logger.LogInformation("Additional establishment manual address OnPostSave");
 
-        if (String.IsNullOrWhiteSpace(AdditionalAddress))
+        if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
             var baseError = "Select yes if you want to add another place of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
-            ModelState.AddModelError(nameof(AdditionalAddress), errorMessage);
+            ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }
 
         if (!ModelState.IsValid)
