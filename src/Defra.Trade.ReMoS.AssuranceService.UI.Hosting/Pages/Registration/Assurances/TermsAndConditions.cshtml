@@ -17,7 +17,7 @@
         </h1>
 
         <form class="form" method="post">
-            <h2 class="govuk-heading-s"> Placeholder text for regulations -- THIS LINE IS NOT TO BE TESTED</h2>
+            <p>You must share the <a href="~/terms-conditions" target="_blank" rel="noopener">full terms and conditions of the scheme</a> with the authorised representative for your business.</p>
 
 
             <p>Date of declaration: @DateTime.Now.ToString("d MMMM yyyy")</p>
@@ -25,7 +25,7 @@
                 <p id="TandCs_Error" class="govuk-error-message" gds-validation-for="TandCs"></p>
                 <input class="govuk-checkboxes__input" id="TandCs" asp-for="TandCs" type="checkbox" value="true">
                 <label class="govuk-label govuk-checkboxes__label govuk-!-font-weight-bold" for="TandCs">
-                    On behalf of the Authorised Signatory, I confirm that the above requirements will be met and that they are accountable for following them.
+                    I confirm that my business' authorised representative has read and understood the terms and conditions of the Northern Ireland Retail Movement Scheme. The authorised representative is responsible for ensuring the requirements of the scheme are followed by the business.
                 </label>
             </div>
 

@@ -29,27 +29,27 @@
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Contact details</span>
-                            Is the contact person the Authorised Signatory at @Model.BusinessName?
+                            Is the contact person the authorised representative at @Model.BusinessName?
                         </h1>
                     </legend>
 
                     <p id="IsAuthorisedSignatory_Error" class="govuk-error-message" gds-validation-for="IsAuthorisedSignatory"></p>
                     
                     <p class="govuk-hint" id="signatory-details-hint">
-                        The Authorised Signatory is the person who is authorised by a company to sign contracts and other legal documents on behalf of the company. This person has the legal authority to bind the company to agreements and make other decisions on behalf of the company.
+                        The authorised representative is the person who is authorised to sign legal documents on behalf of the company. This is the person who will accept the <a href="~/terms-conditions" target="_blank" rel="noopener">terms and conditions of the scheme</a>.
                     </p>
                     
                     <div class="govuk-radios" data-module="govuk-radios" id="IsAuthorisedSignatory">
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="business-type" asp-for="IsAuthorisedSignatory" type="radio" value="true">
                             <label class="govuk-label govuk-radios__label" for="business-type">
-                                Yes, the contact person is the Authorised Signatory
+                                Yes
                             </label>
                         </div>
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="business-type-2" asp-for="IsAuthorisedSignatory" type="radio" value="false">
                             <label class="govuk-label govuk-radios__label" for="business-type-2">
-                                No, a different person is the Authorised Signatory
+                                No, a different person is the authorised representative
                             </label>
                         </div>
                     </div>
