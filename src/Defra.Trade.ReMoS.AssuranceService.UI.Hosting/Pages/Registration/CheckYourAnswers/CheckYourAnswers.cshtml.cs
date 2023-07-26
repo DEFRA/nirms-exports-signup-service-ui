@@ -96,7 +96,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         public async Task<IActionResult> OnPostSubmitAsync()
         {
             return RedirectToPage(
-                Routes.Pages.Path.TermsAndConditionsPath,
+                Routes.Pages.Path.RegistrationTermsAndConditionsPath,
                 new { id = RegistrationID });
         }
 
