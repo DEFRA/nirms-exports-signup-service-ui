@@ -14,7 +14,7 @@ public class RegisteredBusinessCountryModel : PageModel
     public string? Country { get; set; } = string.Empty;
 
     [BindProperty]
-    [Required(ErrorMessage = "Select what your business will do under the scheme")]
+    //[Required(ErrorMessage = "Select what your business will do under the scheme")]
     public string? GBChosen { get; set; }
 
     [BindProperty]
@@ -61,19 +61,10 @@ public class RegisteredBusinessCountryModel : PageModel
     {
         _logger.LogInformation("Country OnPostSubmit");
 
+        CheckVariables();
+
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TraderId);
-        }
-
-        if (GBChosen == "recieve")
-        {
-            Country = "NI";
-        }
-
-        if (Country == "")
-        {
-            ModelState.AddModelError(nameof(Country), "Select a location");
             return await OnGetAsync(TraderId);
         }
 
@@ -91,6 +82,7 @@ public class RegisteredBusinessCountryModel : PageModel
             new { id = TraderId });
     }
 
+    #region private methods
     private TradePartyDTO CreateDTO()
     {
         TradePartyDTO DTO = new()
@@ -102,6 +94,24 @@ public class RegisteredBusinessCountryModel : PageModel
         };
 
         return DTO;
+    }
+
+    private void CheckVariables()
+    {
+        if (!CountrySaved && GBChosen == "")
+        {
+            ModelState.AddModelError(nameof(GBChosen), "Select what your business will do under the scheme");
+        }
+
+        if (GBChosen == "recieve")
+        {
+            Country = "NI";
+        }
+
+        if (Country == "" && !CountrySaved)
+        {
+            ModelState.AddModelError(nameof(Country), "Select a location");
+        }
     }
 
     private async Task<string> GetCountryFromApiAsync()
@@ -126,4 +136,5 @@ public class RegisteredBusinessCountryModel : PageModel
         await _traderService.AddTradePartyAddressAsync(TraderId, tradeAddress);
 
     }
+    #endregion
 }
