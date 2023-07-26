@@ -10,7 +10,7 @@
     {
         <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
            asp-route-id="@Model.TradePartyId"
-           class="govuk-back-link">Back</a>
+           class="govuk-back-link">Back to dashboard</a>
     }
     else{
         <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
@@ -25,11 +25,11 @@
                 <label for="PhoneNumber">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact Details</span>
-                        Telephone number
+                        What is the contact person's telephone number?
                     </h1>
                 </label>
                 <p class="govuk-hint" id="telephone-hint">
-                    The telephone number of the contact person at the business responsible for Northern Ireland Retail Movement Scheme movements. We'll only use this if there an issue with sign up, or with a specific movement.
+                    We will only use this if there an issue relating to your business' participation in the scheme.
                 </p>
                 <p id="Phone_Error" class="govuk-error-message" gds-validation-for="PhoneNumber"></p>
                 <input class="govuk-input" asp-for="PhoneNumber" id="PhoneNumber" aria-describedby="" type="telephone-hint" spellcheck="false" />

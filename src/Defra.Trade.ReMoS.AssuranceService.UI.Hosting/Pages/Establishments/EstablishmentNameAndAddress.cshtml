@@ -12,7 +12,7 @@
         {
             <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
                asp-route-id="@Model.TradePartyId"
-               class="govuk-back-link">Back</a>
+           class="govuk-back-link">Back to dashboard</a>
         }
         else if (referer.Contains(Routes.AdditionalEstablishmentAddress))
         {
@@ -45,6 +45,16 @@
                             @Model.ContentHeading
                         </h1>
                     </legend>
+
+                    <p class="govuk-hint">The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
+
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-warning-text__assistive">Warning</span>
+                            You do not need to enter establishments that do not belong to your business.
+                        </strong>
+                    </div>
 
                     <div class="govuk-form-group">                        
                         <label class="govuk-label" asp-for="EstablishmentName">
