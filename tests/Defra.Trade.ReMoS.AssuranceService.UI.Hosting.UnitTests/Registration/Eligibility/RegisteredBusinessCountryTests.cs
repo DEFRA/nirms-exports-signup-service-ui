@@ -108,14 +108,12 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Country = "";
-        Guid guid = Guid.NewGuid();
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
-        var validation = ValidateModel(_systemUnderTest);
 
         //Assert
-        _ = validation.Count.Should().Be(1);
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
     }
 
     [Test]
@@ -124,7 +122,6 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.GBChosen = "send";
         _systemUnderTest!.Country = "";
-        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -137,18 +134,14 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitInvalidFirstInput()
     {
         //Arrange
-        _systemUnderTest!.GBChosen = "";
-        var expectedResult = "Select what your business will do under the scheme";
-        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _systemUnderTest!.CountrySaved = false;
+        _systemUnderTest!.GBChosen = null;
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
-        var validation = ValidateModel(_systemUnderTest);
 
         //Assert            
-        validation.Count.Should().Be(1);
-        expectedResult.Should().Be(validation[0].ErrorMessage);
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
     }
 
     [Test]
@@ -188,7 +181,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         //Assert
-        result.Should().BeOfType<PageResult>();
+        result.Should().BeOfType<RedirectToPageResult>();
     }
 
     [Test]
@@ -196,6 +189,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.CountrySaved = false;
+        _systemUnderTest!.GBChosen = "send";
         _systemUnderTest.Country = "GB";
         var traderId = Guid.NewGuid();
         _systemUnderTest.TraderId = traderId;

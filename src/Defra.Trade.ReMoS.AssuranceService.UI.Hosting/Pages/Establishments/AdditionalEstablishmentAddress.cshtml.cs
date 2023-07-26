@@ -70,7 +70,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
-            var baseError = "Select yes if you want to add another place of ";
+            var baseError = "Select if you have added all of your business' places of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
             ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }

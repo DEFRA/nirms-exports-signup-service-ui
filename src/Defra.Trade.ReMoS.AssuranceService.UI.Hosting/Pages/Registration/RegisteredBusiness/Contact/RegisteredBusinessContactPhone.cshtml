@@ -19,6 +19,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
         <form method="post" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
             <div class="govuk-form-group @(ModelState.HasError("PhoneNumber") ? "govuk-form-group--error" : null)">
