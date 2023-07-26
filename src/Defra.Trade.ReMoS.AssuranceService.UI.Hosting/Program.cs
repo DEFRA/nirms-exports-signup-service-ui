@@ -8,6 +8,9 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using static System.Net.Mime.MediaTypeNames;
+using Defra.Trade.Common.Api.Infrastructure;
+using Microsoft.Azure.Management.Storage.Fluent.Models;
+using Defra.Trade.Common.Api.Health;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -23,13 +26,14 @@ internal sealed class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
-        builder.Services.AddMvc().AddCustomRouting();
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Configuration.ConfigureTradeAppConfiguration(true, "RemosSignUpService:Sentinel");
         builder.Services.Configure<AppConfigurationService>(builder.Configuration.GetSection("Apim:Internal"));
         builder.Services.Configure<EhcoIntegration>(builder.Configuration.GetSection("EhcoIntegration"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
+        builder.Services.AddTradeApi(builder.Configuration);
+        builder.Services.AddHealthChecks();
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
@@ -44,7 +48,7 @@ internal sealed class Program
                              .RequireAuthenticatedUser()
                              .Build();
             config.Filters.Add(new AuthorizeFilter(policy));
-        });
+        }).AddCustomRouting(); ;
 
         var app = builder.Build();
 
@@ -59,6 +63,7 @@ internal sealed class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseTradeHealthChecks();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
