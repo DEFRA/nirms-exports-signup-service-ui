@@ -122,7 +122,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Name = "";
-        var expectedResult = "Enter a name.";
+        var expectedResult = "Enter the name of your business' contact person";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
 
@@ -140,7 +140,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Name = "";
-        var expectedResult = "Enter a name.";
+        var expectedResult = "Enter the name of your business' contact person";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
 

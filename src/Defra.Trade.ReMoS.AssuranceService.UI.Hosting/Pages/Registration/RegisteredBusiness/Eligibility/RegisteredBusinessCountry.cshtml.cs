@@ -61,7 +61,11 @@ public class RegisteredBusinessCountryModel : PageModel
     {
         _logger.LogInformation("Country OnPostSubmit");
 
-        CheckVariables();
+        if (!CountrySaved)
+        {
+            CheckVariables();
+        }
+        
 
         if (!ModelState.IsValid)
         {
@@ -98,9 +102,10 @@ public class RegisteredBusinessCountryModel : PageModel
 
     private void CheckVariables()
     {
-        if (!CountrySaved && GBChosen == "")
+        if (GBChosen == "" || GBChosen == null)
         {
             ModelState.AddModelError(nameof(GBChosen), "Select what your business will do under the scheme");
+            return;
         }
 
         if (GBChosen == "recieve")
@@ -108,7 +113,7 @@ public class RegisteredBusinessCountryModel : PageModel
             Country = "NI";
         }
 
-        if (Country == "" && !CountrySaved)
+        if (Country == "")
         {
             ModelState.AddModelError(nameof(Country), "Select a location");
         }
