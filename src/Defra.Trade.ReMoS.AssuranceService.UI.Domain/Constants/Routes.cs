@@ -26,12 +26,11 @@ public static class Routes
     public const string AuthorisedSignatoryPosition = "/authorised-signatory-position";
     public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
-    public const string TermsAndConditions = "/registration-terms-and-conditions";
+    public const string RegistrationTermsAndConditions = "/registration-terms-and-conditions";
     public const string SignUpConfirmation = "/confirmation";
     public const string ContactDetails = "/contact";
     public const string AccessibilityStatement = "/accessibility-statement";
     public const string PrivacyPolicy = "/privacy-policy";
-    public const string FooterTermsAndConditions = "/terms-and-conditions";
     public const string Cookies = "/cookies";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
@@ -60,12 +59,11 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryEmailPath, AuthorisedSignatoryEmail),
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
         (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
-        (Pages.Path.TermsAndConditionsPath, TermsAndConditions),
+        (Pages.Path.RegistrationTermsAndConditionsPath, RegistrationTermsAndConditions),
         (Pages.Path.SignUpConfirmationPath, SignUpConfirmation),
         (Pages.Path.ContactDetailsPath, ContactDetails),
         (Pages.Path.AccessibilityStatementPath, AccessibilityStatement),
         (Pages.Path.PrivacyPolicyPath, PrivacyPolicy),
-        (Pages.Path.FooterTermsAndConditionsPath, FooterTermsAndConditions),
         (Pages.Path.CookiesPath, Cookies)
     };
 
@@ -97,12 +95,11 @@ public static class Routes
             public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
             public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
-            public const string TermsAndConditionsName = "TermsAndConditions";
+            public const string RegistrationTermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
             public const string ContactDetailsName = "Contact";
             public const string AccessibilityStatementName = "AccessibilityStatement";
             public const string PrivacyPolicyName = "Privacy";
-            public const string FooterTermsAndConditionsName = "TermsAndConditions";
             public const string CookiesName = "Cookies";
         }
 
@@ -132,12 +129,11 @@ public static class Routes
             public const string AuthorisedSignatoryPositionPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryPositionName}";
             public const string AuthorisedSignatoryEmailPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryEmailName}";
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
-            public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
+            public const string RegistrationTermsAndConditionsPath = $"/Registration/Assurances/{Names.RegistrationTermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
             public const string ContactDetailsPath = $"/Footer/{Names.ContactDetailsName}";
             public const string AccessibilityStatementPath = $"/Footer/{Names.AccessibilityStatementName}";
             public const string PrivacyPolicyPath = $"/{Names.PrivacyPolicyName}";
-            public const string FooterTermsAndConditionsPath = $"/Footer/{Names.FooterTermsAndConditionsName}";
             public const string CookiesPath = $"/Footer/{Names.CookiesName}";
         }
     }
