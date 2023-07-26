@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages
 {
     [AllowAnonymous]
-    public class logoutBannerModel : PageModel
+    public class LogoutBannerModel : PageModel
     {
         public void OnGet()
         {
