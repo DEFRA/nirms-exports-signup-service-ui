@@ -8,6 +8,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Azure.Management.Storage.Fluent.Models;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]
@@ -36,7 +37,13 @@ internal sealed class Program
             {
                 options.LoginPath = "/Index";
                 options.SlidingExpiration = true;
+                options.Cookie.Name = "authentication";
             });
+
+        builder.Services.AddAntiforgery(options =>
+        {
+            options.Cookie.Name = "anti-forgery";
+        });
 
         builder.Services.AddMvc(config =>
         {
