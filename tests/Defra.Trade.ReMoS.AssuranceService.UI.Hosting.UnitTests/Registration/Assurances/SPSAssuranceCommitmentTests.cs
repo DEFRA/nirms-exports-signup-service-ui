@@ -31,7 +31,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         var tradePartyId = Guid.NewGuid();
 
         //act
-        _systemUnderTest!.OnGet(tradePartyId);
+        _systemUnderTest!.OnGetAsync(tradePartyId);
 
         //assert
         _systemUnderTest.TraderId.Should().Be(tradePartyId);
