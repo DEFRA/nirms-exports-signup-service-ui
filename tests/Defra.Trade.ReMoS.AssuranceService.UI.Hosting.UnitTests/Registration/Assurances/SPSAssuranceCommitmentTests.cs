@@ -84,7 +84,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPost_OrgCompletedSuccessful()
+    public async Task OnGet_OrgCompletedSuccessful()
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
@@ -93,6 +93,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             Id = tradePartyId,
             PartyName = "Test"
         };
+
         var assurance = true;
 
         //act
