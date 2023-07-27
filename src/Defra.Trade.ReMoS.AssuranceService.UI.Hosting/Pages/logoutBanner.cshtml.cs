@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages
 {
     [AllowAnonymous]
+    [ExcludeFromCodeCoverage]
     public class LogoutBannerModel : PageModel
     {
         public void OnGet()
