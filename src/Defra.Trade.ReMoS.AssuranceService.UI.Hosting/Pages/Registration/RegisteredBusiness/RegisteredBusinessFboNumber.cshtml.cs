@@ -14,7 +14,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
     #region props and ctor
 
     [BindProperty]
-    [Required(ErrorMessage = "Select an option")]
+    [Required(ErrorMessage = "Select if your business has an FBO number")]
     public string OptionSelected { get; set; } = string.Empty;
 
     [BindProperty]
@@ -49,7 +49,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
         _logger.LogInformation("Country OnPostSubmit");
 
         if (OptionSelected == "yes" && string.IsNullOrEmpty(FboNumber))
-            ModelState.AddModelError("FboNumber", "Enter FBO number");
+            ModelState.AddModelError(nameof(FboNumber), "Enter your business' FBO number");
 
         if (!ModelState.IsValid)
         {

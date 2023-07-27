@@ -14,7 +14,7 @@ public class AuthorisedSignatoryPositionModel : PageModel
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Position must only include letters, numbers, and special characters -_./()&")]
     [StringLength(50, ErrorMessage = "Position must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter a position.")]
+    [Required(ErrorMessage = "Enter the position of the authorised representative")]
     public string Position { get; set; } = string.Empty;
     [BindProperty]
     public string? BusinessName { get; set; }

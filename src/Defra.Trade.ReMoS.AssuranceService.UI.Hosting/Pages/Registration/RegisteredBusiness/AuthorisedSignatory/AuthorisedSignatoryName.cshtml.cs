@@ -15,7 +15,7 @@ public class AuthorisedSignatoryNameModel : PageModel
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter your full name using only letters and, if necessary, apostrophes (') and hyphens (-)")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter a name.")]
+    [Required(ErrorMessage = "Enter the name of the authorised representative for your business")]
     public string Name { get; set; } = string.Empty;
     [BindProperty]
     public string? BusinessName { get; set; }

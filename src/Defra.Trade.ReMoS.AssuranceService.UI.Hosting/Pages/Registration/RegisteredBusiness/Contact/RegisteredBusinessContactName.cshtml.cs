@@ -17,7 +17,7 @@ public class RegisteredBusinessContactNameModel : PageModel
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Name must only include letters, numbers, and special characters -_./()&")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter a name.")]
+    [Required(ErrorMessage = "Enter the name of your business' contact person")]
     public string Name { get; set; } = string.Empty;
 
     [BindProperty]
