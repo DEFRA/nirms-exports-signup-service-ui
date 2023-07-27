@@ -13,7 +13,7 @@ public class AuthorisedSignatoryNameModel : PageModel
 {
     #region ui model
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Name must only include letters, numbers, and special characters -_./()&")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter your full name using only letters and, if necessary, apostrophes (') and hyphens (-)")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter the name of the authorised representative for your business")]
     public string Name { get; set; } = string.Empty;

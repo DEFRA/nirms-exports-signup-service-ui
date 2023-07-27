@@ -21,12 +21,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<IsAuthorisedSignatoryModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
-
+        protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockLogger.Object);
+            _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockEstablishmentService.Object, _mockLogger.Object);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             //Arrange
             var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
             _systemUnderTest!.IsAuthorisedSignatory = null;
-            _systemUnderTest!.ModelState.AddModelError("IsAuthorisedSignatory", "Fill in Yes or No");
+            _systemUnderTest!.ModelState.AddModelError("IsAuthorisedSignatory", "Tick Yes or No");
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -85,7 +85,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             //Arrange
             var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
             _systemUnderTest!.IsAuthorisedSignatory = null;
-            _systemUnderTest!.ModelState.AddModelError("IsAuthorisedSignatory", "Fill in Yes or No");
+            _systemUnderTest!.ModelState.AddModelError("IsAuthorisedSignatory", "Tick Yes or No");
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
