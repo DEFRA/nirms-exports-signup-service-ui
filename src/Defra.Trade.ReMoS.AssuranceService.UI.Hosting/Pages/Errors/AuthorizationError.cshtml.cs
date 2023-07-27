@@ -5,12 +5,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Errors
 {
     [ExcludeFromCodeCoverage]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    [IgnoreAntiforgeryToken]
-    [AllowAnonymous]
     public class AuthorizationErrorModel : PageModel
     {
         public string? RequestId { get; set; }

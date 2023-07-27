@@ -60,14 +60,14 @@ public class IndexModel : PageModel
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToPage("/AuthorizationError");
+                return RedirectToPage("/Errors/AuthorizationError");
             }
 
             var token = Request.Form["token"];
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                return RedirectToPage("/AuthorizationError");
+                return RedirectToPage("/Errors/AuthorizationError");
             }
 
             var decodedToken = DecodeJwt(token, _validationParameters.TokenValidationParameters);
@@ -82,7 +82,7 @@ public class IndexModel : PageModel
             var IsValid = ValidatePrincipal(claims!);
             if (!IsValid) 
             {
-                RedirectToPage("/AuthorizationError");
+                RedirectToPage("/Errors/AuthorizationError");
             }
 
             var claimsIdentity = new ClaimsIdentity(
@@ -108,7 +108,7 @@ public class IndexModel : PageModel
         {
             _logger.LogError(ex.ToString(), ex);
             // Something failed. Redisplay the form.
-            return RedirectToPage("/AuthorizationError");
+            return RedirectToPage("/Errors/AuthorizationError");
         }
     }
 
