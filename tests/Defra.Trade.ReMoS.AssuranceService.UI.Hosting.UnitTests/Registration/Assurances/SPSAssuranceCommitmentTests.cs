@@ -17,11 +17,12 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
 {
     private TermsAndConditions? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
+    protected Mock<IUserService> _mockUserService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object);
+        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object);
     }
 
     [Test]

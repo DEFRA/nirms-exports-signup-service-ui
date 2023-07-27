@@ -54,4 +54,43 @@ public class UserServiceTests
         // Assert
         result.Should().BeEmpty();
     }
+
+    [Test]
+    public void GetUserContactId_ReturnEmptyGuid_IfClaimNotFound()
+    {
+        // Arrange
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new Claim(ClaimTypes.Name, "example name"),
+            new Claim(ClaimTypes.NameIdentifier, "1"),
+        }, "mock"));
+        _userService = new UserService();
+
+        // Act
+        var result = _userService.GetUserContactId(user);
+
+        // Assert
+        result.Should().Be(Guid.Empty);
+    }
+
+    [Test]
+    public void GetUserContactId_ReturnValidGuid_IfClaimPresent()
+    {
+        // Arrange
+        var contactId = Guid.NewGuid();
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new Claim(ClaimTypes.Name, "example name"),
+            new Claim(ClaimTypes.NameIdentifier, "1"),
+            new Claim("contactId", contactId.ToString()),
+        }, "mock"));
+        _userService = new UserService();
+
+        // Act
+        var result = _userService.GetUserContactId(user);
+
+        // Assert
+        result.Should().NotBeEmpty();
+        result.Should().Be(contactId);
+    }
 }

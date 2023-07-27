@@ -17,10 +17,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         #endregion
 
         private readonly ITraderService _traderService;
+        private readonly IUserService _userService;
 
-        public TermsAndConditions(ITraderService traderService)
+        public TermsAndConditions(ITraderService traderService, IUserService userService)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         public IActionResult OnGet(Guid id)
@@ -41,6 +43,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
+            dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
 
             await _traderService.UpdateTradePartyAsync(dto);
 

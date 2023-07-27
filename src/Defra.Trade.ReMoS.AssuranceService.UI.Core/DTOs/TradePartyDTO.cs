@@ -11,6 +11,7 @@ public class TradePartyDTO
     public string? FboNumber { get; set; }
     public DateTime AssuranceCommitmentsSignedDate { get; set; }
     public DateTime TermsAndConditionsSignedDate { get; set; }
+    public Guid SignUpRequestSubmittedBy { get; set; }
     public TradeAddressDTO? Address { get; set; }
     public TradeContactDTO? Contact { get; set; }
     public AuthorisedSignatoryDto? AuthorisedSignatory { get; set; }

@@ -10,4 +10,5 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 public interface IUserService
 {
     Dictionary<Guid, string> GetDefraOrgsForUser(ClaimsPrincipal user);
+    Guid GetUserContactId(ClaimsPrincipal user);
 }

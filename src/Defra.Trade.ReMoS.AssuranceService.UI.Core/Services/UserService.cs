@@ -33,4 +33,14 @@ public class UserService : IUserService
 
         return orgsDict;
     }
+
+    public Guid GetUserContactId(ClaimsPrincipal user)
+    {
+        var userContactIdClaim = user.FindFirst("contactId");
+        
+        if (userContactIdClaim == null)
+            return Guid.Empty;
+
+        return Guid.Parse(userContactIdClaim.Value);
+    }
 }
