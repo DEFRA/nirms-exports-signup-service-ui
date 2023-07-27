@@ -18,33 +18,32 @@
             <input type="hidden" asp-for="CountrySaved" />
             <div class="govuk-form-group @(ModelState.HasError("GBChosen") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("GBChosen") ? "GBChosen_Error": null)">
-
-                    @if (Model.CountrySaved)
-                    {
-                        <div class="govuk-error-summary" data-module="govuk-error-summary" id="businessPickerError">
-                            <div role="alert">
-                                <h2 class="govuk-error-summary__title">
-                                    You cannot change this answer
-                                </h2>
-                                <div class="govuk-error-summary__body govuk-!-margin-bottom-5">
-                                    <ul class="govuk-list govuk-error-summary__list">
-                                        <li>
-                                            If you need to change it, contact us.
-                                        </li>
-                                    </ul>
-                                </div>
-                                <partial name="_ContactDetailsPartial" />
-                            </div>
-                        </div>
-                    }
-
                     <fieldset class="govuk-fieldset govuk-!-margin-bottom-5">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">
                                 What will your business do under the Northern Ireland Retail Movement Scheme?
                             </h1>
                         </legend>
-                   
+
+                        @if (Model.CountrySaved)
+                        {
+                            <div class="govuk-error-summary" data-module="govuk-error-summary" id="businessPickerError">
+                                <div role="alert">
+                                    <h2 class="govuk-error-summary__title">
+                                        You cannot change this answer
+                                    </h2>
+                                    <div class="govuk-error-summary__body govuk-!-margin-bottom-5">
+                                        <ul class="govuk-list govuk-error-summary__list">
+                                            <li>
+                                                If you need to change it, contact us.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <partial name="_ContactDetailsPartial" />
+                                </div>
+                            </div>
+                        }
+
                         <div class="govuk-radios" data-module="govuk-radios">
                             <p id="GBChosen_Error" class="govuk-error-message" gds-validation-for="GBChosen"></p>
                             <div class="govuk-radios__item">

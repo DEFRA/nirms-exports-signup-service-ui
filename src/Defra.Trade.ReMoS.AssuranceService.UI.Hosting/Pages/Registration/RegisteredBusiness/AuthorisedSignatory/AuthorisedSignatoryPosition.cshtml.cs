@@ -12,7 +12,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class AuthorisedSignatoryPositionModel : PageModel
 {
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Position must only include letters, numbers, and special characters -_./()&")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter the position of the authorised representative using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)")]
     [StringLength(50, ErrorMessage = "Position must be 50 characters or less")]
     [Required(ErrorMessage = "Enter the position of the authorised representative")]
     public string Position { get; set; } = string.Empty;
