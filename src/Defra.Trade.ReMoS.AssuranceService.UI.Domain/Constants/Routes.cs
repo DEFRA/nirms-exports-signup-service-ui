@@ -134,10 +134,10 @@ public static class Routes
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
             public const string RegistrationTermsAndConditionsPath = $"/Registration/Assurances/{Names.RegistrationTermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
-            public const string TermsAndConditionsPath = $"/{Names.TermsAndConditionsName}";
+            public const string TermsAndConditionsPath = $"/Footer/{Names.TermsAndConditionsName}";
             public const string ContactDetailsPath = $"/Footer/{Names.ContactDetailsName}";
             public const string AccessibilityStatementPath = $"/Footer/{Names.AccessibilityStatementName}";
-            public const string PrivacyPolicyPath = $"/{Names.PrivacyPolicyName}";
+            public const string PrivacyPolicyPath = $"/Footer/{Names.PrivacyPolicyName}";
             public const string CookiesPath = $"/Footer/{Names.CookiesName}";
         }
     }

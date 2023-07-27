@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Errors;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-[IgnoreAntiforgeryToken]
-[AllowAnonymous]
 public class ErrorModel : PageModel
 {
     public string? RequestId { get; set; }
