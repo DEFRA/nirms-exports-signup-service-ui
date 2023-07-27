@@ -25,9 +25,24 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public IActionResult OnGet(Guid id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
             TraderId = id;
+
+            TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+
+            if (dto != null)
+            {
+                var partyWithSignUpStatus = await _traderService.GetDefraOrgBusinessSignupStatus(dto.OrgId);
+
+                if (partyWithSignUpStatus.signupStatus == Core.Enums.TradePartySignupStatus.Complete)
+                {
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
+                        new { TraderId = TraderId });
+                }
+            }
+
             return Page();
         }
 
@@ -38,10 +53,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
             if (!ModelState.IsValid)
             {
-                return OnGet(TraderId);
+                return await OnGetAsync(TraderId);
             }
 
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
 
