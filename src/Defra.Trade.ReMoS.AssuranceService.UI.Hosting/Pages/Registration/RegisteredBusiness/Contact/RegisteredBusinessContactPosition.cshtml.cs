@@ -11,7 +11,7 @@ public class RegisteredBusinessContactPositionModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a position using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter the position of the contact person using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)")]
     [StringLength(50, ErrorMessage = "Position must be 50 characters or less")]
     [Required(ErrorMessage = "Enter the position of the contact person")]
     public string Position { get; set; } = string.Empty;
