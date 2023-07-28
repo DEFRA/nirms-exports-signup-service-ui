@@ -5,8 +5,20 @@
     ViewData["Title"] = "Enter Business Country";
 }
 
-@section Back{
-    <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+@section Back{ 
+
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegisteredBusinessFboNumber))
+    {
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" 
+            asp-route-id="@Model.TraderId" 
+            class="govuk-back-link">Back</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
+            asp-route-id="@Model.TraderId" 
+            class="govuk-back-link">Back to dashboard</a>
+    }
 }
 
 <div class="govuk-grid-row">
