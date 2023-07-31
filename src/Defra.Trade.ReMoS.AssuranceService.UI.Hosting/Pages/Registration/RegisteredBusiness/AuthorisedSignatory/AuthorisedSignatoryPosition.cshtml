@@ -6,7 +6,14 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+    }    
 }
 
 <div class="govuk-grid-row">
