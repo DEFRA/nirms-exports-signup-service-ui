@@ -84,6 +84,10 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessFboNumberPath,
                     new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                    new { id = TraderId });
             case Core.Enums.TradePartySignupStatus.InProgress:
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,

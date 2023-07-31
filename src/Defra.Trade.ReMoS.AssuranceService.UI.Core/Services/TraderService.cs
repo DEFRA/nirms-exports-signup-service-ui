@@ -70,12 +70,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 signupStatus = TradePartySignupStatus.Complete;
             else if (tradeParty?.Address != null)
             {
-                if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber))
+                if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber) && tradeParty.RegulationsConfirmed)
                     signupStatus = TradePartySignupStatus.InProgress;
                 else if (tradeParty.Address.TradeCountry == null)
                     signupStatus = TradePartySignupStatus.InProgressEligibilityCountry;
                 else if (tradeParty.FboNumber == null)
                     signupStatus = TradePartySignupStatus.InProgressEligibilityFboNumber;
+                else if(!tradeParty.RegulationsConfirmed)
+                    signupStatus = TradePartySignupStatus.InProgressEligibilityRegulations;
             }
 
             return (tradeParty, signupStatus);

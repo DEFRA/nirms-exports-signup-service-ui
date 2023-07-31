@@ -290,7 +290,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgress_When_CountryAndFboFilled()
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgress_When_CountryAndFboAndRegulationsFilled()
         {
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
@@ -300,6 +300,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 Id = Guid.NewGuid(),
                 Address = new TradeAddressDTO { TradeCountry = "GB" },
                 FboNumber = "1234",
+                RegulationsConfirmed = true,
             };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
@@ -351,6 +352,30 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(tradePartyDto);
             var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityFboNumber);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityRegulations_When_Regulatons_Not_Confirmed()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDTO
+            {
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" },
+                FboNumber = "1234",
+            };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityRegulations);
 
             // Act
             var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
