@@ -44,11 +44,15 @@
 <body class="govuk-body">
     <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <div class="govuk-width-container">
-        <div class="login-nav login-border">
-            <ul class="login-nav__list">
-                <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
-            </ul>
-        </div>
+        @await RenderSectionAsync("Signout", false)
+        @if (!IsSectionDefined("Signout"))
+        {
+            <div class="login-nav login-border">
+                <ul class="login-nav__list">
+                    <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
+                </ul>
+            </div>
+        }
         @await RenderSectionAsync("Back", required: false)
         <main role="main" id="MainContent" class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
             @RenderBody()
