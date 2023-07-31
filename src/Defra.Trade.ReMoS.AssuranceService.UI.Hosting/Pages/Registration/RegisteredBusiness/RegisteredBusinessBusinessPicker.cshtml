@@ -50,6 +50,14 @@
 
                     <div class="govuk-radios" data-module="govuk-radios">
 
+                        @if(Model.Businesses.Count > 7)
+                        {
+                            <select class="govuk-select" asp-for="BusinessId"
+                            asp-items="@(new SelectList(Model)"">
+                                
+                            </select>
+                        }
+
                         @foreach (KeyValuePair<Guid, string> business in Model.Businesses)
                         {
                             <div class="govuk-radios__item">

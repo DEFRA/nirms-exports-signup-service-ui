@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
@@ -22,6 +23,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     [Required(ErrorMessage = "Select a business")]
     public string SelectedBusiness { get; set; } = default!;
     public Guid TraderId { get; set; }
+    public Guid BusinessId { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessBusinessPickerModel> _logger;
@@ -42,6 +44,20 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnGet");
         Businesses = _userService.GetDefraOrgsForUser(User);
+        Businesses = new Dictionary<Guid, string>
+        {
+            {Guid.NewGuid(), "AdrianLtd1" },
+            {Guid.NewGuid(), "AdrianLtd2" },
+            {Guid.NewGuid(), "AdrianLtd3" },
+            {Guid.NewGuid(), "AdrianLtd4" },
+            {Guid.NewGuid(), "AdrianLtd5" },
+            {Guid.NewGuid(), "AdrianLtd6" },
+            {Guid.NewGuid(), "AdrianLtd7" },
+            {Guid.NewGuid(), "AdrianLtd8" }
+        };
+
+        var selectList = new SelectList(Businesses)
+        
         return Page();
     }
 
