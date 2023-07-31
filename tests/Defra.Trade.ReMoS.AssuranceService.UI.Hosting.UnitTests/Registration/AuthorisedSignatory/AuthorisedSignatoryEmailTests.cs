@@ -18,12 +18,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<AuthorisedSignatoryEmailModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
+        protected Mock<IEstablishmentService> _mockEstabService = new();
 
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new AuthorisedSignatoryEmailModel(_mockTraderService.Object, _mockLogger.Object);
+            _systemUnderTest = new AuthorisedSignatoryEmailModel(
+                _mockTraderService.Object, 
+                _mockEstabService.Object, 
+                _mockLogger.Object);
         }
 
         [Test]
