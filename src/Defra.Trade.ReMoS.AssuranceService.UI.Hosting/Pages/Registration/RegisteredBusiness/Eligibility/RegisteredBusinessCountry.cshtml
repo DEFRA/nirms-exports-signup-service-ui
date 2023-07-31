@@ -6,7 +6,6 @@
 }
 
 @section Back{ 
-
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegisteredBusinessFboNumber))
     {
         <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" 
@@ -17,7 +16,7 @@
     {
         <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
             asp-route-id="@Model.TraderId" 
-            class="govuk-back-link">Back to dashboard</a>
+            class="govuk-back-link">Back</a>
     }
 }
 
