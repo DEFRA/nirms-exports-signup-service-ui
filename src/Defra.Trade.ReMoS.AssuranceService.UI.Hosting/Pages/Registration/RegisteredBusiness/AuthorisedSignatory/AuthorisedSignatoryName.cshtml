@@ -6,7 +6,7 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.AuthorisedSignatoryDetailsPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
 }
 
 <div class="govuk-grid-row">
@@ -18,17 +18,14 @@
                 <label for="Name">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
-                        Full name of Authorised Signatory
+                        Who is the authorised representative at your business?
                     </h1>
                 </label>
 
                 <div class="govuk-form-group">
-                    <p class="govuk-hint" for="Name">
-                        The full name of the Authorised Signatory at @Model.BusinessName.
-                    </p>
                     <p id="name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
                     <input class="govuk-input" id="Name" asp-for="Name" type="text">
-                </div>                
+                </div>
             </div>
             <div class="govuk-form-group">
                 <button class="govuk-button" asp-page-handler="submit">Save and continue</button>

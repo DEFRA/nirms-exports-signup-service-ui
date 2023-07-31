@@ -17,8 +17,8 @@ public class SignUpConfirmationModel : PageModel
     public SignUpConfirmationModel(ITraderService traderService)
     {
         _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-
     }
+
     public async Task<IActionResult> OnGet(Guid id)
     {
         TraderId = id;

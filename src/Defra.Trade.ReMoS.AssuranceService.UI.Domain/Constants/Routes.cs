@@ -3,6 +3,7 @@
 public static class Routes
 {
     public const string RegisteredBusinessBusinessPicker = "/registered-business-picker";
+    public const string RegisteredBusinessAlreadyRegistered = "/business-already-registered";
     public const string RegisteredBusinessCountry = "/registered-business-country";
     public const string RegisteredBusinessRegulations = "/registered-business-regulations";
     public const string RegisteredBusinessFboNumber = "/registered-business-fbo-number";
@@ -25,13 +26,18 @@ public static class Routes
     public const string AuthorisedSignatoryPosition = "/authorised-signatory-position";
     public const string AuthorisedSignatoryEmail = "/authorised-signatory-email";
     public const string RegistrationCheckYourAnswers = "/registration-check-your-answers";
-    public const string TermsAndConditions = "/registration-terms-and-conditions";
-    public const string SignUpConfirmation = "/confirmation";    
-    
+    public const string RegistrationTermsAndConditions = "/registration-terms-and-conditions";
+    public const string SignUpConfirmation = "/confirmation";
+    public const string TermsAndConditions = "/terms-conditions";
+    public const string ContactDetails = "/contact";
+    public const string AccessibilityStatement = "/accessibility-statement";
+    public const string PrivacyPolicy = "/privacy-policy";
+    public const string Cookies = "/cookies";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
         (Pages.Path.RegisteredBusinessBusinessPickerPath, RegisteredBusinessBusinessPicker),
+        (Pages.Path.RegisteredBusinessAlreadyRegisteredPath, RegisteredBusinessAlreadyRegistered),
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
         (Pages.Path.RegisteredBusinessRegulationsPath, RegisteredBusinessRegulations),
         (Pages.Path.RegisteredBusinessFboNumberPath, RegisteredBusinessFboNumber),
@@ -55,7 +61,12 @@ public static class Routes
         (Pages.Path.AuthorisedSignatoryPositionPath, AuthorisedSignatoryPosition),
         (Pages.Path.RegistrationCheckYourAnswersPath, RegistrationCheckYourAnswers),
         (Pages.Path.TermsAndConditionsPath, TermsAndConditions),
-        (Pages.Path.SignUpConfirmationPath, SignUpConfirmation)
+        (Pages.Path.RegistrationTermsAndConditionsPath, RegistrationTermsAndConditions),
+        (Pages.Path.SignUpConfirmationPath, SignUpConfirmation),
+        (Pages.Path.ContactDetailsPath, ContactDetails),
+        (Pages.Path.AccessibilityStatementPath, AccessibilityStatement),
+        (Pages.Path.PrivacyPolicyPath, PrivacyPolicy),
+        (Pages.Path.CookiesPath, Cookies)
     };
 
     public static class Pages
@@ -63,6 +74,7 @@ public static class Routes
         public static class Names
         {
             public const string RegisteredBusinessBusinessPickerName = "RegisteredBusinessBusinessPicker";
+            public const string RegisteredBusinessAlreadyRegisteredName = "RegisteredBusinessAlreadyRegistered";
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
             public const string RegisteredBusinessRegulationsName = "EligibilityRegulations";
             public const string RegisteredBusinessFboNumberName = "RegisteredBusinessFboNumber";
@@ -85,13 +97,19 @@ public static class Routes
             public const string AuthorisedSignatoryEmailName = "AuthorisedSignatoryEmail";
             public const string AuthorisedSignatoryPositionName = "AuthorisedSignatoryPosition";
             public const string RegistrationCheckYourAnwersName = "CheckYourAnswers";
-            public const string TermsAndConditionsName = "TermsAndConditions";
+            public const string RegistrationTermsAndConditionsName = "TermsAndConditions";
             public const string SignUpConfirmationName = "SignUpConfirmation";
+            public const string TermsAndConditionsName = "TermsConditions";
+            public const string ContactDetailsName = "Contact";
+            public const string AccessibilityStatementName = "AccessibilityStatement";
+            public const string PrivacyPolicyName = "Privacy";
+            public const string CookiesName = "Cookies";
         }
 
         public static class Path
         {
             public const string RegisteredBusinessBusinessPickerPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessBusinessPickerName}";
+            public const string RegisteredBusinessAlreadyRegisteredPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAlreadyRegisteredName}";
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryName}";
             public const string RegisteredBusinessRegulationsPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessRegulationsName}";
             public const string RegisteredBusinessFboNumberPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboNumberName}";
@@ -114,8 +132,13 @@ public static class Routes
             public const string AuthorisedSignatoryPositionPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryPositionName}";
             public const string AuthorisedSignatoryEmailPath = $"/Registration/RegisteredBusiness/AuthorisedSignatory/{Names.AuthorisedSignatoryEmailName}";
             public const string RegistrationCheckYourAnswersPath = $"/Registration/CheckYourAnswers/{Names.RegistrationCheckYourAnwersName}";
-            public const string TermsAndConditionsPath = $"/Registration/Assurances/{Names.TermsAndConditionsName}";
+            public const string RegistrationTermsAndConditionsPath = $"/Registration/Assurances/{Names.RegistrationTermsAndConditionsName}";
             public const string SignUpConfirmationPath = $"/Registration/Confirmation/{Names.SignUpConfirmationName}";
+            public const string TermsAndConditionsPath = $"/Footer/{Names.TermsAndConditionsName}";
+            public const string ContactDetailsPath = $"/Footer/{Names.ContactDetailsName}";
+            public const string AccessibilityStatementPath = $"/Footer/{Names.AccessibilityStatementName}";
+            public const string PrivacyPolicyPath = $"/Footer/{Names.PrivacyPolicyName}";
+            public const string CookiesPath = $"/Footer/{Names.CookiesName}";
         }
     }
 }

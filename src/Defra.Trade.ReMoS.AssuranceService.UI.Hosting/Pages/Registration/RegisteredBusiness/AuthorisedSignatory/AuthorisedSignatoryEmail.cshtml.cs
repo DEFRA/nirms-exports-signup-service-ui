@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.Management.Sql.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 #pragma warning disable CS8602, CS8601
@@ -12,9 +13,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     public class AuthorisedSignatoryEmailModel : PageModel
     {
         #region ui model
-        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+        [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [BindProperty]
-        [Required(ErrorMessage = "Enter the email address of the authorised signatory.")]
+        [Required(ErrorMessage = "Enter the email address of the authorised representative")]
         public string? Email { get; set; }
         [BindProperty]
         public string? BusinessName { get; set; }
@@ -27,11 +28,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         #endregion
 
         private readonly ITraderService _traderService;
+        private readonly IEstablishmentService _establishmentService;
         private readonly ILogger<AuthorisedSignatoryEmailModel> _logger;
 
-        public AuthorisedSignatoryEmailModel(ITraderService traderService, ILogger<AuthorisedSignatoryEmailModel> logger)
+        public AuthorisedSignatoryEmailModel(
+            ITraderService traderService, 
+            IEstablishmentService establishmentService,
+            ILogger<AuthorisedSignatoryEmailModel> logger)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -57,9 +63,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             string countryFlag = "GB";
 
-            if (Country != "NI")
+            if (Country == "NI")
             {
                 countryFlag = "NI";
+            }
+
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TraderId);
+
+            if ( establishments != null && establishments.Any())
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.AdditionalEstablishmentAddressPath,
+                    new { id = TraderId, NI_GBFlag = countryFlag });
             }
 
             return RedirectToPage(

@@ -86,16 +86,12 @@ extends:
     appSettingsEnv:
         dev: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
         tst: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
         pre: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
         prd: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -KeyVaultEndpoint "https://$(environment)trdinfkv1001.vault.azure.net/"
     runSonarScan: true
     runVulnerabilityScan: false
     sonarExclusionPaths: 'src/*.Api*/**, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Program.cs, src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/www**,src/Defra.Trade.ReMoS.AssuranceService.UI.Hosting/Node**'

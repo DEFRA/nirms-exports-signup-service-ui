@@ -4,7 +4,6 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
@@ -12,8 +11,11 @@ public class RegisteredBusinessCountryModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [Required(ErrorMessage = "Select a country")]
-    public string Country { get; set; } = string.Empty;
+    public string? Country { get; set; } = string.Empty;
+
+    [BindProperty]
+    //[Required(ErrorMessage = "Select what your business will do under the scheme")]
+    public string? GBChosen { get; set; }
 
     [BindProperty]
     public Guid TraderId { get; set; }
@@ -41,6 +43,17 @@ public class RegisteredBusinessCountryModel : PageModel
             CountrySaved = !string.IsNullOrEmpty(Country);
         }
 
+        if (Country != "")
+        {
+            if (Country == "NI")
+            {
+                GBChosen = "recieve";
+            }
+            else{
+                GBChosen = "send";
+            }
+        }
+
         return Page();
     }
 
@@ -48,16 +61,22 @@ public class RegisteredBusinessCountryModel : PageModel
     {
         _logger.LogInformation("Country OnPostSubmit");
 
+        if (!CountrySaved)
+        {
+            CheckVariables();
+        }
+        
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TraderId);
+        }
+
         if (CountrySaved)
         {
             return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessFboNumberPath,
             new { id = TraderId });
-        }
-
-        if (!ModelState.IsValid)
-        {
-            return await OnGetAsync(TraderId);
         }
 
         await SaveCountryToApiAsync();
@@ -67,6 +86,7 @@ public class RegisteredBusinessCountryModel : PageModel
             new { id = TraderId });
     }
 
+    #region private methods
     private TradePartyDTO CreateDTO()
     {
         TradePartyDTO DTO = new()
@@ -78,6 +98,25 @@ public class RegisteredBusinessCountryModel : PageModel
         };
 
         return DTO;
+    }
+
+    private void CheckVariables()
+    {
+        if (GBChosen == "" || GBChosen == null)
+        {
+            ModelState.AddModelError(nameof(GBChosen), "Select what your business will do under the scheme");
+            return;
+        }
+
+        if (GBChosen == "recieve")
+        {
+            Country = "NI";
+        }
+
+        if (Country == "")
+        {
+            ModelState.AddModelError(nameof(Country), "Select a location");
+        }
     }
 
     private async Task<string> GetCountryFromApiAsync()
@@ -98,12 +137,9 @@ public class RegisteredBusinessCountryModel : PageModel
             return;
         }
 
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        var tradeAddress = new TradeAddressDTO { TradeCountry = Country };
+        await _traderService.AddTradePartyAddressAsync(TraderId, tradeAddress);
 
-        if (tradeParty != null && tradeParty.Address != null)
-        {
-            tradeParty.Address.TradeCountry = Country;
-            await _traderService.UpdateTradePartyAddressAsync(tradeParty);
-        }
     }
+    #endregion
 }

@@ -9,7 +9,7 @@
             case "Completed":
                 return "green";                
             case "In Progress":
-                return "yellow";
+                return "blue";
             default:
                 return "grey";
         }
@@ -70,7 +70,7 @@
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
                             <a asp-page=@Routes.Pages.Path.AuthorisedSignatoryDetailsPath asp-route-id="@Model.RegistrationID" aria-describedby="authorised-signatory-details">
-                                Authorised signatory
+                                Authorised representative
                             </a>
                         </span>
                         <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.AuthorisedSignatoryDetails)" id="authorised-signatory-details">@Model.AuthorisedSignatoryDetails</strong>

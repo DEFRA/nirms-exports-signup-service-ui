@@ -19,6 +19,7 @@ public class TradePartyTests
             PartyName = "Trade party Ltd",
             NatureOfBusiness = "Wholesale Hamster Supplies",
             FboNumber = "fbonum-123456-fbonum",
+            SignUpRequestSubmittedBy = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
         };
 
         //Assert
@@ -26,6 +27,7 @@ public class TradePartyTests
         tradeParty.PartyName.Should().Be("Trade party Ltd");
         tradeParty.NatureOfBusiness.Should().Be("Wholesale Hamster Supplies");
         tradeParty.FboNumber.Should().Be("fbonum-123456-fbonum");
+        tradeParty.SignUpRequestSubmittedBy.Should().Be(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"));
     }
 }
 
@@ -334,7 +336,7 @@ public class LogisticsLocationTests
             TradeAddressId = tradeAddressId,
             CreatedDate = created,
             LastModifiedDate = lastModified,
-            NI_GBFlag = "true",
+            NI_GBFlag = "GB",
 
         };
 
@@ -353,6 +355,6 @@ public class LogisticsLocationTests
         logisticsLocation.TradeAddressId.Should().Be(tradeAddressId);
         logisticsLocation.CreatedDate.Should().Be(created);
         logisticsLocation.LastModifiedDate.Should().Be(lastModified);
-        logisticsLocation.NI_GBFlag.Should().Be("true");
+        logisticsLocation.NI_GBFlag.Should().Be("GB");
     }
 }

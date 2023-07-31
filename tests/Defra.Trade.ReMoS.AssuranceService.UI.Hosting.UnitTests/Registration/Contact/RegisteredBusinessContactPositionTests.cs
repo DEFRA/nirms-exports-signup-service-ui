@@ -39,7 +39,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitValidInformation()
     {
         // arrange
-        _systemUnderTest.Position = "aZ9 -'";
+        _systemUnderTest.Position = "aZ9";
 
         // act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -53,7 +53,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     public async Task OnPostSave_SubmitValidInformation()
     {
         // arrange
-        _systemUnderTest.Position = "aZ9 -'";
+        _systemUnderTest.Position = "aZ9";
 
         // act
         await _systemUnderTest.OnPostSaveAsync();

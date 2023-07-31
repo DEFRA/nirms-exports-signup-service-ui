@@ -17,30 +17,49 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         #endregion
 
         private readonly ITraderService _traderService;
+        private readonly IUserService _userService;
 
-        public TermsAndConditions(ITraderService traderService)
+        public TermsAndConditions(ITraderService traderService, IUserService userService)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public IActionResult OnGet(Guid id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
             TraderId = id;
+
+            TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+
+            if (dto != null)
+            {
+                var partyWithSignUpStatus = await _traderService.GetDefraOrgBusinessSignupStatus(dto.OrgId);
+
+                if (partyWithSignUpStatus.signupStatus == Core.Enums.TradePartySignupStatus.Complete)
+                {
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
+                        new { TraderId = TraderId });
+                }
+            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
             if (!TandCs)
-                ModelState.AddModelError(nameof(TandCs), "Confirm that the above requirements will be met");
+                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms of conditions of the scheme");
 
             if (!ModelState.IsValid)
             {
-                return OnGet(TraderId);
+                return await OnGetAsync(TraderId);
             }
 
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
+            dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
 
             await _traderService.UpdateTradePartyAsync(dto);
 

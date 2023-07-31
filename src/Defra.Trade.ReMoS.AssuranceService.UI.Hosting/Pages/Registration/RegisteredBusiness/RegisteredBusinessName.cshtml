@@ -14,7 +14,7 @@
     }
     else
     {
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
     }
 }
 
@@ -28,9 +28,12 @@
                 <label for="Name">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Business details</span>
-                        What is the name of your business?
+                        Confirm your business name
                     </h1>
                 </label>
+
+                <p class="govuk-hint">Enter the business name that you selected when you started your sign-up request.</p>
+
                 <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
                 <input class="govuk-input" id="Name" asp-for="Name" type="text" />
             </div>

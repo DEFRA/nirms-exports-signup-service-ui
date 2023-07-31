@@ -1,13 +1,13 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Errors;
 
-[ExcludeFromCodeCoverage]
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-[IgnoreAntiforgeryToken]
+[ExcludeFromCodeCoverage]
 public class ErrorModel : PageModel
 {
     public string? RequestId { get; set; }
@@ -24,7 +24,7 @@ public class ErrorModel : PageModel
     public void OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-        _logger.LogError("Error page");
+        _logger.LogError("Error page encountered fpr request: " + RequestId);
     }
 }
 

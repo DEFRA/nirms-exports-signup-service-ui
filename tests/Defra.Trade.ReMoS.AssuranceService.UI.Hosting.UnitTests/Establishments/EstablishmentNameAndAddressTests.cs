@@ -84,6 +84,33 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
+        public async Task OnPostSubmit_SubmitValidAddress_DuplicateSpotted_FlagsChecked()
+        {
+            //Arrange
+
+            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO { Name = "Test name",
+                Address = new TradeAddressDTO { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+
+            _systemUnderTest!.EstablishmentId = Guid.NewGuid();
+            _systemUnderTest!.EstablishmentName = "Test name";
+            _systemUnderTest!.LineOne = "Line one";
+            _systemUnderTest!.LineTwo = "Line two";
+            _systemUnderTest!.CityName = "City";
+            _systemUnderTest!.County = "Berkshire";
+            _systemUnderTest!.PostCode = "TES1";
+
+            _systemUnderTest.NI_GBFlag = "NI";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+
+            //Assert
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.HasError("EstablishmentName").Should().Be(true);
+        }
+
+        [Test]
         public async Task OnPostSubmit_SubmitInValidRadio()
         {
             //Arrange

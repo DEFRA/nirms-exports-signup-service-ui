@@ -61,7 +61,7 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         var expectedHeading = "Add a place of destination";
-        var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+        var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");

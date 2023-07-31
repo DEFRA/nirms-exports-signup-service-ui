@@ -14,37 +14,37 @@ public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter establishment name using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter establishment name using only letters, numbers, hyphens (-) and apostrophes (')")]
     [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
-    [Required(ErrorMessage = "Enter establishment name.")]
+    [Required(ErrorMessage = "Enter an establishment name")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (')")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
-    [Required(ErrorMessage = "Enter address line 1.")]
+    [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (')")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a town or city using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a town or city using only letters, numbers, hyphens (-) and apostrophes (')")]
     [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
-    [Required(ErrorMessage = "Enter a town or city.")]
+    [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a county using only letters, numbers, hyphens (-) and apostrophes (').")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a county using only letters, numbers, hyphens (-) and apostrophes (')")]
     [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode.")]
+    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode")]
     [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
-    [Required(ErrorMessage = "Enter a post code.")]
+    [Required(ErrorMessage = "Enter a postcode")]
     public string PostCode { get; set; } = string.Empty;
 
     [BindProperty]
@@ -103,7 +103,18 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if(await CheckForDuplicateAsync())
         {
-            var baseError = "The entered establishment address is a duplicate of one already entered";
+            string place;
+            if (NI_GBFlag == "NI")
+            {
+                place = "destination";
+            }
+            else
+            {
+                place = "dispatch";
+            }
+
+            var baseError = $"This address has already been added as a place of {place} - enter a different address";
+
             ModelState.AddModelError(nameof(EstablishmentName), baseError);
             return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }

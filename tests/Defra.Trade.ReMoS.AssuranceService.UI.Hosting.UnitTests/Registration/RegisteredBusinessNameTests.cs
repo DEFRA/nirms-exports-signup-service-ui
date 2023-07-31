@@ -100,7 +100,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest.Name = "Business%%Name1";
-        var expectedResult = "Enter your business name using only letters, numbers, and special characters -_./()&";
+        var expectedResult = "Enter your business name using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -116,7 +116,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest.Name = "Business%%Name1";
-        var expectedResult = "Enter your business name using only letters, numbers, and special characters -_./()&";
+        var expectedResult = "Enter your business name using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)";
 
         //Act
         await _systemUnderTest.OnPostSaveAsync();

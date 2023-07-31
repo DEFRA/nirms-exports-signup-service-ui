@@ -13,7 +13,7 @@
            class="govuk-back-link">Back</a>
     }
     else{
-    <a asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
     }
 }
 
@@ -27,11 +27,11 @@
                 <label for="Position">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
-                        Position
+                        What is the contact person's position at your business?
                     </h1>
                 </label>
                 <p class="govuk-hint" id="name-hint">
-                    The position of the contact person at the business responsible for Northern Ireland Retail Movement Scheme movements, for example 'Administrator'.
+                    For example 'Manager'.
                 </p>
 
                 <p id="Name_Error" class="govuk-error-message" gds-validation-for="Position"></p>

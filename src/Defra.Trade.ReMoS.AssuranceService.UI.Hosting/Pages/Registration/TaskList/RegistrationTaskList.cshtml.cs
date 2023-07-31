@@ -32,12 +32,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         private readonly ILogger<RegistrationTaskListModel> _logger;
         private readonly ITraderService _traderService;
         private readonly IEstablishmentService _establishmentService;
+        private readonly ICheckAnswersService _checkAnswersService;
 
-        public RegistrationTaskListModel(ILogger<RegistrationTaskListModel> logger, ITraderService traderService, IEstablishmentService establishmentService)
+        public RegistrationTaskListModel(ILogger<RegistrationTaskListModel> logger, ITraderService traderService, IEstablishmentService establishmentService, ICheckAnswersService checkAnswersService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
             _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
+            _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
         }
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
@@ -122,57 +124,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
         {
-            if (tradeParty.PartyName != null && tradeParty.Address != null
-                && tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
-            {
-                return TaskListStatus.COMPLETE;
-            }
-
-            if (tradeParty?.PartyName != null || tradeParty?.Address != null
-                || tradeParty?.Address?.LineOne != null || tradeParty?.Address?.PostCode != null)
-            {
-                return TaskListStatus.INPROGRESS;                
-            }
-
-            return TaskListStatus.NOTSTART;
+            return _checkAnswersService.GetBusinessDetailsProgress(tradeParty);
         }
 
         public string GetContactDetailsProgress(TradePartyDTO tradeParty)
         {
-            if (tradeParty.Contact != null && tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
-            {
-                return TaskListStatus.COMPLETE;
-            }
-
-            if (tradeParty.Contact != null || tradeParty?.Contact?.PersonName != null || tradeParty?.Contact?.Email != null || tradeParty?.Contact?.TelephoneNumber != null || tradeParty?.Contact?.Position != null)
-            {
-                return TaskListStatus.INPROGRESS;
-            }
-
-            return TaskListStatus.NOTSTART;
+            return _checkAnswersService.GetContactDetailsProgress(tradeParty);
         }
 
         public string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty)
         {
-            if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
-            {
-                if (tradeParty.Contact?.IsAuthorisedSignatory == true)
-                {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
-                {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null || tradeParty.AuthorisedSignatory.Position != null || tradeParty.AuthorisedSignatory.EmailAddress != null)
-                {
-                    return TaskListStatus.INPROGRESS;
-                }
-            }
-
-            return TaskListStatus.NOTSTART;
+            return _checkAnswersService.GetAuthorisedSignatoryProgress(tradeParty);
         }
     }
 }
