@@ -44,20 +44,12 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnGet");
         Businesses = _userService.GetDefraOrgsForUser(User);
-        Businesses = new Dictionary<Guid, string>
-        {
-            {new Guid("152691A1-6D8B-E911-A96F-000D3A29B5DE"), "ABC ACCOUNTANCY & MARKETING SERVICES LTD" },
-            {Guid.NewGuid(), "AdrianLtd2" },
-            {Guid.NewGuid(), "AdrianLtd3" },
-            {Guid.NewGuid(), "AdrianLtd5" },
-            {Guid.NewGuid(), "AdrianLtd4" },
-            {Guid.NewGuid(), "AdrianLtd6" },
-            {Guid.NewGuid(), "AdrianLtd7" },
-            {Guid.NewGuid(), "AdrianLtd8" }
-        };
-        
-        BuildBusinessSelectList();
 
+        if (Businesses?.Count > 7 ) 
+        {
+            BuildBusinessSelectList();
+        }
+        
         return Page();
     }
 
