@@ -38,9 +38,7 @@
                                             If the business you want to select already has a Defra account, you'll need to contact your business' account administrator so they can give you access. To learn more about account access, you can read about how to <a rel="noopener" href="https://www.gov.uk/government/publications/how-to-register-for-export-health-certificate-ehc-online/ehc-online-manage-access-using-your-defra-account" target="_blank">manage access using your Defra account</a>.
                                         </li>
                                         <li>
-                                            If your business does not have a Defra account, you'll need to <a href="" target="_blank">
-                                                add a business to your individual account
-                                            </a>.
+                                            If your business does not have a Defra account, you'll need to add a business to your individual account
                                         </li>
                                     </ul>
                                 </div>
@@ -48,25 +46,25 @@
                         </div>
                     }
 
-                    <div class="govuk-radios" data-module="govuk-radios">
-
-                        @foreach (KeyValuePair<Guid, string> business in Model.Businesses)
-                        {
+                    <div class="govuk-form-group @(ModelState.HasError("SelectedBusiness") ? "govuk-form-group--error" : null)">
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            @foreach (KeyValuePair<Guid, string> business in Model.Businesses)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="@business.Key" id="@business.Key" onchange="RemoveUnregisteredBusinessError()">
+                                    <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="@business.Key">
+                                        @business.Value
+                                    </label>
+                                </div>
+                            }
+                            <div class="govuk-radios__divider">or</div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="@business.Key" id="@business.Key" onchange="RemoveUnregisteredBusinessError()">
-                                <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="@business.Key">
-                                    @business.Value
+                                <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="Another business" id="anotherBusiness">
+                                <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="anotherBusiness">
+                                    Another business
                                 </label>
                             </div>
-                        }
-                        <div class="govuk-radios__divider">or</div>
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="Another business" id="anotherBusiness">
-                            <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="anotherBusiness">
-                                Another business
-                            </label>
                         </div>
-
                     </div>
 
                 </fieldset>
