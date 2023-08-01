@@ -36,12 +36,12 @@
                     <p id="OptionSelected_Error" class="govuk-error-message" gds-validation-for="OptionSelected"></p>
 
 
-                    <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios" data-module="govuk-radios" id="OptionSelected">
 
                         <!-- YES -->
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-has-fbo" type="radio" asp-for="OptionSelected" value="yes" aria-controls="conditional-fbo" aria-expanded="false">
-                            <label class="govuk-label govuk-radios__label" for="radio-has-fbo">
+                            <input class="govuk-radios__input" type="radio" id="OptionSelectedYes" asp-for="OptionSelected" value="yes" aria-controls="conditional-fbo" aria-expanded="false">
+                            <label class="govuk-label govuk-radios__label" for="OptionSelectedYes">
                                 Yes
                             </label>
                         </div>
@@ -58,8 +58,8 @@
 
                         <!-- NO -->
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="radio-no-fbo" type="radio" asp-for="OptionSelected" value="no">
-                            <label class="govuk-label govuk-radios__label" for="radio-no-fbo">
+                            <input class="govuk-radios__input" type="radio" id="OptionSelectedNo" asp-for="OptionSelected" value="no">
+                            <label class="govuk-label govuk-radios__label" for="OptionSelectedNo">
                                 No
                             </label>
                         </div>
