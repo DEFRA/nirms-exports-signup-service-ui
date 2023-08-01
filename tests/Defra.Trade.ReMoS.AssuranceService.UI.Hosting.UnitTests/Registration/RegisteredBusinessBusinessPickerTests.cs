@@ -56,6 +56,19 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
+    public async Task OnPostSubmitAsync_IfChooseBusinessSelected_AddModelError()
+    {
+        // Arrange
+        _systemUnderTest!.SelectedBusiness = "Choose business";
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.HasError("Business").Should().BeTrue();
+    }
+
+    [Test]
     public async Task OnPostSubmitAsync_When_SignupStatus_Is_New_RedirectToCountryPage()
     {
         // Arrange
