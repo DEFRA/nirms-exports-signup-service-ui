@@ -187,4 +187,25 @@ public class RegisteredBusinessBusinessPickerTests
         result.Should().BeOfType<RedirectToPageResult>();
         Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
     }
+
+    [Test]
+    public async Task OnPostSubmitAsync_When_SignupSTatus_Is_InProgressEligibilityRegulations_RedirectToRegulationsPage()
+    {
+        // Arrange
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations));
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+    }
 }
