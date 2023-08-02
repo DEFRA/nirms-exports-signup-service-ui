@@ -59,7 +59,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                     return TaskListStatus.COMPLETE;
                 }
 
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null || tradeParty.AuthorisedSignatory.Position != null || tradeParty.AuthorisedSignatory.EmailAddress != null)
+                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory?.Id != null)
                 {
                     return TaskListStatus.INPROGRESS;
                 }
