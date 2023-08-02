@@ -153,7 +153,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.GetAPIData();
 
             //Assert
-            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.INPROGRESS);
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.GetAPIData();
 
             //Assert
-            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.INPROGRESS);
         }
 
         [Test]
@@ -216,6 +216,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 PartyName = "Test",
                 FboNumber = "123",
                 NatureOfBusiness = "Test nature",
+                RegulationsConfirmed = true
             };
 
             var list = new List<LogisticsLocationDTO>
@@ -270,7 +271,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Address = tradeAddress,
                 PartyName = "Test",
                 FboNumber = "123",
-                NatureOfBusiness = "Test nature"
+                NatureOfBusiness = "Test nature",
+                RegulationsConfirmed = true
             };
 
             var list = new List<LogisticsLocationDTO>
@@ -325,7 +327,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Contact = tradeContact,
                 PartyName = "Test",
                 FboNumber = "123",
-                NatureOfBusiness = "Test nature"
+                NatureOfBusiness = "Test nature",
+                RegulationsConfirmed = true
             };
 
 

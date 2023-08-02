@@ -7,5 +7,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         string GetBusinessDetailsProgress(TradePartyDTO tradeParty);
         string GetContactDetailsProgress(TradePartyDTO tradeParty);
         string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty);
+        string GetEligibilityProgress(TradePartyDTO tradeParty);
     }
 }

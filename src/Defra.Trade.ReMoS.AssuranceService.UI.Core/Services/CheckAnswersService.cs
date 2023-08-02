@@ -21,8 +21,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty?.PartyName != null || tradeParty?.Address != null
-                || tradeParty?.Address?.LineOne != null || tradeParty?.Address?.PostCode != null)
+            if (tradeParty?.PartyName != null && (tradeParty?.Address == null
+                || tradeParty?.Address?.LineOne == null || tradeParty?.Address?.PostCode == null))
             {
                 return TaskListStatus.INPROGRESS;
             }
@@ -65,6 +65,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 }
             }
 
+            return TaskListStatus.NOTSTART;
+        }
+
+        public string GetEligibilityProgress(TradePartyDTO tradeParty)
+        {
+            if (tradeParty.Address != null)
+            {
+                if (tradeParty.Address!.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber) && tradeParty.RegulationsConfirmed)
+                {
+                    return TaskListStatus.COMPLETE;
+                }
+                if (tradeParty.Address!.TradeCountry == null || string.IsNullOrEmpty(tradeParty.FboNumber) || !tradeParty.RegulationsConfirmed)
+                {
+                    return TaskListStatus.INPROGRESS;
+                }
+            }
             return TaskListStatus.NOTSTART;
         }
     }
