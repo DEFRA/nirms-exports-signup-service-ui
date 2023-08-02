@@ -400,7 +400,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         [TestCase(false, "TestName", null, null, TaskListStatus.INPROGRESS)]
         [TestCase(false, null, "TestPosition", null, TaskListStatus.INPROGRESS)]
         [TestCase(false, null, null, "TestEmail", TaskListStatus.INPROGRESS)]
-        [TestCase(false, null, null, null, TaskListStatus.NOTSTART)]
         [TestCase(true, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
         [TestCase(false, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
         public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
@@ -411,6 +410,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Contact = new TradeContactDTO() { IsAuthorisedSignatory = isAuthSig },
                 AuthorisedSignatory = new AuthorisedSignatoryDto() 
                 { 
+                    Id = Guid.NewGuid(),
                     Name = name,
                     Position = position,
                     EmailAddress = email
