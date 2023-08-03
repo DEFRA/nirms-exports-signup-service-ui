@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confirmation;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -17,11 +18,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     {
         protected Mock<ITraderService> _mockTraderService = new();
         private SignUpConfirmationModel? _systemUnderTest;
+        private Mock<IConfiguration> _mockConfiguration = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object);
+            var _mockConfigSection = new Mock<IConfigurationSection>();
+            _mockConfigSection.Setup(x => x.Value).Returns("testurl");
+            _mockConfiguration.Setup(x => x.GetSection("ExternalLinks:StartNowPage")).Returns(_mockConfigSection.Object);
+            _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockConfiguration.Object);
         }
 
         [Test]
@@ -35,6 +40,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             //assert
             _systemUnderTest.TraderId.Should().Be(tradePartyId);
+            _systemUnderTest.StartNowPage.Should().Be("testurl");
         }
 
         [Test]
