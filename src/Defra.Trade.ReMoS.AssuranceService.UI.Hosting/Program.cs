@@ -23,6 +23,7 @@ internal sealed class Program
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
         // Add services to the container.
         builder.Services.AddRazorPages(options =>
@@ -67,6 +68,7 @@ internal sealed class Program
             // cookies is needed for a given request.
             options.CheckConsentNeeded = context => true;
             options.MinimumSameSitePolicy = SameSiteMode.None;
+            options.Secure = CookieSecurePolicy.Always;
         });
 
         var app = builder.Build();
@@ -80,6 +82,19 @@ internal sealed class Program
         }
         app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Add("Cache-control", "no-cache, no-store, must-revalidate");
+            context.Response.Headers.Add("Pragma", "no-cache");
+            context.Response.Headers.Add("Content-Security-Policy",
+                $"default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https:; img-src 'self' www.googletagmanager.com data:;");
+            context.Response.Headers.Add("X-Frame-Options", "DENY");
+            context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
+            context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+            context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+            context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
+            await next();
+        });
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseTradeHealthChecks();
