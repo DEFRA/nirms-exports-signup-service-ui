@@ -23,7 +23,7 @@ internal sealed class Program
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
+        //builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
         // Add services to the container.
         builder.Services.AddRazorPages(options =>
