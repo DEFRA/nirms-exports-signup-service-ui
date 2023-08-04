@@ -24,7 +24,7 @@ public class RegisteredBusinessAddressModel : PageModel
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a town or city using only letters, numbers, hyphens (-) and apostrophes (')")]
-    [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
+    [MaxLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
 

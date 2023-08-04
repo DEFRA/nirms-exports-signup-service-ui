@@ -158,6 +158,11 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return false;
         }
 
+        if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
+        {
+            return false;
+        }
+
         if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
         {
             return false;
