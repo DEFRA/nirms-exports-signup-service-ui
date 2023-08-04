@@ -43,6 +43,36 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
+    public async Task OnGetAsync_BuildSelectList_IfMoreThan7Businesses()
+    {
+        //Arrange
+        _systemUnderTest!.TraderId = Guid.NewGuid();
+        var userOrgs = new Dictionary<Guid, string>
+        {
+            { Guid.NewGuid(), "org1" },
+            { Guid.NewGuid(), "org2" },
+            { Guid.NewGuid(), "org3" },
+            { Guid.NewGuid(), "org4" },
+            { Guid.NewGuid(), "org5" },
+            { Guid.NewGuid(), "org6" },
+            { Guid.NewGuid(), "org7" },
+            { Guid.NewGuid(), "org8" }
+        };
+
+        _mockUserService
+        .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
+        .Returns(userOrgs);
+
+
+        //Act
+        await _systemUnderTest!.OnGetAsync();
+
+        //Assert
+            // Includes choose business & Another business options
+        _systemUnderTest.BusinessSelectList.Count.Should().Be(10);
+    }
+
+    [Test]
     public async Task OnPostSubmitAsync_IfAnotherBusinessSelected_AddModelError()
     {
         // Arrange
@@ -53,6 +83,19 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         _systemUnderTest.ModelState.HasError("UnregisteredBusiness").Should().BeTrue();
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_IfChooseBusinessSelected_AddModelError()
+    {
+        // Arrange
+        _systemUnderTest!.SelectedBusiness = "Choose business";
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.HasError("Business").Should().BeTrue();
     }
 
     [Test]
@@ -91,7 +134,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid()}, Core.Enums.TradePartySignupStatus.Complete));
+            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.Complete));
         _mockUserService
             .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
             .Returns(userOrgs);
@@ -165,6 +208,27 @@ public class RegisteredBusinessBusinessPickerTests
             .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_When_SignupSTatus_Is_InProgressEligibilityRegulations_RedirectToRegulationsPage()
+    {
+        // Arrange
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations));
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisteredBusinessRegulationsPath,
             new { id = _systemUnderTest.TraderId });
 
         // Act

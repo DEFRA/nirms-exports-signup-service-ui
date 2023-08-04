@@ -18,11 +18,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         private readonly ITraderService _traderService;
         private readonly IUserService _userService;
+        private readonly IEstablishmentService _establishmentService;
 
-        public TermsAndConditions(ITraderService traderService, IUserService userService)
+        public TermsAndConditions(ITraderService traderService, IUserService userService, IEstablishmentService establishmentService)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
@@ -39,7 +41,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 {
                     return RedirectToPage(
                         Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                        new { TraderId = TraderId });
+                        new { Id = TraderId });
                 }
             }
 
@@ -56,7 +58,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 return await OnGetAsync(TraderId);
             }
 
+
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id);
+
+            if (!IsRequiredDataPresent(dto, logisticsLocations))
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.RegistrationTaskListPath,
+                        new { id = TraderId });
+            }
+
 
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
@@ -66,6 +78,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             return RedirectToPage(
                 Routes.Pages.Path.SignUpConfirmationPath,
                 new { id = TraderId });
+        }
+
+        private bool IsRequiredDataPresent(TradePartyDTO? dto, IEnumerable<LogisticsLocationDTO> logisticsLocations)
+        {
+            if (dto == null || logisticsLocations == null || !logisticsLocations.Any())
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

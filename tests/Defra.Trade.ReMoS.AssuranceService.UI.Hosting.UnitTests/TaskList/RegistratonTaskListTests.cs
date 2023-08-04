@@ -153,7 +153,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.GetAPIData();
 
             //Assert
-            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.COMPLETE);
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.INPROGRESS);
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             await _systemUnderTest!.GetAPIData();
 
             //Assert
-            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.EligibilityStatus.Should().Be(TaskListStatus.INPROGRESS);
         }
 
         [Test]
@@ -216,6 +216,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 PartyName = "Test",
                 FboNumber = "123",
                 NatureOfBusiness = "Test nature",
+                RegulationsConfirmed = true
             };
 
             var list = new List<LogisticsLocationDTO>
@@ -270,7 +271,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Address = tradeAddress,
                 PartyName = "Test",
                 FboNumber = "123",
-                NatureOfBusiness = "Test nature"
+                NatureOfBusiness = "Test nature",
+                RegulationsConfirmed = true
             };
 
             var list = new List<LogisticsLocationDTO>
@@ -325,7 +327,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Contact = tradeContact,
                 PartyName = "Test",
                 FboNumber = "123",
-                NatureOfBusiness = "Test nature"
+                NatureOfBusiness = "Test nature",
+                RegulationsConfirmed = true
             };
 
 
@@ -400,7 +403,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         [TestCase(false, "TestName", null, null, TaskListStatus.INPROGRESS)]
         [TestCase(false, null, "TestPosition", null, TaskListStatus.INPROGRESS)]
         [TestCase(false, null, null, "TestEmail", TaskListStatus.INPROGRESS)]
-        [TestCase(false, null, null, null, TaskListStatus.NOTSTART)]
         [TestCase(true, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
         [TestCase(false, "TestName", "TestPosition", "TestEmail", TaskListStatus.COMPLETE)]
         public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
@@ -411,6 +413,28 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Contact = new TradeContactDTO() { IsAuthorisedSignatory = isAuthSig },
                 AuthorisedSignatory = new AuthorisedSignatoryDto() 
                 { 
+                    Id = Guid.NewGuid(),
+                    Name = name,
+                    Position = position,
+                    EmailAddress = email
+                }
+            };
+
+            var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [TestCase(false, null, null, null, TaskListStatus.NOTSTART)]
+        public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete_Id_IsNull(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO
+            {
+                Contact = new TradeContactDTO() { IsAuthorisedSignatory = isAuthSig },
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
+                {
+                    Id = Guid.Empty,
                     Name = name,
                     Position = position,
                     EmailAddress = email

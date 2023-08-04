@@ -10,7 +10,7 @@
     <header class="govuk-header " role="banner" data-module="govuk-header">
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__logo">
-                <a href="https://www.gov.uk/" target="_blank" rel="noopener" class="govuk-header__link govuk-header__link--homepage">
+                <a href="https://www.gov.uk/" target="_blank" rel="noopener noreferrer" class="govuk-header__link govuk-header__link--homepage">
                     <span class="govuk-header__logotype">
                         <!--[if gt IE 8]><!-->
                         <svg aria-hidden="true"
@@ -44,11 +44,15 @@
 <body class="govuk-body">
     <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <div class="govuk-width-container">
-        <div class="login-nav login-border">
-            <ul class="login-nav__list">
-                <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
-            </ul>
-        </div>
+        @await RenderSectionAsync("Signout", false)
+        @if (!IsSectionDefined("Signout"))
+        {
+            <div class="login-nav login-border">
+                <ul class="login-nav__list">
+                    <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
+                </ul>
+            </div>
+        }
         @await RenderSectionAsync("Back", required: false)
         <main role="main" id="MainContent" class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
             @RenderBody()
@@ -64,27 +68,27 @@
                 <h2 class="govuk-visually-hidden">Support links</h2>
                 <ul class="govuk-footer__inline-list">
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="/privacy-policy" target="_blank" rel="noopener">
+                        <a class="govuk-footer__link" href="/privacy-policy" target="_blank" rel="noopener noreferrer">
                             Privacy
                         </a>
                     </li>
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="/cookies" target="_blank" rel="noopener">
+                        <a class="govuk-footer__link" href="/cookies" target="_blank" rel="noopener noreferrer">
                             Cookies
                         </a>
                     </li>
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="/accessibility-statement" target="_blank" rel="noopener">
+                        <a class="govuk-footer__link" href="/accessibility-statement" target="_blank" rel="noopener noreferrer">
                             Accessibility
                         </a>
                     </li>
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="/contact" target="_blank" rel="noopener">
+                        <a class="govuk-footer__link" href="/contact" target="_blank" rel="noopener noreferrer">
                             Contact
                         </a>
                     </li>
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="/terms-conditions" target="_blank" rel="noopener">
+                        <a class="govuk-footer__link" href="/terms-conditions" target="_blank" rel="noopener noreferrer">
                             Terms and conditions
                         </a>
                     </li>

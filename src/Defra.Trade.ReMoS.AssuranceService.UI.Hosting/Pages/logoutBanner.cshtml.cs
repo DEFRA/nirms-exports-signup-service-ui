@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,9 +10,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages
     [ExcludeFromCodeCoverage]
     public class LogoutBannerModel : PageModel
     {
+        private readonly IConfiguration _config;
+
+        public LogoutBannerModel(IConfiguration config)
+        {
+            _config = config;
+        }
         public void OnGet()
         {
-            Response.Redirect("https://www.gov.uk/export-health-certificates/general-certificate-for-moving-goods-under-the-ni-retail-movement-scheme");
+            Response.Redirect(_config.GetValue<string>("ExternalLinks:StartNowPage"));
         }
     }
 }

@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
@@ -21,7 +22,8 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     [BindProperty]
     [Required(ErrorMessage = "Select a business")]
     public string SelectedBusiness { get; set; } = default!;
-    public Guid TraderId { get; set; }
+    public Guid TraderId { get; set; }    
+    public List<SelectListItem> BusinessSelectList = new();
     #endregion
 
     private readonly ILogger<RegisteredBusinessBusinessPickerModel> _logger;
@@ -42,6 +44,12 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnGet");
         Businesses = _userService.GetDefraOrgsForUser(User);
+
+        if (Businesses?.Count > 7 ) 
+        {
+            BuildBusinessSelectList();
+        }
+        
         return Page();
     }
 
@@ -49,10 +57,16 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnPostSubmit");
 
+        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase))
+        {
+            SelectedBusiness = null;
+            ModelState.AddModelError("Business", "Select a business");
+        }
+
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             ModelState.AddModelError("UnregisteredBusiness", "UnregisteredBusiness");
-        }
+        }    
 
         if (!ModelState.IsValid)
         {
@@ -84,6 +98,10 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessFboNumberPath,
                     new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                    new { id = TraderId });
             case Core.Enums.TradePartySignupStatus.InProgress:
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
@@ -99,6 +117,19 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
             new { id = TraderId });
 
     }
+
+    private void BuildBusinessSelectList()
+    {
+        BusinessSelectList.AddRange(Businesses.Select(keyValuePair => new SelectListItem()
+        {
+            Value = keyValuePair.Key.ToString(),
+            Text = keyValuePair.Value
+        }));
+
+        BusinessSelectList.Insert(0, new SelectListItem("Choose business", null));
+        BusinessSelectList.Insert(BusinessSelectList.Count, new SelectListItem("Another business", null));
+    }
+
 
     private async Task SaveSelectedBusinessToApi()
     {

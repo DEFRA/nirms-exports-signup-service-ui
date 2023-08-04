@@ -5,6 +5,7 @@ public enum TradePartySignupStatus
     New,
     InProgressEligibilityCountry,
     InProgressEligibilityFboNumber,
+    InProgressEligibilityRegulations,
     InProgress,
     Complete,
 }

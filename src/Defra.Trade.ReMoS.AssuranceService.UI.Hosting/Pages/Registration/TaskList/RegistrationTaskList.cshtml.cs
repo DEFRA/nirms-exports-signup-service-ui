@@ -67,11 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
-                if (tradeParty?.Address != null)
-                {
-                    if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber))
-                        EligibilityStatus = TaskListStatus.COMPLETE;
-                }
+                EligibilityStatus = _checkAnswersService.GetEligibilityProgress(tradeParty);
 
                 BusinessDetails = GetBusinessDetailsProgress(tradeParty!);
                 ContactDetails = GetContactDetailsProgress(tradeParty!);

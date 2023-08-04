@@ -105,7 +105,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
-            var baseError = "Select yes if you want to add another place of ";
+            var baseError = "Select no if you want to add another place of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
             ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }
