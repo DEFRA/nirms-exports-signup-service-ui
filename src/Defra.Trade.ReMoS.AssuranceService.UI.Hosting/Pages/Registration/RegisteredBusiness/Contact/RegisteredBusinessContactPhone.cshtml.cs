@@ -76,13 +76,13 @@ public class RegisteredBusinessContactPhoneModel : PageModel
     private async Task SubmitPhone()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
+        TradePartyDto tradeParty = GenerateDTO();
         TradePartyId = await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
     private async Task GetPhoneNumberFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             PhoneNumber = tradeParty.Contact.TelephoneNumber ?? string.Empty;
@@ -91,19 +91,19 @@ public class RegisteredBusinessContactPhoneModel : PageModel
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
         }
     }
 
-    private TradePartyDTO GenerateDTO()
+    private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
-            Contact = new TradeContactDTO()
+            Contact = new TradeContactDto()
             {
                 TelephoneNumber = PhoneNumber,
                 IsAuthorisedSignatory = IsAuthorisedSignatory

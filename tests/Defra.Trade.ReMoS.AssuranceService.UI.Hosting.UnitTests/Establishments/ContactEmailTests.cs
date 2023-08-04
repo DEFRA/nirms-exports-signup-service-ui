@@ -33,7 +33,7 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationDTO());
+            .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());

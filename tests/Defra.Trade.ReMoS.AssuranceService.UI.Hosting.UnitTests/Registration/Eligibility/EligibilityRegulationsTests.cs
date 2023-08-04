@@ -61,7 +61,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         // Arrange
         var tradeId = Guid.NewGuid();
-        var tradePartyDto = new TradePartyDTO { Id = tradeId, RegulationsConfirmed = true };
+        var tradePartyDto = new TradePartyDto { Id = tradeId, RegulationsConfirmed = true };
         _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(tradeId))
             .ReturnsAsync(tradePartyDto);
@@ -123,14 +123,14 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         // Arrange
         var traderId = Guid.NewGuid();
-        var tradePartyDto = new TradePartyDTO { Id = traderId};
+        var tradePartyDto = new TradePartyDto { Id = traderId};
         _systemUnderTest!.Confirmed = true;
         _systemUnderTest!.TraderId = traderId;
         _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(traderId))
             .ReturnsAsync(tradePartyDto);
         _mockTraderService
-            .Setup(action => action.UpdateTradePartyAsync(It.IsAny<TradePartyDTO>()))
+            .Setup(action => action.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(traderId);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegistrationTaskListPath,

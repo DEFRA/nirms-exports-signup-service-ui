@@ -21,7 +21,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             var expectedGuid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
                 Name = "Logistics location"
             };
@@ -46,7 +46,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             var expectedGuid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var logisticsLocationDto = new List<LogisticsLocationDTO>();
+            var logisticsLocationDto = new List<LogisticsLocationDto>();
 
             _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid)).Verifiable();
             _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid)).Returns(Task.FromResult(logisticsLocationDto)!);
@@ -68,7 +68,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             var expectedGuid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
                 Name = "Logistics location"
             };
@@ -90,8 +90,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
 
-            var logisticsLocations = new List<LogisticsLocationDTO>();
-            logisticsLocations.Add(new LogisticsLocationDTO()
+            var logisticsLocations = new List<LogisticsLocationDto>();
+            logisticsLocations.Add(new LogisticsLocationDto()
             {
                 TradeAddressId = Guid.NewGuid()
             });
@@ -116,7 +116,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
 
-            var logisticsLocation = new LogisticsLocationDTO
+            var logisticsLocation = new LogisticsLocationDto
             {
                 TradePartyId = Guid.NewGuid(),
                 Id = Guid.NewGuid()
@@ -138,7 +138,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
 
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
                 Id = Guid.NewGuid(),
                 Name = "testname",

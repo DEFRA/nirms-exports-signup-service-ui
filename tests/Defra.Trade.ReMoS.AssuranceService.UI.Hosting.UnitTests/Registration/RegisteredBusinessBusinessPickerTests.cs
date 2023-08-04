@@ -108,7 +108,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDTO)null!, Core.Enums.TradePartySignupStatus.New));
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.New));
         _mockUserService
             .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
             .Returns(userOrgs);
@@ -134,7 +134,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.Complete));
+            .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.Complete));
         _mockUserService
             .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
             .Returns(userOrgs);
@@ -160,7 +160,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgress));
+            .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgress));
         _mockUserService
             .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
             .Returns(userOrgs);
@@ -184,7 +184,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry));
+            .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
             new { id = _systemUnderTest.TraderId });
@@ -205,7 +205,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber));
+            .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessFboNumberPath,
             new { id = _systemUnderTest.TraderId });
@@ -226,7 +226,7 @@ public class RegisteredBusinessBusinessPickerTests
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync((new TradePartyDTO { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations));
+            .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessRegulationsPath,
             new { id = _systemUnderTest.TraderId });

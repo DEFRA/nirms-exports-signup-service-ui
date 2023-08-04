@@ -159,10 +159,10 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO();
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto();
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,

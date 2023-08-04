@@ -15,9 +15,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
-        public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
+        public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
         [BindProperty]
-        public TradePartyDTO? TradeParty { get; set; } = new TradePartyDTO();
+        public TradePartyDto? TradeParty { get; set; } = new TradePartyDto();
         #endregion
 
         private readonly ILogger<CheckYourAnswersModel> _logger;

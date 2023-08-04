@@ -79,7 +79,7 @@ public class AuthorisedSignatoryPositionModel : PageModel
         await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
     }
 
-    private async Task<TradePartyDTO?> GetSignatoryPosFromApiAsync()
+    private async Task<TradePartyDto?> GetSignatoryPosFromApiAsync()
     {
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.AuthorisedSignatory != null)
@@ -94,10 +94,10 @@ public class AuthorisedSignatoryPositionModel : PageModel
         return null;
     }
 
-    private async Task<TradePartyDTO> GenerateDTO()
+    private async Task<TradePartyDto> GenerateDTO()
     {
         var tradeParty = await GetSignatoryPosFromApiAsync();
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
             AuthorisedSignatory = new AuthorisedSignatoryDto()

@@ -97,7 +97,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         #region private methods
         private async Task SubmitAuthSignatory()
         {
-            TradePartyDTO tradeParty = await GenerateDTO();
+            TradePartyDto tradeParty = await GenerateDTO();
             await _traderService.UpdateTradePartyAsync(tradeParty);
 
             var updatedTradeParty = await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
@@ -106,7 +106,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
         }
 
-        private async Task<TradePartyDTO?> GetIsAuthorisedSignatoryFromApiAsync()
+        private async Task<TradePartyDto?> GetIsAuthorisedSignatoryFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.Contact != null && tradeParty.AuthorisedSignatory != null)
@@ -125,7 +125,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return tradeParty?.AuthorisedSignatory;
         }
 
-        private async Task<TradePartyDTO> GenerateDTO()
+        private async Task<TradePartyDto> GenerateDTO()
         {
             var tradeParty = await GetIsAuthorisedSignatoryFromApiAsync();
 
@@ -138,10 +138,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             {
                 if (isSignatory)
                 {
-                    return new TradePartyDTO()
+                    return new TradePartyDto()
                     {
                         Id = TradePartyId,
-                        Contact = new TradeContactDTO()
+                        Contact = new TradeContactDto()
                         {
                             Id = ContactId,
                             PersonName = tradeParty?.Contact?.PersonName,
@@ -165,10 +165,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 {
                     if (previousState == true)
                     {
-                        return new TradePartyDTO()
+                        return new TradePartyDto()
                         {
                             Id = TradePartyId,
-                            Contact = new TradeContactDTO()
+                            Contact = new TradeContactDto()
                             {
                                 Id = ContactId,
                                 PersonName = tradeParty?.Contact?.PersonName,
@@ -189,10 +189,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     }
                     else
                     {
-                        return new TradePartyDTO()
+                        return new TradePartyDto()
                         {
                             Id = TradePartyId,
-                            Contact = new TradeContactDTO()
+                            Contact = new TradeContactDto()
                             {
                                 Id = ContactId,
                                 PersonName = tradeParty?.Contact?.PersonName,
@@ -207,10 +207,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 }
             }
 
-            return new TradePartyDTO()
+            return new TradePartyDto()
             {
                 Id = TradePartyId,
-                Contact = new TradeContactDTO()
+                Contact = new TradeContactDto()
                 {
                     Id = ContactId,
                     IsAuthorisedSignatory = isSignatory

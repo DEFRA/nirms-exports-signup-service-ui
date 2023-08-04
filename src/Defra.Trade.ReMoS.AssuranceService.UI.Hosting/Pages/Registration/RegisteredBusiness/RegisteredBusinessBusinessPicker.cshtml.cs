@@ -138,7 +138,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         Businesses = _userService.GetDefraOrgsForUser(User);
 
-        var partyDto = new TradePartyDTO
+        var partyDto = new TradePartyDto
         {
             OrgId = Guid.Parse(SelectedBusiness),
             PracticeName = Businesses[Guid.Parse(SelectedBusiness)],

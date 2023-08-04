@@ -16,7 +16,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
     public string? AddAddressesComplete { get; set; } = string.Empty;
-    public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
+    public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
     public Guid TradePartyId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
@@ -151,14 +151,9 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
    private async Task<bool> ReadyForCheckAnswersAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
         if (tradeParty == null)
-        {
-            return false;
-        }
-
-        if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
         {
             return false;
         }

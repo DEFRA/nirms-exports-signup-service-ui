@@ -24,7 +24,7 @@ public class RegisteredBusinessAddressModel : PageModel
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a town or city using only letters, numbers, hyphens (-) and apostrophes (')")]
-    [MaxLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
+    [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
 
@@ -101,14 +101,14 @@ public class RegisteredBusinessAddressModel : PageModel
     #region private methods
     private async Task SubmitAddress()
     {
-        TradePartyDTO tradePartyDto = GenerateDTO(CreateAddressDto());
+        TradePartyDto tradePartyDto = GenerateDTO(CreateAddressDto());
 
         await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
     }
 
-    private TradeAddressDTO CreateAddressDto()
+    private TradeAddressDto CreateAddressDto()
     {
-        TradeAddressDTO DTO = new()
+        TradeAddressDto DTO = new()
         {
             Id = AddressId,
             LineOne = LineOne,
@@ -119,9 +119,9 @@ public class RegisteredBusinessAddressModel : PageModel
         return DTO;
     }
 
-    private TradePartyDTO GenerateDTO(TradeAddressDTO addressDTO)
+    private TradePartyDto GenerateDTO(TradeAddressDto addressDTO)
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TraderId,
             Address = addressDTO
@@ -130,7 +130,7 @@ public class RegisteredBusinessAddressModel : PageModel
 
     private async Task GetAddressFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
         if (tradeParty != null && tradeParty.Address != null)
         {
             AddressId = tradeParty.Address.Id;

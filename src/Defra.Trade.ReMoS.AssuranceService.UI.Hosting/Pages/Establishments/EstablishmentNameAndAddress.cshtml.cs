@@ -129,9 +129,9 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
+        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
         establishmentDto.Name = EstablishmentName;
-        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDTO();
+        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDto();
         establishmentDto.Address.LineOne = LineOne;
         establishmentDto.Address.LineTwo = LineTwo;
         establishmentDto.Address.CityName = CityName;
@@ -153,7 +153,7 @@ public class EstablishmentNameAndAddressModel : PageModel
     private async Task RetrieveEstablishmentDetails()
     {
 
-        LogisticsLocationDTO? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
+        LogisticsLocationDto? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
 
         EstablishmentName = establishment?.Name ?? string.Empty;
         LineOne = establishment?.Address?.LineOne ?? string.Empty;

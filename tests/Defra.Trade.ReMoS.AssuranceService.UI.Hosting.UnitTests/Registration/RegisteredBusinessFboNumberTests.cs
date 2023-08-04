@@ -42,7 +42,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     public async Task OnGet_IfSavedPartyExists_FboNumberShouldBePopulated()
     {
         //Arrange
-        TradePartyDTO tradePartyFromApi = new TradePartyDTO
+        TradePartyDto tradePartyFromApi = new TradePartyDto
         {
             Id = Guid.NewGuid(),
             FboNumber = "fbonum-123456-fbonum",
@@ -63,7 +63,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     public async Task OnGet_IfSavedPartyExists_ButNoFboNumberSaved_OptionSelectedShouldBeEmpty()
     {
         //Arrange
-        TradePartyDTO tradePartyFromApi = new TradePartyDTO
+        TradePartyDto tradePartyFromApi = new TradePartyDto
         {
             Id = Guid.NewGuid(),
             //FboNumber = "fbonum-123456-fbonum",

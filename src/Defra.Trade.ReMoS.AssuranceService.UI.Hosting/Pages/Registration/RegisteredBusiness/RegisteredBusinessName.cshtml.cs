@@ -71,7 +71,7 @@ public class RegisteredBusinessNameModel : PageModel
     #region private methods
     private async Task SubmitName()
     {
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = TradePartyId,
             PartyName = Name
@@ -81,7 +81,7 @@ public class RegisteredBusinessNameModel : PageModel
 
     private async Task GetNameAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null)
             Name = tradeParty.PartyName;
     }

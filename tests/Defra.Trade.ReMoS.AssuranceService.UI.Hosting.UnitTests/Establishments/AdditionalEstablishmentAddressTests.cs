@@ -71,7 +71,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSubmit_SubmitValidRadio_AnsweredNo()
         {
             //Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
             _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
@@ -91,7 +91,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSubmit_SubmitValidRadio_Redirected_ContactDetails()
         {
             //Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
             _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
@@ -111,7 +111,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSubmit_SubmitValidRadio_Redirected_BusinessDetails()
         {
             //Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
             _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
@@ -131,7 +131,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostSubmit_SubmitValidRadio_Redirected_AuthorisedSignatoryDetails()
         {
             //Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
             _systemUnderTest!.AddAddressesComplete = "No";
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(new Guid()).Result).Returns(tradeParty);
@@ -193,7 +193,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetRemoveEstablishment_GivenExistingLocations_SubmitIsValid()
         {
             //Arrange
-            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
             _systemUnderTest!.AddAddressesComplete = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
             //Act
@@ -208,7 +208,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetRemoveEstablishment_GivenNoExistingLocations_Redirect()
         {
             //Arrange
-            var list = new List<LogisticsLocationDTO> { };
+            var list = new List<LogisticsLocationDto> { };
             _systemUnderTest!.AddAddressesComplete = "yes";
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
@@ -239,7 +239,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public void OnGetChangeEstablishmentAddress_GivenAddedManually_SubmitIsValid()
         {
             //Arrange
-            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
             _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
@@ -254,7 +254,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public void OnGetChangeEstablishmentAddress_GivenNotAddedManually_Redirect()
         {
             //Arrange
-            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO() };
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
             _systemUnderTest!.AddAddressesComplete = "yes";
 
             //Act
