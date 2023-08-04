@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
-public class ApiIntegration : IAPIIntegration
+public class ApiIntegration : IApiIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions;

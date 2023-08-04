@@ -13,9 +13,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class TraderService : ITraderService
     {
-        private readonly IAPIIntegration _apiIntegration;
+        private readonly IApiIntegration _apiIntegration;
 
-        public TraderService(IAPIIntegration apiIntegration)
+        public TraderService(IApiIntegration apiIntegration)
         {
             _apiIntegration = apiIntegration;
         }

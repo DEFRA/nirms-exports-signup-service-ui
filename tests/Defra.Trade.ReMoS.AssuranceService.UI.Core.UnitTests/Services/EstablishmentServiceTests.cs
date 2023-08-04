@@ -11,7 +11,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
     public class EstablishmentServiceTests
     {
         private IEstablishmentService? _establishmentService;
-        protected Mock<IAPIIntegration> _mockApiIntegration = new();
+        protected Mock<IApiIntegration> _mockApiIntegration = new();
 
         [Test]
         public async Task Service_Follows_Correct_Route_When_Calling_CreateEstablishmentForTradePartyAsync()

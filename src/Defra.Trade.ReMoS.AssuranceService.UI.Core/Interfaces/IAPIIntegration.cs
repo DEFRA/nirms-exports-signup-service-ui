@@ -2,7 +2,7 @@
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
-public interface IAPIIntegration
+public interface IApiIntegration
 {
     Task<List<TradePartyDto>?> GetAllTradePartiesAsync();
     public Task<TradePartyDto?> GetTradePartyByIdAsync(Guid id);

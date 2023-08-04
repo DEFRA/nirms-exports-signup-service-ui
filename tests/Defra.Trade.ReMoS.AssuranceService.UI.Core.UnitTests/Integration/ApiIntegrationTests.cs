@@ -27,7 +27,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 {
     internal class ApiIntegrationTests
     {
-        private IAPIIntegration? _apiIntegration;
+        private IApiIntegration? _apiIntegration;
         protected Mock<IHttpClientFactory> _mockHttpClientFactory = new();
         protected Mock<HttpMessageHandler> _mockHttpMessageHandler = new();
         private readonly Mock<IAuthenticationService> _mockAuthenticationService = new();

@@ -12,9 +12,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
 public class EstablishmentService : IEstablishmentService
 {
-    private readonly IAPIIntegration _api;
+    private readonly IApiIntegration _api;
 
-    public EstablishmentService(IAPIIntegration api)
+    public EstablishmentService(IApiIntegration api)
     {
         _api = api;
     }
