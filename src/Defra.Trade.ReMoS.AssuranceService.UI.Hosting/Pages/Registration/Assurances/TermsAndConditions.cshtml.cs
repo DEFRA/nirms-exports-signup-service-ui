@@ -80,7 +80,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 new { id = TraderId });
         }
 
-        private bool IsRequiredDataPresent(TradePartyDTO? dto, IEnumerable<LogisticsLocationDTO> logisticsLocations)
+        private static bool IsRequiredDataPresent(TradePartyDTO? dto, IEnumerable<LogisticsLocationDTO> logisticsLocations)
         {
             if (dto == null || logisticsLocations == null || !logisticsLocations.Any())
             {

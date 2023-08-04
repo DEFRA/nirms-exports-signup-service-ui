@@ -50,8 +50,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             TradePartyDTO tradeParty = await GetAPIData();
 
-            var test = _checkAnswersService.GetEligibilityProgress(tradeParty);
-
             if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
                 return RedirectToPage(

@@ -25,12 +25,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         public Guid TradePartyId { get; set; }
         #endregion
 
-        private readonly ITraderService _traderService;
         private readonly ILogger<PostcodeSearchModel> _logger;
 
-        public PostcodeSearchModel(ITraderService traderService, ILogger<PostcodeSearchModel> logger)
+        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger)
         {
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

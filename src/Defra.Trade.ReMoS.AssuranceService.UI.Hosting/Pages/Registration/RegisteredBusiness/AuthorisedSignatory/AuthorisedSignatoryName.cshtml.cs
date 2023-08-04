@@ -31,7 +31,7 @@ public class AuthorisedSignatoryNameModel : PageModel
     public AuthorisedSignatoryNameModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
     {
         _traderService = traderService;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger)); ;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     public async Task<IActionResult> OnGetAsync(Guid id)
     {

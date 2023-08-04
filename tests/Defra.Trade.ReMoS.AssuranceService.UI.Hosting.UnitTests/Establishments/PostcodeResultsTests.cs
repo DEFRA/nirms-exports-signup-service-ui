@@ -46,7 +46,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
 
             // act
-            await _systemUnderTest.OnGetAsync(id, postcode);
+            await _systemUnderTest!.OnGetAsync(id, postcode);
 
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);

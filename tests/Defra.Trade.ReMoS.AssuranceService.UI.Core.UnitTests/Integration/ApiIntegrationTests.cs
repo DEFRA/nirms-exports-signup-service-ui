@@ -64,7 +64,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Assert
             _mockHttpClientFactory.Verify();
-            returnedValue!.Count().Should().Be(tradeParties.Count());
+            returnedValue!.Count.Should().Be(tradeParties.Count);
         }
 
         [Test]
