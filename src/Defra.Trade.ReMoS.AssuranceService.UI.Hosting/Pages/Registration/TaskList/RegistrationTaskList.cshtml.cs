@@ -48,19 +48,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             RegistrationID = Id;
 
-            if (RegistrationID == Guid.Empty)
+            TradePartyDTO tradeParty = await GetAPIData();
+
+            var test = _checkAnswersService.GetEligibilityProgress(tradeParty);
+
+            if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
                 return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = RegistrationID });
+                        Routes.Pages.Path.RegisteredBusinessCountryPath,
+                        new { id = RegistrationID });
             }
-
-            await GetAPIData();
 
             return Page();
         }
 
-        public async Task GetAPIData()
+        public async Task<TradePartyDTO> GetAPIData()
         {
             TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
             Country = tradeParty?.Address?.TradeCountry;
@@ -76,6 +78,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 await EstablishmentsStatuses();
                 CheckAnswersStatus();
             }
+            return tradeParty;
         }
 
         private async Task EstablishmentsStatuses()
