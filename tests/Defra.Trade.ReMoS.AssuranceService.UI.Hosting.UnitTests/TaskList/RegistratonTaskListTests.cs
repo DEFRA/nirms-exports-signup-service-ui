@@ -410,7 +410,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             // Arrange
             var tradeParty = new TradePartyDTO
             {
-                Contact = new TradeContactDTO() { IsAuthorisedSignatory = isAuthSig },
+                Contact = new TradeContactDTO() 
+                { 
+                    PersonName = "Test",
+                    Email = "Email",
+                    Position = "Position",
+                    TelephoneNumber = "12345678901",
+                    IsAuthorisedSignatory = isAuthSig 
+                },
                 AuthorisedSignatory = new AuthorisedSignatoryDto() 
                 { 
                     Id = Guid.NewGuid(),
@@ -431,7 +438,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             // Arrange
             var tradeParty = new TradePartyDTO
             {
-                Contact = new TradeContactDTO() { IsAuthorisedSignatory = isAuthSig },
+                Contact = new TradeContactDTO()
+                {
+                    PersonName = "Test",
+                    Email = "Email",
+                    Position = "Position",
+                    TelephoneNumber = "12345678901",
+                    IsAuthorisedSignatory = isAuthSig
+                },
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = Guid.Empty,
@@ -450,9 +464,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetAuthorisedSignatoryProgress_Status_NoStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDTO 
+            {
+                Contact = new TradeContactDTO()
+                {
+                    PersonName = "Test",
+                    Email = "Email",
+                    Position = "Position",
+                    TelephoneNumber = "12345678901"
+                }
+            };
 
             var expectedStatus = TaskListStatus.NOTSTART;
+
+            var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetAuthorisedSignatoryProgress_status_CannotStart()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDTO();
+
+            var expectedStatus = TaskListStatus.CANNOTSTART;
 
             var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
