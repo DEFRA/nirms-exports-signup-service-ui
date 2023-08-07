@@ -47,6 +47,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 
         public string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty)
         {
+            if (tradeParty.Contact == null || tradeParty?.Contact?.PersonName == null || tradeParty?.Contact?.Email == null || tradeParty?.Contact?.TelephoneNumber == null || tradeParty?.Contact?.Position == null)
+            {
+                return TaskListStatus.CANNOTSTART;
+            }
+
             if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
             {
                 if (tradeParty.Contact?.IsAuthorisedSignatory == true)
