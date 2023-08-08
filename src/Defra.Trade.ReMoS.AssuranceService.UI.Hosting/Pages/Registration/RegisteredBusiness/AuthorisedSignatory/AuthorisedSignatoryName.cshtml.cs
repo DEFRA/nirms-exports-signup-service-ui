@@ -39,7 +39,7 @@ public class AuthorisedSignatoryNameModel : PageModel
         _logger.LogInformation("Name OnGet");
 
         var party = await GetSignatoryNameFromApiAsync();
-        BusinessName = party?.PartyName;
+        BusinessName = party?.PracticeName;
 
         return Page();
     }

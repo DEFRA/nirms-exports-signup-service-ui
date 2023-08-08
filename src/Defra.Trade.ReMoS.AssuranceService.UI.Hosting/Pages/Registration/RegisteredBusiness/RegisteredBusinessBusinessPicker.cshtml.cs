@@ -80,37 +80,47 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
          * if COMPLETE (T&C checked), redirect to error page
          */
 
-        var partyWithSignUpStatus = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
-        TraderId = (partyWithSignUpStatus.tradeParty != null) ? partyWithSignUpStatus.tradeParty.Id : Guid.Empty;
-
-        switch (partyWithSignUpStatus.signupStatus)
+        if (Guid.TryParse(SelectedBusiness, out _))
         {
-            case Core.Enums.TradePartySignupStatus.New:
-                await SaveSelectedBusinessToApi();
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgress:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegistrationTaskListPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.Complete:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                    new { id = TraderId });
+            var (tradeParty, signupStatus) = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
+            TraderId = (tradeParty != null) ? tradeParty.Id : Guid.Empty;
+
+            switch (signupStatus)
+            {
+                case Core.Enums.TradePartySignupStatus.New:
+                    await SaveSelectedBusinessToApi();
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessCountryPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessCountryPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgress:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegistrationTaskListPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.Complete:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
+                        new { id = TraderId });
+            }
         }
+        else
+        {
+            ModelState.AddModelError(nameof(SelectedBusiness), "Guid for Selected Business is not valid");
+            return await OnGetAsync();
+        }
+
+
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessCountryPath,

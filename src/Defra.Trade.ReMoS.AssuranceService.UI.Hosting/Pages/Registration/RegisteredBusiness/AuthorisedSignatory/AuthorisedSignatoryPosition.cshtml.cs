@@ -86,7 +86,7 @@ public class AuthorisedSignatoryPositionModel : PageModel
         {
             SignatoryId = tradeParty.AuthorisedSignatory.Id;
             Position = string.IsNullOrEmpty(Position) ? tradeParty.AuthorisedSignatory.Position ?? "" : Position;
-            BusinessName = tradeParty.PartyName;
+            BusinessName = tradeParty.PracticeName;
 
             return tradeParty;
         }

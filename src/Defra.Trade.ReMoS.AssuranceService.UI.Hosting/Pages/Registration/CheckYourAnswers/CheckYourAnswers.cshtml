@@ -26,30 +26,14 @@
             <dl class="govuk-summary-list govuk-!-margin-bottom-9">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Business name
+                    Selected business
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-details-name">
-                        @Model.TradeParty?.PartyName
+                        @Model.TradeParty?.PracticeName
                     </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-name">
-                        Edit<span class="govuk-visually-hidden"> business name</span>
-                    </a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    Business address
-                    </dt>
-                    <dd class="govuk-summary-list__value" id="business-details-address">
-                        @(Model.TradeParty?.Address?.LineOne != null ? $"{Model.TradeParty.Address?.LineOne}" : string.Empty) @if (Model.TradeParty?.Address?.LineOne != null) {<br />}
-                        @(Model.TradeParty?.Address?.LineTwo != null ? $"{Model.TradeParty.Address?.LineTwo}" : string.Empty) @if (Model.TradeParty?.Address?.LineTwo != null) {<br />}
-                        @(Model.TradeParty?.Address?.CityName != null ? $"{Model.TradeParty.Address?.CityName}" : string.Empty) @if (Model.TradeParty?.Address?.CityName != null) {<br />}
-                        @(Model.TradeParty?.Address?.PostCode != null ? $"{Model.TradeParty.Address?.PostCode}" : string.Empty)
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessAddressPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-address">
-                        Edit<span class="govuk-visually-hidden"> business address</span>
+                    <dd class="govuk-summary-list__actions govuk-!-width-one-third">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.SelectedBusinessPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-name">
+                        Sign up another business
                     </a>
                     </dd>
                 </div>

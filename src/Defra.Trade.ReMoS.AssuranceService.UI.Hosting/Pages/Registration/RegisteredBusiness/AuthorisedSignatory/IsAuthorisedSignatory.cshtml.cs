@@ -40,7 +40,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TradePartyId = id;
             _logger.LogInformation("IsAuthorisedSignatory onGet");
             var party = await GetIsAuthorisedSignatoryFromApiAsync();
-            BusinessName = party?.PartyName;
+            BusinessName = party?.PracticeName;
 
             return Page();
         }

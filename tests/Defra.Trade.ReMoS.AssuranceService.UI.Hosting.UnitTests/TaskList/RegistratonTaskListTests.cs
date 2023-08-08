@@ -214,6 +214,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Address = tradeAddress,
                 AuthorisedSignatory = authorisedSignatory,
                 PartyName = "Test",
+                PracticeName = "Test",
                 FboNumber = "123",
                 NatureOfBusiness = "Test nature",
                 RegulationsConfirmed = true
@@ -270,6 +271,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Contact = tradeContact,
                 Address = tradeAddress,
                 PartyName = "Test",
+                PracticeName = "Test",
                 FboNumber = "123",
                 NatureOfBusiness = "Test nature",
                 RegulationsConfirmed = true
@@ -348,7 +350,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_InProgress()
         {
             // Arrange
-            var tradeParty = new TradePartyDto { PartyName = "Test" };
+            var tradeParty = new TradePartyDto { PartyName = "Test", PracticeName = "Test"};
             var expectedStatus = TaskListStatus.INPROGRESS;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
@@ -410,7 +412,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             // Arrange
             var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDto() { IsAuthorisedSignatory = isAuthSig },
+                Contact = new TradeContactDto() 
+                { 
+                    PersonName = "Test",
+                    Email = "Email",
+                    Position = "Position",
+                    TelephoneNumber = "12345678901",
+                    IsAuthorisedSignatory = isAuthSig 
+                },
                 AuthorisedSignatory = new AuthorisedSignatoryDto() 
                 { 
                     Id = Guid.NewGuid(),
@@ -431,7 +440,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             // Arrange
             var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDto() { IsAuthorisedSignatory = isAuthSig },
+                Contact = new TradeContactDto()
+                {
+                    PersonName = "Test",
+                    Email = "Email",
+                    Position = "Position",
+                    TelephoneNumber = "12345678901",
+                    IsAuthorisedSignatory = isAuthSig
+                },
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = Guid.Empty,
@@ -450,9 +466,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetAuthorisedSignatoryProgress_Status_NoStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDto();
+            var tradeParty = new TradePartyDto
+            {
+                Contact = new TradeContactDto()
+                {
+                    PersonName = "Test",
+                    Email = "Email",
+                    Position = "Position",
+                    TelephoneNumber = "12345678901"
+                }
+            };
 
             var expectedStatus = TaskListStatus.NOTSTART;
+
+            var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
+
+            Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public void GetAuthorisedSignatoryProgress_status_CannotStart()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDto();
+
+            var expectedStatus = TaskListStatus.CANNOTSTART;
 
             var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 

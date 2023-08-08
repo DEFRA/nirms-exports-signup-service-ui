@@ -12,6 +12,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public Guid RegistrationID { get; set; }
         [BindProperty]
+        public string SelectedBusinessName { get; set; } = default!;
+        [BindProperty]
         public string EligibilityStatus { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
         public string BusinessDetails { get; set; } = TaskListStatus.NOTSTART;
@@ -68,11 +70,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
                 EligibilityStatus = _checkAnswersService.GetEligibilityProgress(tradeParty);
-
                 BusinessDetails = GetBusinessDetailsProgress(tradeParty!);
                 ContactDetails = GetContactDetailsProgress(tradeParty!);
                 AuthorisedSignatoryDetails = GetAuthorisedSignatoryProgress(tradeParty!);
-                
+                SelectedBusinessName = tradeParty.PracticeName ?? string.Empty;
+
                 await EstablishmentsStatuses();
                 CheckAnswersStatus();
             }
