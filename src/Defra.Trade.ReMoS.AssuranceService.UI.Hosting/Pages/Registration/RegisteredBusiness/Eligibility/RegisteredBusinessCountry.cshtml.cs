@@ -33,7 +33,7 @@ public class RegisteredBusinessCountryModel : PageModel
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-        _checkAnswersService = checkAnswersService ?? throw new ArgumentException(nameof(checkAnswersService));
+        _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid Id)

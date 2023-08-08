@@ -80,7 +80,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 await EstablishmentsStatuses();
                 CheckAnswersStatus();
             }
-            return tradeParty;
+            return tradeParty!;
         }
 
         private async Task EstablishmentsStatuses()

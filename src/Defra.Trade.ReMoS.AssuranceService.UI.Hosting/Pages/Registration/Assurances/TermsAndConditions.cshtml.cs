@@ -60,9 +60,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
 
             TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+
+            if (dto == null)
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.RegistrationTaskListPath,
+                        new { id = TraderId });
+            }
+
             var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id);
 
-            if (!IsRequiredDataPresent(dto, logisticsLocations))
+            if (!IsRequiredDataPresent(dto, logisticsLocations!))
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
