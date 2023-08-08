@@ -46,7 +46,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             TraderId = id;
             
             var party = await GetSignatoryEmailFromApiAsync();
-            BusinessName = party?.PartyName;
+            BusinessName = party?.PracticeName;
             return Page();
         }
 

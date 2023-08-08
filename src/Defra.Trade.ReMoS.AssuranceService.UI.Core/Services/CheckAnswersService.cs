@@ -15,14 +15,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
     {
         public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
         {
-            if (tradeParty.PartyName != null && tradeParty.Address != null
-                && tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
+            if (tradeParty.PracticeName != null 
+                && tradeParty.Address != null
+                && tradeParty.Address.TradeCountry != null)
             {
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty?.PartyName != null && (tradeParty?.Address == null
-                || tradeParty?.Address?.LineOne == null || tradeParty?.Address?.PostCode == null))
+            if (tradeParty?.PracticeName != null 
+                && (tradeParty?.Address == null || tradeParty?.Address?.TradeCountry == null))
             {
                 return TaskListStatus.INPROGRESS;
             }

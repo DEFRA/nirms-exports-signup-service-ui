@@ -1,0 +1,27 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.SelectedBusinessModel
+@{
+    ViewData["Title"] = "Selected business";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            Selected business
+        </h1>
+
+        <p>You are signing up <span class="govuk-!-font-weight-bold">@Model.SelectedBusinessName</span> for the Northern Ireland Retail Movement Scheme.</p>
+
+        <p>To sign up a different business, <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">start a new sign up request</a>.</p>
+
+    </div>
+</div>
+
+

@@ -83,7 +83,7 @@ public class RegisteredBusinessNameModel : PageModel
     {
         TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null)
-            Name = tradeParty.PartyName;
+            Name = tradeParty.PracticeName;
     }
     #endregion
 }

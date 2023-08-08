@@ -2,6 +2,7 @@
 
 public static class Routes
 {
+    public const string SelectedBusiness = "/selected-business";
     public const string RegisteredBusinessBusinessPicker = "/registered-business-picker";
     public const string RegisteredBusinessAlreadyRegistered = "/business-already-registered";
     public const string RegisteredBusinessCountry = "/registered-business-country";
@@ -36,6 +37,7 @@ public static class Routes
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
+        (Pages.Path.SelectedBusinessPath, SelectedBusiness),
         (Pages.Path.RegisteredBusinessBusinessPickerPath, RegisteredBusinessBusinessPicker),
         (Pages.Path.RegisteredBusinessAlreadyRegisteredPath, RegisteredBusinessAlreadyRegistered),
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
@@ -73,6 +75,7 @@ public static class Routes
     {
         public static class Names
         {
+            public const string SelectedBusinessName = "SelectedBusiness";
             public const string RegisteredBusinessBusinessPickerName = "RegisteredBusinessBusinessPicker";
             public const string RegisteredBusinessAlreadyRegisteredName = "RegisteredBusinessAlreadyRegistered";
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
@@ -108,6 +111,7 @@ public static class Routes
 
         public static class Path
         {
+            public const string SelectedBusinessPath = $"/Registration/RegisteredBusiness/{Names.SelectedBusinessName}";
             public const string RegisteredBusinessBusinessPickerPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessBusinessPickerName}";
             public const string RegisteredBusinessAlreadyRegisteredPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAlreadyRegisteredName}";
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryName}";

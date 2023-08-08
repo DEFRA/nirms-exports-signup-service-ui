@@ -35,20 +35,19 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
+                            <a asp-page=@Routes.Pages.Path.SelectedBusinessPath asp-route-id="@Model.RegistrationID" aria-describedby="selected-business">
+                                Selected business
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.EligibilityStatus)" id="selected-business">@Model.SelectedBusinessName</strong>
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
                             <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.RegistrationID" aria-describedby="eligibility">
                                 Check eligibility
                             </a>
                         </span>
                         <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.EligibilityStatus)" id="eligibility">@Model.EligibilityStatus</strong>
-                    </li>
-
-                    <li class="app-task-list__item">
-                        <span class="app-task-list__task-name">
-                            <a asp-page="@Routes.Pages.Path.RegisteredBusinessNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details">
-                                Business details
-                            </a>
-                        </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.BusinessDetails)" id="business-details">@Model.BusinessDetails</strong>
                     </li>
                 </ul>
             </li>

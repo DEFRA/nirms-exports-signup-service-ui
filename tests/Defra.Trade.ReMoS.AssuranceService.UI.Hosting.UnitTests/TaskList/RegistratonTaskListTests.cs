@@ -214,6 +214,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Address = tradeAddress,
                 AuthorisedSignatory = authorisedSignatory,
                 PartyName = "Test",
+                PracticeName = "Test",
                 FboNumber = "123",
                 NatureOfBusiness = "Test nature",
                 RegulationsConfirmed = true
@@ -270,6 +271,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Contact = tradeContact,
                 Address = tradeAddress,
                 PartyName = "Test",
+                PracticeName = "Test",
                 FboNumber = "123",
                 NatureOfBusiness = "Test nature",
                 RegulationsConfirmed = true
@@ -348,7 +350,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_InProgress()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO { PartyName = "Test" };
+            var tradeParty = new TradePartyDTO { PracticeName = "Test" };
             var expectedStatus = TaskListStatus.INPROGRESS;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
