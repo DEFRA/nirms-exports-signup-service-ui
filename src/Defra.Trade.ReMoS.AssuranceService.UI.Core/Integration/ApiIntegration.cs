@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
-public class ApiIntegration : IAPIIntegration
+public class ApiIntegration : IApiIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
@@ -29,40 +29,40 @@ public class ApiIntegration : IAPIIntegration
         _authenticationService = authenticationService;
     }
 
-    public async Task<List<TradePartyDTO>?> GetAllTradePartiesAsync()
+    public async Task<List<TradePartyDto>?> GetAllTradePartiesAsync()
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync("TradeParties");
         
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<List<TradePartyDTO>>(
+        return await JsonSerializer.DeserializeAsync<List<TradePartyDto>>(
             await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new List<TradePartyDTO>();
+            options: _jsonSerializerOptions) ?? new List<TradePartyDto>();
     }
 
-    public async Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid id)
+    public async Task<TradePartyDto?> GetTradePartyByIdAsync(Guid id)
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"TradeParties/{id}");
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+        return await JsonSerializer.DeserializeAsync<TradePartyDto>(
             await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new TradePartyDTO();
+            options: _jsonSerializerOptions) ?? new TradePartyDto();
     }
 
-    public async Task<TradePartyDTO?> GetTradePartyByOrgIdAsync(Guid orgId)
+    public async Task<TradePartyDto?> GetTradePartyByOrgIdAsync(Guid orgId)
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"TradeParties/Organisation/{orgId}");
 
         if (response.IsSuccessStatusCode)
         {
-            return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+            return await JsonSerializer.DeserializeAsync<TradePartyDto>(
                 await response.Content.ReadAsStreamAsync(),
-                options: _jsonSerializerOptions) ?? new TradePartyDTO();
+                options: _jsonSerializerOptions) ?? new TradePartyDto();
         }
         else if ((int)response.StatusCode == StatusCodes.Status404NotFound)
         {
@@ -74,7 +74,7 @@ public class ApiIntegration : IAPIIntegration
         }
     }
 
-    public async Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate)
+    public async Task<Guid> AddTradePartyAsync(TradePartyDto tradePartyToCreate)
     {
         Guid results = Guid.Empty;
         var requestBody = new StringContent(
@@ -100,7 +100,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<Guid> UpdateTradePartyAsync(TradePartyDTO tradePartyToUpdate)
+    public async Task<Guid> UpdateTradePartyAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
         var requestBody = new StringContent(
@@ -126,7 +126,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<Guid> UpdateTradePartyAddressAsync(TradePartyDTO tradePartyToUpdate)
+    public async Task<Guid> UpdateTradePartyAddressAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
         var requestBody = new StringContent(
@@ -152,7 +152,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDTO addressDTO)
+    public async Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDto addressDTO)
     {
         Guid results = Guid.Empty;
         var requestBody = new StringContent(
@@ -178,7 +178,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<Guid> UpdateTradePartyContactAsync(TradePartyDTO tradePartyToUpdate)
+    public async Task<Guid> UpdateTradePartyContactAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
         var requestBody = new StringContent(
@@ -204,7 +204,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDTO logisticsLocationDTO)
+    public async Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDto logisticsLocationDTO)
     {
         Guid results = Guid.Empty;
         var requestBody = new StringContent(
@@ -230,40 +230,40 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid id)
+    public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid id)
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"Establishments/{id}");
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<LogisticsLocationDTO>(
+        return await JsonSerializer.DeserializeAsync<LogisticsLocationDto>(
             await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new LogisticsLocationDTO();
+            options: _jsonSerializerOptions) ?? new LogisticsLocationDto();
     }
 
-    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}");
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDTO>>(
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDto>>(
             await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDTO>();
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
     }
 
-    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode)
+    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsByPostcodeAsync(string postcode)
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"Establishments/Postcode/{postcode}");
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDTO>>(
+        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDto>>(
             await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDTO>();
+            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
     }
 
     public async Task RemoveEstablishmentAsync(Guid locationId)
@@ -274,7 +274,7 @@ public class ApiIntegration : IAPIIntegration
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task<bool> UpdateEstablishmentAsync(LogisticsLocationDTO establishmentDto)
+    public async Task<bool> UpdateEstablishmentAsync(LogisticsLocationDto establishmentDto)
     {
         var requestBody = new StringContent(
             JsonSerializer.Serialize(establishmentDto),
@@ -290,7 +290,7 @@ public class ApiIntegration : IAPIIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
-    public async Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate)
+    public async Task<TradePartyDto?> UpdateAuthorisedSignatoryAsync(TradePartyDto tradePartyToUpdate)
     {
         var httpClient = CreateHttpClient();
         var requestBody = new StringContent(
@@ -303,9 +303,9 @@ public class ApiIntegration : IAPIIntegration
 
         response.EnsureSuccessStatusCode();
 
-        return await JsonSerializer.DeserializeAsync<TradePartyDTO>(
+        return await JsonSerializer.DeserializeAsync<TradePartyDto>(
             await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new TradePartyDTO();
+            options: _jsonSerializerOptions) ?? new TradePartyDto();
 
         throw new BadHttpRequestException("null return from API");
     }

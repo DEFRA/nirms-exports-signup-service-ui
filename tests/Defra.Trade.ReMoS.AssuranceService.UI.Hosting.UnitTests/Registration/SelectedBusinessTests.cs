@@ -41,7 +41,7 @@ public class SelectedBusinessTests
     public async Task OnGet_Set_SelectedBusiness_To_BusinessNameFromApi()
     {
         //ARrange
-        var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid(), PracticeName = "Test name" };
+        var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), PracticeName = "Test name" };
         _mockTradeService
             .Setup(action => action.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto);

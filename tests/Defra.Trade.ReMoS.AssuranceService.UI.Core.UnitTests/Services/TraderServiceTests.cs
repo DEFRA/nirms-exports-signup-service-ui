@@ -28,7 +28,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
     internal class TraderServiceTests
     {
         private ITraderService? _traderService;
-        protected Mock<IAPIIntegration> _mockApiIntegration = new();
+        protected Mock<IApiIntegration> _mockApiIntegration = new();
 
         [Test]
         public async Task Service_Follows_Correct_Route_When_Calling_CreateTradePartyAsync()
@@ -38,7 +38,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             var expectedGuid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var tradePartyDTO = new TradePartyDTO
+            var tradePartyDTO = new TradePartyDto
             {
                 PartyName = "Trade party Ltd",
                 NatureOfBusiness = "Wholesale Hamster Supplies",
@@ -62,7 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
 
-            var tradePartyDTO = new TradePartyDTO
+            var tradePartyDTO = new TradePartyDto
             {
                 Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
                 PartyName = "Trade party Ltd",
@@ -87,7 +87,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
 
-            var tradePartyDTO = new TradePartyDTO
+            var tradePartyDTO = new TradePartyDto
             {
                 Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
                 PartyName = "Trade party Ltd",
@@ -112,13 +112,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
 
-            var emptyTradePartyDTO = new TradePartyDTO
+            var emptyTradePartyDTO = new TradePartyDto
             {
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000000")
             };
 
             _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(Guid.Empty)).Verifiable();
-            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(Guid.Empty)).Returns(Task.FromResult(new TradePartyDTO())!);
+            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(Guid.Empty)).Returns(Task.FromResult(new TradePartyDto())!);
 
             // Act
             var returnedValue = await _traderService.GetTradePartyByIdAsync(Guid.Empty);
@@ -135,7 +135,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _traderService = new TraderService(_mockApiIntegration.Object);
             var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var tradePartyDTO = new TradePartyDTO
+            var tradePartyDTO = new TradePartyDto
             {
                 Id = guid,
                 PartyName = "Trade party Ltd",
@@ -161,7 +161,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _traderService = new TraderService(_mockApiIntegration.Object);
             var partyId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var tradeAddressDto = new TradeAddressDTO
+            var tradeAddressDto = new TradeAddressDto
             {
                 TradeCountry = "GB",
             };
@@ -184,7 +184,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _traderService = new TraderService(_mockApiIntegration.Object);
             var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var tradePartyDTO = new TradePartyDTO
+            var tradePartyDTO = new TradePartyDto
             {
                 Id = guid,
                 PartyName = "Trade party Ltd",
@@ -211,7 +211,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             _traderService = new TraderService(_mockApiIntegration.Object);
             var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-            var tradePartyDTO = new TradePartyDTO
+            var tradePartyDTO = new TradePartyDto
             {
                 Id = guid,
                 PartyName = "Trade party Ltd",
@@ -239,8 +239,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             //var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid() };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync((TradePartyDTO)null!);
-            var expectedResult = ((TradePartyDTO)null!, TradePartySignupStatus.New);
+                .ReturnsAsync((TradePartyDto)null!);
+            var expectedResult = ((TradePartyDto)null!, TradePartySignupStatus.New);
 
             // Act
             var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
@@ -256,7 +256,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid() };
+            var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid() };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(tradePartyDto);
@@ -276,7 +276,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO { Id = Guid.NewGuid(), Address = new TradeAddressDTO { TradeCountry = "GB"}, TermsAndConditionsSignedDate = DateTime.Now };
+            var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), Address = new TradeAddressDto { TradeCountry = "GB"}, TermsAndConditionsSignedDate = DateTime.Now };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(tradePartyDto);
@@ -295,10 +295,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = Guid.NewGuid(),
-                Address = new TradeAddressDTO { TradeCountry = "GB" },
+                Address = new TradeAddressDto { TradeCountry = "GB" },
                 FboNumber = "1234",
                 RegulationsConfirmed = true,
             };
@@ -320,10 +320,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = Guid.NewGuid(),
-                Address = new TradeAddressDTO { Id = Guid.NewGuid() },
+                Address = new TradeAddressDto { Id = Guid.NewGuid() },
             };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
@@ -343,10 +343,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = Guid.NewGuid(),
-                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" },
+                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" },
             };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
@@ -366,10 +366,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = Guid.NewGuid(),
-                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" },
+                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" },
                 FboNumber = "1234",
             };
             _mockApiIntegration

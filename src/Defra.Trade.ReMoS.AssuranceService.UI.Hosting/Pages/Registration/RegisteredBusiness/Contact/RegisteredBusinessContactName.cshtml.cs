@@ -87,13 +87,13 @@ public class RegisteredBusinessContactNameModel : PageModel
     private async Task SubmitName()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
+        TradePartyDto tradeParty = GenerateDTO();
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
     private async Task GetContactNameFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Name = tradeParty.Contact.PersonName ?? string.Empty;
@@ -102,19 +102,19 @@ public class RegisteredBusinessContactNameModel : PageModel
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
         }
     }
 
-    private TradePartyDTO GenerateDTO()
+    private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
-            Contact = new TradeContactDTO()
+            Contact = new TradeContactDto()
             {
                 Id = ContactId,
                 PersonName = Name,

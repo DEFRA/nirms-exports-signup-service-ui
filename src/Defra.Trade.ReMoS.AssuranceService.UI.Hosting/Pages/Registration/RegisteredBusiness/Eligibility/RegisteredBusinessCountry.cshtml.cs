@@ -47,7 +47,7 @@ public class RegisteredBusinessCountryModel : PageModel
             CountrySaved = !string.IsNullOrEmpty(Country);
         }
 
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
         if (_checkAnswersService.GetEligibilityProgress(tradeParty!) == TaskListStatus.COMPLETE)
         {
             AllowedToTasklist = true;
@@ -97,11 +97,11 @@ public class RegisteredBusinessCountryModel : PageModel
     }
 
     #region private methods
-    private TradePartyDTO CreateDTO()
+    private TradePartyDto CreateDTO()
     {
-        TradePartyDTO DTO = new()
+        TradePartyDto DTO = new()
         {
-            Address = new TradeAddressDTO()
+            Address = new TradeAddressDto()
             {
                 TradeCountry = Country
             }
@@ -147,7 +147,7 @@ public class RegisteredBusinessCountryModel : PageModel
             return;
         }
 
-        var tradeAddress = new TradeAddressDTO { TradeCountry = Country };
+        var tradeAddress = new TradeAddressDto { TradeCountry = Country };
         await _traderService.AddTradePartyAddressAsync(TraderId, tradeAddress);
 
     }

@@ -35,7 +35,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
                     AuthorisedSignatory = new Core.DTOs.AuthorisedSignatoryDto()
@@ -61,7 +61,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new Core.DTOs.TradePartyDto()
                 {
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });
@@ -84,7 +84,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new Core.DTOs.TradePartyDto()
                 {
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });

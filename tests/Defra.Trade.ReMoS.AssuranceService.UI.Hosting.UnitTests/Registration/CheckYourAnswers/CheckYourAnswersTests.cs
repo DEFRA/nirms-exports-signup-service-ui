@@ -30,8 +30,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var logisticsLocations = new List<LogisticsLocationDTO>();
-            var tradeParty = new TradePartyDTO { Address = new TradeAddressDTO { TradeCountry = "NI" } };
+            var logisticsLocations = new List<LogisticsLocationDto>();
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
@@ -51,8 +51,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var logisticsLocations = new List<LogisticsLocationDTO>();
-            var tradeParty = new TradePartyDTO { Address = new TradeAddressDTO { TradeCountry = "England" } };
+            var logisticsLocations = new List<LogisticsLocationDto>();
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "England" } };
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
@@ -74,7 +74,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var tradePartyId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
-            var logisticsLocations = new List<LogisticsLocationDTO> { };
+            var logisticsLocations = new List<LogisticsLocationDto> { };
 
             _mockEstablishmentService.Setup(x => x.RemoveEstablishmentAsync(establishmentId).Result);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);

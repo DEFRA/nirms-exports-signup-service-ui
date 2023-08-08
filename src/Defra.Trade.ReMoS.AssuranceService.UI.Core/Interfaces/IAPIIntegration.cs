@@ -2,21 +2,21 @@
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
-public interface IAPIIntegration
+public interface IApiIntegration
 {
-    Task<List<TradePartyDTO>?> GetAllTradePartiesAsync();
-    public Task<TradePartyDTO?> GetTradePartyByIdAsync(Guid id);
-    Task<Guid> AddTradePartyAsync(TradePartyDTO tradePartyToCreate);
-    Task<Guid> UpdateTradePartyAsync(TradePartyDTO tradePartyToUpdate);
-    public Task<Guid> UpdateTradePartyAddressAsync(TradePartyDTO tradePartyToUpdate);
-    public Task<Guid> UpdateTradePartyContactAsync(TradePartyDTO tradePartyToUpdate);
-    public Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid id);
-    Task<List<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
-    Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDTO logisticsLocationDTO);
-    public Task<List<LogisticsLocationDTO>?> GetEstablishmentsByPostcodeAsync(string postcode);
+    Task<List<TradePartyDto>?> GetAllTradePartiesAsync();
+    public Task<TradePartyDto?> GetTradePartyByIdAsync(Guid id);
+    Task<Guid> AddTradePartyAsync(TradePartyDto tradePartyToCreate);
+    Task<Guid> UpdateTradePartyAsync(TradePartyDto tradePartyToUpdate);
+    public Task<Guid> UpdateTradePartyAddressAsync(TradePartyDto tradePartyToUpdate);
+    public Task<Guid> UpdateTradePartyContactAsync(TradePartyDto tradePartyToUpdate);
+    public Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid id);
+    Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
+    Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDto logisticsLocationDTO);
+    public Task<List<LogisticsLocationDto>?> GetEstablishmentsByPostcodeAsync(string postcode);
     Task RemoveEstablishmentAsync(Guid locationId);
-    public Task<TradePartyDTO?> UpdateAuthorisedSignatoryAsync(TradePartyDTO tradePartyToUpdate);
-    Task<bool> UpdateEstablishmentAsync(LogisticsLocationDTO establishmentDto);
-    Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDTO addressDTO);
-    Task<TradePartyDTO?> GetTradePartyByOrgIdAsync(Guid orgId);
+    public Task<TradePartyDto?> UpdateAuthorisedSignatoryAsync(TradePartyDto tradePartyToUpdate);
+    Task<bool> UpdateEstablishmentAsync(LogisticsLocationDto establishmentDto);
+    Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDto addressDTO);
+    Task<TradePartyDto?> GetTradePartyByOrgIdAsync(Guid orgId);
 }

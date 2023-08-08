@@ -54,10 +54,10 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO { TradeCountry = "GB"};
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto { TradeCountry = "GB"};
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,
@@ -82,10 +82,10 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO { TradeCountry = "NI" };
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto { TradeCountry = "NI" };
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,
@@ -151,11 +151,11 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO();
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto();
         tradeAddress.TradeCountry = "England";
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,
@@ -195,7 +195,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         var traderId = Guid.NewGuid();
         _systemUnderTest.TraderId = traderId;
         _mockTraderService
-            .Setup(action => action.AddTradePartyAddressAsync(It.IsAny<Guid>(), It.IsAny<TradeAddressDTO>()))
+            .Setup(action => action.AddTradePartyAddressAsync(It.IsAny<Guid>(), It.IsAny<TradeAddressDto>()))
             .ReturnsAsync(traderId);
 
         //Act

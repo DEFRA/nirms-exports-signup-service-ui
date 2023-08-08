@@ -103,7 +103,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
         }
 
-        private async Task<TradePartyDTO?> GetSignatoryEmailFromApiAsync()
+        private async Task<TradePartyDto?> GetSignatoryEmailFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
             if (tradeParty != null && tradeParty.AuthorisedSignatory != null)
@@ -117,10 +117,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return null;
         }
 
-        private async Task<TradePartyDTO> GenerateDTO()
+        private async Task<TradePartyDto> GenerateDTO()
         {
             var tradeParty = await GetSignatoryEmailFromApiAsync();
-            return new TradePartyDTO()
+            return new TradePartyDto()
             {
                 Id = TraderId,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()

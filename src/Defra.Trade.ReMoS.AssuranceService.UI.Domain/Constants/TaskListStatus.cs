@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 [ExcludeFromCodeCoverage]
-public class TaskListStatus
+public static class TaskListStatus
 {
     public const string NOTSTART = "Not Started";
     public const string COMPLETE = "Completed";

@@ -12,31 +12,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
 public class EstablishmentService : IEstablishmentService
 {
-    private readonly IAPIIntegration _api;
+    private readonly IApiIntegration _api;
 
-    public EstablishmentService(IAPIIntegration api)
+    public EstablishmentService(IApiIntegration api)
     {
         _api = api;
     }
     public async Task<Guid?> CreateEstablishmentForTradePartyAsync(
-        Guid partyId, 
-        LogisticsLocationDTO logisticsLocationDTO)
+        Guid partyId,
+        LogisticsLocationDto logisticsLocationDTO)
     {
         var establishmentId = await _api.AddEstablishmentToPartyAsync(partyId, logisticsLocationDTO);
 
         return establishmentId;
     }
 
-    public async Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
         return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId);
     }
 
-    public async Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id)
+    public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id)
     {
         return (Id != Guid.Empty) ? await _api.GetEstablishmentByIdAsync(Id) : null;
     }
-    public async Task<List<LogisticsLocationDTO>?> GetEstablishmentByPostcodeAsync(string postcode)
+    public async Task<List<LogisticsLocationDto>?> GetEstablishmentByPostcodeAsync(string postcode)
     {
         return await _api.GetEstablishmentsByPostcodeAsync(postcode);
     }
@@ -47,7 +47,7 @@ public class EstablishmentService : IEstablishmentService
         return true;
     }
 
-    public async Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDTO establishmentDto)
+    public async Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto)
     {
         return await _api.UpdateEstablishmentAsync(establishmentDto);
     }

@@ -53,7 +53,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Arrange
             Guid guid = Guid.NewGuid();
 
-            var tradeContact = new TradeContactDTO
+            var tradeContact = new TradeContactDto
             {
                 PersonName = "Test Name",
                 Email = "test@testmail.com",
@@ -61,14 +61,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 TelephoneNumber = "1234567890"
             };
 
-            var tradeAddress = new TradeAddressDTO
+            var tradeAddress = new TradeAddressDto
             {
                 TradeCountry = "Test Country",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
 
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
                 Contact = tradeContact,
@@ -93,7 +93,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Arrange
             Guid guid = Guid.NewGuid();
 
-            var tradeContact = new TradeContactDTO
+            var tradeContact = new TradeContactDto
             {
                 PersonName = "Test Name",
                 Email = "test@testmail.com",
@@ -101,14 +101,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 TelephoneNumber = "1234567890"
             };
 
-            var tradeAddress = new TradeAddressDTO
+            var tradeAddress = new TradeAddressDto
             {
                 TradeCountry = "NI",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
 
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
                 Contact = tradeContact,
@@ -117,9 +117,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDTO> 
+            var list = new List<LogisticsLocationDto> 
             { 
-                new LogisticsLocationDTO() { NI_GBFlag = "NI"}
+                new LogisticsLocationDto() { NI_GBFlag = "NI"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -139,11 +139,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public async Task GetAPIData_GivenCountryAndFboIsPopulated_EligibilityMarkedAsComplete()
         {
             //Arrange
-            TradePartyDTO tradePartyFromApi = new()
+            TradePartyDto tradePartyFromApi = new()
             {
                 Id = Guid.NewGuid(),
                 FboNumber = "fbonum-123456-fbonum",
-                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB"}
+                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB"}
             };
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -160,10 +160,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public async Task GetAPIData_GivenFboNotPopulated_EligibilityMarkedAsNotStarted()
         {
             //Arrange
-            TradePartyDTO tradePartyFromApi = new()
+            TradePartyDto tradePartyFromApi = new()
             {
                 Id = Guid.NewGuid(),
-                Address = new TradeAddressDTO { Id = Guid.NewGuid(), TradeCountry = "GB" }
+                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" }
             };
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -182,7 +182,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Arrange
             Guid guid = Guid.NewGuid();
 
-            var tradeContact = new TradeContactDTO
+            var tradeContact = new TradeContactDto
             {
                 PersonName = "Test Name",
                 Email = "test@testmail.com",
@@ -200,14 +200,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 TradePartyId = guid
             };
 
-            var tradeAddress = new TradeAddressDTO
+            var tradeAddress = new TradeAddressDto
             {
                 TradeCountry = "GB",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
 
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
                 Contact = tradeContact,
@@ -220,9 +220,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 RegulationsConfirmed = true
             };
 
-            var list = new List<LogisticsLocationDTO>
+            var list = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO() { NI_GBFlag = "GB"}
+                new LogisticsLocationDto() { NI_GBFlag = "GB"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -249,7 +249,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Arrange
             Guid guid = Guid.NewGuid();
 
-            var tradeContact = new TradeContactDTO
+            var tradeContact = new TradeContactDto
             {
                 PersonName = "Test Name",
                 Email = "test@testmail.com",
@@ -258,14 +258,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 IsAuthorisedSignatory = false
             };
 
-            var tradeAddress = new TradeAddressDTO
+            var tradeAddress = new TradeAddressDto
             {
                 TradeCountry = "Test Country",
                 LineOne = "1 Test Lane",
                 PostCode = "12345"
             };
 
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
                 Contact = tradeContact,
@@ -277,9 +277,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 RegulationsConfirmed = true
             };
 
-            var list = new List<LogisticsLocationDTO>
+            var list = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO() { NI_GBFlag = "NI"}, new LogisticsLocationDTO() { NI_GBFlag = "GB"}
+                new LogisticsLocationDto() { NI_GBFlag = "NI"}, new LogisticsLocationDto() { NI_GBFlag = "GB"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -305,7 +305,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Arrange
             Guid guid = Guid.NewGuid();
 
-            var tradeContact = new TradeContactDTO
+            var tradeContact = new TradeContactDto
             {
                 PersonName = "Test Name",
                 Email = "test@testmail.com",
@@ -323,7 +323,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 TradePartyId = guid
             };
 
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
                 Contact = tradeContact,
@@ -350,7 +350,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_InProgress()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO { PracticeName = "Test" };
+            var tradeParty = new TradePartyDto { PartyName = "Test", PracticeName = "Test"};
             var expectedStatus = TaskListStatus.INPROGRESS;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
@@ -362,9 +362,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_NotStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDTO() { IsAuthorisedSignatory = false },
+                Contact = new TradeContactDto() { IsAuthorisedSignatory = false },
             };
             var expectedStatus = TaskListStatus.NOTSTART;
 
@@ -377,9 +377,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetContactDetailsProgress_Status_InProgress()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDTO() { PersonName = "Test" }
+                Contact = new TradeContactDto() { PersonName = "Test" }
             };
 
             var expectedStatus = TaskListStatus.INPROGRESS;
@@ -393,7 +393,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetContactDetailsProgress_Status_NotStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
 
             var expectedStatus = TaskListStatus.NOTSTART;
 
@@ -410,9 +410,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDTO() 
+                Contact = new TradeContactDto() 
                 { 
                     PersonName = "Test",
                     Email = "Email",
@@ -438,9 +438,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete_Id_IsNull(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDTO()
+                Contact = new TradeContactDto()
                 {
                     PersonName = "Test",
                     Email = "Email",
@@ -466,9 +466,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetAuthorisedSignatoryProgress_Status_NoStarted()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO 
+            var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDTO()
+                Contact = new TradeContactDto()
                 {
                     PersonName = "Test",
                     Email = "Email",
@@ -488,7 +488,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetAuthorisedSignatoryProgress_status_CannotStart()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
 
             var expectedStatus = TaskListStatus.CANNOTSTART;
 
