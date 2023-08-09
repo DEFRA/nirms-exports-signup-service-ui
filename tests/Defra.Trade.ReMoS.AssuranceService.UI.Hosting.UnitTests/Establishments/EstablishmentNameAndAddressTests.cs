@@ -63,8 +63,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
 
-            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO { Name = "Test name",
-                Address = new TradeAddressDTO { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
+                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
             _systemUnderTest!.EstablishmentId = Guid.NewGuid();
@@ -88,8 +88,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
 
-            var list = new List<LogisticsLocationDTO> { new LogisticsLocationDTO { Name = "Test name",
-                Address = new TradeAddressDTO { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
+                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
             _systemUnderTest!.EstablishmentId = Guid.NewGuid();

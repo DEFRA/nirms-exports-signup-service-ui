@@ -45,7 +45,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test"
@@ -66,7 +66,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test"
@@ -77,7 +77,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         _systemUnderTest!.TandCs = assurance;
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
-        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDTO>()))
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
 
         await _systemUnderTest.OnPostSubmitAsync();
@@ -91,7 +91,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test"
@@ -105,7 +105,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .ReturnsAsync(tradeParty);
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDTO)null!, Core.Enums.TradePartySignupStatus.Complete));
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.Complete));
 
         await _systemUnderTest.OnGetAsync(tradePartyId);
 

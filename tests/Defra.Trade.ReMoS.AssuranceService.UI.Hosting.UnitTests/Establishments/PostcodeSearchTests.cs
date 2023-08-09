@@ -12,12 +12,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
     {
         private PostcodeSearchModel? _systemUnderTest;
         protected Mock<ILogger<PostcodeSearchModel>> _mockLogger = new();
-        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new PostcodeSearchModel(_mockTraderService.Object, _mockLogger.Object);
+            _systemUnderTest = new PostcodeSearchModel(_mockLogger.Object);
         }
 
         [Test]

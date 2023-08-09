@@ -31,7 +31,7 @@ public class AuthorisedSignatoryNameModel : PageModel
     public AuthorisedSignatoryNameModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
     {
         _traderService = traderService;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger)); ;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
@@ -81,7 +81,7 @@ public class AuthorisedSignatoryNameModel : PageModel
         await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
     }
 
-    private async Task <TradePartyDTO?> GetSignatoryNameFromApiAsync()
+    private async Task <TradePartyDto?> GetSignatoryNameFromApiAsync()
     {
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.AuthorisedSignatory!= null)
@@ -95,10 +95,10 @@ public class AuthorisedSignatoryNameModel : PageModel
         return null;
     }
 
-    private async Task<TradePartyDTO> GenerateDTO()
+    private async Task<TradePartyDto> GenerateDTO()
     {
         var tradeParty = await GetSignatoryNameFromApiAsync();
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
             AuthorisedSignatory = new AuthorisedSignatoryDto()

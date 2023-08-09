@@ -27,7 +27,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 {
     internal class ApiIntegrationTests
     {
-        private IAPIIntegration? _apiIntegration;
+        private IApiIntegration? _apiIntegration;
         protected Mock<IHttpClientFactory> _mockHttpClientFactory = new();
         protected Mock<HttpMessageHandler> _mockHttpMessageHandler = new();
         private readonly Mock<IAuthenticationService> _mockAuthenticationService = new();
@@ -36,7 +36,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_TradeParties_When_Calling_GetAllTradePartiesAsync()
         {
             // Arrange
-            var tradeParties = new List<TradePartyDTO> {  new TradePartyDTO(), new TradePartyDTO() };
+            var tradeParties = new List<TradePartyDto> {  new TradePartyDto(), new TradePartyDto() };
 
             var jsonString = JsonConvert.SerializeObject(tradeParties);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -64,14 +64,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Assert
             _mockHttpClientFactory.Verify();
-            returnedValue!.Count().Should().Be(tradeParties.Count());
+            returnedValue!.Count.Should().Be(tradeParties.Count);
         }
 
         [Test]
         public async Task Integration_Returns_TradePartyDTO_When_Calling_GetTradePartyByIdAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
             var appConfigurationSettings = new AppConfigurationService();
             appConfigurationSettings.SubscriptionKey = "testkey";
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
@@ -106,7 +106,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_TradePartyDTO_When_Calling_GetTradePartyByOrgIdAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO();
+            var tradeParty = new TradePartyDto();
             var appConfigurationSettings = new AppConfigurationService();
             appConfigurationSettings.SubscriptionKey = "testkey";
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
@@ -141,7 +141,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_Guid_When_Calling_AddTradePartyAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 PartyName = "Trade party Ltd",
                 NatureOfBusiness = "Wholesale Hamster Supplies",
@@ -183,7 +183,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_200_When_Calling_UpdateTradePartyAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 PartyName = "Trade party Ltd",
                 NatureOfBusiness = "Wholesale Hamster Supplies",
@@ -227,7 +227,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_AddTradePartyAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 Id = Guid.Empty,
                 PartyName = "Trade party Ltd",
@@ -268,7 +268,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 Id = Guid.Empty,
                 PartyName = "Trade party Ltd",
@@ -308,7 +308,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_Guid_When_Calling_UpdateTradePartyAddressAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 PartyName = "Trade party Ltd",
                 NatureOfBusiness = "Wholesale Hamster Supplies",
@@ -351,7 +351,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAddressAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 Id = Guid.Empty,
                 PartyName = "Trade party Ltd",
@@ -391,7 +391,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_Guid_When_Calling_AddAddressToPartyAsync()
         {
             // Arrange
-            var tradeAddress = new TradeAddressDTO
+            var tradeAddress = new TradeAddressDto
             {
                 TradeCountry = "United Kingdom",
             };
@@ -433,7 +433,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_Guid_When_Calling_UpdateTradePartyContactAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 PartyName = "Trade party Ltd",
                 NatureOfBusiness = "Wholesale Hamster Supplies",
@@ -477,7 +477,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 Id = Guid.Empty,
                 PartyName = "Trade party Ltd",
@@ -517,7 +517,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_Guid_When_Calling_AddEstablishmentToPartyAsync()
         {
             // Arrange
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
                 Name = "Trade party Ltd"
             };
@@ -559,7 +559,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
         public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_CreateEstablishmentAsync()
         {
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
                 Name = "Trade party Ltd"
             };
@@ -598,7 +598,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         {
             // Arrange
             var guid = Guid.NewGuid();
-            var location = new LogisticsLocationDTO();
+            var location = new LogisticsLocationDto();
             var jsonString = JsonConvert.SerializeObject(location);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
             var appConfigurationSettings = new AppConfigurationService();
@@ -625,7 +625,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Assert
             _mockHttpClientFactory.Verify();
-            returnedValue!.Should().BeOfType<LogisticsLocationDTO>();
+            returnedValue!.Should().BeOfType<LogisticsLocationDto>();
         }
 
         [Test]
@@ -633,9 +633,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_LogisticsLocations_When_Calling_GetEstablishmentsForTradePartyAsync()
         {
             // Arrange
-            var logisticsLocations = new List<LogisticsLocationDTO>
+            var logisticsLocations = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO()
+                new LogisticsLocationDto()
                 {
 
                     Name = "Test 2",
@@ -678,13 +678,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_LogisticsLocations_When_Calling_GetEstablishmentsByPostcodeAsync()
         {
             // Arrange
-            var logisticsLocations = new List<LogisticsLocationDTO>
+            var logisticsLocations = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO()
+                new LogisticsLocationDto()
                 {
                     Name = "Test 2",
                     Id = Guid.NewGuid(),
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         LineOne = "line 1",
                         CityName = "city",
@@ -731,13 +731,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Verify_When_Calling_RemoveEstablishmentFromPartyAsync()
         {
             // Arrange
-            var logisticsLocations = new List<LogisticsLocationDTO>
+            var logisticsLocations = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO()
+                new LogisticsLocationDto()
                 {
                     Name = "Test 2",
                     Id = Guid.NewGuid(),
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         LineOne = "line 1",
                         CityName = "city",
@@ -778,7 +778,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_TradePartyDTO_When_Calling_UpdateAuthorisedSignatoryAsync()
         {
             // Arrange
-            var tradeParty = new TradePartyDTO
+            var tradeParty = new TradePartyDto
             {
                 PartyName = "Trade party Ltd",
                 NatureOfBusiness = "Wholesale Hamster Supplies",
@@ -820,7 +820,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Returns_True_When_Calling_UpdateEstablishment()
         {
             // Arrange
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
                 Id = Guid.NewGuid(),
                 Name = "testname",
@@ -863,7 +863,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateEstablishmentAsync()
         {
             // Arrange
-            var logisticsLocationDto = new LogisticsLocationDTO
+            var logisticsLocationDto = new LogisticsLocationDto
             {
             };
 

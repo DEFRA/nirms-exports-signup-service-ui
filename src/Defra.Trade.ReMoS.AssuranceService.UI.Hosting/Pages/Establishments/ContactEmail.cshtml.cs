@@ -16,7 +16,7 @@ public class ContactEmailModel : PageModel
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
-    public LogisticsLocationDTO? Location { get; set; } = new LogisticsLocationDTO();
+    public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
