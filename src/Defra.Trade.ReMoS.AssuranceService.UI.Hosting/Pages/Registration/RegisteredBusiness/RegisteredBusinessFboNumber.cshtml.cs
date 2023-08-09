@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -38,6 +39,11 @@ public class RegisteredBusinessFboNumberModel : PageModel
     {
         _logger.LogInformation("FBO Number OnGet");
         TraderId = Id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
 
         await PopulateModelProperties();
 
