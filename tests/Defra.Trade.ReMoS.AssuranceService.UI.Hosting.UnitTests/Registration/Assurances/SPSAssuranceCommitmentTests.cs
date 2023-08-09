@@ -141,7 +141,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
 
-        await _systemUnderTest.OnPostSubmitAsync();
+        await _systemUnderTest.OnGetAsync(tradePartyId);
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
