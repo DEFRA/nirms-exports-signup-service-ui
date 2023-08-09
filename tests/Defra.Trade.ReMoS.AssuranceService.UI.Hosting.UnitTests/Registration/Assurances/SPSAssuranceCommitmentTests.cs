@@ -28,13 +28,13 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGet_ReturnsId()
+    public async void OnGet_ReturnsId()
     {
         // arrange
         var tradePartyId = Guid.NewGuid();
 
         //act
-        _systemUnderTest!.OnGetAsync(tradePartyId);
+        await _systemUnderTest!.OnGetAsync(tradePartyId);
 
         //assert
         _systemUnderTest.TraderId.Should().Be(tradePartyId);
