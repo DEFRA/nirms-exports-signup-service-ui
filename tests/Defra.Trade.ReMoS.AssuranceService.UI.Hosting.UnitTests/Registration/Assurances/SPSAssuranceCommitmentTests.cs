@@ -88,6 +88,31 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPost_TickedSuccessful_NullDto()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = new()
+        {
+            Id = tradePartyId,
+            PartyName = "Test"
+        };
+        var assurance = true;
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(value: null);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+
+        await _systemUnderTest.OnPostSubmitAsync();
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
     public async Task OnPost_TickedSuccessful_DataPresent()
     {
         //arrange
