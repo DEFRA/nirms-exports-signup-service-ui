@@ -176,7 +176,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDto tradeParty = null;
         var assurance = true;
         var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
 
@@ -185,7 +184,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         //act
         _systemUnderTest!.TandCs = assurance;
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(tradeParty);
+            .ReturnsAsync(new TradePartyDto());
         _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
         _mockTraderService
@@ -203,7 +202,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDto tradeParty = null;
         var assurance = true;
         var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
 
@@ -212,7 +210,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         //act
         _systemUnderTest!.TandCs = assurance;
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(tradeParty);
+            .ReturnsAsync(new TradePartyDto());
         _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
         _mockTraderService
