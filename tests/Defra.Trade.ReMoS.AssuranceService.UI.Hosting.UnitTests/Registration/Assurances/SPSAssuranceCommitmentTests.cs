@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers;
@@ -107,6 +108,38 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .ReturnsAsync(tradePartyId);
          _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>()))
             .ReturnsAsync(logisticsLocationList);
+
+        await _systemUnderTest.OnPostSubmitAsync();
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPost_TickedSuccessful_DataNotPresent()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = new()
+        {
+            Id = tradePartyId,
+            PartyName = "Test"
+        };
+        var assurance = true;
+        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+
+        //GetDefraOrgBusinessSignupStatus
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+
 
         await _systemUnderTest.OnPostSubmitAsync();
 
