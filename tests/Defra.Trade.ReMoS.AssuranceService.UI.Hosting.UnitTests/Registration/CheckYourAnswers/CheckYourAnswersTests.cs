@@ -18,11 +18,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         protected Mock<ILogger<CheckYourAnswersModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
         protected Mock<ITraderService> _mockTraderService = new();
+        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
+            _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
         }
 
         [Test]
@@ -35,7 +36,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
-
+            _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
             // act
             await _systemUnderTest!.OnGetAsync(tradePartyId);
 

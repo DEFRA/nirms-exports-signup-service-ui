@@ -86,8 +86,9 @@ public class AdditionalEstablishmentAddressModel : PageModel
                 Routes.Pages.Path.EstablishmentNameAndAddressPath, 
                 new { id = TradePartyId, NI_GBFlag });
         }
-
-        if (await ReadyForCheckAnswersAsync())
+        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        
+        if ( _checkAnswersService.ReadyForCheckAnswers(tradeParty!))
         {
            return RedirectToPage(
             Routes.Pages.Path.RegistrationCheckYourAnswersPath,
@@ -149,35 +150,35 @@ public class AdditionalEstablishmentAddressModel : PageModel
             new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
     }
 
-   private async Task<bool> ReadyForCheckAnswersAsync()
-    {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+//   private async Task<bool> ReadyForCheckAnswersAsync()
+//    {
+//        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
-        if (tradeParty == null)
-        {
-            return false;
-        }
+//        if (tradeParty == null)
+//        {
+//            return false;
+//        }
 
-        if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
+//        if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
+//        {
+//            return false;
+//        }
 
-        if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
+//        if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+//        {
+//            return false;
+//        }
 
-        if (_checkAnswersService.GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
+//        if (_checkAnswersService.GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
+//        {
+//            return false;
+//        }
 
-        if (_checkAnswersService.GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
+//        if (_checkAnswersService.GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+//        {
+//            return false;
+//        }
 
-        return true;
-    }
+//        return true;
+//    }
 }

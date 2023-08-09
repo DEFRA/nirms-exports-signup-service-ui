@@ -17,6 +17,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     public class SignUpConfirmationTests : PageModelTestsBase
     {
         protected Mock<ITraderService> _mockTraderService = new();
+        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
         private SignUpConfirmationModel? _systemUnderTest;
         private Mock<IConfiguration> _mockConfiguration = new();
 
@@ -26,7 +27,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var _mockConfigSection = new Mock<IConfigurationSection>();
             _mockConfigSection.Setup(x => x.Value).Returns("testurl");
             _mockConfiguration.Setup(x => x.GetSection("ExternalLinks:StartNowPage")).Returns(_mockConfigSection.Object);
-            _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockConfiguration.Object);
+            _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockCheckAnswersService.Object, _mockConfiguration.Object);
         }
 
         [Test]
@@ -48,8 +49,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             var tradePartyId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO 
-            { 
+            var tradePartyDto = new TradePartyDTO
+            {
                 Id = tradePartyId,
                 PartyName = "AJ Associates",
                 Contact = new TradeContactDTO { Id = Guid.NewGuid(), Email = "test@test.com" }
@@ -62,7 +63,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             //Assert
             _systemUnderTest?.Email?.Should().Be("test@test.com");
-
         }
     }
 }

@@ -13,16 +13,46 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class CheckAnswersService : ICheckAnswersService
     {
+        public bool ReadyForCheckAnswers(TradePartyDTO tradeParty)
+        {
+            if (tradeParty == null)
+            {
+                return false;
+            }
+
+            if (GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
         {
-            if (tradeParty.PracticeName != null 
+            if (tradeParty.PracticeName != null
                 && tradeParty.Address != null
                 && tradeParty.Address.TradeCountry != null)
             {
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty?.PracticeName != null 
+            if (tradeParty?.PracticeName != null
                 && (tradeParty?.Address == null || tradeParty?.Address?.TradeCountry == null))
             {
                 return TaskListStatus.INPROGRESS;
