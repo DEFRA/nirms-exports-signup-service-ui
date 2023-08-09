@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,11 +24,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests
         private readonly Mock<ILogger<IndexModel>> _mockLogger = new();
         private readonly Mock<IOptions<EhcoIntegration>> _mockEhcoIntegrationSettings = new();
         private readonly Mock<IValidationParameters> _mockValidationParameters = new();
+        private readonly Mock<IConfiguration> _mockConfiguration = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new IndexModel(_mockLogger.Object, _mockEhcoIntegrationSettings.Object, _mockValidationParameters.Object);
+            _systemUnderTest = new IndexModel(_mockLogger.Object, _mockEhcoIntegrationSettings.Object, _mockValidationParameters.Object, _mockConfiguration.Object);
         }
 
         [TestCase("testContactId", "1", "testAud", "testUserEnrolledOrganisation", "testUnix", true)]
