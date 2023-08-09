@@ -147,6 +147,33 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
     }
 
+    public async Task OnGet_TickedSuccessful_DtoIsNull()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = null;
+        var assurance = true;
+        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+
+        //GetDefraOrgBusinessSignupStatus
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+
+
+        await _systemUnderTest.OnGetAsync(tradePartyId);
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
     public async Task OnPost_TickedSuccessful_DtoIsNull()
     {
         //arrange
