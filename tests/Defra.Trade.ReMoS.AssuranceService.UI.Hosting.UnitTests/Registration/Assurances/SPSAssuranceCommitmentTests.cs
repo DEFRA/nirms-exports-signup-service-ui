@@ -28,7 +28,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     }
 
     [Test]
-    public async void OnGet_ReturnsId()
+    public async Task OnGet_ReturnsId()
     {
         // arrange
         var tradePartyId = Guid.NewGuid();
