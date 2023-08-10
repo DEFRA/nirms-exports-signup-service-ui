@@ -15,7 +15,7 @@ public class RegisteredBusinessContactNameModel : PageModel
 
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter the full name of the contact person using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)")]
+    [RegularExpression(@"^[a-zA-Z\s-.]*$", ErrorMessage = "Enter the full name of the contact person using only letters, full stops (.) & hyphens (-)")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter the name of your business' contact person")]
     public string Name { get; set; } = string.Empty;

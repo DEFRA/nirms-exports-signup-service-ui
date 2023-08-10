@@ -11,7 +11,7 @@ public class SignUpConfirmationModel : PageModel
     [BindProperty]
     public Guid TraderId { get; set; }
     public string? Email { get; set; } = string.Empty;
-    public string StartNowPage = string.Empty;
+    public string StartNowPage { get; set; } = string.Empty;
 
     private readonly ITraderService _traderService;
     private readonly IConfiguration _config;
