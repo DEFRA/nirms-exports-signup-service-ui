@@ -50,7 +50,7 @@ public class PostcodeResultModel : PageModel
         Postcode = postcode;
         TradePartyId= id;
 
-        var establishments = new List<LogisticsLocationDTO>();
+        var establishments = new List<LogisticsLocationDto>();
         this.NI_GBFlag = NI_GBFlag;
 
         if (NI_GBFlag == "NI")

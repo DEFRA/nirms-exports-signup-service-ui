@@ -83,12 +83,12 @@ public class RegisteredBusinessContactPositionModel : PageModel
     private async Task SubmitPosition()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
+        TradePartyDto tradeParty = GenerateDTO();
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
     private async Task GetContactPositionFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Position = tradeParty.Contact.Position ?? string.Empty;
@@ -97,19 +97,19 @@ public class RegisteredBusinessContactPositionModel : PageModel
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
         }
     }
 
-    private TradePartyDTO GenerateDTO()
+    private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
-            Contact = new TradeContactDTO()
+            Contact = new TradeContactDto()
             {
                 Id = ContactId,
                 Position = Position,

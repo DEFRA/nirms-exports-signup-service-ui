@@ -15,7 +15,7 @@ public class RegisteredBusinessContactNameModel : PageModel
 
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter the full name of the contact person using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)")]
+    [RegularExpression(@"^[a-zA-Z\s-.]*$", ErrorMessage = "Enter the full name of the contact person using only letters, full stops (.) & hyphens (-)")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter the name of your business' contact person")]
     public string Name { get; set; } = string.Empty;
@@ -87,13 +87,13 @@ public class RegisteredBusinessContactNameModel : PageModel
     private async Task SubmitName()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
+        TradePartyDto tradeParty = GenerateDTO();
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
     private async Task GetContactNameFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Name = tradeParty.Contact.PersonName ?? string.Empty;
@@ -102,19 +102,19 @@ public class RegisteredBusinessContactNameModel : PageModel
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
         }
     }
 
-    private TradePartyDTO GenerateDTO()
+    private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
-            Contact = new TradeContactDTO()
+            Contact = new TradeContactDto()
             {
                 Id = ContactId,
                 PersonName = Name,

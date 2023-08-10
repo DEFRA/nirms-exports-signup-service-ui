@@ -41,7 +41,7 @@ public class ErrorMessageTagHelper : TagHelper
             if (ViewContext!.ModelState.HasError(fieldName))
             {
                 var modelErrorsResult = ViewContext.ModelState.TryGetValue(fieldName, out var modelEntry);
-                var modelError = modelErrorsResult ? modelEntry?.Errors.First() : null;
+                var modelError = modelErrorsResult ? modelEntry?.Errors[0] : null;
 
                 if (modelError != null)
                 {

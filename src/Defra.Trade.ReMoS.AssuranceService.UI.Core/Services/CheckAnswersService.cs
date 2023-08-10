@@ -61,7 +61,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return TaskListStatus.NOTSTART;
         }
 
-        public string GetContactDetailsProgress(TradePartyDTO tradeParty)
+        public string GetContactDetailsProgress(TradePartyDto tradeParty)
         {
             if (tradeParty.Contact != null && tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
             {
@@ -76,7 +76,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return TaskListStatus.NOTSTART;
         }
 
-        public string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty)
+        public string GetAuthorisedSignatoryProgress(TradePartyDto tradeParty)
         {
             if (tradeParty.Contact == null || tradeParty?.Contact?.PersonName == null || tradeParty?.Contact?.Email == null || tradeParty?.Contact?.TelephoneNumber == null || tradeParty?.Contact?.Position == null)
             {
@@ -104,7 +104,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return TaskListStatus.NOTSTART;
         }
 
-        public string GetEligibilityProgress(TradePartyDTO tradeParty)
+        public string GetEligibilityProgress(TradePartyDto tradeParty)
         {
             if (tradeParty.Address != null)
             {

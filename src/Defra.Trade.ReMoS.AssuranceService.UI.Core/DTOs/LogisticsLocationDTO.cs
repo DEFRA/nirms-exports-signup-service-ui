@@ -1,6 +1,6 @@
 ﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
-public class LogisticsLocationDTO
+public class LogisticsLocationDto
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
@@ -11,6 +11,6 @@ public class LogisticsLocationDTO
     public DateTime LastModifiedDate { get; set; }
     public string? NI_GBFlag { get; set; }
 
-    public TradePartyDTO? Party { get; set; }
-    public TradeAddressDTO? Address { get; set; }
+    public TradePartyDto? Party { get; set; }
+    public TradeAddressDto? Address { get; set; }
 }

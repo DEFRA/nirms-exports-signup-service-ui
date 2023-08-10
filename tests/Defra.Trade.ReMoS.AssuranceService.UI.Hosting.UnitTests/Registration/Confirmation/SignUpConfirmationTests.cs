@@ -53,7 +53,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             {
                 Id = tradePartyId,
                 PartyName = "AJ Associates",
-                Contact = new TradeContactDTO { Id = Guid.NewGuid(), Email = "test@test.com" }
+                Contact = new TradeContactDto { Id = Guid.NewGuid(), Email = "test@test.com" }
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradePartyDto);

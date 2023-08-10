@@ -163,15 +163,15 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         //Arrange
         var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d191");
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto
         {
             TradeCountry = "Test Country",
             LineOne = "1 Test Lane",
             PostCode = "EC1N 2PB"
         };
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact, 

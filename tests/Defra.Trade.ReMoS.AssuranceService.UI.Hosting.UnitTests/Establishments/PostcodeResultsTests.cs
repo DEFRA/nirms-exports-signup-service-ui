@@ -25,14 +25,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetAsync_ReturnsLogisticsLocations()
         {
             // arrange
-            var logisticsLocations = new List<LogisticsLocationDTO>
+            var logisticsLocations = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO()
+                new LogisticsLocationDto()
                 {
                     Name = "Test 2",
                     Id = Guid.NewGuid(),
                     NI_GBFlag = "GB",
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         LineOne = "line 1",
                         CityName = "city",
@@ -46,7 +46,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
 
             // act
-            await _systemUnderTest.OnGetAsync(id, postcode);
+            await _systemUnderTest!.OnGetAsync(id, postcode);
 
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
@@ -62,7 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
-            var logisticsLocations = new LogisticsLocationDTO
+            var logisticsLocations = new LogisticsLocationDto
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
                 Id = Guid.NewGuid()
@@ -88,7 +88,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
 
-            var logisticsLocations = new LogisticsLocationDTO
+            var logisticsLocations = new LogisticsLocationDto
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
                 Id = Guid.NewGuid()
@@ -112,7 +112,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))
-                .Returns(Task.FromResult<List<LogisticsLocationDTO>?>(new List<LogisticsLocationDTO>() { new LogisticsLocationDTO() }));
+                .Returns(Task.FromResult<List<LogisticsLocationDto>?>(new List<LogisticsLocationDto>() { new LogisticsLocationDto() }));
 
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "aaa", "NI");

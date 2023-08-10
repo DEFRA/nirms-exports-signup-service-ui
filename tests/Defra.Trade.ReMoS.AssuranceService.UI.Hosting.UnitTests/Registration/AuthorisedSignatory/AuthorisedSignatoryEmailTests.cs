@@ -38,10 +38,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new TradePartyDTO()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         TradeCountry = "GB"
                     },
@@ -66,10 +66,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var tradePartyId = Guid.NewGuid();
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new TradePartyDTO()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         TradeCountry = "GB"
                     },
@@ -96,10 +96,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var tradePartyId = Guid.NewGuid();
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new TradePartyDTO()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         TradeCountry = "GB"
                     },
@@ -126,10 +126,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var tradePartyId = Guid.NewGuid();
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new TradePartyDTO()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         TradeCountry = "GB"
                     },
@@ -155,10 +155,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var tradePartyId = Guid.NewGuid();
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new TradePartyDTO()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         TradeCountry = "GB"
                     },

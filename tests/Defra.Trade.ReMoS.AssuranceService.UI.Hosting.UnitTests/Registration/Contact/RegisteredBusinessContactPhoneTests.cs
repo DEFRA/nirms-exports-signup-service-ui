@@ -174,9 +174,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             //Arrange
             var guid = new Guid();
 
-            var tradeContact = new TradeContactDTO();
+            var tradeContact = new TradeContactDto();
 
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
                 Contact = tradeContact

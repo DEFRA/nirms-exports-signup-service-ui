@@ -21,15 +21,19 @@ public class RegisteredBusinessCountryModel : PageModel
     public Guid TraderId { get; set; }
     [BindProperty]
     public bool CountrySaved { get; set; }
+
+    public bool AllowedToTasklist { get; set; }
     #endregion
 
     private readonly ILogger<RegisteredBusinessCountryModel> _logger;
     private readonly ITraderService _traderService;
+    private readonly ICheckAnswersService _checkAnswersService;
 
-    public RegisteredBusinessCountryModel(ILogger<RegisteredBusinessCountryModel> logger, ITraderService traderService)
+    public RegisteredBusinessCountryModel(ILogger<RegisteredBusinessCountryModel> logger, ITraderService traderService, ICheckAnswersService checkAnswersService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+        _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
@@ -41,6 +45,12 @@ public class RegisteredBusinessCountryModel : PageModel
         {
             Country = await GetCountryFromApiAsync();
             CountrySaved = !string.IsNullOrEmpty(Country);
+        }
+
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
+        if (_checkAnswersService.GetEligibilityProgress(tradeParty!) == TaskListStatus.COMPLETE)
+        {
+            AllowedToTasklist = true;
         }
 
         if (Country != "")
@@ -87,11 +97,11 @@ public class RegisteredBusinessCountryModel : PageModel
     }
 
     #region private methods
-    private TradePartyDTO CreateDTO()
+    private TradePartyDto CreateDTO()
     {
-        TradePartyDTO DTO = new()
+        TradePartyDto DTO = new()
         {
-            Address = new TradeAddressDTO()
+            Address = new TradeAddressDto()
             {
                 TradeCountry = Country
             }
@@ -137,7 +147,7 @@ public class RegisteredBusinessCountryModel : PageModel
             return;
         }
 
-        var tradeAddress = new TradeAddressDTO { TradeCountry = Country };
+        var tradeAddress = new TradeAddressDto { TradeCountry = Country };
         await _traderService.AddTradePartyAddressAsync(TraderId, tradeAddress);
 
     }

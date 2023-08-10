@@ -201,9 +201,9 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
         //Arrange
         var guid = new Guid();
 
-        var tradeContact = new TradeContactDTO();
+        var tradeContact = new TradeContactDto();
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact
