@@ -46,6 +46,11 @@ public class AdditionalEstablishmentAddressModel : PageModel
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
 
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Places of destination";

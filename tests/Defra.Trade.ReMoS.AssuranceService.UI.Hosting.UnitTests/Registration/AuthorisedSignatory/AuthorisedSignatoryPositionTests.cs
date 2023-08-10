@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -18,12 +19,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<AuthorisedSignatoryPositionModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
-
+        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new AuthorisedSignatoryPositionModel(_mockTraderService.Object, _mockLogger.Object);
+            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -46,6 +48,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                         Id = Guid.NewGuid(),
                     }
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -72,6 +75,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                     },
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnPostSubmitAsync();
@@ -99,6 +103,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                     },
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnPostSaveAsync();
@@ -135,6 +140,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Assert
             validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

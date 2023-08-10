@@ -4,6 +4,7 @@ using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact 
 {
@@ -13,11 +14,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         private RegisteredBusinessContactPhoneModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactPhoneModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
+        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
 
         [SetUp]
         public void TestCaseSetup() 
         {
             _systemUnderTest = new RegisteredBusinessContactPhoneModel(_mockLogger.Object, _mockTraderService.Object);
+            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -25,6 +28,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             Guid test = Guid.NewGuid();
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(test);
@@ -135,7 +139,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _systemUnderTest!.PhoneNumber = "";
             var expectedResult = "Enter the phone number of the contact person";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -153,7 +157,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _systemUnderTest!.PhoneNumber = "";
             var expectedResult = "Enter the phone number of the contact person";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
@@ -185,6 +189,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
             _systemUnderTest!.PhoneNumber = phoneNumber;
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);            
 
             //Act
             await _systemUnderTest.OnGetAsync(guid);
@@ -194,6 +199,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             validation.Count.Should().Be(1);
         }
 
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
 
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+        }
     }
 }

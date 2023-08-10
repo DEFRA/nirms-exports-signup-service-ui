@@ -43,6 +43,11 @@ public class RegisteredBusinessCountryModel : PageModel
 
         if (Id != Guid.Empty)
         {
+            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             Country = await GetCountryFromApiAsync();
             CountrySaved = !string.IsNullOrEmpty(Country);
         }

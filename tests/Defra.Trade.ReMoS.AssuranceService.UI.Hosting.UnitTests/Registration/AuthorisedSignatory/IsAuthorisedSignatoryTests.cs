@@ -22,11 +22,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         protected Mock<ILogger<IsAuthorisedSignatoryModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockEstablishmentService.Object, _mockLogger.Object);
+            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -41,6 +43,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 {
                     Id = tradePartyId
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -97,6 +100,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                         IsAuthorisedSignatory = null
                     }
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnPostSaveAsync();
@@ -262,6 +266,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             redirectResult!.PageName.Should().Be("/Registration/TaskList/RegistrationTaskList");
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

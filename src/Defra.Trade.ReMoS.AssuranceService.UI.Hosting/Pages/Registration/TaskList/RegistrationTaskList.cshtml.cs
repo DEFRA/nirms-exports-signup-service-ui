@@ -50,6 +50,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             RegistrationID = Id;
 
+            if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             TradePartyDto tradeParty = await GetAPIData();
 
             if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
@@ -78,7 +83,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 await EstablishmentsStatuses();
                 CheckAnswersStatus();
             }
-            return tradeParty;
+            return tradeParty!;
         }
 
         private async Task EstablishmentsStatuses()
