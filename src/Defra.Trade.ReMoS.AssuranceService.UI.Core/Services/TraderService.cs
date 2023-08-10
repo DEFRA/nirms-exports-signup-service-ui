@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,6 +82,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             }
 
             return (tradeParty, signupStatus);
+        }
+
+        public async Task<bool> ValidateOrgId(IEnumerable<Claim> claims, Guid id)
+        {
+            var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
+            var userEnrolledOrganisations = claims.ToList().Find(c => c.Type == "userEnrolledOrganisations")!.Value;
+            var str = tradeParty?.OrgId.ToString();
+            if (str != null)
+            {
+                return userEnrolledOrganisations.Contains(str);
+            }
+            return false;
         }
     }
 }

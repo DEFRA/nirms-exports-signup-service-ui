@@ -31,6 +31,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         {
             TraderId = id;
 
+            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
 
             if (dto != null)
