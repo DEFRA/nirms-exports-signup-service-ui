@@ -95,7 +95,7 @@ public class RegisteredBusinessBusinessPickerTests
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         // Assert
-        _systemUnderTest.ModelState.HasError("Business").Should().BeTrue();
+        _systemUnderTest.ModelState.HasError("SelectedBusiness").Should().BeTrue();
     }
 
     [Test]
