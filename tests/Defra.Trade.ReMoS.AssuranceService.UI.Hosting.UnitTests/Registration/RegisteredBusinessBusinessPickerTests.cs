@@ -36,7 +36,7 @@ public class RegisteredBusinessBusinessPickerTests
         var id = Guid.Empty;
 
         //Act
-        await _systemUnderTest!.OnGetAsync();
+        _systemUnderTest!.OnGet();
 
         //Assert
         _systemUnderTest.TraderId.Should().Be(Guid.Empty);
@@ -65,7 +65,7 @@ public class RegisteredBusinessBusinessPickerTests
 
 
         //Act
-        await _systemUnderTest!.OnGetAsync();
+        _systemUnderTest!.OnGet();
 
         //Assert
             // Includes choose business & Another business options
