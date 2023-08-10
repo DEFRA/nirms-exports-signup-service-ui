@@ -21,9 +21,9 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
     [BindProperty]
     [Required(ErrorMessage = "Select a business")]
-    public string SelectedBusiness { get; set; } = default!;
+    public string? SelectedBusiness { get; set; } = default!;
     public Guid TraderId { get; set; }    
-    public List<SelectListItem> BusinessSelectList = new();
+    public List<SelectListItem> BusinessSelectList { get; set; } = new()!;
     #endregion
 
     private readonly ILogger<RegisteredBusinessBusinessPickerModel> _logger;
@@ -40,7 +40,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public IActionResult OnGet()
     {
         _logger.LogInformation("Business picker OnGet");
         Businesses = _userService.GetDefraOrgsForUser(User);
@@ -60,7 +60,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             SelectedBusiness = null;
-            ModelState.AddModelError("Business", "Select a business");
+            ModelState.AddModelError("SelectedBusiness", "Select a business");
         }
 
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
@@ -70,7 +70,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return OnGet();
         }
 
         /* get business sign-up status from trader service
@@ -117,7 +117,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         else
         {
             ModelState.AddModelError(nameof(SelectedBusiness), "Guid for Selected Business is not valid");
-            return await OnGetAsync();
+            return OnGet();
         }
 
 
