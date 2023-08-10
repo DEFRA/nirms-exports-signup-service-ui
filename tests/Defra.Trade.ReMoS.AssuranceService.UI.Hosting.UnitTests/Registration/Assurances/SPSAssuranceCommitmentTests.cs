@@ -21,7 +21,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     protected Mock<IUserService> _mockUserService = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
-
     [SetUp]
     public void TestCaseSetup()
     {
@@ -123,7 +122,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             PartyName = "Test"
         };
         var assurance = true;
-        var logisticsLocationList = new List<LogisticsLocationDto> {new LogisticsLocationDto() };
+        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
 
         //act
         _systemUnderTest!.TandCs = assurance;
@@ -131,8 +130,8 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .ReturnsAsync(tradeParty);
         _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
-         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(logisticsLocationList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>()))
+           .ReturnsAsync(logisticsLocationList);
 
         await _systemUnderTest.OnPostSubmitAsync();
 
@@ -165,7 +164,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
-
         await _systemUnderTest.OnGetAsync(tradePartyId);
 
         //assert
@@ -191,7 +189,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
-
         await _systemUnderTest.OnGetAsync(tradePartyId);
 
         //assert
@@ -216,7 +213,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
-
 
         await _systemUnderTest.OnGetAsync(tradePartyId);
 
@@ -250,7 +246,4 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
     }
-
 }
-
-

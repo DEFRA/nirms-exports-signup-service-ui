@@ -9,12 +9,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
     public class TermsAndConditions : PageModel
     {
         #region UI Model
+
         [BindProperty]
         public Guid TraderId { get; set; }
 
         [BindProperty]
         public bool TandCs { get; set; }
-        #endregion
+
+        #endregion UI Model
 
         private readonly ITraderService _traderService;
         private readonly IUserService _userService;
@@ -58,7 +60,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 return await OnGetAsync(TraderId);
             }
 
-
             TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
 
             if (dto == null)
@@ -76,7 +77,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                     Routes.Pages.Path.RegistrationTaskListPath,
                         new { id = TraderId });
             }
-
 
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);

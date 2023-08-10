@@ -49,7 +49,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             var tradePartyId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDTO
+            var tradePartyDto = new TradePartyDto
             {
                 Id = tradePartyId,
                 PartyName = "AJ Associates",

@@ -13,7 +13,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class CheckAnswersService : ICheckAnswersService
     {
-        public bool ReadyForCheckAnswers(TradePartyDTO tradeParty)
+        public bool ReadyForCheckAnswers(TradePartyDto tradeParty)
         {
             if (tradeParty == null)
             {
@@ -43,7 +43,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return true;
         }
 
-        public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
+        public string GetBusinessDetailsProgress(TradePartyDto tradeParty)
         {
             if (tradeParty.PracticeName != null
                 && tradeParty.Address != null
