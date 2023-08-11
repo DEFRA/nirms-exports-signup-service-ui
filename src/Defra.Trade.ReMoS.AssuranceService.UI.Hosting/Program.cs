@@ -72,15 +72,6 @@ internal sealed class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Errors/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
-        app.UseStatusCodePagesWithReExecute("/Errors/{0}");
-
         app.Use(async (context, next) =>
         {
             context.Response.Headers.Add("Cache-control", "no-cache, no-store, must-revalidate");
@@ -94,6 +85,17 @@ internal sealed class Program
             context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
             await next();
         });
+
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Errors/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+        app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseTradeHealthChecks();
