@@ -127,7 +127,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Position = "";
-        var expectedResult = "Enter the position of the contact person";
+        var expectedResult = "Enter the contact person's position at your business";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
@@ -145,7 +145,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Position = "";
-        var expectedResult = "Enter the position of the contact person";
+        var expectedResult = "Enter the contact person's position at your business";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 

@@ -11,9 +11,9 @@ public class RegisteredBusinessContactEmailModel : PageModel
 {
     #region UI Model
     [BindProperty]
-    [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address using only letters, numbers, brackets, full stops, commas (,), hyphens (-), underscores (_), slashes (/), ampersands (&), (') apostrophe or (@) at sign")]
     [StringLength(100, ErrorMessage = "Email is too long")]
-    [Required(ErrorMessage = "Enter the email address of the contact person")]
+    [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
     [BindProperty]
     public Guid TradePartyId { get; set; }

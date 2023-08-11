@@ -13,9 +13,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     public class AuthorisedSignatoryEmailModel : PageModel
     {
         #region ui model
-        [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+        [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address using only letters, numbers, brackets, full stops, commas (,), hyphens (-), underscores (_), slashes (/), ampersands (&), (') apostrophe or (@) at sign")]
         [BindProperty]
-        [Required(ErrorMessage = "Enter the email address of the authorised representative")]
+        [Required(ErrorMessage = "Enter an email address")]
         public string? Email { get; set; }
         [BindProperty]
         public string? BusinessName { get; set; }

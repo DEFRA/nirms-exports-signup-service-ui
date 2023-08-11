@@ -16,7 +16,7 @@ public class EstablishmentNameAndAddressModel : PageModel
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter establishment name using only letters, numbers, parentheses, dots (.), undescores (_), forward slashes (/), hyphens (-) and apostrophes (')")]
     [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
-    [Required(ErrorMessage = "Enter an establishment name")]
+    [Required(ErrorMessage = "There is a problem - Enter an establishment name")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]

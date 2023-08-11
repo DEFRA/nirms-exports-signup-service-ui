@@ -69,7 +69,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "";
-            var expectedResult = "Enter the email address of the contact person";
+            var expectedResult = "Enter an email address";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -85,7 +85,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "";
-            var expectedResult = "Enter the email address of the contact person";
+            var expectedResult = "Enter an email address";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
@@ -101,7 +101,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "test at email.com";
-            var expectedResult = "Enter an email address in the correct format, like name@example.com";
+            var expectedResult = "Enter an email address using only letters, numbers, brackets, full stops, commas (,), hyphens (-), underscores (_), slashes (/), ampersands (&), (') apostrophe or (@) at sign";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -117,7 +117,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "test at email.com";
-            var expectedResult = "Enter an email address in the correct format, like name@example.com";
+            var expectedResult = "Enter an email address using only letters, numbers, brackets, full stops, commas (,), hyphens (-), underscores (_), slashes (/), ampersands (&), (') apostrophe or (@) at sign";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
@@ -165,7 +165,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "";
-            var expectedResult = "Enter the email address of the contact person";
+            var expectedResult = "Enter an email address";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
@@ -183,7 +183,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "";
-            var expectedResult = "Enter the email address of the contact person";
+            var expectedResult = "Enter an email address";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 

@@ -13,7 +13,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     public class IsAuthorisedSignatoryModel : PageModel
     {
         [BindProperty]      
-        [Required(ErrorMessage = "Select if the contact person is the authorised representative")]
+        [Required(ErrorMessage = "There is a problem - Select if the contact person is the authorised representative")]
         public string? IsAuthorisedSignatory { get; set; } = null;
         [BindProperty]
         public string? BusinessName { get; set; }
