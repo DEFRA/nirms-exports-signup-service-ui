@@ -16,7 +16,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests
 {
     internal class PageModelMockingUtils
     {
-        public PageContext MockPageContext()
+        public static PageContext MockPageContext()
         {
             var claimsIdentity = new ClaimsIdentity(It.IsAny<IEnumerable<Claim>>());
             var principle = new ClaimsPrincipal(claimsIdentity);

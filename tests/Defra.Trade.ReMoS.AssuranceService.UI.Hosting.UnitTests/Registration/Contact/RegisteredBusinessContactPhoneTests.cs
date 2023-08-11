@@ -13,14 +13,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     {
         private RegisteredBusinessContactPhoneModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactPhoneModel>> _mockLogger = new();
-        protected Mock<ITraderService> _mockTraderService = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        protected Mock<ITraderService> _mockTraderService = new();        
 
         [SetUp]
         public void TestCaseSetup() 
         {
             _systemUnderTest = new RegisteredBusinessContactPhoneModel(_mockLogger.Object, _mockTraderService.Object);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

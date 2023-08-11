@@ -19,8 +19,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<AuthorisedSignatoryEmailModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
-        protected Mock<IEstablishmentService> _mockEstabService = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        protected Mock<IEstablishmentService> _mockEstabService = new();        
 
         [SetUp]
         public void TestCaseSetup()
@@ -29,7 +28,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 _mockTraderService.Object, 
                 _mockEstabService.Object, 
                 _mockLogger.Object);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

@@ -18,14 +18,13 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
 {
     private RegisteredBusinessFboNumberModel? _systemUnderTest;
     private Mock<ITraderService> _mockTraderService = new();
-    protected Mock<ILogger<RegisteredBusinessFboNumberModel>> _mockLogger = new();
-    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+    protected Mock<ILogger<RegisteredBusinessFboNumberModel>> _mockLogger = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessFboNumberModel(_mockLogger.Object, _mockTraderService.Object);
-        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]

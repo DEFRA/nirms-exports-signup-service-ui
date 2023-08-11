@@ -19,8 +19,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     {
         protected Mock<ITraderService> _mockTraderService = new();
         private SignUpConfirmationModel? _systemUnderTest;
-        private Mock<IConfiguration> _mockConfiguration = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        private Mock<IConfiguration> _mockConfiguration = new();        
 
         [SetUp]
         public void TestCaseSetup()
@@ -29,7 +28,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _mockConfigSection.Setup(x => x.Value).Returns("testurl");
             _mockConfiguration.Setup(x => x.GetSection("ExternalLinks:StartNowPage")).Returns(_mockConfigSection.Object);
             _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockConfiguration.Object);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

@@ -14,14 +14,13 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
 {
     private RegisteredBusinessNameModel? _systemUnderTest;
     private Mock<ITraderService> _mockTraderService = new();
-    protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();
-    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+    protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object, _mockTraderService.Object);
-        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]

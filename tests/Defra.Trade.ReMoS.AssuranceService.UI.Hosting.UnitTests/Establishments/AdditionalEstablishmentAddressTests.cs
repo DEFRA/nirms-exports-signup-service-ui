@@ -23,14 +23,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         protected Mock<ILogger<AdditionalEstablishmentAddressModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
         protected Mock<ITraderService> _mockTraderService = new();
-        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();       
 
         [SetUp]
         public void TestCaseSetup()
         {                      
             _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

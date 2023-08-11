@@ -24,14 +24,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         private readonly Mock<ITraderService> _mockTraderService = new();
         private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();        
         private readonly ICheckAnswersService _checkAnswersService = new CheckAnswersService();
-        protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();        
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

@@ -18,14 +18,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         private AuthorisedSignatoryPositionModel? _systemUnderTest;
 
         protected Mock<ILogger<AuthorisedSignatoryPositionModel>> _mockLogger = new();
-        protected Mock<ITraderService> _mockTraderService = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        protected Mock<ITraderService> _mockTraderService = new();        
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new AuthorisedSignatoryPositionModel(_mockTraderService.Object, _mockLogger.Object);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

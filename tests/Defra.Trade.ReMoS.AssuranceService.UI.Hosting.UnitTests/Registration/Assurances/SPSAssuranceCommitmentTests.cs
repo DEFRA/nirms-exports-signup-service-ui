@@ -20,14 +20,13 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     private TermsAndConditions? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
     protected Mock<IUserService> _mockUserService = new();
-    protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+    protected Mock<IEstablishmentService> _mockEstablishmentService = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object);
-        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
