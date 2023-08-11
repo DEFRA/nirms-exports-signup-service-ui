@@ -101,7 +101,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "test at email.com";
-            var expectedResult = "Enter an email address using only letters, numbers, brackets, full stops, commas (,), hyphens (-), underscores (_), slashes (/), ampersands (&), (') apostrophe or (@) at sign";
+            var expectedResult = "Enter an email address in the correct format, like name@example.com";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -117,7 +117,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = "test at email.com";
-            var expectedResult = "Enter an email address using only letters, numbers, brackets, full stops, commas (,), hyphens (-), underscores (_), slashes (/), ampersands (&), (') apostrophe or (@) at sign";
+            var expectedResult = "Enter an email address in the correct format, like name@example.com";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();

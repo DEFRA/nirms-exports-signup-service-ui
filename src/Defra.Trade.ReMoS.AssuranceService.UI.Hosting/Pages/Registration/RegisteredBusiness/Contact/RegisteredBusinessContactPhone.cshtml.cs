@@ -18,8 +18,8 @@ public class RegisteredBusinessContactPhoneModel : PageModel
     // This regex pattern supports various formats of UK phone numbers, including landlines and mobile numbers. It allows for optional spaces in different positions.
     [RegularExpression(
         @"^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?(\d{4}|\d{3}))|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$", 
-        ErrorMessage = "There is a problem - Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192")]
-    [Required(ErrorMessage = "There is a problem - Enter a telephone number")]
+        ErrorMessage = "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192")]
+    [Required(ErrorMessage = "Enter a telephone number")]
     public string PhoneNumber { get; set; } = string.Empty;
     [BindProperty]
     public Guid TradePartyId { get; set; }
