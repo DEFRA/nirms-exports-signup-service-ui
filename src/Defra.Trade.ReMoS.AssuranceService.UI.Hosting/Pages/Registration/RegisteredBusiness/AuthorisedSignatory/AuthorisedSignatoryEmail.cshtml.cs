@@ -44,7 +44,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             TraderId = id;
-            
+
+            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             var party = await GetSignatoryEmailFromApiAsync();
             BusinessName = party?.PracticeName;
             return Page();

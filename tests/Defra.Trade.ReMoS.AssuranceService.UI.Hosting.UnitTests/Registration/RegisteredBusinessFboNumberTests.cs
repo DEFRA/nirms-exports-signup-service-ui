@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -18,11 +19,13 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     private RegisteredBusinessFboNumberModel? _systemUnderTest;
     private Mock<ITraderService> _mockTraderService = new();
     protected Mock<ILogger<RegisteredBusinessFboNumberModel>> _mockLogger = new();
+    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessFboNumberModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -30,6 +33,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         //Arrange
         var tradePartyId = Guid.Empty;
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(tradePartyId);
@@ -50,6 +54,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyFromApi);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
@@ -71,6 +76,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyFromApi);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
@@ -93,5 +99,16 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
 
         //Assert
         validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }

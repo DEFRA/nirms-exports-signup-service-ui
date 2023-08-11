@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using FluentAssertions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Microsoft.AspNetCore.Mvc;
 #pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
@@ -13,6 +14,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     private RegisteredBusinessContactPositionModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactPositionModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
+    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
 
     [SetUp]
     public void TestCaseSetup()
@@ -20,6 +22,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _systemUnderTest = new RegisteredBusinessContactPositionModel(
             _mockLogger.Object,
             _mockTraderService.Object);
+        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -27,6 +30,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         // arrange
         Guid test = Guid.NewGuid();
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         // act
         await _systemUnderTest.OnGetAsync(test);
@@ -126,7 +130,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _systemUnderTest!.Position = "";
         var expectedResult = "Enter the position of the contact person";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -144,7 +148,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _systemUnderTest!.Position = "";
         var expectedResult = "Enter the position of the contact person";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSaveAsync();
@@ -174,11 +178,23 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
         _systemUnderTest.Position.Should().Be("");
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }

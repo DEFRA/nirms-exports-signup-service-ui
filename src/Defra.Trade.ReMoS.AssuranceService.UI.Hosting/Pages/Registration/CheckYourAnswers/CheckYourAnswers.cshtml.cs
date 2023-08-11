@@ -44,6 +44,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
                     new { id = RegistrationID });
             }
 
+            if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
             NI_GBFlag = TradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";

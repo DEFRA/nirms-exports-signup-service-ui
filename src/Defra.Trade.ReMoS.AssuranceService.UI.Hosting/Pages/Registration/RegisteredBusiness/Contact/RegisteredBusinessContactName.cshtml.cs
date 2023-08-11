@@ -43,6 +43,12 @@ public class RegisteredBusinessContactNameModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Name OnGet");
 
         await GetContactNameFromApiAsync();

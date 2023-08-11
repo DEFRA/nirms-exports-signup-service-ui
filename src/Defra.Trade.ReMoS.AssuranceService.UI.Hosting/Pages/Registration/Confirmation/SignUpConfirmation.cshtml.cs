@@ -29,6 +29,11 @@ public class SignUpConfirmationModel : PageModel
 
         if (TraderId != Guid.Empty)
         {
+            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             var trader = await _traderService.GetTradePartyByIdAsync(TraderId);
             Email = trader?.Contact?.Email;
         }

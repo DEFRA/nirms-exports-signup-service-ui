@@ -25,6 +25,11 @@ public class SelectedBusinessModel : PageModel
         _logger.LogInformation("SelectedBusiness OnGet");
         TradePartyId = id;
 
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;
         

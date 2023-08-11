@@ -93,6 +93,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Assert
             validation.Count.Should().Be(1);
             expectedResult.Should().Be(validation[0].ErrorMessage);
-        }
+        }        
     }
 }

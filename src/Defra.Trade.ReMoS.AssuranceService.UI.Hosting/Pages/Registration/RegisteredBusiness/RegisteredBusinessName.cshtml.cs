@@ -35,6 +35,11 @@ public class RegisteredBusinessNameModel : PageModel
         _logger.LogInformation("Business Name OnGet");
         TradePartyId = id;
 
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         await GetNameAsync();
 
         return Page();

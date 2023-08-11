@@ -61,6 +61,11 @@ public class RegisteredBusinessAddressModel : PageModel
         TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
         _logger.LogInformation("Address OnGet");
 
+        if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         if (TraderId != Guid.Empty)
         {
             await GetAddressFromApiAsync();
