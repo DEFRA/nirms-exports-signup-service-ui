@@ -36,7 +36,7 @@ public class RegisteredBusinessBusinessPickerTests
         var id = Guid.Empty;
 
         //Act
-        await _systemUnderTest!.OnGetAsync();
+        _systemUnderTest!.OnGet();
 
         //Assert
         _systemUnderTest.TraderId.Should().Be(Guid.Empty);
@@ -65,7 +65,7 @@ public class RegisteredBusinessBusinessPickerTests
 
 
         //Act
-        await _systemUnderTest!.OnGetAsync();
+        _systemUnderTest!.OnGet();
 
         //Assert
             // Includes choose business & Another business options
@@ -95,7 +95,7 @@ public class RegisteredBusinessBusinessPickerTests
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         // Assert
-        _systemUnderTest.ModelState.HasError("Business").Should().BeTrue();
+        _systemUnderTest.ModelState.HasError("SelectedBusiness").Should().BeTrue();
     }
 
     [Test]
