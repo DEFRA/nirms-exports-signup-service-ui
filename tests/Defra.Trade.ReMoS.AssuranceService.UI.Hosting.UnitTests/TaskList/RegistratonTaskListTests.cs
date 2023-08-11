@@ -5,6 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Management.EventHub.Fluent.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -21,15 +22,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
     {
         private RegistrationTaskListModel? _systemUnderTest;
         private readonly Mock<ITraderService> _mockTraderService = new();
-        private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();
-        private readonly Mock<ICheckAnswersService> _mockCheckAnswersService = new();
+        private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();        
         private readonly ICheckAnswersService _checkAnswersService = new CheckAnswersService();
-        protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
+        protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();        
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -38,9 +39,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             //Arrange
             //TODO: Add setup for returning values when API referenced
             Guid guid = Guid.NewGuid();
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);            
 
             //Act
-             await _systemUnderTest!.OnGetAsync(guid);
+            await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
 
@@ -52,6 +54,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         {
             //Arrange
             Guid guid = Guid.NewGuid();
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             var tradeContact = new TradeContactDto
             {
@@ -91,7 +94,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPlacesOfDispatchComplete()
         {
             //Arrange
-            Guid guid = Guid.NewGuid();
+            Guid guid = Guid.NewGuid();            
 
             var tradeContact = new TradeContactDto
             {
@@ -117,14 +120,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDto> 
-            { 
+            var list = new List<LogisticsLocationDto>
+            {
                 new LogisticsLocationDto() { NI_GBFlag = "NI"}
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(guid);
@@ -143,7 +147,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             {
                 Id = Guid.NewGuid(),
                 FboNumber = "fbonum-123456-fbonum",
-                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB"}
+                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" }
             };
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -181,6 +185,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         {
             //Arrange
             Guid guid = Guid.NewGuid();
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             var tradeContact = new TradeContactDto
             {
@@ -255,7 +260,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Email = "test@testmail.com",
                 Position = "Main Tester",
                 TelephoneNumber = "1234567890",
-                IsAuthorisedSignatory = false
+                IsAuthorisedSignatory = null
             };
 
             var tradeAddress = new TradeAddressDto
@@ -333,16 +338,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 RegulationsConfirmed = true
             };
 
-
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(guid);
 
             //Assert
             _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
-            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.CANNOTSTART);
         }
 
@@ -350,7 +355,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_InProgress()
         {
             // Arrange
-            var tradeParty = new TradePartyDto { PartyName = "Test", PracticeName = "Test"};
+            var tradeParty = new TradePartyDto { PartyName = "Test", PracticeName = "Test" };
             var expectedStatus = TaskListStatus.INPROGRESS;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
@@ -412,16 +417,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             // Arrange
             var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDto() 
-                { 
+                Contact = new TradeContactDto()
+                {
                     PersonName = "Test",
                     Email = "Email",
                     Position = "Position",
                     TelephoneNumber = "12345678901",
-                    IsAuthorisedSignatory = isAuthSig 
+                    IsAuthorisedSignatory = isAuthSig
                 },
-                AuthorisedSignatory = new AuthorisedSignatoryDto() 
-                { 
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
+                {
                     Id = Guid.NewGuid(),
                     Name = name,
                     Position = position,
@@ -434,8 +439,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             Assert.AreEqual(expectedStatus, status);
         }
 
-        [TestCase(false, null, null, null, TaskListStatus.NOTSTART)]
-        public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete_Id_IsNull(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
+        [TestCase(null, null, null, null, TaskListStatus.NOTSTART)]
+        public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete_Id_IsNull(bool? isAuthSig, string? name, string? position, string? email, string expectedStatus)
         {
             // Arrange
             var tradeParty = new TradePartyDto
@@ -495,6 +500,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
             Assert.AreEqual(expectedStatus, status);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

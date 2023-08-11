@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 #pragma warning disable CS8602
@@ -12,13 +13,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 public class RegisteredBusinessNameTests : PageModelTestsBase
 {
     private RegisteredBusinessNameModel? _systemUnderTest;
-    private Mock<ITraderService> _traderService= new();
-    protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();
+    private Mock<ITraderService> _mockTraderService = new();
+    protected Mock<ILogger<RegisteredBusinessNameModel>> _mockLogger = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object, _traderService.Object);
+        _systemUnderTest = new RegisteredBusinessNameModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -27,6 +29,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
         //Arrange
         //TODO: Add setup for returning values when API referenced
         Guid test = Guid.NewGuid();
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnGetAsync(test);
@@ -100,7 +103,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest.Name = "Business%%Name1";
-        var expectedResult = "Enter your business name using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)";
+        var expectedResult = "Enter your business name using only letters, numbers, parentheses, full stops, commas, undescores, forward slashes, hyphens or apostrophes";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -116,7 +119,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest.Name = "Business%%Name1";
-        var expectedResult = "Enter your business name using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)";
+        var expectedResult = "Enter your business name using only letters, numbers, parentheses, full stops, commas, undescores, forward slashes, hyphens or apostrophes";
 
         //Act
         await _systemUnderTest.OnPostSaveAsync();
@@ -166,7 +169,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
         _systemUnderTest!.Name = "";
         var expectedResult = "Enter your business name";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -184,7 +187,7 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
         _systemUnderTest!.Name = "";
         var expectedResult = "Enter your business name";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -209,8 +212,9 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
             Contact = tradeContact
         };
 
-        _traderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
-        _traderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnGetAsync(guid);
@@ -218,5 +222,16 @@ public class RegisteredBusinessNameTests : PageModelTestsBase
 
         //Assert            
         validation.Count.Should().Be(1);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }

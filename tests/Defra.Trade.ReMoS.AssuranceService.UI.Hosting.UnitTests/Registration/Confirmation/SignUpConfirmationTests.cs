@@ -1,7 +1,9 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confirmation;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -19,7 +21,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         protected Mock<ITraderService> _mockTraderService = new();
         protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
         private SignUpConfirmationModel? _systemUnderTest;
-        private Mock<IConfiguration> _mockConfiguration = new();
+        private Mock<IConfiguration> _mockConfiguration = new();        
 
         [SetUp]
         public void TestCaseSetup()
@@ -28,6 +30,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _mockConfigSection.Setup(x => x.Value).Returns("testurl");
             _mockConfiguration.Setup(x => x.GetSection("ExternalLinks:StartNowPage")).Returns(_mockConfigSection.Object);
             _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockCheckAnswersService.Object, _mockConfiguration.Object);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -35,6 +38,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //act
             await _systemUnderTest!.OnGet(tradePartyId);
@@ -57,12 +61,44 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradePartyDto);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             _systemUnderTest?.OnGet(tradePartyId);
 
             //Assert
             _systemUnderTest?.Email?.Should().Be("test@test.com");
+        }
+
+        [Test]
+        public void OnGetAnswersComplete_Redirect_Successfully()
+        {
+            // arrange
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
+            var tradePartyId = Guid.NewGuid();
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
+
+            // act
+            var result = _systemUnderTest!.OnGet(tradePartyId);
+
+            // assert
+            var expected =
+                new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = tradePartyId });
+            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
+            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGet(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

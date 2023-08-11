@@ -12,9 +12,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class AuthorisedSignatoryPositionModel : PageModel
 {
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter the position of the authorised representative using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-_.,/()&]*$", ErrorMessage = "Enter a position using only letters, numbers, parentheses, full stops, commas, hyphens, underscores, forward slashes or ampersands")]
     [StringLength(50, ErrorMessage = "Position must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter the position of the authorised representative")]
+    [Required(ErrorMessage = "Enter a position")]
     public string Position { get; set; } = string.Empty;
     [BindProperty]
     public string? BusinessName { get; set; }
@@ -35,6 +35,12 @@ public class AuthorisedSignatoryPositionModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Position OnGet");
 
         _ = await GetSignatoryPosFromApiAsync();

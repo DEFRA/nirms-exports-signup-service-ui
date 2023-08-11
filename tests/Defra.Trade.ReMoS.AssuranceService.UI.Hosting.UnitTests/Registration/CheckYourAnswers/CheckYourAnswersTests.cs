@@ -23,7 +23,33 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         [SetUp]
         public void TestCaseSetup()
         {
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
             _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
+        }
+
+        [Test]
+        public async Task OnGet_EmptyRegistrationId_RedirectCorrectly()
+        {
+            // arrange
+
+            var tradePartyId = Guid.Empty;
+            var logisticsLocations = new List<LogisticsLocationDto>();
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "England" } };
+
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _systemUnderTest!.RegistrationID = tradePartyId;
+            var expected = new RedirectToPageResult(
+              Routes.Pages.Path.RegisteredBusinessCountryPath,
+               new { id = _systemUnderTest!.RegistrationID });
+
+            // act
+            var result = await _systemUnderTest!.OnGetAsync(tradePartyId);
+
+            // assert
+
+            result.Should().BeOfType<RedirectToPageResult>();
+            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
         }
 
         [Test]
@@ -36,6 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
             // act
             await _systemUnderTest!.OnGetAsync(tradePartyId);
@@ -57,6 +84,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             // act
             await _systemUnderTest!.OnGetAsync(tradePartyId);
@@ -121,6 +149,57 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentContactEmailPath, new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        }
+
+        [Test]
+        public void OnPostAnswersComplete_Redirect_Successfully()
+        {
+            // arrange
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
+            var tradePartyId = Guid.NewGuid();
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
+
+            // act
+            var result = _systemUnderTest!.OnPostSubmitAsync(tradePartyId);
+
+            // assert
+            var expected =
+                new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = tradePartyId });
+            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
+            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+        }
+
+        [Test]
+        public void OnPostAnswersNotComplete_Redirect_Successfully()
+        {
+            // arrange
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
+            var tradePartyId = Guid.NewGuid();
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(false);
+
+            // act
+            var result = _systemUnderTest!.OnPostSubmitAsync(tradePartyId);
+
+            // assert
+            var expected =
+                new RedirectToPageResult(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId });
+            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
+            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

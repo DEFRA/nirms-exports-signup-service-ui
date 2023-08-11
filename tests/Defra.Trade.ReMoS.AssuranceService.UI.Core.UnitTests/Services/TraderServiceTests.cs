@@ -21,6 +21,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.Azure.Management.ContainerInstance.Fluent.Models;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 {
@@ -380,5 +382,66 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Assert
             returnedValue.Should().Be(expectedResult);
         }
+
+        [Test]
+        public async Task ValidateOrgId_Returns_True()
+        {
+            // Assert
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var claims = new List<Claim>
+            {
+                new Claim("userEnrolledOrganisations", "[{\"organisationId\":\"152691a1-6d8b-e911-a96f-000d3a29b5de\",\"practiceName\":\"ABC ACCOUNTANCY & MARKETING SERVICES LTD\"}]")
+            };
+
+            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
+
+            var tradePartyDTO = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = Guid.Parse("152691a1-6d8b-e911-a96f-000d3a29b5de")
+            };
+
+            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
+
+            // Act
+            var result = await _traderService!.ValidateOrgId(claims, Guid.NewGuid());
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task ValidateOrgId_Returns_False()
+        {
+            // Assert
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var claims = new List<Claim>
+            {
+                new Claim("userEnrolledOrganisations", "[{\"organisationId\":\"152691a1-6d8b-e911-a96f-000d3a29b5de\",\"practiceName\":\"ABC ACCOUNTANCY & MARKETING SERVICES LTD\"}]")
+            };
+
+            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
+
+            var tradePartyDTO = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = Guid.NewGuid()
+            };
+
+            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
+
+            // Act
+            var result = await _traderService!.ValidateOrgId(claims, Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
     }
 }

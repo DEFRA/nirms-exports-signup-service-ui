@@ -30,20 +30,20 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
-    public async Task OnGetAsync_IfEmptyIdPassedIn_TraderIdShouldBeSetToEmpty()
+    public void OnGetAsync_IfEmptyIdPassedIn_TraderIdShouldBeSetToEmpty()
     {
         //Arrange
         var id = Guid.Empty;
 
         //Act
-        await _systemUnderTest!.OnGetAsync();
+        _systemUnderTest!.OnGet();
 
         //Assert
         _systemUnderTest.TraderId.Should().Be(Guid.Empty);
     }
 
     [Test]
-    public async Task OnGetAsync_BuildSelectList_IfMoreThan7Businesses()
+    public void OnGetAsync_BuildSelectList_IfMoreThan7Businesses()
     {
         //Arrange
         _systemUnderTest!.TraderId = Guid.NewGuid();
@@ -65,7 +65,7 @@ public class RegisteredBusinessBusinessPickerTests
 
 
         //Act
-        await _systemUnderTest!.OnGetAsync();
+        _systemUnderTest!.OnGet();
 
         //Assert
             // Includes choose business & Another business options
@@ -95,7 +95,7 @@ public class RegisteredBusinessBusinessPickerTests
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         // Assert
-        _systemUnderTest.ModelState.HasError("Business").Should().BeTrue();
+        _systemUnderTest.ModelState.HasError("SelectedBusiness").Should().BeTrue();
     }
 
     [Test]

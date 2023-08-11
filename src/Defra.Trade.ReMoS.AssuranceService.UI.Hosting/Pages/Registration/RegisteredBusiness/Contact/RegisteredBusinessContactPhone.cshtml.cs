@@ -18,8 +18,8 @@ public class RegisteredBusinessContactPhoneModel : PageModel
     // This regex pattern supports various formats of UK phone numbers, including landlines and mobile numbers. It allows for optional spaces in different positions.
     [RegularExpression(
         @"^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?(\d{4}|\d{3}))|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$", 
-        ErrorMessage = "Enter a telephone number in the correct format, like 01632 960 001, 07700 900 982 or +44 808 157 019")]
-    [Required(ErrorMessage = "Enter the phone number of the contact person")]
+        ErrorMessage = "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192")]
+    [Required(ErrorMessage = "Enter a telephone number")]
     public string PhoneNumber { get; set; } = string.Empty;
     [BindProperty]
     public Guid TradePartyId { get; set; }
@@ -36,6 +36,12 @@ public class RegisteredBusinessContactPhoneModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("PhoneNumber OnGet");
         await GetPhoneNumberFromApiAsync();
 

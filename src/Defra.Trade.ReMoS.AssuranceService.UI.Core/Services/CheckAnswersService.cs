@@ -20,22 +20,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return false;
             }
 
-            if (GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
-            {
-                return false;
-            }
-
             if (GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
                 return false;
             }
 
-            if (GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
+            if (GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
                 return false;
             }
 
             if (GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
                 return false;
             }
@@ -83,23 +83,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return TaskListStatus.CANNOTSTART;
             }
 
-            if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
+            if (tradeParty.Contact?.IsAuthorisedSignatory == true)
             {
-                if (tradeParty.Contact?.IsAuthorisedSignatory == true)
-                {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
-                {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory?.Id != null && tradeParty.AuthorisedSignatory?.Id != Guid.Empty)
-                {
-                    return TaskListStatus.INPROGRESS;
-                }
+                return TaskListStatus.COMPLETE;
             }
+
+            if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory?.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
+            {
+                return TaskListStatus.COMPLETE;
+            }
+
+            if (tradeParty.Contact?.IsAuthorisedSignatory == false && (tradeParty.AuthorisedSignatory == null || (tradeParty.AuthorisedSignatory?.Id != null || tradeParty.AuthorisedSignatory?.Id != Guid.Empty)))
+            {
+                return TaskListStatus.INPROGRESS;
+            }
+            
 
             return TaskListStatus.NOTSTART;
         }
