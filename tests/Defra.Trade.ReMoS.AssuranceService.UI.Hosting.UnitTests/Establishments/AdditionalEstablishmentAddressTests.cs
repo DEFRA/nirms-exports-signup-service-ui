@@ -7,6 +7,12 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -17,13 +23,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         protected Mock<ILogger<AdditionalEstablishmentAddressModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
         protected Mock<ITraderService> _mockTraderService = new();
-        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
-
+        protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();       
 
         [SetUp]
         public void TestCaseSetup()
-        {
+        {                      
             _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -31,7 +37,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             //TODO: Add setup for returning values when API referenced
-
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
 
@@ -352,6 +358,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             var expectedHeading = "Places of destination";
             var expectedContentText = "destination";
+                                   
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
@@ -359,6 +367,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Assert
             _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
             _systemUnderTest.ContentText.Should().Be(expectedContentText);
+        }
+
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
 
     }

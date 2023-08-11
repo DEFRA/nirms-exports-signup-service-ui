@@ -38,6 +38,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             TradePartyId = id;
+
+            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             _logger.LogInformation("IsAuthorisedSignatory onGet");
             var party = await GetIsAuthorisedSignatoryFromApiAsync();
             BusinessName = party?.PracticeName;
@@ -109,9 +115,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         private async Task<TradePartyDto?> GetIsAuthorisedSignatoryFromApiAsync()
         {
             var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+            IsAuthorisedSignatory ??= tradeParty?.Contact?.IsAuthorisedSignatory.ToString();
             if (tradeParty != null && tradeParty.Contact != null && tradeParty.AuthorisedSignatory != null)
             {
-                IsAuthorisedSignatory ??= tradeParty.Contact.IsAuthorisedSignatory.ToString();
                 ContactId = tradeParty.Contact.Id;
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
             }

@@ -25,6 +25,12 @@ public class EligibilityRegulationsModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TraderId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Eligibility Regulations OnGet");
 
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);

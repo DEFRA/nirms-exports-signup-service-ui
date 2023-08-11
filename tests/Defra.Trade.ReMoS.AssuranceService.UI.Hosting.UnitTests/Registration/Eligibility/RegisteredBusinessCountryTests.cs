@@ -16,12 +16,13 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
     private readonly Mock<ITraderService> _mockTraderService = new();
     private readonly Mock<ICheckAnswersService> _mockCheckAnswersService = new();
-    private RegisteredBusinessCountryModel? _systemUnderTest;
+    private RegisteredBusinessCountryModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -43,6 +44,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {        
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Assert
         _systemUnderTest.CountrySaved.Should().Be(false);
@@ -66,6 +68,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -94,6 +97,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -164,6 +168,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -204,6 +209,17 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
         ((RedirectToPageResult)result!).PageName.Should().Be(Routes.Pages.Path.RegisteredBusinessFboNumberPath);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }
 

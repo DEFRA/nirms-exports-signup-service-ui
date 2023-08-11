@@ -35,13 +35,16 @@ public class PostcodeResultModel : PageModel
 
     private readonly ILogger<PostcodeResultModel> _logger;
     private readonly IEstablishmentService _establishmentService;
+    private readonly ITraderService _traderService;
 
     public PostcodeResultModel(
         ILogger<PostcodeResultModel> logger,
-        IEstablishmentService establishmentService)
+        IEstablishmentService establishmentService,
+        ITraderService traderService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
+        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string NI_GBFlag = "GB")
@@ -52,6 +55,11 @@ public class PostcodeResultModel : PageModel
 
         var establishments = new List<LogisticsLocationDto>();
         this.NI_GBFlag = NI_GBFlag;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
 
         if (NI_GBFlag == "NI")
         {

@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -12,12 +13,13 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 {
     private RegisteredBusinessContactNameModel? _systemUnderTest;
     protected Mock<ILogger<RegisteredBusinessContactNameModel>> _mockLogger = new();
-    protected Mock<ITraderService> _mockTraderService = new();
+    protected Mock<ITraderService> _mockTraderService = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -25,6 +27,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     {
         // arrange
         Guid test = Guid.NewGuid();
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         // act
         await _systemUnderTest.OnGetAsync(test);
@@ -124,7 +127,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         _systemUnderTest!.Name = "";
         var expectedResult = "Enter the name of your business' contact person";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -142,7 +145,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         _systemUnderTest!.Name = "";
         var expectedResult = "Enter the name of your business' contact person";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSaveAsync();
@@ -171,6 +174,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(guid);
@@ -178,5 +182,16 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         //Assert
         _mockTraderService.Verify();
         _systemUnderTest.Name.Should().Be("");
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }
