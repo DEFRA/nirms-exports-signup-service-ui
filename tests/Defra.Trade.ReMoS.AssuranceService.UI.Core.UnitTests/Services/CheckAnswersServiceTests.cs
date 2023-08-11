@@ -88,7 +88,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public ReadyForCheckAnswers_Returns_False_When_GetEligibilityProgressNotComplete()
+        public void ReadyForCheckAnswers_Returns_False_When_GetEligibilityProgressNotComplete()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -175,7 +175,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public ReadyForCheckAnswers_Returns_False_When_GetBusinessDetailsProgressInProgress()
+        public void ReadyForCheckAnswers_Returns_False_When_GetBusinessDetailsProgressInProgress()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
