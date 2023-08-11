@@ -150,7 +150,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         var partyDto = new TradePartyDto
         {
-            OrgId = Guid.Parse(SelectedBusiness),
+            OrgId = Guid.Parse(SelectedBusiness!),
             PracticeName = Businesses[Guid.Parse(SelectedBusiness)],
         };
 

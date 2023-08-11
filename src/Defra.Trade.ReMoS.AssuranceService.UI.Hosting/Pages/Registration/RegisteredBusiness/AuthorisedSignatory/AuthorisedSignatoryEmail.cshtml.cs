@@ -15,7 +15,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         #region ui model
         [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [BindProperty]
-        [Required(ErrorMessage = "Enter the email address of the authorised representative")]
+        [Required(ErrorMessage = "Enter an email address")]
         public string? Email { get; set; }
         [BindProperty]
         public string? BusinessName { get; set; }

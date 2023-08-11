@@ -72,7 +72,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = "07343 242 9802";
-            var expectedResult = "Enter a telephone number in the correct format, like 01632 960 001, 07700 900 982 or +44 808 157 019";
+            var expectedResult = "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -88,7 +88,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = "07343 242 9802";
-            var expectedResult = "Enter a telephone number in the correct format, like 01632 960 001, 07700 900 982 or +44 808 157 019";
+            var expectedResult = "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
@@ -104,7 +104,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = "";
-            var expectedResult = "Enter the phone number of the contact person";
+            var expectedResult = "Enter a telephone number";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -120,7 +120,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = "";
-            var expectedResult = "Enter the phone number of the contact person";
+            var expectedResult = "Enter a telephone number";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
@@ -136,7 +136,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = "";
-            var expectedResult = "Enter the phone number of the contact person";
+            var expectedResult = "Enter a telephone number";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
@@ -154,7 +154,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = "";
-            var expectedResult = "Enter the phone number of the contact person";
+            var expectedResult = "Enter a telephone number";
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
