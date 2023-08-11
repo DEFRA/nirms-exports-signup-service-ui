@@ -14,30 +14,30 @@ public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'.,_/()]*$", ErrorMessage = "Enter establishment name using only letters, numbers, parentheses, full stops, commas, undescores, forward slashes, hyphens or apostrophes")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'.,_/()]*$", ErrorMessage = "Enter establishment name using only letters, numbers, brackets, full stops, commas, undescores, forward slashes, hyphens, apostrophes or ampersands")]
     [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
     [Required(ErrorMessage = "Enter an establishment name")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, parentheses, full stops, undescores, forward slashes, hyphens or apostrophes")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&',._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, parentheses, full stops, undescores, forward slashes, hyphens or apostrophes")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&',._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, parentheses, full stops, undescores, forward slashes, hyphens or apostrophes")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&',._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, parentheses, full stops, undescores, forward slashes, hyphens or apostrophes")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&',._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
     public string? County { get; set; } = string.Empty;
 
