@@ -30,7 +30,7 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
-    public async Task OnGetAsync_IfEmptyIdPassedIn_TraderIdShouldBeSetToEmpty()
+    public void OnGetAsync_IfEmptyIdPassedIn_TraderIdShouldBeSetToEmpty()
     {
         //Arrange
         var id = Guid.Empty;
@@ -43,7 +43,7 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
-    public async Task OnGetAsync_BuildSelectList_IfMoreThan7Businesses()
+    public void OnGetAsync_BuildSelectList_IfMoreThan7Businesses()
     {
         //Arrange
         _systemUnderTest!.TraderId = Guid.NewGuid();

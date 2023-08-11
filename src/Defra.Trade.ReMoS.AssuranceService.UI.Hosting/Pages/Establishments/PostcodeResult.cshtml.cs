@@ -91,7 +91,7 @@ public class PostcodeResultModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, Postcode);
+            return await OnGetAsync(TradePartyId, Postcode!);
         }
 
         return RedirectToPage(
