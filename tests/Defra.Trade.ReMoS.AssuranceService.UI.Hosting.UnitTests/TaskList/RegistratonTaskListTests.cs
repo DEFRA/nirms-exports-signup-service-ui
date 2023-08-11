@@ -255,7 +255,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 Email = "test@testmail.com",
                 Position = "Main Tester",
                 TelephoneNumber = "1234567890",
-                IsAuthorisedSignatory = false
+                IsAuthorisedSignatory = null
             };
 
             var tradeAddress = new TradeAddressDto
@@ -342,7 +342,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
 
             //Assert
             _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
-            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.NOTSTART);
+            _systemUnderTest.AuthorisedSignatoryDetails.Should().Be(TaskListStatus.COMPLETE);
             _systemUnderTest.ReviewAnswers.Should().Be(TaskListStatus.CANNOTSTART);
         }
 
@@ -434,8 +434,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             Assert.AreEqual(expectedStatus, status);
         }
 
-        [TestCase(false, null, null, null, TaskListStatus.NOTSTART)]
-        public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete_Id_IsNull(bool isAuthSig, string? name, string? position, string? email, string expectedStatus)
+        [TestCase(null, null, null, null, TaskListStatus.NOTSTART)]
+        public void GetAuthorisedSignatoryProgress_Status_InProgressOrComplete_Id_IsNull(bool? isAuthSig, string? name, string? position, string? email, string expectedStatus)
         {
             // Arrange
             var tradeParty = new TradePartyDto
