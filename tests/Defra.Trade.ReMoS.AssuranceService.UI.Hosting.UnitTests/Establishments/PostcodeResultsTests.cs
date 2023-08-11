@@ -15,14 +15,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         private PostcodeResultModel? _systemUnderTest;
         protected Mock<ILogger<PostcodeResultModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-        protected Mock<ITraderService> _mockTraderService = new();
-        private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+        protected Mock<ITraderService> _mockTraderService = new();        
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
-            _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]

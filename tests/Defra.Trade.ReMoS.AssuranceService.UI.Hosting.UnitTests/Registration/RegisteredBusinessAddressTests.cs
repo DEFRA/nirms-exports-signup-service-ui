@@ -20,8 +20,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 {
     protected Mock<ILogger<RegisteredBusinessAddressModel>> _mockLogger = new ();
     protected Mock<ITraderService> _mockTraderService = new();
-    private RegisteredBusinessAddressModel? _systemUnderTest;
-    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+    private RegisteredBusinessAddressModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
@@ -30,7 +29,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
             _mockLogger.Object, 
             _mockTraderService.Object);
 
-        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]

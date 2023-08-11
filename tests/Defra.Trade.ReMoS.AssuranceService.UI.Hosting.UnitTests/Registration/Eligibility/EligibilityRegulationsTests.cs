@@ -19,14 +19,13 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 {
     protected Mock<ILogger<EligibilityRegulationsModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
-    private EligibilityRegulationsModel? _systemUnderTest;
-    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+    private EligibilityRegulationsModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new EligibilityRegulationsModel(_mockLogger.Object, _mockTraderService.Object);
-        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]

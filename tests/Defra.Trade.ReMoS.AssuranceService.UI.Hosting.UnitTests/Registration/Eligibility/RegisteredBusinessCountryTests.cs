@@ -16,14 +16,13 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
     private readonly Mock<ITraderService> _mockTraderService = new();
     private readonly Mock<ICheckAnswersService> _mockCheckAnswersService = new();
-    private RegisteredBusinessCountryModel? _systemUnderTest;
-    private PageModelMockingUtils pageModelMockingUtils = new PageModelMockingUtils();
+    private RegisteredBusinessCountryModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
-        _systemUnderTest.PageContext = pageModelMockingUtils.MockPageContext();
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
