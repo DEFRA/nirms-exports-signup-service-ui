@@ -31,7 +31,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         private ICheckAnswersService? _checkAnswersService;
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_NullTradePartyDtoAsync()
+        public void ReadyForCheckAnswers_Returns_False_When_NullTradePartyDto()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -44,7 +44,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_True_When_AllDataCompleteAsync()
+        public void ReadyForCheckAnswers_Returns_True_When_AllDataComplete()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -88,7 +88,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetEligibilityProgressNotCompleteAsync()
+        public ReadyForCheckAnswers_Returns_False_When_GetEligibilityProgressNotComplete()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -131,7 +131,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetBusinessDetailsProgressNotStartedAsync()
+        public void ReadyForCheckAnswers_Returns_False_When_GetBusinessDetailsProgressNotStarted()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -175,7 +175,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetBusinessDetailsProgressInProgressAsync()
+        public ReadyForCheckAnswers_Returns_False_When_GetBusinessDetailsProgressInProgress()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -219,7 +219,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetAuthorisedSignatoryProgressNotStartedAsync()
+        public void ReadyForCheckAnswers_Returns_False_When_GetAuthorisedSignatoryProgressNotStarted()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -263,7 +263,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetAuthorisedSignatoryProgressInProgressAsync()
+        public void ReadyForCheckAnswers_Returns_False_When_GetAuthorisedSignatoryProgressInProgress()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -306,7 +306,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetAuthorisedSignatoryProgress_ReturnsCannotStart_WhenPersonName_NullAsync()
+        public void GetAuthorisedSignatoryProgress_ReturnsCannotStart_WhenPersonName_Null()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -349,7 +349,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetAuthorisedSignatoryProgress_ReturnsComplete_WhenAuthorisedSignaturyFalse_ButAuthorisedSigdetailsComplete_NullAsync()
+        public void GetAuthorisedSignatoryProgress_ReturnsComplete_WhenAuthorisedSignaturyFalse_ButAuthorisedSigdetailsComplete_Null()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -396,7 +396,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetAuthorisedSignatoryProgress_ReturnsInProgress_WhenAuthorisedSignaturyFalse_ButAuthorisedSigIDNotNullAsync()
+        public void GetAuthorisedSignatoryProgress_ReturnsInProgress_WhenAuthorisedSignaturyFalse_ButAuthorisedSigIDNotNull()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -440,7 +440,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetEligibilityProgress_ReturnsNotStart_When_Address_NullAsync()
+        public void GetEligibilityProgress_ReturnsNotStart_When_Address_Null()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -479,7 +479,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetContactDetailsNotCompleteAsync()
+        public void ReadyForCheckAnswers_Returns_False_When_GetContactDetailsNotComplete()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
@@ -525,7 +525,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ReadyForCheckAnswers_Returns_False_When_GetContactDetailsNotStartedAsync()
+        public void ReadyForCheckAnswers_Returns_False_When_GetContactDetailsNotStarted()
         {
             // Arrange
             _checkAnswersService = new CheckAnswersService();
