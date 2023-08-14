@@ -479,6 +479,155 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
+        public void IsLogisticsLocationsDataPresent_ReturnsTrue_When_DataPresent()
+        {
+            // Arrange
+            _checkAnswersService = new CheckAnswersService();
+
+            var TradeAddressDTO = new TradeAddressDto
+            {
+                Id = Guid.NewGuid(),
+                LineOne = "Addr 1",
+                TradeCountry = "England"
+            };
+            var TradeContactDTO = new TradeContactDto
+            {
+                Id = Guid.NewGuid(),
+                PersonName = "Test",
+                Email = "Test@Test.Com",
+                TelephoneNumber = "1234567890",
+                Position = "CEO",
+                IsAuthorisedSignatory = false,
+            };
+            var AuthorisedSignatoryDTO = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+            };
+
+            var TradePartyDTO = new TradePartyDto
+            {
+                PracticeName = "Practicing",
+                Address = TradeAddressDTO,
+                Contact = TradeContactDTO,
+                FboNumber = "1234567890",
+                AuthorisedSignatory = AuthorisedSignatoryDTO,
+                RegulationsConfirmed = true
+            };
+
+            var LogisticsLocationDTO = new LogisticsLocationDto
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test",
+                Email = "Test@Test.Com",
+                TradePartyId = TradePartyDTO.Id,
+                TradeAddressId = TradeAddressDTO.Id,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow,
+                NI_GBFlag = "GB",
+                Party = TradePartyDTO,
+                Address = TradeAddressDTO
+            };
+            IEnumerable<LogisticsLocationDto> logistics = Enumerable.Empty<LogisticsLocationDto>();
+            logistics = logistics.Append(LogisticsLocationDTO);
+
+            // Act
+            var returnedValue = _checkAnswersService.IsLogisticsLocationsDataPresent(TradePartyDTO, logistics);
+
+            // Assert
+            Assert.IsTrue(returnedValue);
+        }
+
+        [Test]
+        public void IsLogisticsLocationsDataPresent_ReturnsFalse_When_NoLogisticsData()
+        {
+            // Arrange
+            _checkAnswersService = new CheckAnswersService();
+
+            var TradeAddressDTO = new TradeAddressDto
+            {
+                Id = Guid.NewGuid(),
+                LineOne = "Addr 1",
+                TradeCountry = "England"
+            };
+            var TradeContactDTO = new TradeContactDto
+            {
+                Id = Guid.NewGuid(),
+                PersonName = "Test",
+                Email = "Test@Test.Com",
+                TelephoneNumber = "1234567890",
+                Position = "CEO",
+                IsAuthorisedSignatory = false,
+            };
+            var AuthorisedSignatoryDTO = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+            };
+
+            var TradePartyDTO = new TradePartyDto
+            {
+                PracticeName = "Practicing",
+                Address = TradeAddressDTO,
+                Contact = TradeContactDTO,
+                FboNumber = "1234567890",
+                AuthorisedSignatory = AuthorisedSignatoryDTO,
+                RegulationsConfirmed = true
+            };
+
+            IEnumerable<LogisticsLocationDto> logistics = Enumerable.Empty<LogisticsLocationDto>();
+
+            // Act
+            var returnedValue = _checkAnswersService.IsLogisticsLocationsDataPresent(TradePartyDTO, logistics);
+
+            // Assert
+            Assert.IsFalse(returnedValue);
+        }
+
+        [Test]
+        public void IsLogisticsLocationsDataPresent_ReturnsFalse_When_LogisticsNull()
+        {
+            // Arrange
+            _checkAnswersService = new CheckAnswersService();
+
+            var TradeAddressDTO = new TradeAddressDto
+            {
+                Id = Guid.NewGuid(),
+                LineOne = "Addr 1",
+                TradeCountry = "England"
+            };
+            var TradeContactDTO = new TradeContactDto
+            {
+                Id = Guid.NewGuid(),
+                PersonName = "Test",
+                Email = "Test@Test.Com",
+                TelephoneNumber = "1234567890",
+                Position = "CEO",
+                IsAuthorisedSignatory = false,
+            };
+            var AuthorisedSignatoryDTO = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+            };
+
+            var TradePartyDTO = new TradePartyDto
+            {
+                PracticeName = "Practicing",
+                Address = TradeAddressDTO,
+                Contact = TradeContactDTO,
+                FboNumber = "1234567890",
+                AuthorisedSignatory = AuthorisedSignatoryDTO,
+                RegulationsConfirmed = true
+            };
+
+            IEnumerable<LogisticsLocationDto> logistics = null!;
+
+            // Act
+            var returnedValue = _checkAnswersService.IsLogisticsLocationsDataPresent(TradePartyDTO, logistics);
+
+            // Assert
+            Assert.IsFalse(returnedValue);
+        }
+
+        [Test]
         public void ReadyForCheckAnswers_Returns_False_When_GetContactDetailsNotComplete()
         {
             // Arrange

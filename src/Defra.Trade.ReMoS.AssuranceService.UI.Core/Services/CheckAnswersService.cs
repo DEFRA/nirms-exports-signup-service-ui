@@ -97,7 +97,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             {
                 return TaskListStatus.INPROGRESS;
             }
-            
 
             return TaskListStatus.NOTSTART;
         }
@@ -116,6 +115,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 }
             }
             return TaskListStatus.NOTSTART;
+        }
+
+        public bool IsLogisticsLocationsDataPresent(TradePartyDto? tradeParty, IEnumerable<LogisticsLocationDto> logisticsLocations)
+        {
+            if (tradeParty == null || logisticsLocations == null || !logisticsLocations.Any())
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

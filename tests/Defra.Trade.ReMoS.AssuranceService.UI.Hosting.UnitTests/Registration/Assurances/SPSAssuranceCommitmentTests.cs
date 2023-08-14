@@ -20,12 +20,13 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     private TermsAndConditions? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
     protected Mock<IUserService> _mockUserService = new();
-    protected Mock<IEstablishmentService> _mockEstablishmentService = new();    
+    protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+    protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object);
+        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
@@ -261,7 +262,4 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
-
 }
-
-

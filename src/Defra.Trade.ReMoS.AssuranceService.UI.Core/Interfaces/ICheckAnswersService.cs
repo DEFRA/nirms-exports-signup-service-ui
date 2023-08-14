@@ -13,5 +13,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         string GetAuthorisedSignatoryProgress(TradePartyDto tradeParty);
 
         string GetEligibilityProgress(TradePartyDto tradeParty);
+
+        bool IsLogisticsLocationsDataPresent(TradePartyDto tradeParty, IEnumerable<LogisticsLocationDto> logistics);
     }
 }
