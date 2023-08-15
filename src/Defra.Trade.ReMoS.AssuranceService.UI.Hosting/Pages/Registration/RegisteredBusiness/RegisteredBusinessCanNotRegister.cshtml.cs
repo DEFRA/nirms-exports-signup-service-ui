@@ -10,8 +10,9 @@ public class RegisteredBusinessCanNotRegisterModel : PageModel
     [BindProperty]
     public Guid TraderId { get; set; }
 
-    public void OnGet(Guid id)
+    public IActionResult OnGet(Guid id)
     {
         TraderId = id;
+        return Page();
     }
 }
