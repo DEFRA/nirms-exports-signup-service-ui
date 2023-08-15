@@ -20,6 +20,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter an FBO number containing only letters, numbers or hyphens")]
+    [MaxLength(25, ErrorMessage = "FBO number must be 25 characters or less")]
     public string? FboNumber { get; set; } = string.Empty;
 
     [BindProperty]

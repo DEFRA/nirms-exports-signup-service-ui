@@ -110,4 +110,22 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
+
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInvalidLength()
+    {
+        //Arrange
+        _systemUnderTest!.OptionSelected = "yes";
+        _systemUnderTest!.FboNumber = new string('1', 26);
+        var expectedResult = "FBO number must be 25 characters or less";
+
+        //Act
+        await _systemUnderTest.OnPostAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
 }
