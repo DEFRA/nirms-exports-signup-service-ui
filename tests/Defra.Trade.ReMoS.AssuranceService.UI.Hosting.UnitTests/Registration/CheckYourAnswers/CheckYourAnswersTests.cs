@@ -17,12 +17,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         private CheckYourAnswersModel? _systemUnderTest;
         protected Mock<ILogger<CheckYourAnswersModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-        protected Mock<ITraderService> _mockTraderService = new();
+        protected Mock<ITraderService> _mockTraderService = new();        
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -30,11 +31,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var logisticsLocations = new List<LogisticsLocationDTO>();
-            var tradeParty = new TradePartyDTO { Address = new TradeAddressDTO { TradeCountry = "NI" } };
+            var logisticsLocations = new List<LogisticsLocationDto>();
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             // act
             await _systemUnderTest!.OnGetAsync(tradePartyId);
@@ -51,11 +53,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var logisticsLocations = new List<LogisticsLocationDTO>();
-            var tradeParty = new TradePartyDTO { Address = new TradeAddressDTO { TradeCountry = "England" } };
+            var logisticsLocations = new List<LogisticsLocationDto>();
+            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "England" } };
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             // act
             await _systemUnderTest!.OnGetAsync(tradePartyId);
@@ -74,7 +77,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var tradePartyId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
-            var logisticsLocations = new List<LogisticsLocationDTO> { };
+            var logisticsLocations = new List<LogisticsLocationDto> { };
 
             _mockEstablishmentService.Setup(x => x.RemoveEstablishmentAsync(establishmentId).Result);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
@@ -120,6 +123,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentContactEmailPath, new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

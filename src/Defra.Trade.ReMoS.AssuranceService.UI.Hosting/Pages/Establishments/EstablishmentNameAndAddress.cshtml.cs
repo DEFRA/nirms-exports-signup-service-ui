@@ -14,30 +14,30 @@ public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter establishment name using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'.,_/()]*$", ErrorMessage = "Enter establishment name using only letters, numbers, brackets, full stops, commas, undescores, forward slashes, hyphens, apostrophes or ampersands")]
     [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
     [Required(ErrorMessage = "Enter an establishment name")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&']*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a town or city using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a county using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
     public string? County { get; set; } = string.Empty;
 
@@ -63,13 +63,16 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private readonly ILogger<EstablishmentNameAndAddressModel> _logger;
     private readonly IEstablishmentService _establishmentService;
+    private readonly ITraderService _traderService;
 
     public EstablishmentNameAndAddressModel(
         ILogger<EstablishmentNameAndAddressModel> logger,
-        IEstablishmentService establishmentService)
+        IEstablishmentService establishmentService,
+        ITraderService traderService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
+        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? NI_GBFlag = "GB")
@@ -78,6 +81,11 @@ public class EstablishmentNameAndAddressModel : PageModel
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId ?? Guid.Empty;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
 
         if (NI_GBFlag == "NI")
         {
@@ -129,9 +137,9 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
+        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
         establishmentDto.Name = EstablishmentName;
-        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDTO();
+        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDto();
         establishmentDto.Address.LineOne = LineOne;
         establishmentDto.Address.LineTwo = LineTwo;
         establishmentDto.Address.CityName = CityName;
@@ -153,7 +161,7 @@ public class EstablishmentNameAndAddressModel : PageModel
     private async Task RetrieveEstablishmentDetails()
     {
 
-        LogisticsLocationDTO? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDTO();
+        LogisticsLocationDto? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
 
         EstablishmentName = establishment?.Name ?? string.Empty;
         LineOne = establishment?.Address?.LineOne ?? string.Empty;

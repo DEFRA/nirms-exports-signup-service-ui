@@ -15,12 +15,14 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 {
     protected Mock<ILogger<RegisteredBusinessCountryModel>> _mockLogger = new();
     private readonly Mock<ITraderService> _mockTraderService = new();
-    private RegisteredBusinessCountryModel? _systemUnderTest;
+    private readonly Mock<ICheckAnswersService> _mockCheckAnswersService = new();
+    private RegisteredBusinessCountryModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -42,6 +44,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {        
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Assert
         _systemUnderTest.CountrySaved.Should().Be(false);
@@ -53,10 +56,10 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO { TradeCountry = "GB"};
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto { TradeCountry = "GB"};
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,
@@ -65,6 +68,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -81,10 +85,10 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO { TradeCountry = "NI" };
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto { TradeCountry = "NI" };
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,
@@ -93,6 +97,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -150,11 +155,11 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         Guid guid = Guid.NewGuid();
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO();
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto();
         tradeAddress.TradeCountry = "England";
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact,
@@ -163,6 +168,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
@@ -194,7 +200,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         var traderId = Guid.NewGuid();
         _systemUnderTest.TraderId = traderId;
         _mockTraderService
-            .Setup(action => action.AddTradePartyAddressAsync(It.IsAny<Guid>(), It.IsAny<TradeAddressDTO>()))
+            .Setup(action => action.AddTradePartyAddressAsync(It.IsAny<Guid>(), It.IsAny<TradeAddressDto>()))
             .ReturnsAsync(traderId);
 
         //Act
@@ -203,6 +209,17 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
         ((RedirectToPageResult)result!).PageName.Should().Be(Routes.Pages.Path.RegisteredBusinessFboNumberPath);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }
 

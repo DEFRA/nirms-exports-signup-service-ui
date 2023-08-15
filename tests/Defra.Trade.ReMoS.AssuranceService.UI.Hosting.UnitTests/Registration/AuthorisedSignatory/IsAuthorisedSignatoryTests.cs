@@ -21,12 +21,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<IsAuthorisedSignatoryModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
-        protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+        protected Mock<IEstablishmentService> _mockEstablishmentService = new();       
 
         [SetUp]
         public void TestCaseSetup()
         {
             _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockEstablishmentService.Object, _mockLogger.Object);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]
@@ -37,10 +38,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -61,10 +63,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Contact = new TradeContactDTO()
+                    Contact = new TradeContactDto()
                     {
                         IsAuthorisedSignatory = null
                     }
@@ -89,14 +91,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+                .ReturnsAsync(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Contact = new TradeContactDTO()
+                    Contact = new TradeContactDto()
                     {
                         IsAuthorisedSignatory = null
                     }
                 });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnPostSaveAsync();
@@ -118,10 +121,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-               .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+               .ReturnsAsync(new Core.DTOs.TradePartyDto()
                {
                    Id = tradePartyId,
-                   Contact = new Core.DTOs.TradeContactDTO()
+                   Contact = new Core.DTOs.TradeContactDto()
                    {
                        IsAuthorisedSignatory = true
                    },
@@ -133,11 +136,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                });
 
             _mockTraderService
-                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDTO>()).Result)
-                .Returns(new Core.DTOs.TradePartyDTO()
+                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDto>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Contact = new Core.DTOs.TradeContactDTO()
+                    Contact = new Core.DTOs.TradeContactDto()
                     {
                         IsAuthorisedSignatory = true
                     },
@@ -167,10 +170,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-               .ReturnsAsync(new Core.DTOs.TradePartyDTO()
+               .ReturnsAsync(new Core.DTOs.TradePartyDto()
                {
                    Id = tradePartyId,
-                   Contact = new Core.DTOs.TradeContactDTO()
+                   Contact = new Core.DTOs.TradeContactDto()
                    {
                        IsAuthorisedSignatory = true
                    },
@@ -182,11 +185,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                });
 
             _mockTraderService
-                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDTO>()).Result)
-                .Returns(new Core.DTOs.TradePartyDTO()
+                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDto>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Contact = new Core.DTOs.TradeContactDTO()
+                    Contact = new Core.DTOs.TradeContactDto()
                     {
                         IsAuthorisedSignatory = true
                     },
@@ -215,11 +218,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
 
             _mockTraderService
-                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDTO>()).Result)
-                .Returns(new Core.DTOs.TradePartyDTO()
+                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDto>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Contact = new Core.DTOs.TradeContactDTO()
+                    Contact = new Core.DTOs.TradeContactDto()
                     {
                         IsAuthorisedSignatory = false
                     }
@@ -244,11 +247,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
 
             _mockTraderService
-                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDTO>()).Result)
-                .Returns(new Core.DTOs.TradePartyDTO()
+                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDto>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
                 {
                     Id = tradePartyId,
-                    Contact = new Core.DTOs.TradeContactDTO()
+                    Contact = new Core.DTOs.TradeContactDto()
                     {
                         IsAuthorisedSignatory = false
                     }
@@ -262,6 +265,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             redirectResult!.PageName.Should().Be("/Registration/TaskList/RegistrationTaskList");
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

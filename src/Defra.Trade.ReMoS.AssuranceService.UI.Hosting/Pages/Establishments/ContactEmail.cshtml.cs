@@ -16,7 +16,7 @@ public class ContactEmailModel : PageModel
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
-    public LogisticsLocationDTO? Location { get; set; } = new LogisticsLocationDTO();
+    public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
@@ -26,13 +26,16 @@ public class ContactEmailModel : PageModel
 
     private readonly IEstablishmentService _establishmentService;
     private readonly ILogger<ContactEmailModel> _logger;
+    private readonly ITraderService _traderService;
 
     public ContactEmailModel(
         ILogger<ContactEmailModel> logger,
-        IEstablishmentService establishmentService)
+        IEstablishmentService establishmentService,
+        ITraderService traderService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
+        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
@@ -41,6 +44,11 @@ public class ContactEmailModel : PageModel
         TradePartyId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
 
         if (NI_GBFlag == "NI")
         {

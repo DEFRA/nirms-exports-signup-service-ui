@@ -21,9 +21,9 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
     [BindProperty]
     [Required(ErrorMessage = "Select a business")]
-    public string SelectedBusiness { get; set; } = default!;
+    public string? SelectedBusiness { get; set; } = default!;
     public Guid TraderId { get; set; }    
-    public List<SelectListItem> BusinessSelectList = new();
+    public List<SelectListItem> BusinessSelectList { get; set; } = new()!;
     #endregion
 
     private readonly ILogger<RegisteredBusinessBusinessPickerModel> _logger;
@@ -40,7 +40,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public IActionResult OnGet()
     {
         _logger.LogInformation("Business picker OnGet");
         Businesses = _userService.GetDefraOrgsForUser(User);
@@ -60,7 +60,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             SelectedBusiness = null;
-            ModelState.AddModelError("Business", "Select a business");
+            ModelState.AddModelError("SelectedBusiness", "Select a business");
         }
 
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
@@ -70,7 +70,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync();
+            return OnGet();
         }
 
         /* get business sign-up status from trader service
@@ -80,37 +80,47 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
          * if COMPLETE (T&C checked), redirect to error page
          */
 
-        var partyWithSignUpStatus = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
-        TraderId = (partyWithSignUpStatus.tradeParty != null) ? partyWithSignUpStatus.tradeParty.Id : Guid.Empty;
-
-        switch (partyWithSignUpStatus.signupStatus)
+        if (Guid.TryParse(SelectedBusiness, out _))
         {
-            case Core.Enums.TradePartySignupStatus.New:
-                await SaveSelectedBusinessToApi();
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgress:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegistrationTaskListPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.Complete:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                    new { id = TraderId });
+            var (tradeParty, signupStatus) = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
+            TraderId = (tradeParty != null) ? tradeParty.Id : Guid.Empty;
+
+            switch (signupStatus)
+            {
+                case Core.Enums.TradePartySignupStatus.New:
+                    await SaveSelectedBusinessToApi();
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessCountryPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessCountryPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.InProgress:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegistrationTaskListPath,
+                        new { id = TraderId });
+                case Core.Enums.TradePartySignupStatus.Complete:
+                    return RedirectToPage(
+                        Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
+                        new { id = TraderId });
+            }
         }
+        else
+        {
+            ModelState.AddModelError(nameof(SelectedBusiness), "Guid for Selected Business is not valid");
+            return OnGet();
+        }
+
+
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
@@ -138,9 +148,9 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         Businesses = _userService.GetDefraOrgsForUser(User);
 
-        var partyDto = new TradePartyDTO
+        var partyDto = new TradePartyDto
         {
-            OrgId = Guid.Parse(SelectedBusiness),
+            OrgId = Guid.Parse(SelectedBusiness!),
             PracticeName = Businesses[Guid.Parse(SelectedBusiness)],
         };
 

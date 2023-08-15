@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -19,7 +20,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 {
     protected Mock<ILogger<RegisteredBusinessAddressModel>> _mockLogger = new ();
     protected Mock<ITraderService> _mockTraderService = new();
-    private RegisteredBusinessAddressModel? _systemUnderTest;
+    private RegisteredBusinessAddressModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
@@ -27,6 +28,8 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         _systemUnderTest = new RegisteredBusinessAddressModel(
             _mockLogger.Object, 
             _mockTraderService.Object);
+
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -34,7 +37,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
     {
         // arrange
         //TODO: add setup for returning value when api reference
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
         // act
         await _systemUnderTest.OnGetAsync();
 
@@ -121,7 +124,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         var expectedResultThree = "Enter a postcode";
 
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -144,7 +147,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         var expectedResultThree = "Enter a postcode";
 
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnPostSaveAsync();
@@ -163,15 +166,15 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
         //Arrange
         var guid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d191");
 
-        var tradeContact = new TradeContactDTO();
-        var tradeAddress = new TradeAddressDTO
+        var tradeContact = new TradeContactDto();
+        var tradeAddress = new TradeAddressDto
         {
             TradeCountry = "Test Country",
             LineOne = "1 Test Lane",
             PostCode = "EC1N 2PB"
         };
 
-        var tradePartyDto = new TradePartyDTO
+        var tradePartyDto = new TradePartyDto
         {
             Id = guid,
             Contact = tradeContact, 
@@ -180,6 +183,7 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest.OnGetAsync(guid);
@@ -225,6 +229,17 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
 
         // assert
         validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
 }

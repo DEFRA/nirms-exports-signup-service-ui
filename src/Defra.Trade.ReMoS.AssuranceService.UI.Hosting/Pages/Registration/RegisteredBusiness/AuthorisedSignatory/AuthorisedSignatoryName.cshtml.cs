@@ -13,9 +13,9 @@ public class AuthorisedSignatoryNameModel : PageModel
 {
     #region ui model
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter the full name of the authorised representative using only letters, numbers, brackets, full stops, hyphens (-), underscores (_), slashes (/) or ampersands (&)")]
+    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, apostrophes and hyphens")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter the name of the authorised representative for your business")]
+    [Required(ErrorMessage = "Enter a Full name")]
     public string Name { get; set; } = string.Empty;
     [BindProperty]
     public string? BusinessName { get; set; }
@@ -31,15 +31,21 @@ public class AuthorisedSignatoryNameModel : PageModel
     public AuthorisedSignatoryNameModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
     {
         _traderService = traderService;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger)); ;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Name OnGet");
 
         var party = await GetSignatoryNameFromApiAsync();
-        BusinessName = party?.PartyName;
+        BusinessName = party?.PracticeName;
 
         return Page();
     }
@@ -81,7 +87,7 @@ public class AuthorisedSignatoryNameModel : PageModel
         await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
     }
 
-    private async Task <TradePartyDTO?> GetSignatoryNameFromApiAsync()
+    private async Task <TradePartyDto?> GetSignatoryNameFromApiAsync()
     {
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.AuthorisedSignatory!= null)
@@ -95,10 +101,10 @@ public class AuthorisedSignatoryNameModel : PageModel
         return null;
     }
 
-    private async Task<TradePartyDTO> GenerateDTO()
+    private async Task<TradePartyDto> GenerateDTO()
     {
         var tradeParty = await GetSignatoryNameFromApiAsync();
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
             AuthorisedSignatory = new AuthorisedSignatoryDto()

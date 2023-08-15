@@ -12,18 +12,18 @@ public class RegisteredBusinessAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-'&]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-'&]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-']*$", ErrorMessage = "Enter a town or city using only letters, numbers, hyphens (-) and apostrophes (')")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, undescores, forward slashes, hyphens or apostrophes")]
     [MaxLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
@@ -60,6 +60,11 @@ public class RegisteredBusinessAddressModel : PageModel
     {
         TraderId = (TraderId != Guid.Empty) ? TraderId : id ?? Guid.Empty;
         _logger.LogInformation("Address OnGet");
+
+        if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
 
         if (TraderId != Guid.Empty)
         {
@@ -101,14 +106,14 @@ public class RegisteredBusinessAddressModel : PageModel
     #region private methods
     private async Task SubmitAddress()
     {
-        TradePartyDTO tradePartyDto = GenerateDTO(CreateAddressDto());
+        TradePartyDto tradePartyDto = GenerateDTO(CreateAddressDto());
 
         await _traderService.UpdateTradePartyAddressAsync(tradePartyDto);
     }
 
-    private TradeAddressDTO CreateAddressDto()
+    private TradeAddressDto CreateAddressDto()
     {
-        TradeAddressDTO DTO = new()
+        TradeAddressDto DTO = new()
         {
             Id = AddressId,
             LineOne = LineOne,
@@ -119,9 +124,9 @@ public class RegisteredBusinessAddressModel : PageModel
         return DTO;
     }
 
-    private TradePartyDTO GenerateDTO(TradeAddressDTO addressDTO)
+    private TradePartyDto GenerateDTO(TradeAddressDto addressDTO)
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TraderId,
             Address = addressDTO
@@ -130,7 +135,7 @@ public class RegisteredBusinessAddressModel : PageModel
 
     private async Task GetAddressFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
         if (tradeParty != null && tradeParty.Address != null)
         {
             AddressId = tradeParty.Address.Id;

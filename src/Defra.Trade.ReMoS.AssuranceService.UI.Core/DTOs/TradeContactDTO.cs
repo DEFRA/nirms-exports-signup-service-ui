@@ -1,6 +1,6 @@
 ﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs
 {
-    public class TradeContactDTO
+    public class TradeContactDto
     {
         public Guid Id { get; set; }
         public Guid TradePartyId { get; set; }

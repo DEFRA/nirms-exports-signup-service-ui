@@ -12,6 +12,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         [BindProperty]
         public Guid RegistrationID { get; set; }
         [BindProperty]
+        public string SelectedBusinessName { get; set; } = default!;
+        [BindProperty]
         public string EligibilityStatus { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
         public string BusinessDetails { get; set; } = TaskListStatus.NOTSTART;
@@ -48,9 +50,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             RegistrationID = Id;
 
-            TradePartyDTO tradeParty = await GetAPIData();
+            if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
 
-            var test = _checkAnswersService.GetEligibilityProgress(tradeParty);
+            TradePartyDto tradeParty = await GetAPIData();
 
             if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
@@ -62,23 +67,23 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             return Page();
         }
 
-        public async Task<TradePartyDTO> GetAPIData()
+        public async Task<TradePartyDto> GetAPIData()
         {
-            TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+            TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
             Country = tradeParty?.Address?.TradeCountry;
 
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
                 EligibilityStatus = _checkAnswersService.GetEligibilityProgress(tradeParty);
-
                 BusinessDetails = GetBusinessDetailsProgress(tradeParty!);
                 ContactDetails = GetContactDetailsProgress(tradeParty!);
                 AuthorisedSignatoryDetails = GetAuthorisedSignatoryProgress(tradeParty!);
-                
+                SelectedBusinessName = tradeParty.PracticeName ?? string.Empty;
+
                 await EstablishmentsStatuses();
                 CheckAnswersStatus();
             }
-            return tradeParty;
+            return tradeParty!;
         }
 
         private async Task EstablishmentsStatuses()
@@ -121,17 +126,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             }
         }
 
-        public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
+        public string GetBusinessDetailsProgress(TradePartyDto tradeParty)
         {
             return _checkAnswersService.GetBusinessDetailsProgress(tradeParty);
         }
 
-        public string GetContactDetailsProgress(TradePartyDTO tradeParty)
+        public string GetContactDetailsProgress(TradePartyDto tradeParty)
         {
             return _checkAnswersService.GetContactDetailsProgress(tradeParty);
         }
 
-        public string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty)
+        public string GetAuthorisedSignatoryProgress(TradePartyDto tradeParty)
         {
             return _checkAnswersService.GetAuthorisedSignatoryProgress(tradeParty);
         }

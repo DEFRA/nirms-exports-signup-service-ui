@@ -1,8 +1,10 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -18,23 +20,23 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     private TermsAndConditions? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
     protected Mock<IUserService> _mockUserService = new();
-    protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-
+    protected Mock<IEstablishmentService> _mockEstablishmentService = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
-    public void OnGet_ReturnsId()
+    public async Task OnGet_ReturnsId()
     {
         // arrange
         var tradePartyId = Guid.NewGuid();
 
         //act
-        _systemUnderTest!.OnGetAsync(tradePartyId);
+        await _systemUnderTest!.OnGetAsync(tradePartyId);
 
         //assert
         _systemUnderTest.TraderId.Should().Be(tradePartyId);
@@ -45,7 +47,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test"
@@ -54,6 +56,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         //act
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         await _systemUnderTest!.OnPostSubmitAsync();
 
@@ -66,7 +69,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test"
@@ -77,10 +80,147 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         _systemUnderTest!.TandCs = assurance;
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
-        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDTO>()))
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
 
         await _systemUnderTest.OnPostSubmitAsync();
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPost_TickedSuccessful_NullDto()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = new()
+        {
+            Id = tradePartyId,
+            PartyName = "Test"
+        };
+        var assurance = true;
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(value: null);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+
+        await _systemUnderTest.OnPostSubmitAsync();
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPost_TickedSuccessful_DataPresent()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = new()
+        {
+            Id = tradePartyId,
+            PartyName = "Test"
+        };
+        var assurance = true;
+        var logisticsLocationList = new List<LogisticsLocationDto> {new LogisticsLocationDto() };
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(logisticsLocationList);
+
+        await _systemUnderTest.OnPostSubmitAsync();
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPost_TickedSuccessful_DataNotPresent()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = new()
+        {
+            Id = tradePartyId,
+            PartyName = "Test"
+        };
+        var assurance = true;
+        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+
+        //GetDefraOrgBusinessSignupStatus
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+
+
+        await _systemUnderTest.OnGetAsync(tradePartyId);
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    public async Task OnGet_TickedSuccessful_DtoIsNull()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        var assurance = true;
+        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+
+        //GetDefraOrgBusinessSignupStatus
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new TradePartyDto());
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+
+
+        await _systemUnderTest.OnGetAsync(tradePartyId);
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    public async Task OnPost_TickedSuccessful_DtoIsNull()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        var assurance = true;
+        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+
+        //GetDefraOrgBusinessSignupStatus
+
+        //act
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new TradePartyDto());
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+        _mockTraderService
+            .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+
+
+        await _systemUnderTest.OnGetAsync(tradePartyId);
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
@@ -91,7 +231,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         //arrange
         var tradePartyId = Guid.NewGuid();
-        TradePartyDTO tradeParty = new()
+        TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test"
@@ -105,12 +245,24 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .ReturnsAsync(tradeParty);
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDTO)null!, Core.Enums.TradePartySignupStatus.Complete));
+            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.Complete));
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         await _systemUnderTest.OnGetAsync(tradePartyId);
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
 }

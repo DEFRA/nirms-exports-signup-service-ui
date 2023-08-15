@@ -5,4 +5,35 @@
     ViewData["Title"] = "Home page";
 }
 
+@section Signout{
+}
 
+@if (Model.UseMagicWord)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <partial name="_ErrorSummary" model="ModelState" />
+
+            <h1 class="govuk-heading-xl">
+                This is for testing use only
+            </h1>
+
+            <p>
+                Enter the password that we emailed you to enter the Move goods under the Northern Ireland Retail Scheme service.
+            </p>
+
+            <form method="POST">
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="password">
+                        Password
+                    </label>
+                    <p id="PasswordError" class="govuk-error-message" gds-validation-for="Password"></p>
+                    <input class="govuk-input govuk-input--width-10" id="password" asp-for="Password" type="password">
+                </div>
+
+                <button asp-page-handler="submit" class="govuk-button">Continue</button>
+
+            </form>
+        </div>
+    </div>
+}

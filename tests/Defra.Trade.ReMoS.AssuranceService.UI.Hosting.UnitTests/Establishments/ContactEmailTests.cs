@@ -1,16 +1,11 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
-using FluentAssertions.Primitives;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments;
 
@@ -20,11 +15,13 @@ public class ContactEmailTests : PageModelTestsBase
     private ContactEmailModel? _systemUnderTest;
     protected Mock<ILogger<ContactEmailModel>> _mockLogger = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+    protected Mock<ITraderService> _mockTraderService = new();    
 
     [SetUp]
     public void TestCaseSetup()
-    {
-        _systemUnderTest = new ContactEmailModel(_mockLogger.Object, _mockEstablishmentService.Object);
+    {        
+        _systemUnderTest = new ContactEmailModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -33,7 +30,7 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationDTO());
+            .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());
@@ -62,6 +59,7 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         var expectedHeading = "Add a place of destination";
         var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
@@ -85,5 +83,17 @@ public class ContactEmailTests : PageModelTestsBase
         //Assert
         result?.GetType().Should().Be(typeof(RedirectToPageResult));
         (result as RedirectToPageResult)?.PageName?.Equals(Routes.Pages.Path.EstablishmentNameAndAddressPath);
+    }
+
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }

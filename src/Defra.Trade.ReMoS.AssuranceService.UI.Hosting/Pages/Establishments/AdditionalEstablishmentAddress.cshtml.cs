@@ -16,7 +16,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
     public string? AddAddressesComplete { get; set; } = string.Empty;
-    public List<LogisticsLocationDTO>? LogisticsLocations { get; set; } = new List<LogisticsLocationDTO>();
+    public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
     public Guid TradePartyId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
@@ -46,6 +46,11 @@ public class AdditionalEstablishmentAddressModel : PageModel
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
 
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Places of destination";
@@ -70,7 +75,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
-            var baseError = "Select if you have added all of your business' places of ";
+            var baseError = "Select if you have added all your places of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
             ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }
@@ -80,7 +85,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return await OnGetAsync(TradePartyId, NI_GBFlag!);
         }
 
-        if (AddAddressesComplete == "no")
+        if (AddAddressesComplete != null && AddAddressesComplete.Equals("no", StringComparison.OrdinalIgnoreCase))
         {
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentNameAndAddressPath, 
@@ -151,14 +156,9 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
    private async Task<bool> ReadyForCheckAnswersAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
         if (tradeParty == null)
-        {
-            return false;
-        }
-
-        if (_checkAnswersService.GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
         {
             return false;
         }

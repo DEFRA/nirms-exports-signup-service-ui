@@ -19,12 +19,13 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 {
     protected Mock<ILogger<EligibilityRegulationsModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
-    private EligibilityRegulationsModel? _systemUnderTest;
+    private EligibilityRegulationsModel? _systemUnderTest;    
 
     [SetUp]
     public void TestCaseSetup()
     {
         _systemUnderTest = new EligibilityRegulationsModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -61,10 +62,11 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         // Arrange
         var tradeId = Guid.NewGuid();
-        var tradePartyDto = new TradePartyDTO { Id = tradeId, RegulationsConfirmed = true };
+        var tradePartyDto = new TradePartyDto { Id = tradeId, RegulationsConfirmed = true };
         _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(tradeId))
             .ReturnsAsync(tradePartyDto);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         // Act
         var result = await _systemUnderTest!.OnGetAsync(tradeId);
@@ -123,14 +125,14 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         // Arrange
         var traderId = Guid.NewGuid();
-        var tradePartyDto = new TradePartyDTO { Id = traderId};
+        var tradePartyDto = new TradePartyDto { Id = traderId};
         _systemUnderTest!.Confirmed = true;
         _systemUnderTest!.TraderId = traderId;
         _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(traderId))
             .ReturnsAsync(tradePartyDto);
         _mockTraderService
-            .Setup(action => action.UpdateTradePartyAsync(It.IsAny<TradePartyDTO>()))
+            .Setup(action => action.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(traderId);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegistrationTaskListPath,
@@ -142,8 +144,17 @@ public class EligibilityRegulationsTests : PageModelTestsBase
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
         Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+    }
 
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
 
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
 }

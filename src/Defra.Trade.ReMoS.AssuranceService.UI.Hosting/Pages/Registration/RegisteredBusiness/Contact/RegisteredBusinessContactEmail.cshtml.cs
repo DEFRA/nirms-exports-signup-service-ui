@@ -13,7 +13,7 @@ public class RegisteredBusinessContactEmailModel : PageModel
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
-    [Required(ErrorMessage = "Enter the email address of the contact person")]
+    [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
     [BindProperty]
     public Guid TradePartyId { get; set; }
@@ -36,6 +36,12 @@ public class RegisteredBusinessContactEmailModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Email OnGet");
 
         await GetEmailAddressFromApiAsync();
@@ -75,13 +81,13 @@ public class RegisteredBusinessContactEmailModel : PageModel
     private async Task SubmitEmail()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDTO tradeParty = GenerateDTO();
+        TradePartyDto tradeParty = GenerateDTO();
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
     private async Task GetEmailAddressFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Email = tradeParty.Contact.Email ?? string.Empty;
@@ -91,19 +97,19 @@ public class RegisteredBusinessContactEmailModel : PageModel
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDTO? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
         }
     }
 
-    private TradePartyDTO GenerateDTO()
+    private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDTO()
+        return new TradePartyDto()
         {
             Id = TradePartyId,
-            Contact = new TradeContactDTO()
+            Contact = new TradeContactDto()
             {
                 Id = ContactId,
                 Email = Email,

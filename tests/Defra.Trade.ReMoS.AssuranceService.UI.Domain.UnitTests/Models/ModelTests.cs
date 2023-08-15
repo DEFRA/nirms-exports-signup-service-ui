@@ -12,7 +12,7 @@ public class TradePartyTests
     public void SetTradeParty_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeParty = new TradePartyDTO
+        var tradeParty = new TradePartyDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
@@ -40,7 +40,7 @@ public class TradePartyForCreationTests
     public void GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var registerTradeParty = new TradePartyDTO
+        var registerTradeParty = new TradePartyDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
@@ -64,7 +64,7 @@ public class TradeContactTests
     public void SetTradeContact_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeContact = new TradeContactDTO
+        var tradeContact = new TradeContactDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
@@ -86,7 +86,7 @@ public class TradeContactDTOTests
     public void SetTradeContactDTO_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeContact = new TradeContactDTO
+        var tradeContact = new TradeContactDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
@@ -112,7 +112,7 @@ public class TradeAddressTests
     public void SetTradeAddress_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeAddress = new TradeAddressDTO
+        var tradeAddress = new TradeAddressDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d568"),
@@ -148,7 +148,7 @@ public class TradeAddressDTOTests
     public void SetTradeAddressDTO_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeAddress = new TradeAddressDTO
+        var tradeAddress = new TradeAddressDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d568"),
@@ -182,7 +182,7 @@ public class TradePartyRelationshipTests
     public void SetTradeContactAndTradeContactAndTradeAddress_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeContact = new TradeContactDTO
+        var tradeContact = new TradeContactDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
@@ -190,7 +190,7 @@ public class TradePartyRelationshipTests
             TelephoneNumber = "1234567890"
         };
 
-        var tradeAddress = new TradeAddressDTO
+        var tradeAddress = new TradeAddressDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d568"),
@@ -204,7 +204,7 @@ public class TradePartyRelationshipTests
             TradeCountry = "United Kingdom",
         };
 
-        var tradeParty = new TradePartyDTO
+        var tradeParty = new TradePartyDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
@@ -245,7 +245,7 @@ public class TradePartyDTORelationshipTests
     public void SetTradeContactDTOAndTradeContactDTOAndTradeAddressDTO_GivenValidValues_FieldsSetToGivenValues()
     {
         //Arrange
-        var tradeContact = new TradeContactDTO
+        var tradeContact = new TradeContactDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
@@ -254,7 +254,7 @@ public class TradePartyDTORelationshipTests
             Email = "John.Doe@contactemail.com"
         };
 
-        var tradeAddress = new TradeAddressDTO
+        var tradeAddress = new TradeAddressDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d568"),
@@ -268,7 +268,7 @@ public class TradePartyDTORelationshipTests
             TradeCountry = "United Kingdom",
         };
 
-        var tradeParty = new TradePartyDTO
+        var tradeParty = new TradePartyDto
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"),
@@ -319,11 +319,11 @@ public class LogisticsLocationTests
         var tradeContactId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d192");
         var created = DateTime.Now;
         var lastModified = DateTime.Now;
-        var logisticsLocation = new LogisticsLocationDTO
+        var logisticsLocation = new LogisticsLocationDto
         {
             Id = logisticsLocationId,
             Name = "Test name",
-            Address = new TradeAddressDTO
+            Address = new TradeAddressDto
             {
                 Id = tradeAddressId,
                 LineOne = "Line One",

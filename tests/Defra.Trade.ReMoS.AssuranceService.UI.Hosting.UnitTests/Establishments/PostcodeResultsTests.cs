@@ -5,6 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -14,25 +15,27 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         private PostcodeResultModel? _systemUnderTest;
         protected Mock<ILogger<PostcodeResultModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
+        protected Mock<ITraderService> _mockTraderService = new();        
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object);
+            _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         }
 
         [Test]
         public async Task OnGetAsync_ReturnsLogisticsLocations()
         {
             // arrange
-            var logisticsLocations = new List<LogisticsLocationDTO>
+            var logisticsLocations = new List<LogisticsLocationDto>
             {
-                new LogisticsLocationDTO()
+                new LogisticsLocationDto()
                 {
                     Name = "Test 2",
                     Id = Guid.NewGuid(),
                     NI_GBFlag = "GB",
-                    Address = new TradeAddressDTO()
+                    Address = new TradeAddressDto()
                     {
                         LineOne = "line 1",
                         CityName = "city",
@@ -44,9 +47,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var postcode = "TES1";
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
-
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             // act
-            await _systemUnderTest.OnGetAsync(id, postcode);
+            await _systemUnderTest!.OnGetAsync(id, postcode);
 
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
@@ -62,7 +65,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
-            var logisticsLocations = new LogisticsLocationDTO
+            var logisticsLocations = new LogisticsLocationDto
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
                 Id = Guid.NewGuid()
@@ -88,12 +91,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
 
-            var logisticsLocations = new LogisticsLocationDTO
+            var logisticsLocations = new LogisticsLocationDto
             {
                 TradePartyId = _systemUnderTest!.TradePartyId,
                 Id = Guid.NewGuid()
             };
-
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
@@ -112,14 +115,26 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))
-                .Returns(Task.FromResult<List<LogisticsLocationDTO>?>(new List<LogisticsLocationDTO>() { new LogisticsLocationDTO() }));
+                .Returns(Task.FromResult<List<LogisticsLocationDto>?>(new List<LogisticsLocationDto>() { new LogisticsLocationDto() }));
 
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "aaa", "NI");
 
             //Assert
             _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
             _systemUnderTest.ContentText.Should().Be(expectedContentText);
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), It.IsAny<string>());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
         }
     }
 }

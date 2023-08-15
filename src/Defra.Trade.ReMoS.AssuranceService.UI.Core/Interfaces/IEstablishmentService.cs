@@ -11,10 +11,10 @@ public interface IEstablishmentService
 {
     public Task<Guid?> CreateEstablishmentForTradePartyAsync(
         Guid partyId,
-        LogisticsLocationDTO logisticsLocationDTO);
-    Task<LogisticsLocationDTO?> GetEstablishmentByIdAsync(Guid Id);
-    Task<IEnumerable<LogisticsLocationDTO>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
-    public Task<List<LogisticsLocationDTO>?> GetEstablishmentByPostcodeAsync(string postcode);
+        LogisticsLocationDto logisticsLocationDTO);
+    Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id);
+    Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
+    public Task<List<LogisticsLocationDto>?> GetEstablishmentByPostcodeAsync(string postcode);
     Task<bool> RemoveEstablishmentAsync(Guid establishmentId);
-    Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDTO establishmentDto);
+    Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto);
 }

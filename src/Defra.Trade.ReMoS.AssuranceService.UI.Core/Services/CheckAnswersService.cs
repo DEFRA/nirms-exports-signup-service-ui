@@ -13,16 +13,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class CheckAnswersService : ICheckAnswersService
     {
-        public string GetBusinessDetailsProgress(TradePartyDTO tradeParty)
+        public string GetBusinessDetailsProgress(TradePartyDto tradeParty)
         {
-            if (tradeParty.PartyName != null && tradeParty.Address != null
-                && tradeParty.Address.LineOne != null && tradeParty.Address.PostCode != null)
+            if (tradeParty.PracticeName != null 
+                && tradeParty.Address != null
+                && tradeParty.Address.TradeCountry != null)
             {
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty?.PartyName != null && (tradeParty?.Address == null
-                || tradeParty?.Address?.LineOne == null || tradeParty?.Address?.PostCode == null))
+            if (tradeParty?.PracticeName != null 
+                && (tradeParty?.Address == null || tradeParty?.Address?.TradeCountry == null))
             {
                 return TaskListStatus.INPROGRESS;
             }
@@ -30,7 +31,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return TaskListStatus.NOTSTART;
         }
 
-        public string GetContactDetailsProgress(TradePartyDTO tradeParty)
+        public string GetContactDetailsProgress(TradePartyDto tradeParty)
         {
             if (tradeParty.Contact != null && tradeParty.Contact.PersonName != null && tradeParty.Contact.Email != null && tradeParty.Contact.TelephoneNumber != null && tradeParty.Contact.Position != null)
             {
@@ -45,30 +46,33 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return TaskListStatus.NOTSTART;
         }
 
-        public string GetAuthorisedSignatoryProgress(TradePartyDTO tradeParty)
+        public string GetAuthorisedSignatoryProgress(TradePartyDto tradeParty)
         {
-            if (tradeParty.AuthorisedSignatory != null && tradeParty.Contact != null)
+            if (tradeParty.Contact == null || tradeParty?.Contact?.PersonName == null || tradeParty?.Contact?.Email == null || tradeParty?.Contact?.TelephoneNumber == null || tradeParty?.Contact?.Position == null)
             {
-                if (tradeParty.Contact?.IsAuthorisedSignatory == true)
-                {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
-                {
-                    return TaskListStatus.COMPLETE;
-                }
-
-                if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory?.Id != null && tradeParty.AuthorisedSignatory?.Id != Guid.Empty)
-                {
-                    return TaskListStatus.INPROGRESS;
-                }
+                return TaskListStatus.CANNOTSTART;
             }
+
+            if (tradeParty.Contact?.IsAuthorisedSignatory == true)
+            {
+                return TaskListStatus.COMPLETE;
+            }
+
+            if (tradeParty.Contact?.IsAuthorisedSignatory == false && tradeParty.AuthorisedSignatory?.Name != null && tradeParty.AuthorisedSignatory.Position != null && tradeParty.AuthorisedSignatory.EmailAddress != null)
+            {
+                return TaskListStatus.COMPLETE;
+            }
+
+            if (tradeParty.Contact?.IsAuthorisedSignatory == false && (tradeParty.AuthorisedSignatory == null || (tradeParty.AuthorisedSignatory?.Id != null || tradeParty.AuthorisedSignatory?.Id != Guid.Empty)))
+            {
+                return TaskListStatus.INPROGRESS;
+            }
+            
 
             return TaskListStatus.NOTSTART;
         }
 
-        public string GetEligibilityProgress(TradePartyDTO tradeParty)
+        public string GetEligibilityProgress(TradePartyDto tradeParty)
         {
             if (tradeParty.Address != null)
             {

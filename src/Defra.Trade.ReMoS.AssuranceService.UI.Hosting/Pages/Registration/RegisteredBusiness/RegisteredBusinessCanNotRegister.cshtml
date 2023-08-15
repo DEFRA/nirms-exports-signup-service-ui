@@ -1,6 +1,12 @@
 ﻿@page
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessCanNotRegisterModel
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 @{
+    ViewData["Title"] = "You cannot sign up your business";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">

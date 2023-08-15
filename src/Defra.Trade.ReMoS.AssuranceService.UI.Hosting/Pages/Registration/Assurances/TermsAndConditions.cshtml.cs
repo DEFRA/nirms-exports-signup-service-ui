@@ -31,7 +31,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         {
             TraderId = id;
 
-            TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
+            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
 
             if (dto != null)
             {
@@ -51,7 +56,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         public async Task<IActionResult> OnPostSubmitAsync()
         {
             if (!TandCs)
-                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms of conditions of the scheme");
+                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms and conditions of the scheme");
 
             if (!ModelState.IsValid)
             {
@@ -59,10 +64,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             }
 
 
-            TradePartyDTO? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+
+            if (dto == null)
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.RegistrationTaskListPath,
+                        new { id = TraderId });
+            }
+
             var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id);
 
-            if (!IsRequiredDataPresent(dto, logisticsLocations))
+            if (!IsRequiredDataPresent(dto, logisticsLocations!))
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
@@ -80,7 +93,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 new { id = TraderId });
         }
 
-        private bool IsRequiredDataPresent(TradePartyDTO? dto, IEnumerable<LogisticsLocationDTO> logisticsLocations)
+        private static bool IsRequiredDataPresent(TradePartyDto? dto, IEnumerable<LogisticsLocationDto> logisticsLocations)
         {
             if (dto == null || logisticsLocations == null || !logisticsLocations.Any())
             {

@@ -20,7 +20,7 @@ public static class ServiceExtensions
             httpClient.DefaultRequestHeaders.Add("x-api-version", "1");
         });
 
-        services.AddTransient<IAPIIntegration, ApiIntegration>();
+        services.AddTransient<IApiIntegration, ApiIntegration>();
         services.AddTransient<ITraderService, TraderService>();
         services.AddTransient<IEstablishmentService, EstablishmentService>();
         services.AddTransient<ICheckAnswersService, CheckAnswersService>();

@@ -11,7 +11,7 @@ public class SignUpConfirmationModel : PageModel
     [BindProperty]
     public Guid TraderId { get; set; }
     public string? Email { get; set; } = string.Empty;
-    public string StartNowPage = string.Empty;
+    public string StartNowPage { get; set; } = string.Empty;
 
     private readonly ITraderService _traderService;
     private readonly IConfiguration _config;
@@ -29,6 +29,11 @@ public class SignUpConfirmationModel : PageModel
 
         if (TraderId != Guid.Empty)
         {
+            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
             var trader = await _traderService.GetTradePartyByIdAsync(TraderId);
             Email = trader?.Contact?.Email;
         }
