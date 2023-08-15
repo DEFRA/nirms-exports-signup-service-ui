@@ -7,8 +7,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 [ExcludeFromCodeCoverage]
 public class RegisteredBusinessCanNotRegisterModel : PageModel
 {
-    public void OnGet()
+    [BindProperty]
+    public Guid TraderId { get; set; }
+
+    public void OnGet(Guid id)
     {
-        //TO BE IMPLEMENTED
+        TraderId = id;
     }
 }
