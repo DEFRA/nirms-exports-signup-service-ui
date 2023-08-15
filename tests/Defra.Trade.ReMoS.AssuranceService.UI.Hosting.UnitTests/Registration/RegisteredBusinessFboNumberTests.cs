@@ -118,7 +118,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "yes";
         _systemUnderTest!.FboNumber = new string('1', 26);
-        var expectedResult = "FBO number is too long";
+        var expectedResult = "FBO number must be 25 characters or less";
 
         //Act
         await _systemUnderTest.OnPostAsync();
