@@ -46,6 +46,11 @@ public class AdditionalEstablishmentAddressModel : PageModel
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
 
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Places of destination";
@@ -70,7 +75,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
-            var baseError = "Select if you have added all of your business' places of ";
+            var baseError = "Select if you have added all your places of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
             ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }

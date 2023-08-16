@@ -13,7 +13,7 @@ public class RegisteredBusinessContactEmailModel : PageModel
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLength(100, ErrorMessage = "Email is too long")]
-    [Required(ErrorMessage = "Enter the email address of the contact person")]
+    [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
     [BindProperty]
     public Guid TradePartyId { get; set; }
@@ -36,6 +36,12 @@ public class RegisteredBusinessContactEmailModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Email OnGet");
 
         await GetEmailAddressFromApiAsync();

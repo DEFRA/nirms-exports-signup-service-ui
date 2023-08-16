@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -16,12 +17,13 @@ public class SelectedBusinessTests
 {
     private SelectedBusinessModel? _systemUnderTest;
     protected Mock<ILogger<SelectedBusinessModel>> _mockLogger = new();
-    protected Mock<ITraderService> _mockTradeService = new();
+    protected Mock<ITraderService> _mockTraderService = new();    
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new SelectedBusinessModel(_mockLogger.Object, _mockTradeService.Object);
+        _systemUnderTest = new SelectedBusinessModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
     }
 
     [Test]
@@ -29,6 +31,7 @@ public class SelectedBusinessTests
     {
         //Arrange
         var id = Guid.NewGuid();
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(id);
@@ -42,14 +45,26 @@ public class SelectedBusinessTests
     {
         //ARrange
         var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), PracticeName = "Test name" };
-        _mockTradeService
+        _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
 
         //Assert
         _systemUnderTest.SelectedBusinessName.Should().Be(tradePartyDto.PracticeName);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }

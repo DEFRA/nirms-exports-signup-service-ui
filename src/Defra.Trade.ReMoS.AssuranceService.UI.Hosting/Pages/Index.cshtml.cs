@@ -11,10 +11,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
-using Microsoft.Extensions.Primitives;
-
 #pragma warning disable CS1998
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
@@ -45,7 +42,7 @@ public class IndexModel : PageModel
         _configuration = configuration;
     }
 
-    public async Task<IActionResult> OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {
 
         if (_configuration.GetValue<bool>("ReMoS:MagicWordEnabled"))
@@ -72,7 +69,7 @@ public class IndexModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostSubmitAsync()
     {
         if (_configuration.GetValue<bool>("ReMoS:MagicWordEnabled"))
         {
@@ -92,17 +89,17 @@ public class IndexModel : PageModel
                     return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath);
                 }
             }
-            //if its a redirect back from auth, dont bother with magic word as already entered
-            else if (Password == null && User.Identity != null)
-            {
-                //Do nothing
-            }
             else
             {
-                ModelState.AddModelError("Password", "Password");
+                ModelState.AddModelError(nameof(Password), "Enter the correct password");
+                return await OnGetAsync();
             }
         }
+        return await OnGetAsync();
+    }
 
+    public async Task<IActionResult> OnPostAsync()
+    {
         try
         {
             if (!ModelState.IsValid)

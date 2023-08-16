@@ -13,9 +13,9 @@ public class AuthorisedSignatoryNameModel : PageModel
 {
     #region ui model
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, apostrophes (') and hyphens (-)")]
+    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, apostrophes and hyphens")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter the name of the authorised representative for your business")]
+    [Required(ErrorMessage = "Enter a Full name")]
     public string Name { get; set; } = string.Empty;
     [BindProperty]
     public string? BusinessName { get; set; }
@@ -36,6 +36,12 @@ public class AuthorisedSignatoryNameModel : PageModel
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        {
+            return RedirectToPage("/Errors/AuthorizationError");
+        }
+
         _logger.LogInformation("Name OnGet");
 
         var party = await GetSignatoryNameFromApiAsync();
