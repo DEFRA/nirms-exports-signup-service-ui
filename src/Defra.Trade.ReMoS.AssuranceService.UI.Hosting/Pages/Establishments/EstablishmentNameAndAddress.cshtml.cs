@@ -178,7 +178,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper() 
         && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
-        && x.Address!.PostCode!.ToUpper() == PostCode.ToUpper());
+        && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper());
 
         if (duplicates.Any(x => x.Id != EstablishmentId))
         {
