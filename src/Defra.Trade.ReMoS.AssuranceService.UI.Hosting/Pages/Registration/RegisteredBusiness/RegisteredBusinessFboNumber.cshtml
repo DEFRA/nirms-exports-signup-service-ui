@@ -35,35 +35,37 @@
                     <p class="govuk-hint">You will have one if you've registered with your local authority for a <a href="https://www.gov.uk/food-business-registration" target="_blank" rel="noopener noreferrer">food business license</a>.</p>
                     <p id="OptionSelected_Error" class="govuk-error-message" gds-validation-for="OptionSelected"></p>
 
-
-                    <div class="govuk-radios" data-module="govuk-radios" id="OptionSelected">
-
-                        <!-- YES -->
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" id="OptionSelectedYes" asp-for="OptionSelected" value="yes" aria-controls="conditional-fbo" aria-expanded="false">
-                            <label class="govuk-label govuk-radios__label" for="OptionSelectedYes">
-                                Yes
-                            </label>
-                        </div>
-
-                        <!-- FBO NUMBER -->
-                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-fbo">
-                            <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="FboNumber">
-                                    FBO number
+                    <div class="govuk-form-group @(ModelState.HasError("OptionSelected") ? "govuk-form-group--error" : null)">
+                        <div class="govuk-radios" data-module="govuk-radios" id="OptionSelected">
+                            <!-- YES -->
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" id="OptionSelectedYes" asp-for="OptionSelected" value="yes" aria-controls="conditional-fbo" aria-expanded="false">
+                                <label class="govuk-label govuk-radios__label" for="OptionSelectedYes">
+                                    Yes
                                 </label>
-                                <input class="govuk-input govuk-!-width-one-third" type="text" asp-for="FboNumber" spellcheck="false" autocomplete="email">
+                            </div>
+
+                            <!-- FBO NUMBER -->
+                            <div class="govuk-form-group @(ModelState.HasError("FboNumber") ? "govuk-form-group--error" : null)">
+                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-fbo">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" asp-for="FboNumber">
+                                        FBO number
+                                    </label>
+                                    <p id="FBO_Error" class="govuk-error-message" gds-validation-for="FboNumber"></p>
+                                    <input class="govuk-input govuk-!-width-one-third" type="text" asp-for="FboNumber" spellcheck="false" autocomplete="email">
+                                </div>
+                            </div>
+                            </div>
+
+                            <!-- NO -->
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" type="radio" id="OptionSelectedNo" asp-for="OptionSelected" value="no">
+                                <label class="govuk-label govuk-radios__label" for="OptionSelectedNo">
+                                    No
+                                </label>
                             </div>
                         </div>
-
-                        <!-- NO -->
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" type="radio" id="OptionSelectedNo" asp-for="OptionSelected" value="no">
-                            <label class="govuk-label govuk-radios__label" for="OptionSelectedNo">
-                                No
-                            </label>
-                        </div>
-
                     </div>
                 </fieldset>
                 <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbFboSubmit">Continue</button>
