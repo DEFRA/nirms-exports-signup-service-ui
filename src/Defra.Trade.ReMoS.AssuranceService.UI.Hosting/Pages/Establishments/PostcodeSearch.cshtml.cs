@@ -10,7 +10,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
     {
         #region UI Models
         [BindProperty]
-        [RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a valid postcode.")]
+        //[RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a valid postcode.")]
+        [RegularExpression(@"^[a-zA-Z0-9\s-&'.,_/()]*$", ErrorMessage = "Postcode must only contain letters or numbers")]
         [StringLength(100, ErrorMessage = "Postcode must be 100 characters or less")]
         [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
@@ -42,13 +43,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
             if (NI_GBFlag == "NI") 
             {
-                ContentHeading = "Add a place of destination (optional)";
-                ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+                ContentHeading = "Add a place of destination";
+                ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             }
             else
             {
                 ContentHeading = "Add a place of dispatch";
-                ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
+                ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             }
 
             return Page();
