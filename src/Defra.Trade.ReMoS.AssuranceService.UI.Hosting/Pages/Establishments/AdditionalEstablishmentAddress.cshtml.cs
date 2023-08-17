@@ -88,7 +88,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         if (AddAddressesComplete != null && AddAddressesComplete.Equals("no", StringComparison.OrdinalIgnoreCase))
         {
             return RedirectToPage(
-                Routes.Pages.Path.EstablishmentNameAndAddressPath, 
+                Routes.Pages.Path.EstablishmentPostcodeSearchPath, 
                 new { id = TradePartyId, NI_GBFlag });
         }
 
