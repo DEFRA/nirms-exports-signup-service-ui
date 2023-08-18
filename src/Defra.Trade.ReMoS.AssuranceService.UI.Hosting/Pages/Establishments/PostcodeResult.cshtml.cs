@@ -31,6 +31,8 @@ public class PostcodeResultModel : PageModel
     
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
+    [BindProperty]
+    public bool IsSubmitDisabled { get; set; } = false; 
     #endregion
 
     private readonly ILogger<PostcodeResultModel> _logger;
@@ -87,6 +89,7 @@ public class PostcodeResultModel : PageModel
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
             ModelState.AddModelError(nameof(EstablishmentsList), "No search results returned");
+            IsSubmitDisabled = true;
         }
 
         return Page();
