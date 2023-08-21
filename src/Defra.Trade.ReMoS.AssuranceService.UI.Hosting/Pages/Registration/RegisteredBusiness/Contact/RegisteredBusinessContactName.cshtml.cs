@@ -15,7 +15,7 @@ public class RegisteredBusinessContactNameModel : PageModel
 
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, apostrophes and hyphens")]
+    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, apostrophes or hyphens")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter a name")]
     public string Name { get; set; } = string.Empty;
