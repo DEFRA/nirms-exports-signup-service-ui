@@ -39,7 +39,7 @@ public class RegisteredBusinessContactPositionModel : PageModel
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _traderService = traderService;
     }
-
+    
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;
