@@ -114,10 +114,20 @@
                                     </a>
                                 }
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDispatch)"
-                            id="establistment-dispatch">
-                                @Model.PlacesOfDispatch
-                            </strong>
+                            @if(Model.PlacesOfDispatch == TaskListStatus.NOTSTART)
+                            {
+                                <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDispatch)"
+                                        id="establistment-dispatch">
+                                    @Model.PlacesOfDispatch
+                                </strong>
+                            }
+                            else
+                            {
+                                <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDispatch)"
+                                        id="establistment-dispatch">
+                                    @Model.EstablishmentsCount added
+                                </strong>
+                            }
                         </li>
                     }
                     @if (Model.Country == "NI")
@@ -143,10 +153,20 @@
                                     </a>
                                 }
                             </span>
-                            <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDestination)"
-                            id="establistment-destination">
-                                @Model.PlacesOfDestination
-                            </strong>
+                            @if (Model.PlacesOfDestination == TaskListStatus.NOTSTART)
+                            {
+                                <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDestination)"
+                                        id="establistment-destination">
+                                    @Model.PlacesOfDestination
+                                </strong>
+                            }
+                            else
+                            {
+                                <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PlacesOfDestination)"
+                                        id="establistment-destination">
+                                    @Model.EstablishmentsCount added
+                                </strong>
+                            }
                         </li>
                     }
                 </ul>
