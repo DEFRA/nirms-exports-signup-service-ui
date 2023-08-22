@@ -13,16 +13,46 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 {
     public class CheckAnswersService : ICheckAnswersService
     {
+        public bool ReadyForCheckAnswers(TradePartyDto tradeParty)
+        {
+            if (tradeParty == null)
+            {
+                return false;
+            }
+
+            if (GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetEligibilityProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public string GetBusinessDetailsProgress(TradePartyDto tradeParty)
         {
-            if (tradeParty.PracticeName != null 
+            if (tradeParty.PracticeName != null
                 && tradeParty.Address != null
                 && tradeParty.Address.TradeCountry != null)
             {
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty?.PracticeName != null 
+            if (tradeParty?.PracticeName != null
                 && (tradeParty?.Address == null || tradeParty?.Address?.TradeCountry == null))
             {
                 return TaskListStatus.INPROGRESS;
@@ -67,7 +97,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             {
                 return TaskListStatus.INPROGRESS;
             }
-            
 
             return TaskListStatus.NOTSTART;
         }
@@ -86,6 +115,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 }
             }
             return TaskListStatus.NOTSTART;
+        }
+
+        public bool IsLogisticsLocationsDataPresent(TradePartyDto? tradeParty, IEnumerable<LogisticsLocationDto> logisticsLocations)
+        {
+            if (tradeParty == null || logisticsLocations == null || !logisticsLocations.Any())
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

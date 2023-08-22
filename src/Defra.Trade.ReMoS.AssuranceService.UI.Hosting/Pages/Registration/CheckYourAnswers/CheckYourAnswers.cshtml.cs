@@ -1,8 +1,10 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
 #pragma warning disable CS1998
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers
@@ -10,25 +12,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
     public class CheckYourAnswersModel : PageModel
     {
         #region ui model variables
+
         [BindProperty]
         public Guid RegistrationID { get; set; }
+
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
         public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
+
         [BindProperty]
         public TradePartyDto? TradeParty { get; set; } = new TradePartyDto();
-        #endregion
+
+        #endregion ui model variables
 
         private readonly ILogger<CheckYourAnswersModel> _logger;
         private readonly IEstablishmentService _establishmentService;
         private readonly ITraderService _traderService;
+        private readonly ICheckAnswersService _checkAnswersService;
 
-        public CheckYourAnswersModel(ILogger<CheckYourAnswersModel> logger, IEstablishmentService establishmentService, ITraderService traderService)
+        public CheckYourAnswersModel(ILogger<CheckYourAnswersModel> logger, IEstablishmentService establishmentService, ITraderService traderService, ICheckAnswersService checkAnswersService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
+            _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
         }
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
@@ -87,7 +95,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentNameAndAddressPath,
                 new { id = tradePartyId, establishmentId, NI_GBFlag });
-
         }
 
         public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
@@ -97,13 +104,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
                 new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
         }
 
-
-        public async Task<IActionResult> OnPostSubmitAsync()
+        public async Task<IActionResult> OnPostSubmitAsync(Guid RegistrationID)
         {
-            return RedirectToPage(
-                Routes.Pages.Path.RegistrationTermsAndConditionsPath,
-                new { id = RegistrationID });
-        }
+            TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
+            if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!))
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.RegistrationTermsAndConditionsPath,
+                    new { id = RegistrationID });
+            }
+            else
+            {
+                return RedirectToPage(
+                    Routes.Pages.Path.RegistrationTaskListPath,
+                    new { id = RegistrationID });
+            }
+        }
     }
 }
