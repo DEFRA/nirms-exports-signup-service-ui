@@ -14,19 +14,19 @@ public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'.,_/()]*$", ErrorMessage = "Enter establishment name using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'.,_/(),]*$", ErrorMessage = "Enter establishment name using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
     [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
     [Required(ErrorMessage = "Enter an establishment name")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/(),]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
     [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/(),]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
     [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
@@ -51,7 +51,9 @@ public class EstablishmentNameAndAddressModel : PageModel
     public Guid TradePartyId { get; set; }
 
     [BindProperty]
-    public Guid EstablishmentId { get; set; }
+    public Guid? EstablishmentId { get; set; }
+    [BindProperty]
+    public string? Uprn { get; set; }
 
     public string? ContentHeading { get; set; } = string.Empty;
 
@@ -75,19 +77,20 @@ public class EstablishmentNameAndAddressModel : PageModel
         _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string? establishmentId, string? NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
+        EstablishmentId = establishmentId;
+        Uprn = uprn;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        
-        if (establishmentId != null)
-            await RetrieveEstablishmentDetails(establishmentId!);        
+
+        await RetrieveEstablishmentDetails();
 
         if (NI_GBFlag == "NI")
         {
@@ -107,7 +110,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId.ToString(), NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         if(await CheckForDuplicateAsync())
@@ -125,7 +128,7 @@ public class EstablishmentNameAndAddressModel : PageModel
             var baseError = $"This address has already been added as a place of {place} - enter a different address";
 
             ModelState.AddModelError(nameof(EstablishmentName), baseError);
-            return await OnGetAsync(TradePartyId, EstablishmentId.ToString(), NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         var establishmentId = await SaveEstablishmentDetails();
@@ -138,8 +141,14 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
-        establishmentDto.Name = EstablishmentName;
+        var establishmentDto = new LogisticsLocationDto();
+
+        if (EstablishmentId != Guid.Empty && EstablishmentId != null)
+        {
+            establishmentDto = await _establishmentService.GetEstablishmentByIdAsync((Guid)EstablishmentId!);
+        }
+        
+        establishmentDto!.Name = EstablishmentName;
         establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDto();
         establishmentDto.Address.LineOne = LineOne;
         establishmentDto.Address.LineTwo = LineTwo;
@@ -148,7 +157,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         establishmentDto.Address.PostCode = PostCode;
         establishmentDto.NI_GBFlag = NI_GBFlag;
 
-        if (EstablishmentId == Guid.Empty) 
+        if (EstablishmentId == Guid.Empty || Uprn != null) 
         {
             return await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, establishmentDto);
         }
@@ -159,20 +168,20 @@ public class EstablishmentNameAndAddressModel : PageModel
         }
     }
 
-    private async Task RetrieveEstablishmentDetails(string establishmentId)
+    private async Task RetrieveEstablishmentDetails()
     {
-        Guid EstablishmentIdGuid;
-        LogisticsLocationDto establishment;
-        if (Guid.TryParse(establishmentId, out EstablishmentIdGuid))
+        LogisticsLocationDto establishment = new();
+        if (Uprn != null)
         {
-            EstablishmentId = EstablishmentIdGuid;
-            establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
+            establishment = await _establishmentService.GetLogisticsLocationByUprnAsync(Uprn);
         }
         else
         {
-            establishment = await _establishmentService.GetLogisticsLocationByUprnAsync(establishmentId);
-        };
-
+            if (EstablishmentId != Guid.Empty || EstablishmentId != null)
+            {
+                establishment = await _establishmentService.GetEstablishmentByIdAsync((Guid)EstablishmentId!) ?? new LogisticsLocationDto();
+            }
+        }
         EstablishmentName = establishment?.Name ?? string.Empty;
         LineOne = establishment?.Address?.LineOne ?? string.Empty;
         LineTwo = establishment?.Address?.LineTwo ?? string.Empty;

@@ -130,6 +130,6 @@ public class PostcodeResultModel : PageModel
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = TradePartyId, establishmentId = SelectedEstablishment, NI_GBFlag });
+            new { id = TradePartyId, uprn = SelectedEstablishment, NI_GBFlag });
     }
 }
