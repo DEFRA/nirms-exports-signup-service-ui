@@ -108,7 +108,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         {
             TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
-            if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!))
+            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);
+
+            if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!) &&
+                logisticsLocations != null &&
+                _checkAnswersService.IsLogisticsLocationsDataPresent(TradeParty!, logisticsLocations))
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTermsAndConditionsPath,
