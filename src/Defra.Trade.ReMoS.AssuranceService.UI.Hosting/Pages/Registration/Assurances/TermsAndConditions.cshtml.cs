@@ -60,7 +60,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         public async Task<IActionResult> OnPostSubmitAsync()
         {
             if (!TandCs)
-                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms and conditions of the scheme");
+                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms and conditions");
 
             if (!ModelState.IsValid)
             {

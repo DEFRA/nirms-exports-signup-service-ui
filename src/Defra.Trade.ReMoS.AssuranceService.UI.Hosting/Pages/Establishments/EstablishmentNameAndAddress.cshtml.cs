@@ -42,7 +42,7 @@ public class EstablishmentNameAndAddressModel : PageModel
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a postcode using only letters and numbers" )]
+    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode" )]
     [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a postcode")]
     public string PostCode { get; set; } = string.Empty;
