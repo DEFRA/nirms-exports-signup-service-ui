@@ -8,6 +8,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
+using Defra.Trade.Address.V1.ApiClient.Model;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -322,5 +323,29 @@ public class ApiIntegration : IApiIntegration
         }
 
         return httpClient;
+    }
+
+    public async Task<List<AddressDto>> GetTradeAddresApiByPostcodeAsync(string postcode)
+    {
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"Establishments/Trade/Postcode/{postcode}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<List<AddressDto>>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new List<AddressDto>();
+    }
+
+    public async Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn)
+    {
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.GetAsync($"Establishments/Trade/Uprn/{uprn}");
+
+        response.EnsureSuccessStatusCode();
+
+        return await JsonSerializer.DeserializeAsync<LogisticsLocationDto>(
+            await response.Content.ReadAsStreamAsync(),
+            options: _jsonSerializerOptions) ?? new LogisticsLocationDto();
     }
 }

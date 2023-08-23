@@ -1,3 +1,4 @@
+using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -6,7 +7,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -20,7 +23,7 @@ public class PostcodeResultModel : PageModel
     public Guid TradePartyId { get; set; }
 
     [BindProperty]
-    public List<SelectListItem> EstablishmentsList { get; set; } = default!;
+    public List<SelectListItem>? EstablishmentsList { get; set; } = default!;
 
     [BindProperty]
     public string SelectedEstablishment { get; set; } = default!;
@@ -32,7 +35,10 @@ public class PostcodeResultModel : PageModel
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
     [BindProperty]
-    public bool IsSubmitDisabled { get; set; } = false; 
+    public bool IsSubmitDisabled { get; set; } = false;
+    [BindProperty]
+    public List<LogisticsLocationDto>? Establishments { get; set; }
+    public List<SelectListItem>? EstablishmentApiList { get; private set; }
     #endregion
 
     private readonly ILogger<PostcodeResultModel> _logger;
@@ -55,7 +61,6 @@ public class PostcodeResultModel : PageModel
         Postcode = postcode;
         TradePartyId= id;
 
-        var establishments = new List<LogisticsLocationDto>();
         this.NI_GBFlag = NI_GBFlag;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
@@ -74,17 +79,34 @@ public class PostcodeResultModel : PageModel
             ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
+        var EstablishmentsDb = new List<LogisticsLocationDto>();
+        var EstablishmentsApi = new List<AddressDto>();
+
         if (Postcode != string.Empty)
         {
-            establishments = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
+            EstablishmentsDb = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
+            EstablishmentsApi = await _establishmentService.GetTradeAddressApiByPostcodeAsync(Postcode);
         }
 
-        EstablishmentsList = establishments?.Count > 0 ? 
-            establishments
-            .Where(x => x.NI_GBFlag == NI_GBFlag)
-            .Select(x => new SelectListItem { Text = $"{x.Name}, {x.Address?.LineOne}, {x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() })
-            .ToList() 
-            : null!;
+        var EstablishmentsDbList = EstablishmentsDb?
+            .Select(x => new SelectListItem { Text = $"{x.Name}, " 
+                + (x.Address?.LineOne != "" ? $"{x.Address?.LineOne}, " : "") 
+                + (x.Address?.LineTwo != "" ? $"{x.Address?.LineTwo}, " : "") 
+                + $"{x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() })
+            .ToList() ;
+
+        var EstablishmentsApiList = EstablishmentsApi?
+            .Select(x => new SelectListItem
+            {
+                Text = $"{x.Address}",
+                Value = x.Uprn
+            })
+            .ToList();
+
+        // TODO remove duplicates
+
+
+        EstablishmentsList = new[] { EstablishmentsDbList!, EstablishmentsApiList! }.SelectMany(x => x).ToList();
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
@@ -104,8 +126,10 @@ public class PostcodeResultModel : PageModel
             return await OnGetAsync(TradePartyId, Postcode!);
         }
 
+        //var establishmentId = await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, selectedLocation);
+
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = TradePartyId, locationId = Guid.Parse(SelectedEstablishment), NI_GBFlag });
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = TradePartyId, establishmentId = SelectedEstablishment, NI_GBFlag });
     }
 }

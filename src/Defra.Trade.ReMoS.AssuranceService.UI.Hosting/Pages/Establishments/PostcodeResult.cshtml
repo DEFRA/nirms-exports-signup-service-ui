@@ -7,7 +7,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+        <form class="form" method="post">
         @if (!ModelState.IsValid)
         {
             if (ModelState.Any(x => x.Key == nameof(Model.EstablishmentsList)))
@@ -51,7 +51,6 @@
 
 
 
-        <form class="form" method="post">
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="NI_GBFlag" />
             <h1 class="govuk-heading-l">

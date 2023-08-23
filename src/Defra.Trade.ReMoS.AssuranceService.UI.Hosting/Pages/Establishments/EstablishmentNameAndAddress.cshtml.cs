@@ -75,17 +75,19 @@ public class EstablishmentNameAndAddressModel : PageModel
         _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, string? establishmentId, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         TradePartyId = id;
         this.NI_GBFlag = NI_GBFlag;
-        EstablishmentId = establishmentId ?? Guid.Empty;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        
+        if (establishmentId != null)
+            await RetrieveEstablishmentDetails(establishmentId!);        
 
         if (NI_GBFlag == "NI")
         {
@@ -96,7 +98,6 @@ public class EstablishmentNameAndAddressModel : PageModel
             ContentHeading = "Add a place of dispatch";
         }
 
-        await RetrieveEstablishmentDetails();
         return Page();
     }
 
@@ -106,7 +107,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(TradePartyId, EstablishmentId.ToString(), NI_GBFlag ?? string.Empty);
         }
 
         if(await CheckForDuplicateAsync())
@@ -124,7 +125,7 @@ public class EstablishmentNameAndAddressModel : PageModel
             var baseError = $"This address has already been added as a place of {place} - enter a different address";
 
             ModelState.AddModelError(nameof(EstablishmentName), baseError);
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(TradePartyId, EstablishmentId.ToString(), NI_GBFlag ?? string.Empty);
         }
 
         var establishmentId = await SaveEstablishmentDetails();
@@ -158,10 +159,19 @@ public class EstablishmentNameAndAddressModel : PageModel
         }
     }
 
-    private async Task RetrieveEstablishmentDetails()
+    private async Task RetrieveEstablishmentDetails(string establishmentId)
     {
-
-        LogisticsLocationDto? establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
+        Guid EstablishmentIdGuid;
+        LogisticsLocationDto establishment;
+        if (Guid.TryParse(establishmentId, out EstablishmentIdGuid))
+        {
+            EstablishmentId = EstablishmentIdGuid;
+            establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId) ?? new LogisticsLocationDto();
+        }
+        else
+        {
+            establishment = await _establishmentService.GetLogisticsLocationByUprnAsync(establishmentId);
+        };
 
         EstablishmentName = establishment?.Name ?? string.Empty;
         LineOne = establishment?.Address?.LineOne ?? string.Empty;
@@ -169,9 +179,10 @@ public class EstablishmentNameAndAddressModel : PageModel
         CityName = establishment?.Address?.CityName ?? string.Empty;
         County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
-
+       
     }
 
+    // TODO change this
     private async Task<bool> CheckForDuplicateAsync()
     {
         var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);

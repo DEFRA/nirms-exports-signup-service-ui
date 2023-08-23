@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using Defra.Trade.Address.V1.ApiClient.Api;
+using Defra.Trade.Address.V1.ApiClient.Model;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
@@ -50,5 +52,15 @@ public class EstablishmentService : IEstablishmentService
     public async Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto)
     {
         return await _api.UpdateEstablishmentAsync(establishmentDto);
+    }
+
+    public async Task<List<AddressDto>> GetTradeAddressApiByPostcodeAsync(string postcode)
+    {
+        return await _api.GetTradeAddresApiByPostcodeAsync(postcode);
+    }
+
+    public async Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn)
+    {
+        return await _api.GetLogisticsLocationByUprnAsync(uprn);
     }
 }
