@@ -9,22 +9,26 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
     public class TermsAndConditions : PageModel
     {
         #region UI Model
+
         [BindProperty]
         public Guid TraderId { get; set; }
 
         [BindProperty]
         public bool TandCs { get; set; }
-        #endregion
+
+        #endregion UI Model
 
         private readonly ITraderService _traderService;
         private readonly IUserService _userService;
         private readonly IEstablishmentService _establishmentService;
+        private readonly ICheckAnswersService _checkAnswersService;
 
-        public TermsAndConditions(ITraderService traderService, IUserService userService, IEstablishmentService establishmentService)
+        public TermsAndConditions(ITraderService traderService, IUserService userService, IEstablishmentService establishmentService, ICheckAnswersService? checkAnswersService)
         {
             _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
+            _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
         }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
@@ -56,13 +60,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         public async Task<IActionResult> OnPostSubmitAsync()
         {
             if (!TandCs)
-                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms and conditions of the scheme");
+                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms and conditions");
 
             if (!ModelState.IsValid)
             {
                 return await OnGetAsync(TraderId);
             }
-
 
             TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
 
@@ -75,13 +78,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
             var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id);
 
-            if (!IsRequiredDataPresent(dto, logisticsLocations!))
+            if (!_checkAnswersService.IsLogisticsLocationsDataPresent(dto, logisticsLocations!) || !_checkAnswersService.ReadyForCheckAnswers(dto))
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
                         new { id = TraderId });
             }
-
 
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
@@ -91,16 +93,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             return RedirectToPage(
                 Routes.Pages.Path.SignUpConfirmationPath,
                 new { id = TraderId });
-        }
-
-        private static bool IsRequiredDataPresent(TradePartyDto? dto, IEnumerable<LogisticsLocationDto> logisticsLocations)
-        {
-            if (dto == null || logisticsLocations == null || !logisticsLocations.Any())
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

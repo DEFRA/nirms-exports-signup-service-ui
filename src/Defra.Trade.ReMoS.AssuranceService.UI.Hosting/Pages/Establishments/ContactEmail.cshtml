@@ -31,7 +31,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+        <partial name="_ErrorSummary" model="ModelState" />
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />

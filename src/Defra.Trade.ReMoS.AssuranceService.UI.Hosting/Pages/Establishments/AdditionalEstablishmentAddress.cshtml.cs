@@ -15,13 +15,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 public class AdditionalEstablishmentAddressModel : PageModel
 {
     #region ui model variables
+
     public string? AddAddressesComplete { get; set; } = string.Empty;
     public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
     public Guid TradePartyId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     public string? NI_GBFlag { get; set; } = string.Empty;
-    #endregion
+
+    #endregion ui model variables
 
     private readonly ILogger<AdditionalEstablishmentAddressModel> _logger;
     private readonly IEstablishmentService _establishmentService;
@@ -30,7 +32,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
     public AdditionalEstablishmentAddressModel(
         ILogger<AdditionalEstablishmentAddressModel> logger,
-        IEstablishmentService establishmentService, 
+        IEstablishmentService establishmentService,
         ITraderService traderService,
         ICheckAnswersService checkAnswersService)
     {
@@ -91,16 +93,17 @@ public class AdditionalEstablishmentAddressModel : PageModel
                 Routes.Pages.Path.EstablishmentPostcodeSearchPath, 
                 new { id = TradePartyId, NI_GBFlag });
         }
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
-        if (await ReadyForCheckAnswersAsync())
+        if (_checkAnswersService.ReadyForCheckAnswers(tradeParty!))
         {
-           return RedirectToPage(
-            Routes.Pages.Path.RegistrationCheckYourAnswersPath,
-            new { id = TradePartyId });
+            return RedirectToPage(
+             Routes.Pages.Path.RegistrationCheckYourAnswersPath,
+             new { id = TradePartyId });
         }
 
         return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath, 
+            Routes.Pages.Path.RegistrationTaskListPath,
             new { id = TradePartyId });
     }
 
@@ -110,7 +113,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
-            var baseError = "Select no if you want to add another place of ";
+            var baseError = "Select if you have added all your places of ";
             var errorMessage = NI_GBFlag == "NI" ? $"{baseError}destination" : $"{baseError}dispatch";
             ModelState.AddModelError(nameof(AddAddressesComplete), errorMessage);
         }
@@ -140,11 +143,9 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
     public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
-
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentNameAndAddressPath,
             new { id = tradePartyId, establishmentId, NI_GBFlag });
-
     }
 
     public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
@@ -152,32 +153,5 @@ public class AdditionalEstablishmentAddressModel : PageModel
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
-    }
-
-   private async Task<bool> ReadyForCheckAnswersAsync()
-    {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-
-        if (tradeParty == null)
-        {
-            return false;
-        }
-
-        if (_checkAnswersService.GetBusinessDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
-
-        if (_checkAnswersService.GetAuthorisedSignatoryProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
-
-        if (_checkAnswersService.GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
-        {
-            return false;
-        }
-
-        return true;
     }
 }
