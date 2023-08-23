@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration _config
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -47,11 +49,20 @@
         @await RenderSectionAsync("Signout", false)
         @if (!IsSectionDefined("Signout"))
         {
-            <div class="login-nav login-border">
-                <ul class="login-nav__list">
-                    <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
-                </ul>
+            <div class="login-border">
+                <div class="login-nav">
+                    <ul class="login-nav__list">
+                        <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
+                    </ul>
+                    <ul class="login-nav__list">
+                        <li class="login-nav__list-item"> | </li>
+                    </ul>
+                    <ul class="login-nav__list">
+                        <li class="login-nav__list-item"><a href="@_config["ExternalLinks:ManageAccountPage"]" target="_blank" rel="noopener noreferrer" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-ManageAccount">Manage Account</a></li>
+                    </ul>
+                </div>
             </div>
+
         }
         @await RenderSectionAsync("Back", required: false)
         <main role="main" id="MainContent" class="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
