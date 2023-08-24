@@ -71,14 +71,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         }
 
         [Test]
-        public void OnGetAnswersComplete_Redirect_Successfully()
+        public void OnGetAnswersNotComplete_Redirect_Successfully()
         {
             // arrange
             var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
             var tradePartyId = Guid.NewGuid();
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
-            _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).
+                ReturnsAsync(true);
+            _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(false);
 
             // act
             var result = _systemUnderTest!.OnGet(tradePartyId);
