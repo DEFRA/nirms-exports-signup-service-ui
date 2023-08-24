@@ -40,7 +40,7 @@ public class SignUpConfirmationModel : PageModel
 
             var trader = await _traderService.GetTradePartyByIdAsync(TraderId);
             Email = trader?.Contact?.Email;
-            if (_checkAnswersService.ReadyForCheckAnswers(trader!))
+            if (!_checkAnswersService.ReadyForCheckAnswers(trader!))
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTermsAndConditionsPath,
