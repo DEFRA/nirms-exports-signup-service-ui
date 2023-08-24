@@ -141,19 +141,18 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = new LogisticsLocationDto();
+        var establishmentDto = new LogisticsLocationDto() { Address = new TradeAddressDto()};
 
         if (EstablishmentId != Guid.Empty && EstablishmentId != null)
         {
-            establishmentDto = await _establishmentService.GetEstablishmentByIdAsync((Guid)EstablishmentId!);
+            establishmentDto = await _establishmentService.GetEstablishmentByIdAsync((Guid)EstablishmentId);
         }
-        
+
         establishmentDto!.Name = EstablishmentName;
-        establishmentDto.Address = establishmentDto.Address ?? new TradeAddressDto();
-        establishmentDto.Address.LineOne = LineOne;
+        establishmentDto.Address!.LineOne = LineOne;
         establishmentDto.Address.LineTwo = LineTwo;
-        establishmentDto.Address.CityName = CityName;
         establishmentDto.Address.County = County;
+        establishmentDto.Address.CityName = CityName;
         establishmentDto.Address.PostCode = PostCode;
         establishmentDto.NI_GBFlag = NI_GBFlag;
 
@@ -191,15 +190,15 @@ public class EstablishmentNameAndAddressModel : PageModel
        
     }
 
-    // TODO change this
-    private async Task<bool> CheckForDuplicateAsync()
+    public async Task<bool> CheckForDuplicateAsync()
     {
         var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
-        var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper() 
+        var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper()
+        && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
         && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper());
 
-        if (duplicates.Any(x => x.Id == EstablishmentId))
+        if (duplicates.Any(x => x.Id != EstablishmentId))
         {
             return true;
         }

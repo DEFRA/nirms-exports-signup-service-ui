@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -27,10 +28,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         #endregion
 
         private readonly ILogger<PostcodeSearchModel> _logger;
+        private readonly ITraderService _traderService;
 
-        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger)
+        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -40,6 +43,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             _logger.LogTrace("Establishment postcode search on get");
             TradePartyId = id;
             this.NI_GBFlag = NI_GBFlag;
+
+            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            {
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
 
             if (NI_GBFlag == "NI")
             {

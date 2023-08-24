@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Azure.Management.AppService.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -88,38 +89,36 @@ public class PostcodeResultModel : PageModel
             EstablishmentsApi = await _establishmentService.GetTradeAddressApiByPostcodeAsync(Postcode);
         }
 
-        var duplicateList = new List<AddressDto>();
-        foreach (var establishmentApi in EstablishmentsApi)
+        if (EstablishmentsApi != null && EstablishmentsApi != null)
         {
-            foreach (var establishmentDb in EstablishmentsDb!)
+            var duplicateList = new List<AddressDto>();
+            foreach (var establishmentApi in EstablishmentsApi)
             {
-                if (establishmentApi.Address.StartsWith(establishmentDb.Name! + ","))
+                foreach (var establishmentDb in EstablishmentsDb!)
                 {
-                    duplicateList.Add(establishmentApi);
-                }
+                    if (establishmentApi.Address.StartsWith(establishmentDb.Name! + ","))
+                    {
+                        duplicateList.Add(establishmentApi);
+                    }
+                }    
             }
+            EstablishmentsApi!.RemoveAll(x => duplicateList.Contains(x));
         }
-        EstablishmentsApi.RemoveAll(x => duplicateList.Contains(x));
 
-        var EstablishmentsDbList = EstablishmentsDb?
+        var EstablishmentsDbList = EstablishmentsDb != null ? EstablishmentsDb?
             .Select(x => new SelectListItem { Text = $"{x.Name}, " 
-                + (x.Address?.LineOne != "" ? $"{x.Address?.LineOne}, " : "") 
-                + (x.Address?.LineTwo != "" ? $"{x.Address?.LineTwo}, " : "") 
+                + ((x.Address?.LineOne == "" || x.Address?.LineOne == null) ? "" : $"{x.Address?.LineOne}, ") 
+                + ((x.Address?.LineTwo != "" || x.Address?.LineTwo == null) ? "" : $"{x.Address?.LineTwo}, ") 
                 + $"{x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() })
-            .ToList() ;
+            .ToList() : Enumerable.Empty<SelectListItem>();
 
-        var EstablishmentsApiList = EstablishmentsApi?
+        var EstablishmentsApiList = EstablishmentsApi != null ? EstablishmentsApi?
             .Select(x => new SelectListItem
             {
                 Text = $"{x.Address}",
                 Value = x.Uprn
             })
-            .ToList();
-
-        // TODO remove duplicates
-        ////remove items that are already in database
-        //// TODO change to match on business name? ignore whitespace
-        //var duplicateOsAddresses = tradeAddressApiAddresses.Where(item => locationDtos.Any(item2 => string.Equals(item.Address!.LineOne, item2.Address!.LineOne, StringComparison.OrdinalIgnoreCase)));
+            .ToList() : Enumerable.Empty<SelectListItem>();
 
         EstablishmentsList = new[] { EstablishmentsDbList!, EstablishmentsApiList! }.SelectMany(x => x).ToList();
 
