@@ -157,7 +157,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         establishmentDto.Address.PostCode = PostCode;
         establishmentDto.NI_GBFlag = NI_GBFlag;
 
-        if (EstablishmentId == Guid.Empty || Uprn != null) 
+        if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null) 
         {
             return await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, establishmentDto);
         }
@@ -177,7 +177,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         }
         else
         {
-            if (EstablishmentId != Guid.Empty || EstablishmentId != null)
+            if (EstablishmentId != Guid.Empty && EstablishmentId != null)
             {
                 establishment = await _establishmentService.GetEstablishmentByIdAsync((Guid)EstablishmentId!) ?? new LogisticsLocationDto();
             }
@@ -197,10 +197,9 @@ public class EstablishmentNameAndAddressModel : PageModel
         var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
         var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper() 
-        && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
         && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper());
 
-        if (duplicates.Any(x => x.Id != EstablishmentId))
+        if (duplicates.Any(x => x.Id == EstablishmentId))
         {
             return true;
         }

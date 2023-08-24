@@ -88,6 +88,19 @@ public class PostcodeResultModel : PageModel
             EstablishmentsApi = await _establishmentService.GetTradeAddressApiByPostcodeAsync(Postcode);
         }
 
+        var duplicateList = new List<AddressDto>();
+        foreach (var establishmentApi in EstablishmentsApi)
+        {
+            foreach (var establishmentDb in EstablishmentsDb!)
+            {
+                if (establishmentApi.Address.StartsWith(establishmentDb.Name! + ","))
+                {
+                    duplicateList.Add(establishmentApi);
+                }
+            }
+        }
+        EstablishmentsApi.RemoveAll(x => duplicateList.Contains(x));
+
         var EstablishmentsDbList = EstablishmentsDb?
             .Select(x => new SelectListItem { Text = $"{x.Name}, " 
                 + (x.Address?.LineOne != "" ? $"{x.Address?.LineOne}, " : "") 
@@ -104,14 +117,15 @@ public class PostcodeResultModel : PageModel
             .ToList();
 
         // TODO remove duplicates
-
+        ////remove items that are already in database
+        //// TODO change to match on business name? ignore whitespace
+        //var duplicateOsAddresses = tradeAddressApiAddresses.Where(item => locationDtos.Any(item2 => string.Equals(item.Address!.LineOne, item2.Address!.LineOne, StringComparison.OrdinalIgnoreCase)));
 
         EstablishmentsList = new[] { EstablishmentsDbList!, EstablishmentsApiList! }.SelectMany(x => x).ToList();
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
-            ModelState.AddModelError(nameof(EstablishmentsList), "No search results returned");
-            IsSubmitDisabled = true;
+            return RedirectToPage(Routes.Pages.Path.PostcodeNoResultPath, new { id = TradePartyId, NI_GBFlag, postcode = Postcode });
         }
 
         return Page();
@@ -126,10 +140,18 @@ public class PostcodeResultModel : PageModel
             return await OnGetAsync(TradePartyId, Postcode!);
         }
 
-        //var establishmentId = await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, selectedLocation);
+        if (Guid.TryParse(SelectedEstablishment, out _))
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = TradePartyId, establishmentId = SelectedEstablishment, NI_GBFlag });
+        }
+        else
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = TradePartyId, uprn = SelectedEstablishment, NI_GBFlag });
+        }
 
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = TradePartyId, uprn = SelectedEstablishment, NI_GBFlag });
     }
 }
