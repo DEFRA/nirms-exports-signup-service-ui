@@ -51,7 +51,7 @@ public class PostcodeNoResultTests : PageModelTestsBase
 
         // assert
         _systemUnderTest.ContentHeading.Should().Be("Add a place of dispatch");
-        _systemUnderTest.ContentText.Should().Be("The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme.You will have to provide the details for all locations, so they can be used when applying for General Certificates.");
+        _systemUnderTest.ContentText.Should().Be("The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.");
 
     }
 }

@@ -137,7 +137,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return await OnGetAsync(tradePartyId, NI_GBFlag);
         else
         {
-            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId });
+            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag });
         }
     }
 

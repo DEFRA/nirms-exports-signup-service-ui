@@ -139,7 +139,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     }
 
-    private async Task<Guid?> SaveEstablishmentDetails()
+    public async Task<Guid?> SaveEstablishmentDetails()
     {
         var establishmentDto = new LogisticsLocationDto() { Address = new TradeAddressDto()};
 
@@ -167,7 +167,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         }
     }
 
-    private async Task RetrieveEstablishmentDetails()
+    public async Task RetrieveEstablishmentDetails()
     {
         LogisticsLocationDto establishment = new();
         if (Uprn != null)
