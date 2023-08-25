@@ -100,14 +100,14 @@ public class PostcodeResultModel : PageModel
         }
 
 
-        var EstablishmentsDbList = EstablishmentsDb != null ? EstablishmentsDb?
+        var EstablishmentsDbList = EstablishmentsDb != null ? EstablishmentsDb
             .Select(x => new SelectListItem { Text = $"{x.Name}, " 
                 + ((x.Address?.LineOne == "" || x.Address?.LineOne == null) ? "" : $"{x.Address?.LineOne}, ") 
                 + ((x.Address?.LineTwo != "" || x.Address?.LineTwo == null) ? "" : $"{x.Address?.LineTwo}, ") 
                 + $"{x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() })
             .ToList() : Enumerable.Empty<SelectListItem>();
 
-        var EstablishmentsApiList = EstablishmentsApi != null ? EstablishmentsApi?
+        var EstablishmentsApiList = EstablishmentsApi != null ? EstablishmentsApi
             .Select(x => new SelectListItem
             {
                 Text = $"{x.Address}",
