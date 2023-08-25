@@ -25,7 +25,7 @@
             <div class="govuk-form-group @(ModelState.HasError("PhoneNumber") ? "govuk-form-group--error" : null)">
                 <label for="PhoneNumber">
                     <h1 class="govuk-heading-l">
-                        <span class="govuk-caption-l">Contact Details</span>
+                        <span class="govuk-caption-l">Contact details</span>
                         What is the contact person's telephone number?
                     </h1>
                 </label>
@@ -35,7 +35,7 @@
                 <p id="Phone_Error" class="govuk-error-message" gds-validation-for="PhoneNumber"></p>
                 <input class="govuk-input" asp-for="PhoneNumber" id="PhoneNumber" aria-describedby="" type="telephone-hint" spellcheck="false" />
             </div>
-            <div class="govuk-form-group">
+            <div class="govuk-button-group">
                 <button asp-page-handler="submit" class="govuk-button" id="buttonContactPhoneSubmit">Save and continue</button>
                 <button asp-page-handler="save" class="govuk-button govuk-button--secondary" id="buttonContactPhoneSave">Save and return to dashboard</button>
             </div>
