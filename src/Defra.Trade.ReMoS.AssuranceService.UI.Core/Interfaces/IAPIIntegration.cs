@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
@@ -19,4 +20,6 @@ public interface IApiIntegration
     Task<bool> UpdateEstablishmentAsync(LogisticsLocationDto establishmentDto);
     Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDto addressDTO);
     Task<TradePartyDto?> GetTradePartyByOrgIdAsync(Guid orgId);
+    Task<List<AddressDto>> GetTradeAddresApiByPostcodeAsync(string postcode);
+    Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn);
 }

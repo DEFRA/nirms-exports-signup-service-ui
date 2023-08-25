@@ -90,7 +90,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
         if (AddAddressesComplete != null && AddAddressesComplete.Equals("no", StringComparison.OrdinalIgnoreCase))
         {
             return RedirectToPage(
-                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                Routes.Pages.Path.EstablishmentPostcodeSearchPath, 
                 new { id = TradePartyId, NI_GBFlag });
         }
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
@@ -137,7 +137,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
             return await OnGetAsync(tradePartyId, NI_GBFlag);
         else
         {
-            return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId });
+            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag });
         }
     }
 

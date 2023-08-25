@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +11,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
     {
         #region UI Models
         [BindProperty]
-        [RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a valid postcode.")]
+        //[RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a valid postcode.")]
+        [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Postcode must only contain letters or numbers")]
         [StringLength(100, ErrorMessage = "Postcode must be 100 characters or less")]
         [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
@@ -26,10 +28,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         #endregion
 
         private readonly ILogger<PostcodeSearchModel> _logger;
+        private readonly ITraderService _traderService;
 
-        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger)
+        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -40,15 +44,20 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             TradePartyId = id;
             this.NI_GBFlag = NI_GBFlag;
 
-            if (NI_GBFlag == "NI") 
+            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
             {
-                ContentHeading = "Add a place of destination (optional)";
-                ContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+                return RedirectToPage("/Errors/AuthorizationError");
+            }
+
+            if (NI_GBFlag == "NI")
+            {
+                ContentHeading = "Add a place of destination";
+                ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             }
             else
             {
                 ContentHeading = "Add a place of dispatch";
-                ContentText = "Add all establishments in Great Britan from which your goods will be departing under the scheme.";
+                ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             }
 
             return Page();

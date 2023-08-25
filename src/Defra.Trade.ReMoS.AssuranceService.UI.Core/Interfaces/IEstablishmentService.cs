@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,4 +18,6 @@ public interface IEstablishmentService
     public Task<List<LogisticsLocationDto>?> GetEstablishmentByPostcodeAsync(string postcode);
     Task<bool> RemoveEstablishmentAsync(Guid establishmentId);
     Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto);
+    Task<List<AddressDto>> GetTradeAddressApiByPostcodeAsync(string postcode);
+    Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn);
 }

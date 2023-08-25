@@ -65,14 +65,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
-            var logisticsLocations = new LogisticsLocationDto
-            {
-                TradePartyId = _systemUnderTest!.TradePartyId,
-                Id = Guid.NewGuid()
-            };
-
-            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
-
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
@@ -97,7 +89,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Id = Guid.NewGuid()
             };
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -111,8 +102,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGet_HeadingSetToParameter_Successfully()
         {
             //Arrange
-            var expectedHeading = "Add a place of destination (optional)";
-            var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+            var expectedHeading = "Add a place of destination";
+            var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult<List<LogisticsLocationDto>?>(new List<LogisticsLocationDto>() { new LogisticsLocationDto() }));
