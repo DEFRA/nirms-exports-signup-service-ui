@@ -65,14 +65,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
-            var logisticsLocations = new LogisticsLocationDto
-            {
-                TradePartyId = _systemUnderTest!.TradePartyId,
-                Id = Guid.NewGuid()
-            };
-
-            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
-
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
@@ -97,7 +89,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Id = Guid.NewGuid()
             };
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

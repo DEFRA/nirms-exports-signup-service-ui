@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Management.ContainerInstance.Fluent.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Moq;
@@ -53,5 +54,16 @@ public class PostcodeNoResultTests : PageModelTestsBase
         _systemUnderTest.ContentHeading.Should().Be("Add a place of dispatch");
         _systemUnderTest.ContentText.Should().Be("The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.");
 
+    }
+
+    [Test]
+    public void OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+        var result = _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TES1");
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 }

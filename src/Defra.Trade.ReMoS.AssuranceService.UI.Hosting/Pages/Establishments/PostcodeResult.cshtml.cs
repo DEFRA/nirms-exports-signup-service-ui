@@ -10,6 +10,7 @@ using Microsoft.Azure.Management.AppService.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
@@ -89,21 +90,15 @@ public class PostcodeResultModel : PageModel
             EstablishmentsApi = await _establishmentService.GetTradeAddressApiByPostcodeAsync(Postcode);
         }
 
-        if (EstablishmentsApi != null && EstablishmentsApi != null)
+        if (EstablishmentsApi != null && EstablishmentsDb != null)
         {
             var duplicateList = new List<AddressDto>();
-            foreach (var establishmentApi in EstablishmentsApi)
-            {
-                foreach (var establishmentDb in EstablishmentsDb!)
-                {
-                    if (establishmentApi.Address.StartsWith(establishmentDb.Name! + ","))
-                    {
-                        duplicateList.Add(establishmentApi);
-                    }
-                }    
-            }
+            EstablishmentsApi.ForEach(x => duplicateList.AddRange(from establishmentDb in EstablishmentsDb!
+                                                                 where x.Address.StartsWith(establishmentDb.Name! + ",")
+                                                                 select x));
             EstablishmentsApi!.RemoveAll(x => duplicateList.Contains(x));
         }
+
 
         var EstablishmentsDbList = EstablishmentsDb != null ? EstablishmentsDb?
             .Select(x => new SelectListItem { Text = $"{x.Name}, " 
