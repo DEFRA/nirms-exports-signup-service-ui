@@ -155,7 +155,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var redirectResult = result as RedirectToPageResult;
 
             //Assert
-            redirectResult!.PageName.Should().Be("/Establishments/EstablishmentNameAndAddress");
+            redirectResult!.PageName.Should().Be("/Establishments/PostcodeSearch");
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
         }

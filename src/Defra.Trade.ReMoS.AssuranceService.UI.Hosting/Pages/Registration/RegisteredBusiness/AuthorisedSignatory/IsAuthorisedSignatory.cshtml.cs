@@ -81,7 +81,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 }
 
                 return RedirectToPage(
-                    Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                    Routes.Pages.Path.EstablishmentPostcodeSearchPath,
                     new { id = TradePartyId, NI_GBFlag = countryFlag });
             }
 
