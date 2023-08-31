@@ -151,7 +151,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         var partyDto = new TradePartyDto
         {
             OrgId = Guid.Parse(SelectedBusiness!),
-            PracticeName = Businesses[Guid.Parse(SelectedBusiness)],
+            PracticeName = Businesses[Guid.Parse(SelectedBusiness!)],
         };
 
         TraderId = await _traderService.CreateTradePartyAsync(partyDto);
