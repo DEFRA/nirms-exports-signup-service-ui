@@ -150,18 +150,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         Contact = new TradeContactDto()
                         {
                             Id = ContactId,
-                            PersonName = tradeParty?.Contact?.PersonName,
-                            Email = tradeParty?.Contact?.Email,
-                            Position = tradeParty?.Contact?.Position,
-                            TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                            PersonName = tradeParty.Contact?.PersonName,
+                            Email = tradeParty.Contact?.Email,
+                            Position = tradeParty.Contact?.Position,
+                            TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
                             IsAuthorisedSignatory = isSignatory
                         },
                         AuthorisedSignatory = new AuthorisedSignatoryDto()
                         {
                             Id = SignatoryId,
-                            Name = tradeParty?.Contact?.PersonName,
-                            EmailAddress = tradeParty?.Contact?.Email,
-                            Position = tradeParty?.Contact?.Position,
+                            Name = tradeParty.Contact?.PersonName,
+                            EmailAddress = tradeParty.Contact?.Email,
+                            Position = tradeParty.Contact?.Position,
                             TradePartyId = TradePartyId
                         }
                     };
@@ -177,10 +177,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                             Contact = new TradeContactDto()
                             {
                                 Id = ContactId,
-                                PersonName = tradeParty?.Contact?.PersonName,
-                                Email = tradeParty?.Contact?.Email,
-                                Position = tradeParty?.Contact?.Position,
-                                TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                                PersonName = tradeParty.Contact?.PersonName,
+                                Email = tradeParty.Contact?.Email,
+                                Position = tradeParty.Contact?.Position,
+                                TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
                                 IsAuthorisedSignatory = isSignatory
                             },
                             AuthorisedSignatory = new AuthorisedSignatoryDto()
@@ -201,10 +201,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                             Contact = new TradeContactDto()
                             {
                                 Id = ContactId,
-                                PersonName = tradeParty?.Contact?.PersonName,
-                                Email = tradeParty?.Contact?.Email,
-                                Position = tradeParty?.Contact?.Position,
-                                TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                                PersonName = tradeParty.Contact?.PersonName,
+                                Email = tradeParty.Contact?.Email,
+                                Position = tradeParty.Contact?.Position,
+                                TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
                                 IsAuthorisedSignatory = isSignatory
                             },
                             AuthorisedSignatory = authroisedSignatory
