@@ -20,8 +20,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
-            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object)
+            {
+                PageContext = PageModelMockingUtils.MockPageContext()
+            };
         }
 
         [Test]
@@ -53,7 +55,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
-            _systemUnderTest.EstablishmentsList[0].Text.Should().Be("Test 2, line 1, city, TES1");
+            _systemUnderTest.EstablishmentsList![0].Text.Should().Be("Test 2, line 1, city, TES1");
             _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Id.ToString());
             }
 

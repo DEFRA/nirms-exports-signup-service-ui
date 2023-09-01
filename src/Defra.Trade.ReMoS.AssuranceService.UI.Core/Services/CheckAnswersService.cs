@@ -52,8 +52,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty?.PracticeName != null
-                && (tradeParty?.Address == null || tradeParty?.Address?.TradeCountry == null))
+            if (tradeParty.PracticeName != null
+                && (tradeParty.Address == null || tradeParty.Address?.TradeCountry == null))
             {
                 return TaskListStatus.INPROGRESS;
             }
@@ -68,7 +68,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return TaskListStatus.COMPLETE;
             }
 
-            if (tradeParty.Contact != null || tradeParty?.Contact?.PersonName != null || tradeParty?.Contact?.Email != null || tradeParty?.Contact?.TelephoneNumber != null || tradeParty?.Contact?.Position != null)
+            if (tradeParty.Contact != null || tradeParty.Contact?.PersonName != null || tradeParty.Contact?.Email != null || tradeParty.Contact?.TelephoneNumber != null || tradeParty.Contact?.Position != null)
             {
                 return TaskListStatus.INPROGRESS;
             }
@@ -78,7 +78,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 
         public string GetAuthorisedSignatoryProgress(TradePartyDto tradeParty)
         {
-            if (tradeParty.Contact == null || tradeParty?.Contact?.PersonName == null || tradeParty?.Contact?.Email == null || tradeParty?.Contact?.TelephoneNumber == null || tradeParty?.Contact?.Position == null)
+            if (tradeParty.Contact == null || tradeParty.Contact?.PersonName == null || tradeParty.Contact?.Email == null || tradeParty.Contact?.TelephoneNumber == null || tradeParty.Contact?.Position == null)
             {
                 return TaskListStatus.CANNOTSTART;
             }

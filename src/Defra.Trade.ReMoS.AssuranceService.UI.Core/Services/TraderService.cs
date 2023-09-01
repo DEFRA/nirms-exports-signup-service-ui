@@ -65,11 +65,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
             var signupStatus = TradePartySignupStatus.New;
 
-            if (tradeParty == null || tradeParty?.Address == null)
+            if (tradeParty == null || tradeParty.Address == null)
                 signupStatus = TradePartySignupStatus.New;
-            else if (tradeParty?.TermsAndConditionsSignedDate != default && tradeParty?.TermsAndConditionsSignedDate != DateTime.MinValue)
+            else if (tradeParty.TermsAndConditionsSignedDate != default && tradeParty.TermsAndConditionsSignedDate != DateTime.MinValue)
                 signupStatus = TradePartySignupStatus.Complete;
-            else if (tradeParty?.Address != null)
+            else if (tradeParty.Address != null)
             {
                 if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber) && tradeParty.RegulationsConfirmed)
                     signupStatus = TradePartySignupStatus.InProgress;
