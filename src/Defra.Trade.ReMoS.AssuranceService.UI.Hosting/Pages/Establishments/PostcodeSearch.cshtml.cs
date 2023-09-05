@@ -19,6 +19,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
+        public string? ContextHint { get; set; } = string.Empty;
 
         [BindProperty]
         public string? NI_GBFlag { get; set; } = string.Empty;
@@ -51,11 +52,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
             if (NI_GBFlag == "NI")
             {
+                ContextHint = "If your place of destination belongs to a different business";
                 ContentHeading = "Add a place of destination";
                 ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             }
             else
             {
+                ContextHint = "If your place of dispatch belongs to a different business";
                 ContentHeading = "Add a place of dispatch";
                 ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             }
