@@ -198,7 +198,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
         && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper());
 
-        if (duplicates.Any(x => x.Id != EstablishmentId))
+        if (duplicates.Count() != 0)
         {
             return true;
         }
