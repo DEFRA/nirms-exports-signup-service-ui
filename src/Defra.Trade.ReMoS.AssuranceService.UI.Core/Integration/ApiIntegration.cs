@@ -12,6 +12,9 @@ using Defra.Trade.Address.V1.ApiClient.Model;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
+/// <summary>
+/// Contains calls to Sign-up Service API via HttpClient
+/// </summary>
 public class ApiIntegration : IApiIntegration
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -30,6 +33,10 @@ public class ApiIntegration : IApiIntegration
         _authenticationService = authenticationService;
     }
 
+    /// <summary>
+    /// Gets all trade parties from SuS API
+    /// </summary>
+    /// <returns>List of trade parties</returns>
     public async Task<List<TradePartyDto>?> GetAllTradePartiesAsync()
     {
         var httpClient = CreateHttpClient();
@@ -42,6 +49,11 @@ public class ApiIntegration : IApiIntegration
             options: _jsonSerializerOptions) ?? new List<TradePartyDto>();
     }
 
+    /// <summary>
+    /// Gets an individual trade party
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Trade party</returns>
     public async Task<TradePartyDto?> GetTradePartyByIdAsync(Guid id)
     {
         var httpClient = CreateHttpClient();
@@ -54,6 +66,12 @@ public class ApiIntegration : IApiIntegration
             options: _jsonSerializerOptions) ?? new TradePartyDto();
     }
 
+    /// <summary>
+    /// Get saved details for a DEFRA org
+    /// </summary>
+    /// <param name="orgId"></param>
+    /// <returns>Trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<TradePartyDto?> GetTradePartyByOrgIdAsync(Guid orgId)
     {
         var httpClient = CreateHttpClient();
@@ -75,6 +93,13 @@ public class ApiIntegration : IApiIntegration
         }
     }
 
+
+    /// <summary>
+    /// Adds a new trade party
+    /// </summary>
+    /// <param name="tradePartyToCreate"></param>
+    /// <returns>Id of the newly created trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<Guid> AddTradePartyAsync(TradePartyDto tradePartyToCreate)
     {
         Guid results = Guid.Empty;
@@ -101,6 +126,12 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Updates an existing trade party
+    /// </summary>
+    /// <param name="tradePartyToUpdate"></param>
+    /// <returns>Id of the updated trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<Guid> UpdateTradePartyAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
@@ -127,6 +158,12 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Updates an existing trade party's address
+    /// </summary>
+    /// <param name="tradePartyToUpdate"></param>
+    /// <returns>Id of the trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<Guid> UpdateTradePartyAddressAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
@@ -153,6 +190,13 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Creates a new address and adds to a trade party
+    /// </summary>
+    /// <param name="partyId"></param>
+    /// <param name="addressDTO"></param>
+    /// <returns>Id of the trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<Guid> AddAddressToPartyAsync(Guid partyId, TradeAddressDto addressDTO)
     {
         Guid results = Guid.Empty;
@@ -179,6 +223,12 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Updates trade party contact
+    /// </summary>
+    /// <param name="tradePartyToUpdate"></param>
+    /// <returns>Id of the trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<Guid> UpdateTradePartyContactAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
@@ -205,6 +255,13 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Add an establishment to a trade party
+    /// </summary>
+    /// <param name="partyId"></param>
+    /// <param name="logisticsLocationDTO"></param>
+    /// <returns>Id of the establishment</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDto logisticsLocationDTO)
     {
         Guid results = Guid.Empty;
@@ -231,6 +288,11 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Get an establishment using Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Establishment</returns>
     public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid id)
     {
         var httpClient = CreateHttpClient();
@@ -243,6 +305,11 @@ public class ApiIntegration : IApiIntegration
             options: _jsonSerializerOptions) ?? new LogisticsLocationDto();
     }
 
+    /// <summary>
+    /// Get all establishments belonging to the trade party
+    /// </summary>
+    /// <param name="tradePartyId"></param>
+    /// <returns>List of establishments</returns>
     public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
     {
         var httpClient = CreateHttpClient();
@@ -255,6 +322,11 @@ public class ApiIntegration : IApiIntegration
             options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
     }
 
+    /// <summary>
+    /// Get all establishments in a post code
+    /// </summary>
+    /// <param name="postcode"></param>
+    /// <returns>List of establishments</returns>
     public async Task<List<LogisticsLocationDto>?> GetEstablishmentsByPostcodeAsync(string postcode)
     {
         var httpClient = CreateHttpClient();
@@ -267,6 +339,11 @@ public class ApiIntegration : IApiIntegration
             options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
     }
 
+    /// <summary>
+    /// Deletes a establishment with a given id
+    /// </summary>
+    /// <param name="locationId"></param>
+    /// <returns></returns>
     public async Task RemoveEstablishmentAsync(Guid locationId)
     {
         var httpClient = CreateHttpClient();
@@ -275,6 +352,12 @@ public class ApiIntegration : IApiIntegration
         response.EnsureSuccessStatusCode();
     }
 
+    /// <summary>
+    /// Updates establishment
+    /// </summary>
+    /// <param name="establishmentDto"></param>
+    /// <returns><c>true</c> if establishment updated</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<bool> UpdateEstablishmentAsync(LogisticsLocationDto establishmentDto)
     {
         var requestBody = new StringContent(
@@ -291,6 +374,12 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Updates authorised signatory
+    /// </summary>
+    /// <param name="tradePartyToUpdate"></param>
+    /// <returns>Trade party</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
     public async Task<TradePartyDto?> UpdateAuthorisedSignatoryAsync(TradePartyDto tradePartyToUpdate)
     {
         var httpClient = CreateHttpClient();
@@ -311,6 +400,10 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+    /// <summary>
+    /// Creates HttpClient used to call the SuS API
+    /// </summary>
+    /// <returns>Http client</returns>
     public HttpClient CreateHttpClient()
     {
         var httpClient = _httpClientFactory.CreateClient("Assurance");
@@ -325,6 +418,11 @@ public class ApiIntegration : IApiIntegration
         return httpClient;
     }
 
+    /// <summary>
+    /// Get Trade.Address addresses by postcode
+    /// </summary>
+    /// <param name="postcode"></param>
+    /// <returns>List of addresses</returns>
     public async Task<List<AddressDto>> GetTradeAddresApiByPostcodeAsync(string postcode)
     {
         var httpClient = CreateHttpClient();
@@ -337,6 +435,11 @@ public class ApiIntegration : IApiIntegration
             options: _jsonSerializerOptions) ?? new List<AddressDto>();
     }
 
+    /// <summary>
+    /// Get a logistics location by UPRN
+    /// </summary>
+    /// <param name="uprn"></param>
+    /// <returns>Establishment</returns>
     public async Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn)
     {
         var httpClient = CreateHttpClient();

@@ -60,6 +60,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return await _apiIntegration.UpdateAuthorisedSignatoryAsync(tradePartyDTO);
         }
 
+        /// <summary>
+        /// Calculates a business's sign-up progress by inspecting data related to various stages
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <returns>A tuple containing the business and its sign-up status</returns>
         public async Task<(TradePartyDto? tradeParty, TradePartySignupStatus signupStatus)> GetDefraOrgBusinessSignupStatus(Guid orgId)
         {
             var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
@@ -84,6 +89,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return (tradeParty, signupStatus);
         }
 
+        /// <summary>
+        /// Validates if a given organisation is present in user's claims
+        /// </summary>
+        /// <param name="claims"></param>
+        /// <param name="id"></param>
+        /// <returns><c>true</c> if organisation is present in user's claims, <c>false</c> otherwise</returns>
         public async Task<bool> ValidateOrgId(IEnumerable<Claim> claims, Guid id)
         {
             var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
