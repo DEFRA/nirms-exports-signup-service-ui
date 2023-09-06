@@ -309,5 +309,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             result.Should().Be(_systemUnderTest.EstablishmentId);
             _mockEstablishmentService.Verify(x => x.UpdateEstablishmentDetailsAsync(It.IsAny<LogisticsLocationDto>()), Times.Once());
         }
+
+        [Test]
+        public async Task OnGetAsync_RedirectRegisteredBusiness()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), null);
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
     }
 }

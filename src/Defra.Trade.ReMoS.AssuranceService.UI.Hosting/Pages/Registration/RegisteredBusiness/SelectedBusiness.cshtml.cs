@@ -29,6 +29,10 @@ public class SelectedBusinessModel : PageModel
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        if (_traderService.IsTradePartySignedUp(id).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
 
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;

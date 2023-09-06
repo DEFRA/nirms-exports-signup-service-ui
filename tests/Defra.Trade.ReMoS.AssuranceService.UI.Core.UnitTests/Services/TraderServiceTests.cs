@@ -443,5 +443,59 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             Assert.IsFalse(result);
         }
 
+        [Test]
+        public async Task IsTradePartySignedUp_Returns_True()
+        {
+            // Assert
+            _traderService = new TraderService(_mockApiIntegration.Object);
+
+            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
+
+            var tradePartyDTO = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = Guid.NewGuid(),
+                SignUpRequestSubmittedBy = Guid.NewGuid()                
+            };
+
+            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
+
+            // Act
+            var result = await _traderService!.IsTradePartySignedUp(Guid.NewGuid());
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task IsTradePartySignedUp_Returns_False()
+        {
+            // Assert
+            _traderService = new TraderService(_mockApiIntegration.Object);
+
+            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
+
+            var tradePartyDTO = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = Guid.NewGuid(),
+                SignUpRequestSubmittedBy = Guid.Empty
+            };
+
+            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
+
+            // Act
+            var result = await _traderService!.IsTradePartySignedUp(Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
     }
 }

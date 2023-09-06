@@ -49,6 +49,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
+            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+            {
+                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+            }
 
             if (NI_GBFlag == "NI")
             {

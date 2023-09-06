@@ -47,6 +47,10 @@ public class RegisteredBusinessCountryModel : PageModel
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
+            if (_traderService.IsTradePartySignedUp(TraderId).Result)
+            {
+                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+            }
 
             Country = await GetCountryFromApiAsync();
             CountrySaved = !string.IsNullOrEmpty(Country);

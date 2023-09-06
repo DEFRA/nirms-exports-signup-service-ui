@@ -50,6 +50,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(false);
             // act
             await _systemUnderTest!.OnGetAsync(id, postcode);
 
@@ -128,6 +129,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var redirectResult = result as RedirectToPageResult;
 
             redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+        }
+
+        [Test]
+        public async Task OnGetAsync_RedirectRegisteredBusiness()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), It.IsAny<string>());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
     }
 }
