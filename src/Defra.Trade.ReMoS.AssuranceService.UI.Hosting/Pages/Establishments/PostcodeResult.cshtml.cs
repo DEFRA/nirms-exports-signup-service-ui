@@ -69,6 +69,10 @@ public class PostcodeResultModel : PageModel
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
 
         if (NI_GBFlag == "NI")
         {

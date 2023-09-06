@@ -89,6 +89,10 @@ public class EstablishmentNameAndAddressModel : PageModel
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
 
         await RetrieveEstablishmentDetails();
 
