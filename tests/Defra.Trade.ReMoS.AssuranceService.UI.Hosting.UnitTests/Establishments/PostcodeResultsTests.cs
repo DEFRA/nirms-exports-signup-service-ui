@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
+using Defra.Trade.Address.V1.ApiClient.Model;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -30,25 +31,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetAsync_ReturnsLogisticsLocations()
         {
             // arrange
-            var logisticsLocations = new List<LogisticsLocationDto>
+            var logisticsLocations = new List<AddressDto>
             {
-                new LogisticsLocationDto()
+                new AddressDto("1234", null, null, null, null, null, "TES1")
                 {
-                    Name = "Test 2",
-                    Id = Guid.NewGuid(),
-                    NI_GBFlag = "GB",
-                    Address = new TradeAddressDto()
-                    {
-                        LineOne = "line 1",
-                        CityName = "city",
-                        PostCode = "TES1",
-                    }
+                    Address = "Test 2, line 1, city, TES1"
                 }
             };
             var id = Guid.NewGuid();
             var postcode = "TES1";
 
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
+            _mockEstablishmentService.Setup(x => x.GetTradeAddressApiByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             // act
             await _systemUnderTest!.OnGetAsync(id, postcode);
@@ -56,7 +49,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
             _systemUnderTest.EstablishmentsList![0].Text.Should().Be("Test 2, line 1, city, TES1");
-            _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Id.ToString());
+            _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Uprn);
             }
 
         [Test]

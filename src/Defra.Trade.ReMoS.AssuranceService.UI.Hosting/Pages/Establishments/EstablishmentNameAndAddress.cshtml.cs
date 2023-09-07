@@ -116,6 +116,7 @@ public class EstablishmentNameAndAddressModel : PageModel
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
+
         if(await CheckForDuplicateAsync())
         {
             string place;
@@ -133,6 +134,7 @@ public class EstablishmentNameAndAddressModel : PageModel
             ModelState.AddModelError(nameof(EstablishmentName), baseError);
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
+        
 
         var establishmentId = await SaveEstablishmentDetails();
 
@@ -199,9 +201,10 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper()
         && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
-        && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper());
+        && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper()
+        && x.Id != EstablishmentId);
 
-        if (duplicates.Count() != 0)
+        if (duplicates.Any())
         {
             return true;
         }
