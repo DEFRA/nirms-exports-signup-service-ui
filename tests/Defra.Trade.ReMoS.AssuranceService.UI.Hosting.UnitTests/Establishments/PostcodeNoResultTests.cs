@@ -66,4 +66,16 @@ public class PostcodeNoResultTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
+
+    [Test]
+    public void OnGetAsync_RedirectRegisteredBusiness()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+
+        var result = _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TEST1");
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+    }
 }

@@ -56,6 +56,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
+            if (_traderService.IsTradePartySignedUp(RegistrationID).Result)
+            {
+                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+            }
 
             TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 

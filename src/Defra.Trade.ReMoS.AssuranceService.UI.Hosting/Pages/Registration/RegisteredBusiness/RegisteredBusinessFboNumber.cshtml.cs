@@ -45,6 +45,10 @@ public class RegisteredBusinessFboNumberModel : PageModel
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        if (_traderService.IsTradePartySignedUp(TraderId).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
 
         await PopulateModelProperties();
 

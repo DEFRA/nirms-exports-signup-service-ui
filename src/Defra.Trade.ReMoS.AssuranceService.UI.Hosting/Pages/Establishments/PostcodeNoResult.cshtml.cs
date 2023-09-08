@@ -30,6 +30,11 @@ public class PostcodeNoResultModel : PageModel
         this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;
 
+        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
+
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";

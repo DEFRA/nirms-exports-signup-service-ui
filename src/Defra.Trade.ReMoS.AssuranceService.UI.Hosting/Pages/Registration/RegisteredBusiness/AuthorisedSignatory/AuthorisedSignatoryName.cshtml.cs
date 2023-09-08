@@ -41,6 +41,10 @@ public class AuthorisedSignatoryNameModel : PageModel
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        if (_traderService.IsTradePartySignedUp(id).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
 
         _logger.LogInformation("Name OnGet");
 

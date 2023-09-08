@@ -10,6 +10,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
 public class UserService : IUserService
 {
+    /// <summary>
+    /// Extracts all organisations for user from claims principal
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>A dictionary of user's organisations as key, name pairs</returns>
     public Dictionary<Guid, string> GetDefraOrgsForUser(ClaimsPrincipal user)
     {
         var userOrgsClaim = user.FindFirst("userEnrolledOrganisations");
@@ -34,6 +39,11 @@ public class UserService : IUserService
         return orgsDict;
     }
 
+    /// <summary>
+    /// Extracts user's contact id from claims principal
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>User's contact id</returns>
     public Guid GetUserContactId(ClaimsPrincipal user)
     {
         var userContactIdClaim = user.FindFirst("contactId");
