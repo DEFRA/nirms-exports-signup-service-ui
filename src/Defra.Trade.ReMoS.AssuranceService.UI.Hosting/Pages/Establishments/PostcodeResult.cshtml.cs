@@ -38,9 +38,6 @@ public class PostcodeResultModel : PageModel
     public string? NI_GBFlag { get; set; } = string.Empty;
     [BindProperty]
     public bool IsSubmitDisabled { get; set; } = false;
-    [BindProperty]
-    public List<LogisticsLocationDto>? Establishments { get; set; }
-    public List<SelectListItem>? EstablishmentApiList { get; private set; }
     #endregion
 
     private readonly ILogger<PostcodeResultModel> _logger;
@@ -85,31 +82,12 @@ public class PostcodeResultModel : PageModel
             ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
-        var EstablishmentsDb = new List<LogisticsLocationDto>();
         var EstablishmentsApi = new List<AddressDto>();
 
         if (Postcode != string.Empty)
         {
-            EstablishmentsDb = await _establishmentService.GetEstablishmentByPostcodeAsync(Postcode);
             EstablishmentsApi = await _establishmentService.GetTradeAddressApiByPostcodeAsync(Postcode);
         }
-
-        if (EstablishmentsApi != null && EstablishmentsDb != null)
-        {
-            var duplicateList = new List<AddressDto>();
-            EstablishmentsApi.ForEach(x => duplicateList.AddRange(from establishmentDb in EstablishmentsDb!
-                                                                 where x.Address.StartsWith(establishmentDb.Name! + ",")
-                                                                 select x));
-            EstablishmentsApi!.RemoveAll(x => duplicateList.Contains(x));
-        }
-
-
-        var EstablishmentsDbList = EstablishmentsDb != null ? EstablishmentsDb
-            .Select(x => new SelectListItem { Text = $"{x.Name}, " 
-                + ((x.Address?.LineOne == "" || x.Address?.LineOne == null) ? "" : $"{x.Address?.LineOne}, ") 
-                + ((x.Address?.LineTwo != "" || x.Address?.LineTwo == null) ? "" : $"{x.Address?.LineTwo}, ") 
-                + $"{x.Address?.CityName}, {x.Address?.PostCode}", Value = x.Id.ToString() })
-            .ToList() : Enumerable.Empty<SelectListItem>();
 
         var EstablishmentsApiList = EstablishmentsApi != null ? EstablishmentsApi
             .Select(x => new SelectListItem
@@ -119,7 +97,7 @@ public class PostcodeResultModel : PageModel
             })
             .ToList() : Enumerable.Empty<SelectListItem>();
 
-        EstablishmentsList = new[] { EstablishmentsDbList!, EstablishmentsApiList! }.SelectMany(x => x).ToList();
+        EstablishmentsList = new[] { EstablishmentsApiList! }.SelectMany(x => x).ToList();
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
@@ -138,18 +116,10 @@ public class PostcodeResultModel : PageModel
             return await OnGetAsync(TradePartyId, Postcode!);
         }
 
-        if (Guid.TryParse(SelectedEstablishment, out _))
-        {
-            return RedirectToPage(
-                Routes.Pages.Path.EstablishmentNameAndAddressPath,
-                new { id = TradePartyId, establishmentId = SelectedEstablishment, NI_GBFlag });
-        }
-        else
-        {
-            return RedirectToPage(
-                Routes.Pages.Path.EstablishmentNameAndAddressPath,
-                new { id = TradePartyId, uprn = SelectedEstablishment, NI_GBFlag });
-        }
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = TradePartyId, uprn = SelectedEstablishment, NI_GBFlag });
+        
 
     }
 }
