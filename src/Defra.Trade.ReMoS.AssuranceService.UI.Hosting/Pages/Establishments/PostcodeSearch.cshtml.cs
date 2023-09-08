@@ -87,7 +87,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             }
             if (!Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             {
-                var baseError = "Enter a postcode in Norther Ireland";
+                var baseError = "Enter a postcode in Northern Ireland";
                 ModelState.AddModelError(nameof(Postcode), baseError);
                 return await OnGetAsync(TradePartyId, NI_GBFlag);
             }

@@ -138,5 +138,25 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
+
+        [TestCase("bt1 4tg", "NI", 0, null)]
+        [TestCase("sw9 9tf", "NI", 1, "Enter a postcode in Northern Ireland")]
+        [TestCase("bt1 5tg", "GB", 1, "Enter a postcode in England, Scotland or Wales")]
+        [TestCase("sw9 6th", "GB", 0, null)]
+        public async Task OnPostSubmitAsync_PostcodeError(string postcode, string NI_GBFlag, int errorCount, string? errorMessage)
+        {
+            // arrange
+            _systemUnderTest!.Postcode = postcode;
+            _systemUnderTest.NI_GBFlag = NI_GBFlag;
+
+            // act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            // assert
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(errorCount);
+            if (errorCount != 0) _systemUnderTest.ModelState.Values.First().Errors.First().ErrorMessage.Should().Be(errorMessage);
+            else _systemUnderTest.ModelState.Values.Should().BeEmpty();
+        }
     }
 }
