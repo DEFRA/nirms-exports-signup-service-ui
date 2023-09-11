@@ -79,6 +79,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
                 return await OnGetAsync(TradePartyId, NI_GBFlag!);
             }
 
+            if (Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB") )
+            {
+                var baseError = "Enter a postcode in England, Scotland or Wales";
+                ModelState.AddModelError(nameof(Postcode), baseError);
+                return await OnGetAsync(TradePartyId, NI_GBFlag);
+            }
+            if (!Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
+            {
+                var baseError = "Enter a postcode in Northern Ireland";
+                ModelState.AddModelError(nameof(Postcode), baseError);
+                return await OnGetAsync(TradePartyId, NI_GBFlag);
+            }
+
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentPostcodeResultPath, 
                 new { id = TradePartyId, postcode = Postcode, NI_GBFlag});
