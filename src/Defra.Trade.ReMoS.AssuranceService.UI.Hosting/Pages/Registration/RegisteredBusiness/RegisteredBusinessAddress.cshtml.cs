@@ -13,13 +13,13 @@ public class RegisteredBusinessAddressModel : PageModel
     #region ui model variables
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens or apostrophes")]
-    [StringLength(100, ErrorMessage = "Address line 1 must be 100 characters or less")]
+    [StringLength(50, ErrorMessage = "Address line 1 must be 50 characters or less")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens or apostrophes")]
-    [StringLength(100, ErrorMessage = "Address line 2 must be 100 characters or less")]
+    [StringLength(50, ErrorMessage = "Address line 2 must be 50 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
