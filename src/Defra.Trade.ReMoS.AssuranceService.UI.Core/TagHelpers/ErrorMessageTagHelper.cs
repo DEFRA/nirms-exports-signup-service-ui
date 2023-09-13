@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -40,8 +41,9 @@ public class ErrorMessageTagHelper : TagHelper
             var fieldName = For.Name;
             if (ViewContext!.ModelState.HasError(fieldName))
             {
-                var modelErrorsResult = ViewContext.ModelState.TryGetValue(fieldName, out var modelEntry);
-                var modelError = modelErrorsResult ? modelEntry?.Errors[0] : null;
+                var modelErrorsResult = ViewContext.ModelState.TryGetValue(fieldName, out var modelEntry);               
+
+                var modelError = modelErrorsResult ? modelEntry!.Errors[0] : null;
 
                 if (modelError != null)
                 {

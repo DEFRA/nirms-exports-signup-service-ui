@@ -2,6 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,16 +61,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return await _apiIntegration.UpdateAuthorisedSignatoryAsync(tradePartyDTO);
         }
 
+        /// <summary>
+        /// Calculates a business's sign-up progress by inspecting data related to various stages
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <returns>A tuple containing the business and its sign-up status</returns>
         public async Task<(TradePartyDto? tradeParty, TradePartySignupStatus signupStatus)> GetDefraOrgBusinessSignupStatus(Guid orgId)
         {
             var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
             var signupStatus = TradePartySignupStatus.New;
 
-            if (tradeParty == null || tradeParty?.Address == null)
+            if (tradeParty == null || tradeParty.Address == null)
                 signupStatus = TradePartySignupStatus.New;
-            else if (tradeParty?.TermsAndConditionsSignedDate != default && tradeParty?.TermsAndConditionsSignedDate != DateTime.MinValue)
+            else if (tradeParty.TermsAndConditionsSignedDate != default && tradeParty.TermsAndConditionsSignedDate != DateTime.MinValue)
                 signupStatus = TradePartySignupStatus.Complete;
-            else if (tradeParty?.Address != null)
+            else if (tradeParty.Address != null)
             {
                 if (tradeParty.Address.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber) && tradeParty.RegulationsConfirmed)
                     signupStatus = TradePartySignupStatus.InProgress;
@@ -84,6 +90,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return (tradeParty, signupStatus);
         }
 
+        /// <summary>
+        /// Validates if a given organisation is present in user's claims
+        /// </summary>
+        /// <param name="claims"></param>
+        /// <param name="id"></param>
+        /// <returns><c>true</c> if organisation is present in user's claims, <c>false</c> otherwise</returns>
         public async Task<bool> ValidateOrgId(IEnumerable<Claim> claims, Guid id)
         {
             var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
@@ -94,6 +106,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return userEnrolledOrganisations.Contains(str);
             }
             return false;
+        }
+
+        public async Task<bool> IsTradePartySignedUp(Guid id)
+        {
+            var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
+
+            return tradeParty?.SignUpRequestSubmittedBy == Guid.Empty ? false : true;
         }
     }
 }

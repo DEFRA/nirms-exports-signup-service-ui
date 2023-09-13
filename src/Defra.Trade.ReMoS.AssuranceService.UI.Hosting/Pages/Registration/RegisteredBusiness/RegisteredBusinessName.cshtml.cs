@@ -14,7 +14,7 @@ public class RegisteredBusinessNameModel : PageModel
     #region UI Model
     [BindProperty]
     [Required(ErrorMessage = "Enter your business name")]
-    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter your business name using only letters, numbers, brackets, full stops, commas, undescores, forward slashes, hyphens or apostrophes")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-_./()&]*$", ErrorMessage = "Enter your business name using only letters, numbers, brackets, full stops, commas, underscores, forward slashes, hyphens or apostrophes")]
     [MaxLength(100, ErrorMessage = "Business name is too long")]
     public string? Name { get; set; } = string.Empty;
     [BindProperty]

@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
+using Defra.Trade.Address.V1.ApiClient.Model;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -20,41 +21,36 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
-            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _systemUnderTest = new PostcodeResultModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object)
+            {
+                PageContext = PageModelMockingUtils.MockPageContext()
+            };
         }
 
         [Test]
         public async Task OnGetAsync_ReturnsLogisticsLocations()
         {
             // arrange
-            var logisticsLocations = new List<LogisticsLocationDto>
+            var logisticsLocations = new List<AddressDto>
             {
-                new LogisticsLocationDto()
+                new AddressDto("1234", null, null, null, null, null, "TES1")
                 {
-                    Name = "Test 2",
-                    Id = Guid.NewGuid(),
-                    NI_GBFlag = "GB",
-                    Address = new TradeAddressDto()
-                    {
-                        LineOne = "line 1",
-                        CityName = "city",
-                        PostCode = "TES1",
-                    }
+                    Address = "Test 2, line 1, city, TES1"
                 }
             };
             var id = Guid.NewGuid();
             var postcode = "TES1";
 
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
+            _mockEstablishmentService.Setup(x => x.GetTradeAddressApiByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(false);
             // act
             await _systemUnderTest!.OnGetAsync(id, postcode);
 
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
-            _systemUnderTest.EstablishmentsList[0].Text.Should().Be("Test 2, line 1, city, TES1");
-            _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Id.ToString());
+            _systemUnderTest.EstablishmentsList![0].Text.Should().Be("Test 2, line 1, city, TES1");
+            _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Uprn);
             }
 
         [Test]
@@ -64,14 +60,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.Postcode = "TES1";
             _systemUnderTest!.TradePartyId = Guid.NewGuid();
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
-
-            var logisticsLocations = new LogisticsLocationDto
-            {
-                TradePartyId = _systemUnderTest!.TradePartyId,
-                Id = Guid.NewGuid()
-            };
-
-            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -97,7 +85,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Id = Guid.NewGuid()
             };
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            //_mockEstablishmentService.Setup(x => x.AddEstablishmentToPartyAsync(logisticsLocations).Result).Returns(logisticsLocations.TradePartyId);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -111,8 +98,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGet_HeadingSetToParameter_Successfully()
         {
             //Arrange
-            var expectedHeading = "Add a place of destination (optional)";
-            var expectedContentText = "Add all establishments in Northern Ireland where your goods go after the port of entry. For example, a hub or store.";
+            var expectedHeading = "Add a place of destination";
+            var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult<List<LogisticsLocationDto>?>(new List<LogisticsLocationDto>() { new LogisticsLocationDto() }));
@@ -135,6 +122,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var redirectResult = result as RedirectToPageResult;
 
             redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+        }
+
+        [Test]
+        public async Task OnGetAsync_RedirectRegisteredBusiness()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), It.IsAny<string>());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
     }
 }

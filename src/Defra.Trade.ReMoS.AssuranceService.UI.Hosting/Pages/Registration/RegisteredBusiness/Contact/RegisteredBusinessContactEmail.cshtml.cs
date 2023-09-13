@@ -42,6 +42,11 @@ public class RegisteredBusinessContactEmailModel : PageModel
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
+        if (_traderService.IsTradePartySignedUp(id).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
+
         _logger.LogInformation("Email OnGet");
 
         await GetEmailAddressFromApiAsync();

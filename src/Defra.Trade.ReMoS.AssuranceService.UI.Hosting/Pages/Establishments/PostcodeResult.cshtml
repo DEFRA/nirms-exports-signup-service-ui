@@ -5,9 +5,13 @@
     ViewData["Title"] = "Postcode search result";
 }
 
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+        <form class="form" method="post">
         @if (!ModelState.IsValid)
         {
             if (ModelState.Any(x => x.Key == nameof(Model.EstablishmentsList)))
@@ -51,7 +55,6 @@
 
 
 
-        <form class="form" method="post">
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="NI_GBFlag" />
             <h1 class="govuk-heading-l">
@@ -78,7 +81,7 @@
                 </div>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">Select address</button>
+            <button class="govuk-button" disabled="@Model.IsSubmitDisabled" asp-page-handler="submit">Select address</button>
 
             <details class="govuk-details" data-module="govuk-details">
                 <summary class="govuk-details__summary">
@@ -87,10 +90,10 @@
                     </span>
                 </summary>
                 <div class="govuk-details__text">
-                    <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                    You can <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
                        asp-route-id="@Model.TradePartyId"
                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
-                        Add the establishment address manually
+                        enter the full establishment address
                     </a>
                 </div>
             </details>

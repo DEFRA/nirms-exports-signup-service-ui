@@ -49,6 +49,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
+            if (_traderService.IsTradePartySignedUp(id).Result)
+            {
+                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+            }
 
             var party = await GetSignatoryEmailFromApiAsync();
             BusinessName = party?.PracticeName;
@@ -83,7 +87,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             }
 
             return RedirectToPage(
-                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                Routes.Pages.Path.EstablishmentPostcodeSearchPath,
                 new { id = TraderId, NI_GBFlag = countryFlag });
         }
 

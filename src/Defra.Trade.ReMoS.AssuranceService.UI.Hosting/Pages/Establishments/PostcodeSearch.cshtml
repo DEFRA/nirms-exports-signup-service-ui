@@ -5,6 +5,29 @@
     ViewData["Title"] = "Enter Establishment postcode";
 }
 
+@section Back{
+    @{
+        var referer = ViewContext.HttpContext.Request.Headers["Referer"].ToString();
+        if (referer.Contains(Routes.RegistrationCheckYourAnswers))
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+   asp-route-id="@Model.TradePartyId"
+   class="govuk-back-link">Back</a>
+        }
+        else if (referer.Contains(Routes.AdditionalEstablishmentAddress))
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
+   asp-route-id="@Model.TradePartyId"
+   asp-route-NI_GBFlag="@Model.NI_GBFlag"
+   class="govuk-back-link">Back to dashboard</a>
+        }
+        else
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+        }
+    }
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ErrorSummary" model="ModelState" />
@@ -24,15 +47,34 @@
                     <p class="govuk-hint" id="search-places-of-dispatch">
                         @Model.ContentText
                     </p>
-                    <p id="Postcode_Error" class="govuk-error-message" gds-validation-for="Postcode"></p>
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-warning-text__assistive">Warning</span>
+                            You do not need to enter establishments that do not belong to your business.
+                        </strong>
+                    </div>
+               
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" asp-for="Postcode">Establishment postcode</label>
+                        <p id="Postcode_Error" class="govuk-error-message" gds-validation-for="Postcode"></p>
                         <input class="govuk-input" asp-for="Postcode" type="search">
                     </div>
                 </fieldset>
             </div>
 
             <button class="govuk-button" asp-page-handler="submit">Find establishment</button>
+
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        @Model.ContextHint
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    You can enter the details of your business' main address – for example, the head office.
+                </div>
+            </details>
         </form>
 
     </div>

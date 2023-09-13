@@ -1,4 +1,5 @@
-﻿using Defra.Trade.Common.Security.Authentication.Interfaces;
+﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
@@ -31,6 +32,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         protected Mock<IHttpClientFactory> _mockHttpClientFactory = new();
         protected Mock<HttpMessageHandler> _mockHttpMessageHandler = new();
         private readonly Mock<IAuthenticationService> _mockAuthenticationService = new();
+
+        [SetUp]
+        public void Setup() 
+        {
+            var appConfigurationSettings = new AppConfigurationService();
+            appConfigurationSettings.SubscriptionKey = "testkey";
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+        }
 
         [Test]
         public async Task Integration_Returns_TradeParties_When_Calling_GetAllTradePartiesAsync()
@@ -893,6 +903,83 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Assert
             _mockHttpClientFactory.Verify();
+        }
+
+        [Test]
+        public async Task GetTradeAddresApiByPostcodeAsync_ReturnsAddress()
+        {
+            // arrange
+            var postcode = "TES1";
+            var addressDto = new AddressDto("123", null, null, null, null, null, postcode);
+            var addressesDto = new List<AddressDto>()
+            {
+                addressDto
+            };
+
+            var jsonString = JsonConvert.SerializeObject(addressesDto, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent,
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            // Act
+            var returnedValue = await _apiIntegration!.GetTradeAddresApiByPostcodeAsync(postcode);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Count.Should().Be(1);
+            returnedValue[0].Uprn.Should().Be("123");
+            returnedValue[0].Postcode.Should().Be(postcode);
+        }
+
+        [Test]
+        public async Task GetLogisticsLocationByUprnAsync_ReturnsLocation()
+        {
+            // Arrange
+            var uprn = "123";
+            var logisticsLocation = new LogisticsLocationDto()
+            {
+                Name = "Test 2",
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDto()
+                {
+                    LineOne = "line 1",
+                    CityName = "city",
+                    PostCode = "TES1",
+                }    
+            };
+            var jsonString = JsonConvert.SerializeObject(logisticsLocation, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent,
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            // Act
+            var returnedValue = await _apiIntegration!.GetLogisticsLocationByUprnAsync(uprn);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue.Should().BeOfType<LogisticsLocationDto>();
         }
     }
 }

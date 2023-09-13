@@ -120,8 +120,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 NatureOfBusiness = "Test nature"
             };
 
-            var list = new List<LogisticsLocationDto> 
-            { 
+            var list = new List<LogisticsLocationDto>
+            {
                 new LogisticsLocationDto() { NI_GBFlag = "NI"}
             };
 
@@ -147,7 +147,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             {
                 Id = Guid.NewGuid(),
                 FboNumber = "fbonum-123456-fbonum",
-                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB"}
+                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" }
             };
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -338,7 +338,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 RegulationsConfirmed = true
             };
 
-
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
@@ -356,7 +355,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
         public void GetBusinessDetailsProgress_Status_InProgress()
         {
             // Arrange
-            var tradeParty = new TradePartyDto { PartyName = "Test", PracticeName = "Test"};
+            var tradeParty = new TradePartyDto { PartyName = "Test", PracticeName = "Test" };
             var expectedStatus = TaskListStatus.INPROGRESS;
 
             var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
@@ -418,16 +417,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             // Arrange
             var tradeParty = new TradePartyDto
             {
-                Contact = new TradeContactDto() 
-                { 
+                Contact = new TradeContactDto()
+                {
                     PersonName = "Test",
                     Email = "Email",
                     Position = "Position",
                     TelephoneNumber = "12345678901",
-                    IsAuthorisedSignatory = isAuthSig 
+                    IsAuthorisedSignatory = isAuthSig
                 },
-                AuthorisedSignatory = new AuthorisedSignatoryDto() 
-                { 
+                AuthorisedSignatory = new AuthorisedSignatoryDto()
+                {
                     Id = Guid.NewGuid(),
                     Name = name,
                     Position = position,
@@ -512,6 +511,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
             var redirectResult = result as RedirectToPageResult;
 
             redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+        }
+
+        [Test]
+        public async Task OnGetAsync_RedirectRegisteredBusiness()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
     }
 }

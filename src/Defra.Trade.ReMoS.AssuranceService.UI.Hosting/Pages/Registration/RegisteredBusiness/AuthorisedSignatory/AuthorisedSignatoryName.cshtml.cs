@@ -13,9 +13,9 @@ public class AuthorisedSignatoryNameModel : PageModel
 {
     #region ui model
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, apostrophes and hyphens")]
+    [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-    [Required(ErrorMessage = "Enter a Full name")]
+    [Required(ErrorMessage = "Enter a name")]
     public string Name { get; set; } = string.Empty;
     [BindProperty]
     public string? BusinessName { get; set; }
@@ -40,6 +40,10 @@ public class AuthorisedSignatoryNameModel : PageModel
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
             return RedirectToPage("/Errors/AuthorizationError");
+        }
+        if (_traderService.IsTradePartySignedUp(id).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
         _logger.LogInformation("Name OnGet");

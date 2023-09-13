@@ -19,7 +19,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
     public string OptionSelected { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter an FBO number containing only letters, numbers or hyphens")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter an FBO number using only letters, numbers or hyphens")]
     [MaxLength(25, ErrorMessage = "FBO number must be 25 characters or less")]
     public string? FboNumber { get; set; } = string.Empty;
 
@@ -44,6 +44,10 @@ public class RegisteredBusinessFboNumberModel : PageModel
         if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
         {
             return RedirectToPage("/Errors/AuthorizationError");
+        }
+        if (_traderService.IsTradePartySignedUp(TraderId).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
         await PopulateModelProperties();

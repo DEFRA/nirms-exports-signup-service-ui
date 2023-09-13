@@ -34,6 +34,7 @@ public static class Routes
     public const string AccessibilityStatement = "/accessibility-statement";
     public const string PrivacyPolicy = "/privacy-policy";
     public const string Cookies = "/cookies";
+    public const string PostcodeNoResult = "/establishment-postcode-no-result";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -68,7 +69,8 @@ public static class Routes
         (Pages.Path.ContactDetailsPath, ContactDetails),
         (Pages.Path.AccessibilityStatementPath, AccessibilityStatement),
         (Pages.Path.PrivacyPolicyPath, PrivacyPolicy),
-        (Pages.Path.CookiesPath, Cookies)
+        (Pages.Path.CookiesPath, Cookies),
+        (Pages.Path.PostcodeNoResultPath, PostcodeNoResult)
     };
 
     public static class Pages
@@ -107,6 +109,7 @@ public static class Routes
             public const string AccessibilityStatementName = "AccessibilityStatement";
             public const string PrivacyPolicyName = "Privacy";
             public const string CookiesName = "Cookies";
+            public const string PostcodeNoResultName = "PostcodeNoResult";
         }
 
         public static class Path
@@ -143,6 +146,7 @@ public static class Routes
             public const string AccessibilityStatementPath = $"/Footer/{Names.AccessibilityStatementName}";
             public const string PrivacyPolicyPath = $"/Footer/{Names.PrivacyPolicyName}";
             public const string CookiesPath = $"/Footer/{Names.CookiesName}";
+            public const string PostcodeNoResultPath = $"/Establishments/{Names.PostcodeNoResultName}";
         }
     }
 }

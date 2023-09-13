@@ -13,6 +13,7 @@ public class RegisteredBusinessCanNotRegisterModel : PageModel
     public IActionResult OnGet(Guid id)
     {
         TraderId = id;
+        
         return Page();
     }
 }

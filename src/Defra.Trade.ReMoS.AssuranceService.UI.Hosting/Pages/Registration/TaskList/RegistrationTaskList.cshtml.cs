@@ -29,6 +29,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
         public string? Country { get; set; }
         public bool EstablishmentsAdded { get; set; }
+        public int EstablishmentsCount { get; set; }
         #endregion
 
         private readonly ILogger<RegistrationTaskListModel> _logger;
@@ -53,6 +54,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
             {
                 return RedirectToPage("/Errors/AuthorizationError");
+            }
+            if (_traderService.IsTradePartySignedUp(RegistrationID).Result)
+            {
+                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }
 
             TradePartyDto tradeParty = await GetAPIData();
@@ -100,11 +105,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
             if (Country != "NI" && establishments != null && establishments!.Any(x => x.NI_GBFlag == "GB"))
             {
+                EstablishmentsCount = establishments!.Count(x => x.NI_GBFlag == "GB");
                 EstablishmentsAdded = true;
             }
 
             if (Country == "NI" && establishments != null && establishments!.Any(x => x.NI_GBFlag == "NI"))
             {
+                EstablishmentsCount = establishments!.Count(x => x.NI_GBFlag == "NI");
                 EstablishmentsAdded = true;
             }
 

@@ -43,6 +43,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
+            if (_traderService.IsTradePartySignedUp(id).Result)
+            {
+                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+            }
 
             _logger.LogInformation("IsAuthorisedSignatory onGet");
             var party = await GetIsAuthorisedSignatoryFromApiAsync();
@@ -81,7 +85,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 }
 
                 return RedirectToPage(
-                    Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                    Routes.Pages.Path.EstablishmentPostcodeSearchPath,
                     new { id = TradePartyId, NI_GBFlag = countryFlag });
             }
 
@@ -150,18 +154,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         Contact = new TradeContactDto()
                         {
                             Id = ContactId,
-                            PersonName = tradeParty?.Contact?.PersonName,
-                            Email = tradeParty?.Contact?.Email,
-                            Position = tradeParty?.Contact?.Position,
-                            TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                            PersonName = tradeParty.Contact?.PersonName,
+                            Email = tradeParty.Contact?.Email,
+                            Position = tradeParty.Contact?.Position,
+                            TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
                             IsAuthorisedSignatory = isSignatory
                         },
                         AuthorisedSignatory = new AuthorisedSignatoryDto()
                         {
                             Id = SignatoryId,
-                            Name = tradeParty?.Contact?.PersonName,
-                            EmailAddress = tradeParty?.Contact?.Email,
-                            Position = tradeParty?.Contact?.Position,
+                            Name = tradeParty.Contact?.PersonName,
+                            EmailAddress = tradeParty.Contact?.Email,
+                            Position = tradeParty.Contact?.Position,
                             TradePartyId = TradePartyId
                         }
                     };
@@ -177,10 +181,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                             Contact = new TradeContactDto()
                             {
                                 Id = ContactId,
-                                PersonName = tradeParty?.Contact?.PersonName,
-                                Email = tradeParty?.Contact?.Email,
-                                Position = tradeParty?.Contact?.Position,
-                                TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                                PersonName = tradeParty.Contact?.PersonName,
+                                Email = tradeParty.Contact?.Email,
+                                Position = tradeParty.Contact?.Position,
+                                TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
                                 IsAuthorisedSignatory = isSignatory
                             },
                             AuthorisedSignatory = new AuthorisedSignatoryDto()
@@ -201,10 +205,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                             Contact = new TradeContactDto()
                             {
                                 Id = ContactId,
-                                PersonName = tradeParty?.Contact?.PersonName,
-                                Email = tradeParty?.Contact?.Email,
-                                Position = tradeParty?.Contact?.Position,
-                                TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
+                                PersonName = tradeParty.Contact?.PersonName,
+                                Email = tradeParty.Contact?.Email,
+                                Position = tradeParty.Contact?.Position,
+                                TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
                                 IsAuthorisedSignatory = isSignatory
                             },
                             AuthorisedSignatory = authroisedSignatory

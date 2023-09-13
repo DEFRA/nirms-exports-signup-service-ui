@@ -30,6 +30,11 @@ public class EligibilityRegulationsModel : PageModel
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
+        if (_traderService.IsTradePartySignedUp(TraderId).Result)
+        {
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
+
 
         _logger.LogInformation("Eligibility Regulations OnGet");
 

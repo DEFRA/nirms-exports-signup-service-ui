@@ -3,7 +3,8 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-
+using Microsoft.AspNetCore.Mvc;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -12,11 +13,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
     {
         private PostcodeSearchModel? _systemUnderTest;
         protected Mock<ILogger<PostcodeSearchModel>> _mockLogger = new();
+        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new PostcodeSearchModel(_mockLogger.Object);
+            _systemUnderTest = new PostcodeSearchModel(_mockLogger.Object, _mockTraderService.Object);
+            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
         }
 
         [Test]
@@ -93,6 +97,66 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Assert
             validation.Count.Should().Be(1);
             expectedResult.Should().Be(validation[0].ErrorMessage);
-        }        
+        }
+
+        [Test]
+        public async Task OnGetAsync_InvalidOrgId()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+        }
+
+        [Test]
+        public async Task OnGet_HeadingSetToParameter_Successfully()
+        {
+            //Arrange
+            var expectedHint = "If your place of destination belongs to a different business";
+            var expectedHeading = "Add a place of destination";
+            var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            //Act
+            await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
+
+            //Assert
+            _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
+            _systemUnderTest.ContentText.Should().Be(expectedContentText);
+            _systemUnderTest.ContextHint.Should().Be(expectedHint);
+        }
+
+        [Test]
+        public async Task OnGetAsync_RedirectRegisteredBusiness()
+        {
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+            var redirectResult = result as RedirectToPageResult;
+
+            redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
+
+        [TestCase("bt1 4tg", "NI", 0, null)]
+        [TestCase("sw9 9tf", "NI", 1, "Enter a postcode in Northern Ireland")]
+        [TestCase("bt1 5tg", "GB", 1, "Enter a postcode in England, Scotland or Wales")]
+        [TestCase("sw9 6th", "GB", 0, null)]
+        public async Task OnPostSubmitAsync_PostcodeError(string postcode, string NI_GBFlag, int errorCount, string? errorMessage)
+        {
+            // arrange
+            _systemUnderTest!.Postcode = postcode;
+            _systemUnderTest.NI_GBFlag = NI_GBFlag;
+
+            // act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            // assert
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(errorCount);
+            if (errorCount != 0) _systemUnderTest.ModelState.Values.First().Errors.First().ErrorMessage.Should().Be(errorMessage);
+            else _systemUnderTest.ModelState.Values.Should().BeEmpty();
+        }
     }
 }

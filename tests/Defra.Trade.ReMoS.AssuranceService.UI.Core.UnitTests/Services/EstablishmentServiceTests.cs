@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -154,6 +155,58 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Assert
             _mockApiIntegration.Verify();
             returnedValue.Should().Be(true);
+        }
+
+        [Test]
+        public async Task GetTradeAddressApiByPostcodeAsync_ReturnsTrue()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+            var postcode = "TES1";
+            var addressDto = new AddressDto("123", null, null, null, null, null, postcode);
+            var addressesDto = new List<AddressDto>()
+            {
+                addressDto
+            };
+
+            _mockApiIntegration.Setup(x => x.GetTradeAddresApiByPostcodeAsync(postcode)).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetTradeAddresApiByPostcodeAsync(postcode)).Returns(Task.FromResult(addressesDto)!);
+
+            // Act
+            var returnedValue = await _establishmentService.GetTradeAddressApiByPostcodeAsync(postcode);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().BeEquivalentTo(addressesDto);
+        }
+
+        [Test]
+        public async Task GetLogisticsLocationByUprnAsync_ReturnsTrue()
+        {
+            // Arrange
+            _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+            var uprn = "123";
+            var logisticsLocation = new LogisticsLocationDto()
+            {
+                Name = "Test 2",
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDto()
+                {
+                    LineOne = "line 1",
+                    CityName = "city",
+                    PostCode = "TES1",
+                }
+            };
+
+            _mockApiIntegration.Setup(x => x.GetLogisticsLocationByUprnAsync(uprn)).Verifiable();
+            _mockApiIntegration.Setup(x => x.GetLogisticsLocationByUprnAsync(uprn)).Returns(Task.FromResult(logisticsLocation)!);
+
+            // Act
+            var returnedValue = await _establishmentService.GetLogisticsLocationByUprnAsync(uprn);
+
+            // Assert
+            _mockApiIntegration.Verify();
+            returnedValue.Should().BeEquivalentTo(logisticsLocation);
         }
     }
 }
