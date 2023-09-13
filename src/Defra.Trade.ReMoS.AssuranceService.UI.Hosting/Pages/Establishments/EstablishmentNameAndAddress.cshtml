@@ -47,7 +47,15 @@
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint">The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
+                    @if(Model.NI_GBFlag == "GB")
+                    {
+                        <p class="govuk-hint">The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
+                    }
+                    else
+                    {
+                        <p class="govuk-hint">The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
+                    }
+
 
                     <div class="govuk-warning-text">
                         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
