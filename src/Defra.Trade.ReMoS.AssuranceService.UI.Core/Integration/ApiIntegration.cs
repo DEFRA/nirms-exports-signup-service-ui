@@ -77,13 +77,13 @@ public class ApiIntegration : IApiIntegration
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"TradeParties/Organisation/{orgId}");
 
-        if (response.IsSuccessStatusCode)
+        if ((int)response.StatusCode == StatusCodes.Status200OK)
         {
             return await JsonSerializer.DeserializeAsync<TradePartyDto>(
                 await response.Content.ReadAsStreamAsync(),
                 options: _jsonSerializerOptions) ?? new TradePartyDto();
         }
-        else if ((int)response.StatusCode == StatusCodes.Status404NotFound)
+        else if ((int)response.StatusCode == StatusCodes.Status404NotFound || (int)response.StatusCode == StatusCodes.Status204NoContent)
         {
             return null;
         }
