@@ -100,6 +100,23 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
+        public async Task OnPostSubmit_SubmitInValidPostcode_ModelIsInvalid()
+        {
+            //Arrange
+            _systemUnderTest!.Postcode = "TEST";
+            var expectedResult = "Enter a real postcode";
+            _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
+
+            //Assert
+            validation.Count.Should().Be(1);
+            expectedResult.Should().Be(validation[0].ErrorMessage);
+        }
+
+        [Test]
         public async Task OnGetAsync_InvalidOrgId()
         {
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);

@@ -10,9 +10,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
     public class PostcodeSearchModel : PageModel
     {
         #region UI Models
+
         [BindProperty]
-        //[RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a valid postcode.")]
-        [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Postcode must only contain letters or numbers")]
+        [RegularExpression(@"^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) ?[0-9][A-Za-z]{2})$", ErrorMessage = "Enter a real postcode")]
         [StringLength(100, ErrorMessage = "Postcode must be 100 characters or less")]
         [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
@@ -26,7 +26,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
-        #endregion
+
+        #endregion UI Models
 
         private readonly ILogger<PostcodeSearchModel> _logger;
         private readonly ITraderService _traderService;
@@ -38,6 +39,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
         public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
@@ -79,7 +81,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
                 return await OnGetAsync(TradePartyId, NI_GBFlag!);
             }
 
-            if (Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB") )
+            if (Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             {
                 var baseError = "Enter a postcode in England, Scotland or Wales";
                 ModelState.AddModelError(nameof(Postcode), baseError);
@@ -93,8 +95,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             }
 
             return RedirectToPage(
-                Routes.Pages.Path.EstablishmentPostcodeResultPath, 
-                new { id = TradePartyId, postcode = Postcode, NI_GBFlag});
+                Routes.Pages.Path.EstablishmentPostcodeResultPath,
+                new { id = TradePartyId, postcode = Postcode, NI_GBFlag });
         }
     }
 }
