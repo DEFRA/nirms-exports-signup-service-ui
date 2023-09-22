@@ -71,8 +71,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
             var signupStatus = TradePartySignupStatus.New;
 
-
-            tradeParty.ApprovalStatus = TradePartyApprovalStatus.Rejected;
             //if org is rejected, we need to blank it out to allow a retry
             if (tradeParty != null && tradeParty.ApprovalStatus == TradePartyApprovalStatus.Rejected)
                 tradeParty = null;
