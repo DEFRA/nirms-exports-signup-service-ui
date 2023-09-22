@@ -9,6 +9,8 @@ using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Defra.Trade.Address.V1.ApiClient.Model;
+using System.Text.Json.Serialization;
+using static Microsoft.Azure.KeyVault.WebKey.JsonWebKeyVerifier;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -27,8 +29,9 @@ public class ApiIntegration : IApiIntegration
         _httpClientFactory = httpClientFactory;
         _jsonSerializerOptions = new JsonSerializerOptions()
         {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
+        _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         _appConfigurationSettings = appConfigurationSettings;
         _authenticationService = authenticationService;
     }
