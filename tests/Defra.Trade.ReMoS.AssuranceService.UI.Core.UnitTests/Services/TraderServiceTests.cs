@@ -289,6 +289,29 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_Null_When_Rejected()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), 
+                Address = new TradeAddressDto { TradeCountry = "GB" }, 
+                TermsAndConditionsSignedDate = DateTime.Now,
+                ApprovalStatus = TradePartyApprovalStatus.Rejected
+            };
+
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be((null, TradePartySignupStatus.New));
+        }
+
+        [Test]
         public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgress_When_CountryAndFboAndRegulationsFilled()
         {
             // Arrange
