@@ -1,4 +1,6 @@
-﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 public class TradePartyDto
 {
@@ -13,6 +15,7 @@ public class TradePartyDto
     public DateTime AssuranceCommitmentsSignedDate { get; set; }
     public DateTime TermsAndConditionsSignedDate { get; set; }
     public Guid SignUpRequestSubmittedBy { get; set; }
+    public TradePartyApprovalStatus ApprovalStatus { get; set; }
     public TradeAddressDto? Address { get; set; }
     public TradeContactDto? Contact { get; set; }
     public AuthorisedSignatoryDto? AuthorisedSignatory { get; set; }
