@@ -26,7 +26,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
         #endregion ui model variables
 
-        private readonly ILogger<CheckYourAnswersModel> _logger;
+        private readonly ILogger<CheckYourAnswersModel> _logger;    
         private readonly IEstablishmentService _establishmentService;
         private readonly ITraderService _traderService;
         private readonly ICheckAnswersService _checkAnswersService;
@@ -67,6 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
             LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?
                 .Where(x => x.NI_GBFlag == this.NI_GBFlag)
+                .OrderBy(x => x.CreatedDate)
                 .ToList();
 
             if (NI_GBFlag == "NI")
@@ -86,7 +87,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
         {
             await _establishmentService.RemoveEstablishmentAsync(establishmentId);
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?
+                .OrderBy(x => x.CreatedDate)
+                .ToList();
 
             if (LogisticsLocations?.Count > 0)
                 return await OnGetAsync(tradePartyId);

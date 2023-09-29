@@ -70,6 +70,7 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
             .Where(x => x.NI_GBFlag == this.NI_GBFlag)
+            .OrderBy(x => x.CreatedDate)
             .ToList();
 
         return Page();
