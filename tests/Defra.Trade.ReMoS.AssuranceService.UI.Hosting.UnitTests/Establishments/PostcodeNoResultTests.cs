@@ -37,6 +37,7 @@ public class PostcodeNoResultTests : PageModelTestsBase
         _systemUnderTest!.OnGet(Guid.NewGuid(), "NI", "TES1");
 
         // assert
+        _systemUnderTest.ContentCountry.Should().Be("Northern Ireland");
         _systemUnderTest.ContentHeading.Should().Be("Add a place of destination");
         _systemUnderTest.ContentText.Should().Be("The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.");
 
@@ -51,6 +52,7 @@ public class PostcodeNoResultTests : PageModelTestsBase
         _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TES1");
 
         // assert
+        _systemUnderTest.ContentCountry.Should().Be("England, Scotland and Wales");
         _systemUnderTest.ContentHeading.Should().Be("Add a place of dispatch");
         _systemUnderTest.ContentText.Should().Be("The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.");
 
