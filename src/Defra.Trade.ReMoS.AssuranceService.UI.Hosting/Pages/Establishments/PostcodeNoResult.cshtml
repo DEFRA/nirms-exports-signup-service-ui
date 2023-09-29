@@ -7,7 +7,7 @@
 
 @section Back{
     @{
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a >
+        <a asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath" asp-route-NI_GBFlag="@Model.NI_GBFlag" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a >
     }
 }
 
@@ -21,7 +21,7 @@
             </h1>
             <p class="govuk-hint" id="points-of-departure-address-select">@Model.ContentText</p>
 
-            <p class="govuk-!-margin-top-8">0 results for <span class="govuk-!-font-weight-bold">@Model.Postcode</span> in <span class="govuk-!-font-weight-bold">United Kingdom</span></p>
+            <p class="govuk-!-margin-top-8">0 results for <span class="govuk-!-font-weight-bold">@Model.Postcode</span> in <span class="govuk-!-font-weight-bold">@Model.ContentCountry</span></p>
 
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 

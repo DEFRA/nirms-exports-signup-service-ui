@@ -15,6 +15,7 @@ public class PostcodeNoResultModel : PageModel
     public string NI_GBFlag { get; set; } = string.Empty;
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
+    public string? ContentCountry { get; set; } = string.Empty;
     #endregion
 
     private readonly ITraderService _traderService;
@@ -37,11 +38,13 @@ public class PostcodeNoResultModel : PageModel
 
         if (NI_GBFlag == "NI")
         {
+            ContentCountry = "Northern Ireland";
             ContentHeading = "Add a place of destination";
             ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
         else
         {
+            ContentCountry = "England, Scotland and Wales";
             ContentHeading = "Add a place of dispatch";
             ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
