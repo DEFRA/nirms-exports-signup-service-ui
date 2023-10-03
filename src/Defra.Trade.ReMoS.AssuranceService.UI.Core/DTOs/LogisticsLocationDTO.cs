@@ -1,4 +1,6 @@
-﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 public class LogisticsLocationDto
 {
@@ -13,4 +15,5 @@ public class LogisticsLocationDto
 
     public TradePartyDto? Party { get; set; }
     public TradeAddressDto? Address { get; set; }
+    public LogisticsLocationApprovalStatus ApprovalStatus { get; set; }
 }

@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -218,7 +219,8 @@ public class EstablishmentNameAndAddressModel : PageModel
         var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper()
         && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
         && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper()
-        && x.Id != EstablishmentId);
+        && x.Id != EstablishmentId
+        && x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected);
 
         if (duplicates.Any())
         {
