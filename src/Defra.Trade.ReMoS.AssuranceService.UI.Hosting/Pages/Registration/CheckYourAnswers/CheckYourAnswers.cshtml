@@ -215,6 +215,9 @@
                                         location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty
                                         )
                                         @(
+                                        location.Address?.County != null ? $"{location.Address?.County}," : string.Empty
+                                        )
+                                        @(
                                         location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty
                                         )
                                     </dd>
