@@ -295,7 +295,7 @@ public class ApiIntegration : IApiIntegration
         switch (errResponseMessage)
         {
             case "\"Establishment already exists\"":
-                throw new BadHttpRequestException(await response.Content.ReadAsStringAsync());
+                throw new BadHttpRequestException(errResponseMessage);
         }
 
         throw new BadHttpRequestException("null return from API");

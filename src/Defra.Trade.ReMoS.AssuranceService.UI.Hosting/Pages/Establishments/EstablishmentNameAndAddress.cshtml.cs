@@ -124,11 +124,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         }
 
 
-        if (await CheckForDuplicateAsync())
-        {
-            ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
-        }
+
 
         try
         {
@@ -212,20 +208,4 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     }
 
-    public async Task<bool> CheckForDuplicateAsync()
-    {
-        var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
-
-        var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper()
-        && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
-        && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper()
-        && x.Id != EstablishmentId
-        && x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected);
-
-        if (duplicates.Any())
-        {
-            return true;
-        }
-        return false;
-    }
 }

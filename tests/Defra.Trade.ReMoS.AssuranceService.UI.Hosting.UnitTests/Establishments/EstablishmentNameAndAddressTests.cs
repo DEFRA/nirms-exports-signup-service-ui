@@ -8,6 +8,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Defra.Trade.Address.V1.ApiClient.Model;
+using Microsoft.AspNetCore.Http;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -71,6 +72,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockEstablishmentService
+                .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
+                .Throws(new BadHttpRequestException("error message"));
+                
 
             _systemUnderTest!.EstablishmentName = "Test name";
             _systemUnderTest!.LineOne = "Line one";
@@ -97,6 +102,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockEstablishmentService
+                .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
+                .Throws(new BadHttpRequestException("error message"));
 
             _systemUnderTest!.EstablishmentName = "Test name";
             _systemUnderTest!.LineOne = "Line one";
@@ -310,127 +318,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Verify(x => x.UpdateEstablishmentDetailsAsync(It.IsAny<LogisticsLocationDto>()), Times.Once());
         }
 
-        [Test]
-        public async Task CheckForDuplicateAsync_WhenUpdatingEstablishment_ReturnsFalse()
-        {
-            //Arrange
-            var logisticsLocation = new LogisticsLocationDto
-            {
-                Name = "Test name",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" }
-            };
-            var list = new List<LogisticsLocationDto> { logisticsLocation };
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-
-            _systemUnderTest!.EstablishmentId = logisticsLocation.Id;
-            _systemUnderTest!.EstablishmentName = "new name";
-            _systemUnderTest!.LineOne = logisticsLocation.Address.LineOne;
-            _systemUnderTest!.LineTwo = logisticsLocation.Address.LineTwo;
-            _systemUnderTest!.CityName = logisticsLocation.Address.CityName;
-            _systemUnderTest!.County = logisticsLocation.Address.County;
-            _systemUnderTest!.PostCode = logisticsLocation.Address.PostCode;
-
-            //Act
-            var result = await _systemUnderTest.CheckForDuplicateAsync();
-
-            //Assert
-            result.Should().BeFalse();
-        }
-
-        [Test]
-        public async Task CheckForDuplicateAsync_WhenCreatingEstablishment_ReturnsFalse()
-        {
-            //Arrange
-            var logisticsLocation = new LogisticsLocationDto
-            {
-                Name = "Test name",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" }
-            };
-            var list = new List<LogisticsLocationDto> { logisticsLocation };
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-
-            _systemUnderTest!.EstablishmentId = null;
-            _systemUnderTest!.EstablishmentName = "new name";
-            _systemUnderTest!.LineOne = logisticsLocation.Address.LineOne;
-            _systemUnderTest!.LineTwo = logisticsLocation.Address.LineTwo;
-            _systemUnderTest!.CityName = logisticsLocation.Address.CityName;
-            _systemUnderTest!.County = logisticsLocation.Address.County;
-            _systemUnderTest!.PostCode = logisticsLocation.Address.PostCode;
-
-            //Act
-            var result = await _systemUnderTest.CheckForDuplicateAsync();
-
-            //Assert
-            result.Should().BeFalse();
-        }
-
-        [Test]
-        public async Task CheckForDuplicateAsync_WhenCreatingDuplicateEstablishment_ReturnsTrue()
-        {
-            //Arrange
-            var logisticsLocation = new LogisticsLocationDto
-            {
-                Name = "Test name",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" }
-            };
-            var list = new List<LogisticsLocationDto> { logisticsLocation };
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-
-            _systemUnderTest!.EstablishmentId = null;
-            _systemUnderTest!.EstablishmentName = logisticsLocation.Name;
-            _systemUnderTest!.LineOne = logisticsLocation.Address.LineOne;
-            _systemUnderTest!.LineTwo = logisticsLocation.Address.LineTwo;
-            _systemUnderTest!.CityName = logisticsLocation.Address.CityName;
-            _systemUnderTest!.County = logisticsLocation.Address.County;
-            _systemUnderTest!.PostCode = logisticsLocation.Address.PostCode;
-
-            //Act
-            var result = await _systemUnderTest.CheckForDuplicateAsync();
-
-            //Assert
-            result.Should().BeTrue();
-        }
-
-        [Test]
-        public async Task CheckForDuplicateAsync_WhenUpdatingToDuplicateEstablishment_ReturnsTrue()
-        {
-            //Arrange
-            var logisticsLocation = new LogisticsLocationDto
-            {
-                Name = "Test name",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" }
-            };
-            var logisticsLocation2 = new LogisticsLocationDto
-            {
-                Name = "Test name 2",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" }
-            };
-            var list = new List<LogisticsLocationDto> { logisticsLocation, logisticsLocation2 };
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-
-            _systemUnderTest!.EstablishmentId = logisticsLocation.Id;
-            _systemUnderTest!.EstablishmentName = logisticsLocation2.Name;
-            _systemUnderTest!.LineOne = logisticsLocation.Address.LineOne;
-            _systemUnderTest!.LineTwo = logisticsLocation.Address.LineTwo;
-            _systemUnderTest!.CityName = logisticsLocation.Address.CityName;
-            _systemUnderTest!.County = logisticsLocation.Address.County;
-            _systemUnderTest!.PostCode = logisticsLocation.Address.PostCode;
-
-            //Act
-            var result = await _systemUnderTest.CheckForDuplicateAsync();
-
-            //Assert
-            result.Should().BeTrue();
-        }
+      
 
         [Test]
         public async Task OnGetAsync_RedirectRegisteredBusiness()
