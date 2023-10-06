@@ -247,6 +247,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             _systemUnderTest!.AddAddressesComplete = "yes";
+            var logisticsLocation = new LogisticsLocationDto()
+            {
+                Id = new Guid()
+            };
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
+            _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
 
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
@@ -262,6 +268,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
             _systemUnderTest!.AddAddressesComplete = "yes";
+            var logisticsLocation = new LogisticsLocationDto()
+            {
+                Id = new Guid()
+            };
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
+            _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
@@ -277,6 +289,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             var list = new List<LogisticsLocationDto> { };
             _systemUnderTest!.AddAddressesComplete = "yes";
+            var logisticsLocation = new LogisticsLocationDto()
+            {
+                Id = new Guid()
+            };
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
+            _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
             //Act
