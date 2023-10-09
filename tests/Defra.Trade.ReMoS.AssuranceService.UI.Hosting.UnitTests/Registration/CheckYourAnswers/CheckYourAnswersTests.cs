@@ -101,11 +101,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
-            var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
             var logisticsLocations = new List<LogisticsLocationDto> { };
+            var logisticsLocation = new LogisticsLocationDto()
+            {
+                Id = Guid.NewGuid(),
+            };
+            var establishmentId = logisticsLocation.Id;
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id).Result).Returns(logisticsLocation);
+            _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
 
-            _mockEstablishmentService.Setup(x => x.RemoveEstablishmentAsync(establishmentId).Result);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
 
             // act

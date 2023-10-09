@@ -16,4 +16,5 @@ public class LogisticsLocationDto
     public TradePartyDto? Party { get; set; }
     public TradeAddressDto? Address { get; set; }
     public LogisticsLocationApprovalStatus ApprovalStatus { get; set; }
+    public bool IsRemoved { get; set; }
 }

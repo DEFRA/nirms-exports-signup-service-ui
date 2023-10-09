@@ -135,7 +135,10 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
     public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
-        await _establishmentService.RemoveEstablishmentAsync(establishmentId);
+        var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
+        logisticsLocation!.IsRemoved = true;
+        await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
+
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
 
         if (LogisticsLocations?.Count > 0)
