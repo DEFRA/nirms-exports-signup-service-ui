@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -42,7 +43,7 @@ public class EstablishmentNameAndAddressModel : PageModel
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode" )]
+    [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode")]
     [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a postcode")]
     public string PostCode { get; set; } = string.Empty;
@@ -115,42 +116,50 @@ public class EstablishmentNameAndAddressModel : PageModel
     {
         _logger.LogInformation("Establishment manual address OnPostSubmit");
 
+        Guid? establishmentId = Guid.Empty;
+
         if (!ModelState.IsValid)
         {
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
 
-        if(await CheckForDuplicateAsync())
+
+
+        try
         {
-            string place;
-            if (NI_GBFlag == "NI")
-            {
-                place = "destination";
-            }
-            else
-            {
-                place = "dispatch";
-            }
-
-            var baseError = $"This address has already been added as a place of {place} - enter a different address";
-
-            ModelState.AddModelError(nameof(EstablishmentName), baseError);
+            establishmentId = await SaveEstablishmentDetails();
+        }
+        catch (BadHttpRequestException)
+        {
+            ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
-        
-
-        var establishmentId = await SaveEstablishmentDetails();
 
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath, 
+            Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
+    }
+
+    private string GenerateDuplicateError()
+    {
+        string place;
+        if (NI_GBFlag == "NI")
+        {
+            place = "destination";
+        }
+        else
+        {
+            place = "dispatch";
+        }
+
+        return $"This address has already been added as a place of {place} - enter a different address";
 
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()
     {
-        var establishmentDto = new LogisticsLocationDto() { Address = new TradeAddressDto()};
+        var establishmentDto = new LogisticsLocationDto() { Address = new TradeAddressDto() };
 
         if (EstablishmentId != Guid.Empty && EstablishmentId != null)
         {
@@ -165,7 +174,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         establishmentDto.Address.PostCode = PostCode;
         establishmentDto.NI_GBFlag = NI_GBFlag;
 
-        if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null) 
+        if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null)
         {
             return await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, establishmentDto);
         }
@@ -196,22 +205,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         CityName = establishment?.Address?.CityName ?? string.Empty;
         County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
-       
+
     }
 
-    public async Task<bool> CheckForDuplicateAsync()
-    {
-        var existingEstablishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
-
-        var duplicates = existingEstablishments!.Where(x => x.Name!.ToUpper() == EstablishmentName.ToUpper()
-        && x.Address!.LineOne!.ToUpper() == LineOne.ToUpper()
-        && x.Address!.PostCode!.Replace(" ", "").ToUpper() == PostCode.Replace(" ", "").ToUpper()
-        && x.Id != EstablishmentId);
-
-        if (duplicates.Any())
-        {
-            return true;
-        }
-        return false;
-    }
 }

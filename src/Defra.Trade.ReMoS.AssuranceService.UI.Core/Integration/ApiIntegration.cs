@@ -283,11 +283,21 @@ public class ApiIntegration : IApiIntegration
             {
                 results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
+
+            if (results != Guid.Empty)
+            {
+                return results;
+            }
         }
-        if (results != Guid.Empty)
+
+        var errResponseMessage = await response.Content.ReadAsStringAsync();
+        
+        switch (errResponseMessage)
         {
-            return results;
+            case "\"Establishment already exists\"":
+                throw new BadHttpRequestException(errResponseMessage);
         }
+
         throw new BadHttpRequestException("null return from API");
     }
 
