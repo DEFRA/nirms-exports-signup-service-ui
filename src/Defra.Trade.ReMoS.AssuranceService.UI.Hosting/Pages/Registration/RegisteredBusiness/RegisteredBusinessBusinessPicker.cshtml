@@ -54,12 +54,12 @@
                         else
                         {
                             <div class="govuk-radios" data-module="govuk-radios">
-                                @foreach (KeyValuePair<Guid, string> business in Model.Businesses)
+                                @foreach (var business in Model.Businesses)
                                 {
                                     <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="@business.Key" id="@business.Key" onchange="RemoveUnregisteredBusinessError()">
-                                        <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="@business.Key">
-                                            @business.Value
+                                        <input class="govuk-radios__input" type="radio" asp-for="SelectedBusiness" value="@business.OrganisationId" id="@business.OrganisationId" onchange="RemoveUnregisteredBusinessError()">
+                                        <label class="govuk-label govuk-radios__label" asp-for="SelectedBusiness" for="@business.OrganisationId">
+                                            @business.PracticeName
                                         </label>
                                     </div>
                                 }

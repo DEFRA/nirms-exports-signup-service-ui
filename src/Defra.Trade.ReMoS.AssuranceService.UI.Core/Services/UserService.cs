@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
@@ -15,28 +16,12 @@ public class UserService : IUserService
     /// </summary>
     /// <param name="user"></param>
     /// <returns>A dictionary of user's organisations as key, name pairs</returns>
-    public Dictionary<Guid, string> GetDefraOrgsForUser(ClaimsPrincipal user)
+    public List<Organisation> GetDefraOrgsForUser(ClaimsPrincipal user)
     {
-        var userOrgsClaim = user.FindFirst("userEnrolledOrganisations");
-        Dictionary<Guid, string> orgsDict = new Dictionary<Guid, string>();
-
-        if (userOrgsClaim == null)
-            return orgsDict;
-
-        var orgs = JsonConvert.DeserializeObject<List<Organisation>>(userOrgsClaim.Value);
-
-        if (orgs != null && orgs.Count > 0)
-        {
-            foreach (var org in orgs)
-            {
-                if (!orgsDict.ContainsKey(org.organisationId))
-                {
-                    orgsDict.Add(org.organisationId, org.practiceName);
-                }
-            }
-        }
-
-        return orgsDict;
+        var orgs = new List<Organisation>();
+        orgs.AddRange(GetOrgs(user, "userEnrolledOrganisations")!);
+        orgs.AddRange(GetOrgs(user, "notEnrolledUserOrganisations"));
+        return orgs;
     }
 
     /// <summary>
@@ -52,5 +37,51 @@ public class UserService : IUserService
             return Guid.Empty;
 
         return Guid.Parse(userContactIdClaim.Value);
+    }
+
+    public Organisation? GetOrgDetailsById(ClaimsPrincipal user, Guid orgId)
+    {
+        var orgs = GetDefraOrgsForUser(user);
+        return orgs.Find(org => org.OrganisationId == orgId);
+    }
+
+    private static List<Organisation> GetOrgs(ClaimsPrincipal user, string orgType)
+    {
+        var orgsClaim = user.FindFirst(orgType);
+
+        if (orgsClaim == null)
+            return new List<Organisation>();
+
+        var orgs = JsonConvert.DeserializeObject<List<Organisation>>(orgsClaim.Value);
+
+        if (orgs == null)
+        {
+            return new List<Organisation>();
+        }
+
+        orgs = RemoveDuplicates(orgs);
+
+        return orgs;
+    }   
+
+    private static List<Organisation> RemoveDuplicates(List<Organisation> orgs)
+    {
+        var n = orgs.Count;
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                if (orgs[i].Equals(orgs[j]))
+                {
+                    orgs.RemoveAt(j);
+                    j--;
+                    n--;
+                }
+            }
+        }
+
+        var distinctList = orgs.Take(n).ToList();
+        return distinctList;
     }
 }
