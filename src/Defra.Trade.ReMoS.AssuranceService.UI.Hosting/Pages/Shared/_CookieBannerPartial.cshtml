@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var showBanner = this.Context.Request.Cookies["seen_cookie_message"] != null ? false : true;    
+}
+
+@if (showBanner)
+{
+    <div class="govuk-cookie-banner " data-nosnippet="" role="region" aria-label="Cookies on Northern Ireland Retail Movement Scheme">
+        <div id="cookieConsent" class="govuk-cookie-banner__message govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-cookie-banner__heading govuk-heading-m">Cookies on Northern Ireland Retail Movement Scheme</h2>
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">We use some essential cookies to make this service work.</p>
+                        <p class="govuk-body">We’d like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button value="yes" type="submit" id="accept-cookies" name="cookies[additional]" class="govuk-button">
+                    Accept additional cookies
+                </button>
+                <button value="no" type="submit" id="reject-cookies" name="cookies[additional]" class="govuk-button">
+                    Reject additional cookies
+                </button>
+                <a class="govuk-link" href="../Footer/Cookies" target="_blank" rel="noopener noreferrer">View cookies</a>
+            </div>
+        </div>
+
+        <div id="hide-accepted" class="govuk-cookie-banner__message govuk-width-container" style="display:none;">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">You’ve accepted additional cookies. You can <a class="govuk-link" href="../Footer/Cookies" target="_blank" rel="noopener noreferrer">change your cookie settings</a> at any time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button value="yes" type="submit" name="cookies[hide]" class="govuk-button">
+                    Hide cookie message
+                </button>
+                <script>
+                    (function () {
+                        var buttonRef = document.getElementById("hide-accepted");
+                        buttonRef.addEventListener("click", function (event) {
+                            document.getElementById("hide-accepted").style.display = 'none';
+                        }, false)
+                    })();
+                </script>
+            </div>
+        </div>
+
+        <div id="hide-rejected" class="govuk-cookie-banner__message govuk-width-container" style="display:none;">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">You’ve rejected additional cookies. You can <a class="govuk-link" href="../Footer/Cookies" target="_blank" rel="noopener noreferrer">change your cookie settings</a> at any time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button value="yes" type="submit" name="cookies[hide]" class="govuk-button">
+                    Hide cookie message
+                </button>
+                <script>
+                    (function () {
+                        var buttonRef = document.getElementById("hide-rejected");
+                        buttonRef.addEventListener("click", function (event) {
+                            document.getElementById("hide-rejected").style.display = 'none';
+                        }, false)
+                    })();
+                </script>
+            </div>
+        </div>
+        <script>
+            (function () {
+                var buttonRef = document.getElementById("accept-cookies");
+                buttonRef.addEventListener("click", function (event) {
+                    setCookie("seen_cookie_message", "yes");
+                    setCookie("cookie_policy", "accept");
+                    document.getElementById("cookieConsent").style.display = 'none';
+                    document.getElementById("hide-accepted").style.display = 'block';
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-JHVKVL9M7R');
+                }, false)
+                var buttonRef = document.getElementById("reject-cookies");
+                buttonRef.addEventListener("click", function (event) {
+                    setCookie("seen_cookie_message", "yes");
+                    setCookie("cookie_policy", "reject");
+                    document.getElementById("cookieConsent").style.display = 'none';
+                    document.getElementById("hide-rejected").style.display = 'block';
+                }, false)
+            })();
+            function setCookie(cname, cvalue) {
+                if (!isCookieExists(cname)) {
+                    const d = new Date();
+                    d.setTime(d.getTime() + (2 * 365 * 24 * 60 * 60 * 1000));
+                    let expires = "expires=" + d.toUTCString();
+                    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
+            };
+            function isCookieExists(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        </script>
+    </div>
+}
