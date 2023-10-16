@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Footer;
 
@@ -14,9 +15,11 @@ public class CookiesModel : PageModel
     [Required(ErrorMessage = "Select if you want to accept Google Analytics cookies")]
     public string? Analytics { get; set; } = string.Empty;
 
-    public CookiesModel() 
-    { 
-    
+    private readonly ILogger<CookiesModel> _logger;
+
+    public CookiesModel(ILogger<CookiesModel> logger) 
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     #endregion
@@ -33,6 +36,8 @@ public class CookiesModel : PageModel
         {
             return OnGet();
         }
+
+        _logger.LogInformation("OnPostAsync cookies");
 
         Response.Cookies.Delete("seen_cookie_message");
         Response.Cookies.Delete("cookie_policy");
