@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div id="hide-accepted" class="govuk-cookie-banner__message govuk-width-container" style="display:none;">
+        <div id="hide-accepted" class="govuk-cookie-banner__message govuk-width-container" role="alert" style="display:none;">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-cookie-banner__content">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div id="hide-rejected" class="govuk-cookie-banner__message govuk-width-container" style="display:none;">
+        <div id="hide-rejected" class="govuk-cookie-banner__message govuk-width-container" role="alert" style="display:none;">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-cookie-banner__content">
@@ -77,10 +77,7 @@
             (function () {
                 var buttonRef = document.getElementById("accept-cookies");
                 buttonRef.addEventListener("click", function (event) {
-                    setCookie("seen_cookie_message", "yes");
-                    setCookie("cookie_policy", "accept");
-                    document.getElementById("cookieConsent").style.display = 'none';
-                    document.getElementById("hide-accepted").style.display = 'block';
+                    showMessage("accept", "hide-accepted");
                     window.dataLayer = window.dataLayer || [];
                     function gtag() { dataLayer.push(arguments); }
                     gtag('js', new Date());
@@ -88,21 +85,25 @@
                 }, false)
                 var buttonRef = document.getElementById("reject-cookies");
                 buttonRef.addEventListener("click", function (event) {
-                    setCookie("seen_cookie_message", "yes");
-                    setCookie("cookie_policy", "reject");
-                    document.getElementById("cookieConsent").style.display = 'none';
-                    document.getElementById("hide-rejected").style.display = 'block';
+                    showMessage("reject", "hide-rejected");
                 }, false)
             })();
+            function showMessage(cookiePolicy, element) {
+                setCookie("seen_cookie_message", "yes");
+                setCookie("cookie_policy", cookiePolicy);
+                document.getElementById("cookieConsent").style.display = 'none';
+                document.getElementById(element).style.display = 'block';
+                document.getElementById(element).tabIndex = -1;
+            };
             function setCookie(cname, cvalue) {
-                if (!isCookieExists(cname)) {
+                if (!cookieExists(cname)) {
                     const d = new Date();
                     d.setTime(d.getTime() + (2 * 365 * 24 * 60 * 60 * 1000));
                     let expires = "expires=" + d.toUTCString();
                     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
                 }
             };
-            function isCookieExists(cname) {
+            function cookieExists(cname) {
                 let name = cname + "=";
                 let decodedCookie = decodeURIComponent(document.cookie);
                 let ca = decodedCookie.split(';');
