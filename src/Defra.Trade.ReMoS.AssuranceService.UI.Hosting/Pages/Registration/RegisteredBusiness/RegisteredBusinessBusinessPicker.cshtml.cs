@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class RegisteredBusinessBusinessPickerModel : PageModel
 {
     #region model properties
-    public Dictionary<Guid, string> Businesses { get; set; } = default!;
+    public List<Organisation> Businesses { get; set; } = default!;
 
     [BindProperty]
     [Required(ErrorMessage = "Select a business")]
@@ -132,8 +133,8 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         BusinessSelectList.AddRange(Businesses.Select(keyValuePair => new SelectListItem()
         {
-            Value = keyValuePair.Key.ToString(),
-            Text = keyValuePair.Value
+            Value = keyValuePair.OrganisationId.ToString(),
+            Text = keyValuePair.PracticeName
         }));
 
         BusinessSelectList.Insert(0, new SelectListItem("Choose business", null));
@@ -151,7 +152,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         var partyDto = new TradePartyDto
         {
             OrgId = Guid.Parse(SelectedBusiness!),
-            PracticeName = Businesses[Guid.Parse(SelectedBusiness!)],
+            PracticeName = Businesses.First(x => x.OrganisationId == Guid.Parse(SelectedBusiness!)).PracticeName,
         };
 
         TraderId = await _traderService.CreateTradePartyAsync(partyDto);

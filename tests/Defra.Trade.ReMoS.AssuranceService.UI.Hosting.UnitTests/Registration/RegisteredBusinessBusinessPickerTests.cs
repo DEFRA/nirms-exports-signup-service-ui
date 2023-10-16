@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Microsoft.AspNetCore.Mvc;
@@ -47,16 +48,16 @@ public class RegisteredBusinessBusinessPickerTests
     {
         //Arrange
         _systemUnderTest!.TraderId = Guid.NewGuid();
-        var userOrgs = new Dictionary<Guid, string>
+        var userOrgs = new List<Organisation>
         {
-            { Guid.NewGuid(), "org1" },
-            { Guid.NewGuid(), "org2" },
-            { Guid.NewGuid(), "org3" },
-            { Guid.NewGuid(), "org4" },
-            { Guid.NewGuid(), "org5" },
-            { Guid.NewGuid(), "org6" },
-            { Guid.NewGuid(), "org7" },
-            { Guid.NewGuid(), "org8" }
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org1", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org2", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org3", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org4", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org5", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org6", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org7", Enrolled = false, UserRole = "Standard" },
+            new Organisation {OrganisationId = Guid.NewGuid(), PracticeName = "org8", Enrolled = false, UserRole = "Standard" },
         };
 
         _mockUserService
@@ -102,8 +103,8 @@ public class RegisteredBusinessBusinessPickerTests
     public async Task OnPostSubmitAsync_When_SignupStatus_Is_New_RedirectToCountryPage()
     {
         // Arrange
-        var userOrgs = new Dictionary<Guid, string>();
-        userOrgs.Add(Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), "org1");
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = false, UserRole = "Standard"});
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
@@ -128,8 +129,8 @@ public class RegisteredBusinessBusinessPickerTests
     public async Task OnPostSubmitAsync_When_SignupSTatus_Is_Complete_RedirectToAlreadyRegisteredPage()
     {
         // Arrange
-        var userOrgs = new Dictionary<Guid, string>();
-        userOrgs.Add(Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), "org1");
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = false, UserRole = "Standard" });
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
@@ -154,8 +155,8 @@ public class RegisteredBusinessBusinessPickerTests
     public async Task OnPostSubmitAsync_When_SignupSTatus_Is_InProgress_RedirectToTaskListPage()
     {
         // Arrange
-        var userOrgs = new Dictionary<Guid, string>();
-        userOrgs.Add(Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), "org1");
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = false, UserRole = "Standard" });
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
