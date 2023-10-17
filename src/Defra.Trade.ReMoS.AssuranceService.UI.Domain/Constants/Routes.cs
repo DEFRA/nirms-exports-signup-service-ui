@@ -35,6 +35,8 @@ public static class Routes
     public const string PrivacyPolicy = "/privacy-policy";
     public const string Cookies = "/cookies";
     public const string PostcodeNoResult = "/establishment-postcode-no-result";
+    public const string RegisterBusinessForExporterService = "/register-business-error-admin";
+    public const string RegisterBusinessForExporterServiceNonAdmin = "register-business-error-non-admin";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -70,7 +72,10 @@ public static class Routes
         (Pages.Path.AccessibilityStatementPath, AccessibilityStatement),
         (Pages.Path.PrivacyPolicyPath, PrivacyPolicy),
         (Pages.Path.CookiesPath, Cookies),
-        (Pages.Path.PostcodeNoResultPath, PostcodeNoResult)
+        (Pages.Path.PostcodeNoResultPath, PostcodeNoResult),
+        (Pages.Path.RegisterBusinessForExporterServicePath, RegisterBusinessForExporterService),
+        (Pages.Path.RegisterBusinessForExporterServiceNonAdminPath, RegisterBusinessForExporterServiceNonAdmin),
+
     };
 
     public static class Pages
@@ -110,6 +115,8 @@ public static class Routes
             public const string PrivacyPolicyName = "Privacy";
             public const string CookiesName = "Cookies";
             public const string PostcodeNoResultName = "PostcodeNoResult";
+            public const string RegisterBusinessForExporterServiceName = "RegisterBusinessForExporterService";
+            public const string RegisterBusinessForExporterServiceNonAdminName = "RegisterBusinessForExporterServiceNonAdmin";
         }
 
         public static class Path
@@ -147,6 +154,8 @@ public static class Routes
             public const string PrivacyPolicyPath = $"/Footer/{Names.PrivacyPolicyName}";
             public const string CookiesPath = $"/Footer/{Names.CookiesName}";
             public const string PostcodeNoResultPath = $"/Establishments/{Names.PostcodeNoResultName}";
+            public const string RegisterBusinessForExporterServicePath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceName}";
+            public const string RegisterBusinessForExporterServiceNonAdminPath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceNonAdminName}";
         }
     }
 }

@@ -1,7 +1,10 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -23,7 +26,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     [BindProperty]
     [Required(ErrorMessage = "Select a business")]
     public string? SelectedBusiness { get; set; } = default!;
-    public Guid TraderId { get; set; }    
+    public Guid TraderId { get; set; }
     public List<SelectListItem> BusinessSelectList { get; set; } = new()!;
     #endregion
 
@@ -46,11 +49,11 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         _logger.LogInformation("Business picker OnGet");
         Businesses = _userService.GetDefraOrgsForUser(User);
 
-        if (Businesses?.Count > 7 ) 
+        if (Businesses?.Count > 7)
         {
             BuildBusinessSelectList();
         }
-        
+
         return Page();
     }
 
@@ -58,7 +61,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnPostSubmit");
 
-        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(SelectedBusiness))
         {
             SelectedBusiness = null;
             ModelState.AddModelError("SelectedBusiness", "Select a business");
@@ -67,11 +70,40 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             ModelState.AddModelError("UnregisteredBusiness", "UnregisteredBusiness");
-        }    
+        }
+
+        if (!Guid.TryParse(SelectedBusiness, out _))
+        {
+            ModelState.AddModelError(nameof(SelectedBusiness), "Guid for Selected Business is not valid");
+            return OnGet();
+        }
+
+        var orgDetails = _userService.GetOrgDetailsById(User, Guid.Parse(SelectedBusiness!));
+        if (orgDetails == null)
+        {
+            ModelState.AddModelError(nameof(SelectedBusiness), "Business not found");
+        }
 
         if (!ModelState.IsValid)
         {
             return OnGet();
+        }
+
+        if (!orgDetails!.Enrolled)
+        {
+            if (orgDetails.UserRole == DefraOrgUserRoles.Admin.ToString())
+            {
+                return RedirectToPage(Routes.Pages.Path.RegisterBusinessForExporterServicePath);
+            }
+            else if (orgDetails.UserRole == DefraOrgUserRoles.Standard.ToString())
+            {
+                return RedirectToPage(Routes.Pages.Path.RegisterBusinessForExporterServiceNonAdminPath);
+            }
+            else
+            {
+                ModelState.AddModelError(nameof(SelectedBusiness), "User role not found");
+                return OnGet();
+            }
         }
 
         /* get business sign-up status from trader service
@@ -81,52 +113,41 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
          * if COMPLETE (T&C checked), redirect to error page
          */
 
-        if (Guid.TryParse(SelectedBusiness, out _))
+        var (tradeParty, signupStatus) = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
+        TraderId = (tradeParty != null) ? tradeParty.Id : Guid.Empty;
+
+        switch (signupStatus)
         {
-            var (tradeParty, signupStatus) = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
-            TraderId = (tradeParty != null) ? tradeParty.Id : Guid.Empty;
-
-            switch (signupStatus)
-            {
-                case Core.Enums.TradePartySignupStatus.New:
-                    await SaveSelectedBusinessToApi();
-                    return RedirectToPage(
-                        Routes.Pages.Path.RegisteredBusinessCountryPath,
-                        new { id = TraderId });
-                case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
-                    return RedirectToPage(
-                        Routes.Pages.Path.RegisteredBusinessCountryPath,
-                        new { id = TraderId });
-                case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
-                    return RedirectToPage(
-                        Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-                        new { id = TraderId });
-                case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
-                    return RedirectToPage(
-                        Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                        new { id = TraderId });
-                case Core.Enums.TradePartySignupStatus.InProgress:
-                    return RedirectToPage(
-                        Routes.Pages.Path.RegistrationTaskListPath,
-                        new { id = TraderId });
-                case Core.Enums.TradePartySignupStatus.Complete:
-                    return RedirectToPage(
-                        Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                        new { id = TraderId });
-            }
+            case Core.Enums.TradePartySignupStatus.New:
+                await SaveSelectedBusinessToApi();
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessCountryPath,
+                    new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessCountryPath,
+                    new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+                    new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                    new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.InProgress:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegistrationTaskListPath,
+                    new { id = TraderId });
+            case Core.Enums.TradePartySignupStatus.Complete:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
+                    new { id = TraderId });
         }
-        else
-        {
-            ModelState.AddModelError(nameof(SelectedBusiness), "Guid for Selected Business is not valid");
-            return OnGet();
-        }
-
-
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
             new { id = TraderId });
-
     }
 
     private void BuildBusinessSelectList()
@@ -156,5 +177,12 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         };
 
         TraderId = await _traderService.CreateTradePartyAsync(partyDto);
+    }
+
+    public async Task<IActionResult> OnGetRefreshBusinesses()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        return RedirectToPage("/Index");
     }
 }

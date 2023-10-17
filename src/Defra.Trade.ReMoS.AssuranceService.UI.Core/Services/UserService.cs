@@ -20,6 +20,10 @@ public class UserService : IUserService
     {
         var orgs = new List<Organisation>();
         orgs.AddRange(GetOrgs(user, "userEnrolledOrganisations")!);
+        foreach (var org in orgs)
+        {
+            org.Enrolled = true;
+        }
         orgs.AddRange(GetOrgs(user, "notEnrolledUserOrganisations"));
         return orgs;
     }
