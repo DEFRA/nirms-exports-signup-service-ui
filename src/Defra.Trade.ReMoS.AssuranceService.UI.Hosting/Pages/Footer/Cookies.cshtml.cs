@@ -39,19 +39,25 @@ public class CookiesModel : PageModel
 
         _logger.LogInformation("OnPostAsync cookies");
 
+        var cookieOptions = new CookieOptions() 
+        { 
+            Expires = DateTime.UtcNow.AddMonths(12), 
+            IsEssential = true, 
+            Secure = true 
+        };
         Response.Cookies.Delete("seen_cookie_message");
         Response.Cookies.Delete("cookie_policy");
-        Response.Cookies.Append("seen_cookie_message", "yes", new CookieOptions { Expires = DateTime.UtcNow.AddMonths(12), IsEssential = true });
+        Response.Cookies.Append("seen_cookie_message", "yes", cookieOptions);
 
         if (Analytics == "reject")
         {
-            Response.Cookies.Append("cookie_policy", "reject", new CookieOptions { Expires = DateTime.UtcNow.AddMonths(12), IsEssential = true });
+            Response.Cookies.Append("cookie_policy", "reject", cookieOptions);
             Response.Cookies.Delete("_ga_JHVKVL9M7R");
             Response.Cookies.Delete("_ga");
         }
         else
         {
-            Response.Cookies.Append("cookie_policy", "accept", new CookieOptions { Expires = DateTime.UtcNow.AddMonths(12), IsEssential = true });
+            Response.Cookies.Append("cookie_policy", "accept", cookieOptions);
         }
 
         return RedirectToPage(Routes.Pages.Path.CookiesPath);

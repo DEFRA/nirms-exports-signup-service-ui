@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http.Features
 
 @{
-    var showBanner = this.Context.Request.Cookies["seen_cookie_message"] != null ? false : true;    
+    var showBanner = this.Context.Request.Cookies["seen_cookie_message"] == null;    
 }
 
 @if (showBanner)
