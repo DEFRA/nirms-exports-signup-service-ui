@@ -187,29 +187,19 @@ public class EstablishmentNameAndAddressModel : PageModel
     private bool DoesInputPassValidation()
     {
         if (EstablishmentName != null && EstablishmentName.Length > 100)
-        {
             ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
-        }
 
         if (LineOne != null && LineOne.Length > 50)
-        {
             ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");
-        }
 
         if (LineTwo != null && LineTwo.Length > 50)
-        {
             ModelState.AddModelError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
-        }
 
         if (CityName != null && CityName.Length > 100)
-        {
             ModelState.AddModelError(nameof(CityName), "Town or city must be 100 characters or less");
-        }
 
         if (PostCode != null && PostCode.Length > 100)
-        {
             ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
-        }
 
         if (!ModelState.IsValid || ModelState.ErrorCount > 0)
             return false;
