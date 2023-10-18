@@ -13,13 +13,11 @@ public class RegisteredBusinessAddressModel : PageModel
     #region ui model variables
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens or apostrophes")]
-    [StringLength(50, ErrorMessage = "Address line 1 must be 50 characters or less")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens or apostrophes")]
-    [StringLength(50, ErrorMessage = "Address line 2 must be 50 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
@@ -86,11 +84,33 @@ public class RegisteredBusinessAddressModel : PageModel
             return await OnGetAsync();
         }
 
+        if (LineOne != null && LineOne.Length > 50)
+        {
+            return await GenerateError(nameof(LineOne), "Address line 1 must be 50 characters or less");
+        }
+
+        if (LineTwo != null && LineTwo.Length > 50)
+        {
+            return await GenerateError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
+        }
+
+        if (CityName != null && CityName.Length > 100)
+        {
+            return await GenerateError(nameof(CityName), "Town or city must be 100 characters or less");
+        }
+
+        if (PostCode != null && PostCode.Length > 100)
+        {
+            return await GenerateError(nameof(PostCode), "Post code must be 100 characters or less");
+        }
+
         await SubmitAddress();
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessContactNamePath, 
             new { id = TraderId });
     }
+
+
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
@@ -99,6 +119,32 @@ public class RegisteredBusinessAddressModel : PageModel
         if (!ModelState.IsValid)
         {
             return await OnGetAsync();
+        }
+
+        if (LineOne != null && LineOne.Length > 50)
+        {
+            return await GenerateError(nameof(LineOne), "Address line 1 must be 50 characters or less");
+        }
+
+        if (LineTwo != null && LineTwo.Length > 50)
+        {
+            return await GenerateError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
+        }
+
+        if (CityName != null && CityName.Length > 100)
+        {
+            return await GenerateError(nameof(CityName), "Town or city must be 100 characters or less");
+        }
+
+        if (PostCode != null && PostCode.Length > 100)
+        {
+            return await GenerateError(nameof(PostCode), "Post code must be 100 characters or less");
+        }
+
+        if (LineTwo != null && LineTwo.Length > 50)
+        {
+            ModelState.AddModelError(nameof(LineTwo), "");
+            return await OnGetAsync(TraderId);
         }
 
         await SubmitAddress();
@@ -148,6 +194,12 @@ public class RegisteredBusinessAddressModel : PageModel
             CityName = tradeParty.Address.CityName ?? string.Empty;
             PostCode = tradeParty.Address.PostCode ?? string.Empty;
         }
+    }
+
+    private async Task<IActionResult> GenerateError(string key, string message)
+    {
+        ModelState.AddModelError(key, message);
+        return await OnGetAsync(TraderId);
     }
     #endregion
 }

@@ -14,7 +14,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     {
         #region ui model
         [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-        [StringLength(100, ErrorMessage = "Email is too long")]
         [BindProperty]
         [Required(ErrorMessage = "Enter an email address")]
         public string? Email { get; set; }
@@ -69,6 +68,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 return await OnGetAsync(TraderId);
             }
 
+            if (Email != null && Email.Length > 100)
+            {
+                return await GenerateError(nameof(Email), "Email is too long");
+            }
+
             await SubmitEmail();
 
             string countryFlag = "GB";
@@ -99,6 +103,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             if (!ModelState.IsValid)
             {
                 return await OnGetAsync(TraderId);
+            }
+
+            if (Email != null && Email.Length > 100)
+            {
+                return await GenerateError(nameof(Email), "Email is too long");
             }
 
             await SubmitEmail();
@@ -141,6 +150,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     EmailAddress = Email
                 }
             };
+        }
+
+        private async Task<IActionResult> GenerateError(string key, string message)
+        {
+            ModelState.AddModelError(key, message);
+            return await OnGetAsync(TraderId);
         }
     }
 }

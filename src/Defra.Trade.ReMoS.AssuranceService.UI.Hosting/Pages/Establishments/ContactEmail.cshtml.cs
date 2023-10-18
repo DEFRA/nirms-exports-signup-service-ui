@@ -14,7 +14,6 @@ public class ContactEmailModel : PageModel
 {
     #region UI Models
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-    [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
@@ -83,11 +82,23 @@ public class ContactEmailModel : PageModel
             return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
+        if (Email != null && Email.Length > 100)
+        {
+            return await GenerateError(nameof(Email), "Email is too long");
+        }
+
         await SaveEmailToApi();
 
         return RedirectToPage(
             Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
             new { id = TradePartyId, NI_GBFlag});
+    }
+
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = tradePartyId, establishmentId, NI_GBFlag });
     }
 
     private async Task SaveEmailToApi()
@@ -101,10 +112,9 @@ public class ContactEmailModel : PageModel
         }
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    private async Task<IActionResult> GenerateError(string key, string message)
     {
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = tradePartyId, establishmentId, NI_GBFlag });
+        ModelState.AddModelError(key, message);
+        return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
     }
 }
