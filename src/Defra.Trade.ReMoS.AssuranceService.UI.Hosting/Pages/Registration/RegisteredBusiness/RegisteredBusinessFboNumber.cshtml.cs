@@ -20,12 +20,12 @@ public class RegisteredBusinessFboNumberModel : PageModel
     public string? OptionSelected { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter an FBO number using only letters, numbers or hyphens")]
+    [RegularExpression(@"^[a-zA-Z0-9-]*$", ErrorMessage = "Enter an FBO number using only letters, numbers or hyphens")]
     [MaxLength(25, ErrorMessage = "FBO number must be 25 characters or less")]
     public string? FboNumber { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter an FBO number using only letters, numbers or hyphens")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter a PHR number using only letters, numbers, spaces or hyphens")]
     [MaxLength(25, ErrorMessage = "PHR number must be 25 characters or less")]
     public string? PhrNumber { get; set; } = string.Empty;
 
@@ -68,7 +68,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
         if (OptionSelected == "fbo" && string.IsNullOrEmpty(FboNumber))
             ModelState.AddModelError(nameof(FboNumber), "Enter your business' FBO number");
 
-        if (OptionSelected == "phr" && string.IsNullOrEmpty(FboNumber))
+        if (OptionSelected == "phr" && string.IsNullOrEmpty(PhrNumber))
             ModelState.AddModelError(nameof(FboNumber), "Enter your business' PHR number");
 
         if (!ModelState.IsValid)
