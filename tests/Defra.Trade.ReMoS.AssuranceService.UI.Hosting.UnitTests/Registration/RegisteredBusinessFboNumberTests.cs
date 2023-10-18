@@ -31,7 +31,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     public async Task OnGet_IfNoSavedParty_FboNumberShouldBeNull()
     {
         //Arrange
-        var tradePartyId = Guid.Empty;
+        var tradePartyId = Guid.NewGuid();
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
@@ -49,6 +49,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         {
             Id = Guid.NewGuid(),
             FboNumber = "fbonum-123456-fbonum",
+            FboPhrOption = "fbo"
         };
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -60,17 +61,40 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
 
         //Assert
         _systemUnderTest.FboNumber.Should().Be("fbonum-123456-fbonum");
-        _systemUnderTest.OptionSelected.Should().Be("yes");
+        _systemUnderTest.OptionSelected.Should().Be("fbo");
     }
 
     [Test]
-    public async Task OnGet_IfSavedPartyExists_ButNoFboNumberSaved_OptionSelectedShouldBeEmpty()
+    public async Task OnGet_IfSavedPartyExists_PhrNumberShouldBePopulated()
     {
         //Arrange
         TradePartyDto tradePartyFromApi = new TradePartyDto
         {
             Id = Guid.NewGuid(),
-            //FboNumber = "fbonum-123456-fbonum",
+            PhrNumber = "123123",
+            FboPhrOption = "phr"
+        };
+        _mockTraderService
+            .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradePartyFromApi);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+
+        //Act
+        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+
+        //Assert
+        _systemUnderTest.PhrNumber.Should().Be("123123");
+        _systemUnderTest.OptionSelected.Should().Be("phr");
+    }
+
+    [Test]
+    public async Task OnGet_IfSavedPartyExists_ButNoFboNumberSaved_OptionSelectedShouldBeNoney()
+    {
+        //Arrange
+        TradePartyDto tradePartyFromApi = new TradePartyDto
+        {
+            Id = Guid.NewGuid(),
+            FboPhrOption = "none"
         };
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -82,7 +106,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
 
         //Assert
         //_systemUnderTest.FboNumber.Should().BeNull();
-        _systemUnderTest.OptionSelected.Should().Be(string.Empty);
+        _systemUnderTest.OptionSelected.Should().Be("none");
     }
 
     [Test]
@@ -90,7 +114,8 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
-        _systemUnderTest.OptionSelected = "yes";
+        _systemUnderTest.OptionSelected = "fbo";
+        _systemUnderTest.TraderId = Guid.NewGuid();
 
         //Act
         await _systemUnderTest.OnPostAsync();
@@ -116,9 +141,28 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     public async Task OnPostSubmit_SubmitInvalidLength()
     {
         //Arrange
-        _systemUnderTest!.OptionSelected = "yes";
+        _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = new string('1', 26);
+        _systemUnderTest.TraderId = Guid.NewGuid();
         var expectedResult = "FBO number must be 25 characters or less";
+
+        //Act
+        await _systemUnderTest.OnPostAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitPHRInvalidLength()
+    {
+        //Arrange
+        _systemUnderTest!.OptionSelected = "phr";
+        _systemUnderTest!.PhrNumber = new string('1', 26);
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        var expectedResult = "PHR number must be 25 characters or less";
 
         //Act
         await _systemUnderTest.OnPostAsync();

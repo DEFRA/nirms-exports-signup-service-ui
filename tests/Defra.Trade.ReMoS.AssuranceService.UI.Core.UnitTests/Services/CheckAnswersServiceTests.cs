@@ -76,6 +76,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 Address = TradeAddressDTO,
                 Contact = TradeContactDTO,
                 FboNumber = "1234567890",
+                FboPhrOption = "fbo",
                 AuthorisedSignatory = AuthorisedSignatoryDTO,
                 RegulationsConfirmed = true
             };
