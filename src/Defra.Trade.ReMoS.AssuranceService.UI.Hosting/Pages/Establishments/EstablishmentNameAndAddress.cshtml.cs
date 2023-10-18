@@ -113,7 +113,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         Guid? establishmentId = Guid.Empty;
 
-        if(!DoesInputPassValidation())
+        if(!IsInputValid())
         {
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
@@ -184,7 +184,7 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     }
 
-    private bool DoesInputPassValidation()
+    private bool IsInputValid()
     {
         if (EstablishmentName != null && EstablishmentName.Length > 100)
             ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");

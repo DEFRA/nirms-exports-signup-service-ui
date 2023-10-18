@@ -63,14 +63,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             _logger.LogInformation("Signatory Email OnPostSubmit");
 
-            if (!ModelState.IsValid)
+            if (!IsInputValid())
             {
                 return await OnGetAsync(TraderId);
-            }
-
-            if (Email != null && Email.Length > 100)
-            {
-                return await GenerateError(nameof(Email), "Email is too long");
             }
 
             await SubmitEmail();
@@ -100,14 +95,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             _logger.LogInformation("Signatory Email OnPostSave");
 
-            if (!ModelState.IsValid)
+            if (!IsInputValid())
             {
                 return await OnGetAsync(TraderId);
-            }
-
-            if (Email != null && Email.Length > 100)
-            {
-                return await GenerateError(nameof(Email), "Email is too long");
             }
 
             await SubmitEmail();
@@ -152,10 +142,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             };
         }
 
-        private async Task<IActionResult> GenerateError(string key, string message)
+        private bool IsInputValid()
         {
-            ModelState.AddModelError(key, message);
-            return await OnGetAsync(TraderId);
+            if (Email != null && Email.Length > 100)
+                ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
+
+            if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+                return false;
+
+            return true;
         }
     }
 }

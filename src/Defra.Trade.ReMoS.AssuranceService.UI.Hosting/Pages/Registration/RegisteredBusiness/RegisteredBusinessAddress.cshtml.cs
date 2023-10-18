@@ -80,7 +80,7 @@ public class RegisteredBusinessAddressModel : PageModel
         _logger.LogInformation("Address OnPostSubmit");
 
 
-        if (!DoesInputPassValidation())
+        if (!IsInputValid())
         {
             return await OnGetAsync();
         }
@@ -98,7 +98,7 @@ public class RegisteredBusinessAddressModel : PageModel
         _logger.LogInformation("Address OnPostSubmit");
 
 
-        if (!DoesInputPassValidation())
+        if (!IsInputValid())
         {
             return await OnGetAsync();
         }
@@ -152,7 +152,7 @@ public class RegisteredBusinessAddressModel : PageModel
         }
     }
 
-    private bool DoesInputPassValidation()
+    private bool IsInputValid()
     {
         if (LineOne != null && LineOne.Length > 50)
             ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");

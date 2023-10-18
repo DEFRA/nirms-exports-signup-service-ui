@@ -77,14 +77,9 @@ public class ContactEmailModel : PageModel
     {
         _logger.LogInformation("Establishment contact email OnPostSubmit");
 
-        if (!ModelState.IsValid)
+        if (!IsInputValid())
         {
             return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
-        }
-
-        if (Email != null && Email.Length > 100)
-        {
-            return await GenerateError(nameof(Email), "Email is too long");
         }
 
         await SaveEmailToApi();
@@ -112,9 +107,14 @@ public class ContactEmailModel : PageModel
         }
     }
 
-    private async Task<IActionResult> GenerateError(string key, string message)
+    private bool IsInputValid()
     {
-        ModelState.AddModelError(key, message);
-        return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
+        if (Email != null && Email.Length > 100)
+            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
+
+        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
     }
 }
