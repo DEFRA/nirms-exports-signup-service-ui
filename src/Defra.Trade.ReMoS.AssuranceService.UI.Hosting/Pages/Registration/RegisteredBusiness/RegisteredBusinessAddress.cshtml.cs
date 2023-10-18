@@ -79,29 +79,10 @@ public class RegisteredBusinessAddressModel : PageModel
     {
         _logger.LogInformation("Address OnPostSubmit");
 
-        if (!ModelState.IsValid)
+
+        if (!DoesInputPassValidation())
         {
             return await OnGetAsync();
-        }
-
-        if (LineOne != null && LineOne.Length > 50)
-        {
-            return await GenerateError(nameof(LineOne), "Address line 1 must be 50 characters or less");
-        }
-
-        if (LineTwo != null && LineTwo.Length > 50)
-        {
-            return await GenerateError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
-        }
-
-        if (CityName != null && CityName.Length > 100)
-        {
-            return await GenerateError(nameof(CityName), "Town or city must be 100 characters or less");
-        }
-
-        if (PostCode != null && PostCode.Length > 100)
-        {
-            return await GenerateError(nameof(PostCode), "Post code must be 100 characters or less");
         }
 
         await SubmitAddress();
@@ -116,35 +97,10 @@ public class RegisteredBusinessAddressModel : PageModel
     {
         _logger.LogInformation("Address OnPostSubmit");
 
-        if (!ModelState.IsValid)
+
+        if (!DoesInputPassValidation())
         {
             return await OnGetAsync();
-        }
-
-        if (LineOne != null && LineOne.Length > 50)
-        {
-            return await GenerateError(nameof(LineOne), "Address line 1 must be 50 characters or less");
-        }
-
-        if (LineTwo != null && LineTwo.Length > 50)
-        {
-            return await GenerateError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
-        }
-
-        if (CityName != null && CityName.Length > 100)
-        {
-            return await GenerateError(nameof(CityName), "Town or city must be 100 characters or less");
-        }
-
-        if (PostCode != null && PostCode.Length > 100)
-        {
-            return await GenerateError(nameof(PostCode), "Post code must be 100 characters or less");
-        }
-
-        if (LineTwo != null && LineTwo.Length > 50)
-        {
-            ModelState.AddModelError(nameof(LineTwo), "");
-            return await OnGetAsync(TraderId);
         }
 
         await SubmitAddress();
@@ -196,10 +152,39 @@ public class RegisteredBusinessAddressModel : PageModel
         }
     }
 
-    private async Task<IActionResult> GenerateError(string key, string message)
+    private bool DoesInputPassValidation()
     {
-        ModelState.AddModelError(key, message);
-        return await OnGetAsync(TraderId);
+        if (!ModelState.IsValid)
+        {
+            return false;
+        }
+
+        if (LineOne != null && LineOne.Length > 50)
+        {
+            ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");
+            return false;
+        }
+
+        if (LineTwo != null && LineTwo.Length > 50)
+        {
+            ModelState.AddModelError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
+            return false;
+        }
+
+        if (CityName != null && CityName.Length > 100)
+        {
+            ModelState.AddModelError(nameof(CityName), "Town or city must be 100 characters or less");
+            return false;
+        }
+
+        if (PostCode != null && PostCode.Length > 100)
+        {
+            ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
+            return false;
+        }
+
+        return true;
     }
+
     #endregion
 }

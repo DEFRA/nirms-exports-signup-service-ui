@@ -112,39 +112,9 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         Guid? establishmentId = Guid.Empty;
 
-        if (!ModelState.IsValid)
+        if(!DoesInputPassValidation())
         {
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
-        }
-
-        if (EstablishmentName != null && EstablishmentName.Length > 100)
-        {
-            return await GenerateError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
-        }
-
-        if (LineOne != null && LineOne.Length > 50)
-        {
-            return await GenerateError(nameof(LineOne), "Address line 1 must be 50 characters or less");
-        }
-
-        if (LineTwo != null && LineTwo.Length > 50)
-        {
-            return await GenerateError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
-        }
-
-        if (CityName != null && CityName.Length > 100)
-        {
-            return await GenerateError(nameof(CityName), "Town or city must be 100 characters or less");
-        }
-
-        if (County != null && County.Length > 100)
-        {
-            return await GenerateError(nameof(County), "County must be 100 characters or less");
-        }
-
-        if (PostCode != null && PostCode.Length > 100)
-        {
-            return await GenerateError(nameof(PostCode), "Post code must be 100 characters or less");
         }
 
         try
@@ -161,28 +131,6 @@ public class EstablishmentNameAndAddressModel : PageModel
             Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
     }
-
-    private async Task<IActionResult> GenerateError(string key, string message)
-    {
-        ModelState.AddModelError(key, message);
-        return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
-    }
-
-    private string GenerateDuplicateError()
-    {
-        string place;
-        if (NI_GBFlag == "NI")
-        {
-            place = "destination";
-        }
-        else
-        {
-            place = "dispatch";
-        }
-
-        return $"This address has already been added as a place of {place} - enter a different address";
-    }
-
 
     public async Task<Guid?> SaveEstablishmentDetails()
     {
@@ -233,6 +181,61 @@ public class EstablishmentNameAndAddressModel : PageModel
         County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
 
+    }
+
+    private bool DoesInputPassValidation()
+    {
+        if (!ModelState.IsValid)
+        {
+            return false;
+        }
+
+        if (EstablishmentName != null && EstablishmentName.Length > 100)
+        {
+            ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
+            return false;
+        }
+
+        if (LineOne != null && LineOne.Length > 50)
+        {
+            ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");
+            return false;
+        }
+
+        if (LineTwo != null && LineTwo.Length > 50)
+        {
+            ModelState.AddModelError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
+            return false;
+        }
+
+        if (CityName != null && CityName.Length > 100)
+        {
+            ModelState.AddModelError(nameof(CityName), "Town or city must be 100 characters or less");
+            return false;
+        }
+
+        if (PostCode != null && PostCode.Length > 100)
+        {
+            ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
+            return false;
+        }
+
+        return true;
+    }
+
+    private string GenerateDuplicateError()
+    {
+        string place;
+        if (NI_GBFlag == "NI")
+        {
+            place = "destination";
+        }
+        else
+        {
+            place = "dispatch";
+        }
+
+        return $"This address has already been added as a place of {place} - enter a different address";
     }
 
 }
