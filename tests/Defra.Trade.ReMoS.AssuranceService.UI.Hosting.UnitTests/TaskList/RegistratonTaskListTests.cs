@@ -221,6 +221,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 PartyName = "Test",
                 PracticeName = "Test",
                 FboNumber = "123",
+                FboPhrOption = "fbo",
                 NatureOfBusiness = "Test nature",
                 RegulationsConfirmed = true
             };
@@ -278,6 +279,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList
                 PartyName = "Test",
                 PracticeName = "Test",
                 FboNumber = "123",
+                FboPhrOption = "fbo",
                 NatureOfBusiness = "Test nature",
                 RegulationsConfirmed = true
             };

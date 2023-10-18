@@ -28,20 +28,21 @@
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("OptionSelected") ? "OptionSelected_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            Does your business have a Food Business Operator (FBO) number?
+                            Does your business have a Food Business Operator (FBO) or Plant Health Registration (PHR) number?
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint">You will have one if you've registered with your local authority for a <a href="https://www.gov.uk/food-business-registration" target="_blank" rel="noopener noreferrer">food business license</a>.</p>
-                    <p id="OptionSelected_Error" class="govuk-error-message" gds-validation-for="OptionSelected"></p>
+                    <p class="govuk-hint">You will have an FBO number if you’ve registered with your local authority for a <a href="https://www.gov.uk/food-business-registration" target="_blank" rel="noopener noreferrer">food business licence</a>.</p>
+                    <p class="govuk-hint">If your business has both, you only need to provide your FBO number.</p>
 
+                    <p id="OptionSelected_Error" class="govuk-error-message" gds-validation-for="OptionSelected"></p>
                     <div class="govuk-form-group @(ModelState.HasError("OptionSelected") ? "govuk-form-group--error" : null)">
                         <div class="govuk-radios" data-module="govuk-radios" id="OptionSelected">
-                            <!-- YES -->
+                            <!-- Business Has FBO -->
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="OptionSelectedYes" asp-for="OptionSelected" value="yes" aria-controls="conditional-fbo" aria-expanded="false">
-                                <label class="govuk-label govuk-radios__label" for="OptionSelectedYes">
-                                    Yes
+                                <input class="govuk-radios__input" type="radio" id="OptionSelectedFbo" asp-for="OptionSelected" value="fbo" aria-controls="conditional-fbo" aria-expanded="false">
+                                <label class="govuk-label govuk-radios__label" for="OptionSelectedFbo">
+                                    My business has an FBO
                                 </label>
                             </div>
 
@@ -53,18 +54,41 @@
                                         FBO number
                                     </label>
                                     <p id="FBO_Error" class="govuk-error-message" gds-validation-for="FboNumber"></p>
-                                    <input class="govuk-input govuk-!-width-one-third" type="text" asp-for="FboNumber" spellcheck="false" autocomplete="email">
+                                    <input class="govuk-input govuk-!-width-one-third" type="text" asp-for="FboNumber" spellcheck="false">
                                 </div>
                             </div>
                             </div>
 
-                            <!-- NO -->
+                            <!-- Business Has PHR -->
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" type="radio" id="OptionSelectedNo" asp-for="OptionSelected" value="no">
-                                <label class="govuk-label govuk-radios__label" for="OptionSelectedNo">
-                                    No
+                                <input class="govuk-radios__input" type="radio" id="OptionSelectedPhr" asp-for="OptionSelected" value="phr" aria-controls="conditional-phr" aria-expanded="false">
+                                <label class="govuk-label govuk-radios__label" for="OptionSelectedPhr">
+                                    My business has a PHR
                                 </label>
                             </div>
+
+                            <!-- PHR NUMBER -->
+                            <div class="govuk-form-group @(ModelState.HasError("PhrNumber") ? "govuk-form-group--error" : null)">
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-phr">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" asp-for="PhrNumber">
+                                            PHR number
+                                        </label>
+                                        <p id="FBO_Error" class="govuk-error-message" gds-validation-for="PhrNumber"></p>
+                                        <input class="govuk-input govuk-!-width-one-third" type="text" asp-for="PhrNumber" spellcheck="false">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="govuk-radios__divider">or</div>
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="OptionSelectedNone" asp-for="OptionSelected" type="radio" value="none">
+                                <label class="govuk-label govuk-radios__label" for="OptionSelectedNone">
+                                    My business does not have either of these numbers
+                                </label>
+                            </div>
+
                         </div>
                     </div>
                 </fieldset>
