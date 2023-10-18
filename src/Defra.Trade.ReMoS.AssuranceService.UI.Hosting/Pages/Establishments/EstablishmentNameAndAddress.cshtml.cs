@@ -201,6 +201,9 @@ public class EstablishmentNameAndAddressModel : PageModel
         if (PostCode != null && PostCode.Length > 100)
             ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
 
+        if (County != null && County.Length > 100)
+            ModelState.AddModelError(nameof(County), "County must be 100 characters or less");
+
         if (!ModelState.IsValid || ModelState.ErrorCount > 0)
             return false;
 
