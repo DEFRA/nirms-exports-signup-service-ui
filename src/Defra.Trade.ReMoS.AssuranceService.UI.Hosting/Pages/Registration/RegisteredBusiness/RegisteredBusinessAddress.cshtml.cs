@@ -154,34 +154,28 @@ public class RegisteredBusinessAddressModel : PageModel
 
     private bool DoesInputPassValidation()
     {
-        if (!ModelState.IsValid)
-        {
-            return false;
-        }
-
         if (LineOne != null && LineOne.Length > 50)
         {
             ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");
-            return false;
         }
 
         if (LineTwo != null && LineTwo.Length > 50)
         {
             ModelState.AddModelError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
-            return false;
         }
 
         if (CityName != null && CityName.Length > 100)
         {
             ModelState.AddModelError(nameof(CityName), "Town or city must be 100 characters or less");
-            return false;
         }
 
         if (PostCode != null && PostCode.Length > 100)
         {
             ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
-            return false;
         }
+
+        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+            return false;
 
         return true;
     }
