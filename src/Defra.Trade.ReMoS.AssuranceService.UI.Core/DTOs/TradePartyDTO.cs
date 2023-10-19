@@ -11,6 +11,8 @@ public class TradePartyDto
     public string? CountryName { get; set; }
     public string? NatureOfBusiness { get; set; }
     public string? FboNumber { get; set; }
+    public string? PhrNumber { get; set; }
+    public string? FboPhrOption { get; set; }
     public bool RegulationsConfirmed { get; set; }
     public DateTime AssuranceCommitmentsSignedDate { get; set; }
     public DateTime TermsAndConditionsSignedDate { get; set; }

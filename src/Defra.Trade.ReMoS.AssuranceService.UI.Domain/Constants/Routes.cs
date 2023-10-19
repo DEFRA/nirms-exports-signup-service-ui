@@ -8,7 +8,7 @@ public static class Routes
     public const string RegisteredBusinessCountry = "/registered-business-country";
     public const string RegisteredBusinessRegulations = "/registered-business-regulations";
     public const string RegisteredBusinessFboNumber = "/registered-business-fbo-number";
-    public const string RegisteredBusinessCanNotRegister = "/registered-business-cannot-register";
+    public const string RegisteredBusinessFboPhrGuidance = "/registered-business-fbo-phr-guidance";
     public const string RegistrationTasklist = "/registration-tasklist";
     public const string RegisteredBusinessContactName = "/registered-business-contact-name";
     public const string RegisteredBusinessContactPosition = "/registered-business-contact-position";
@@ -35,6 +35,8 @@ public static class Routes
     public const string PrivacyPolicy = "/privacy-policy";
     public const string Cookies = "/cookies";
     public const string PostcodeNoResult = "/establishment-postcode-no-result";
+    public const string RegisterBusinessForExporterService = "/register-business-error-admin";
+    public const string RegisterBusinessForExporterServiceNonAdmin = "register-business-error-non-admin";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -44,7 +46,7 @@ public static class Routes
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
         (Pages.Path.RegisteredBusinessRegulationsPath, RegisteredBusinessRegulations),
         (Pages.Path.RegisteredBusinessFboNumberPath, RegisteredBusinessFboNumber),
-        (Pages.Path.RegisteredBusinessCanNotRegisterPath, RegisteredBusinessCanNotRegister),
+        (Pages.Path.RegisteredBusinessFboPhrGuidancePath, RegisteredBusinessFboPhrGuidance),
         (Pages.Path.RegistrationTaskListPath, RegistrationTasklist),
         (Pages.Path.RegisteredBusinessContactNamePath, RegisteredBusinessContactName),
         (Pages.Path.RegisteredBusinessContactPositionPath, RegisteredBusinessContactPosition),
@@ -70,7 +72,10 @@ public static class Routes
         (Pages.Path.AccessibilityStatementPath, AccessibilityStatement),
         (Pages.Path.PrivacyPolicyPath, PrivacyPolicy),
         (Pages.Path.CookiesPath, Cookies),
-        (Pages.Path.PostcodeNoResultPath, PostcodeNoResult)
+        (Pages.Path.PostcodeNoResultPath, PostcodeNoResult),
+        (Pages.Path.RegisterBusinessForExporterServicePath, RegisterBusinessForExporterService),
+        (Pages.Path.RegisterBusinessForExporterServiceNonAdminPath, RegisterBusinessForExporterServiceNonAdmin),
+
     };
 
     public static class Pages
@@ -83,7 +88,7 @@ public static class Routes
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
             public const string RegisteredBusinessRegulationsName = "EligibilityRegulations";
             public const string RegisteredBusinessFboNumberName = "RegisteredBusinessFboNumber";
-            public const string RegisteredBusinessCanNotRegisterName = "RegisteredBusinessCanNotRegister";
+            public const string RegisteredBusinessFboPhrGuidanceName = "RegisteredBusinessFboPhrGuidance";
             public const string RegistrationTasklistName = "RegistrationTaskList";
             public const string RegisteredBusinessContactNameName = "RegisteredBusinessContactName";
             public const string RegisteredBusinessContactPositionName = "RegisteredBusinessContactPosition";
@@ -110,6 +115,8 @@ public static class Routes
             public const string PrivacyPolicyName = "Privacy";
             public const string CookiesName = "Cookies";
             public const string PostcodeNoResultName = "PostcodeNoResult";
+            public const string RegisterBusinessForExporterServiceName = "RegisterBusinessForExporterService";
+            public const string RegisterBusinessForExporterServiceNonAdminName = "RegisterBusinessForExporterServiceNonAdmin";
         }
 
         public static class Path
@@ -120,7 +127,7 @@ public static class Routes
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryName}";
             public const string RegisteredBusinessRegulationsPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessRegulationsName}";
             public const string RegisteredBusinessFboNumberPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboNumberName}";
-            public const string RegisteredBusinessCanNotRegisterPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessCanNotRegisterName}";
+            public const string RegisteredBusinessFboPhrGuidancePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboPhrGuidanceName}";
             public const string RegistrationTaskListPath = $"/Registration/TaskList/{Names.RegistrationTasklistName}";
             public const string RegisteredBusinessContactNamePath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactNameName}";
             public const string RegisteredBusinessContactPositionPath = $"/Registration/RegisteredBusiness/Contact/{Names.RegisteredBusinessContactPositionName}";
@@ -147,6 +154,8 @@ public static class Routes
             public const string PrivacyPolicyPath = $"/Footer/{Names.PrivacyPolicyName}";
             public const string CookiesPath = $"/Footer/{Names.CookiesName}";
             public const string PostcodeNoResultPath = $"/Establishments/{Names.PostcodeNoResultName}";
+            public const string RegisterBusinessForExporterServicePath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceName}";
+            public const string RegisterBusinessForExporterServiceNonAdminPath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceNonAdminName}";
         }
     }
 }

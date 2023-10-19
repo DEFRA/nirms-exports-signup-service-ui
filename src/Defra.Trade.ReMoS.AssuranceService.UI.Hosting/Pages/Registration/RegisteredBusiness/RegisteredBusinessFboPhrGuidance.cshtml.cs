@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics.CodeAnalysis;
@@ -15,5 +16,12 @@ public class RegisteredBusinessCanNotRegisterModel : PageModel
         TraderId = id;
         
         return Page();
+    }
+
+    public IActionResult OnPostSubmit()
+    {
+        return RedirectToPage(
+                Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                new { id = TraderId });
     }
 }

@@ -4,6 +4,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -23,6 +25,7 @@ public class RegisteredBusinessBusinessPickerTests
     protected Mock<ILogger<RegisteredBusinessBusinessPickerModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
     protected Mock<IUserService> _mockUserService = new();
+    Mock<HttpContext> _httpContextMock = new();
 
     [SetUp]
     public void TestCaseSetup()
@@ -129,8 +132,15 @@ public class RegisteredBusinessBusinessPickerTests
     public async Task OnPostSubmitAsync_When_SignupSTatus_Is_Complete_RedirectToAlreadyRegisteredPage()
     {
         // Arrange
+        var userOrg = new Organisation
+        {
+            OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"),
+            PracticeName = "org1",
+            Enrolled = true,
+            UserRole = "Standard"
+        };
         var userOrgs = new List<Organisation>();
-        userOrgs.Add(new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = false, UserRole = "Standard" });
+        userOrgs.Add(userOrg);
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
@@ -139,6 +149,9 @@ public class RegisteredBusinessBusinessPickerTests
         _mockUserService
             .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
             .Returns(userOrgs);
+        _mockUserService
+            .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+            .Returns(userOrg);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
             new { id = _systemUnderTest.TraderId });
@@ -237,6 +250,147 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_WhenOrgNotEnrolledAndUserIsAdmin_ReturnRegisterBusinessForExporterServicePage()
+    {
+        // Arrange
+        var userOrg = new Organisation
+        {
+            OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"),
+            PracticeName = "org1",
+            Enrolled = false,
+            UserRole = "Admin"
+        };
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(userOrg);
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockUserService
+           .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+           .Returns(userOrg);
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisterBusinessForExporterServicePath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+    }
+    [Test]
+    public async Task OnPostSubmitAsync_WhenOrgNotEnrolledAndUserIsNotAdmin_ReturnRegisterBusinessForExporterServiceNonAdminPage()
+    {
+        // Arrange
+        var userOrg = new Organisation
+        {
+            OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"),
+            PracticeName = "org1",
+            Enrolled = false,
+            UserRole = "Standard"
+        };
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(userOrg);
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockUserService
+           .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+           .Returns(userOrg);
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisterBusinessForExporterServiceNonAdminPath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+    }
+    [Test]
+    public async Task OnPostSubmitAsync_WhenOrgNotEnrolledAndUserNotFoundInToken_ReturnModelError()
+    {
+        // Arrange
+        var userOrg = new Organisation
+        {
+            OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"),
+            PracticeName = "org1",
+            Enrolled = false,
+        };
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(userOrg);
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockUserService
+           .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+           .Returns(userOrg);
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisterBusinessForExporterServicePath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.HasError("SelectedBusiness").Should().BeTrue();
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_WhenNoOrgDetailsRetrievedFromToken_ReturnModelError()
+    {
+        // Arrange
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockUserService
+           .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+           .Returns((Organisation)null!);
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisterBusinessForExporterServicePath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.HasError("SelectedBusiness").Should().BeTrue();
+    }
+
+    [Test]
+    public async Task OnGetRefreshBusinesses_ReturnRedirectToPageResult()
+    {
+        // Arrange
+        var expected = new RedirectToPageResult("/Index");
+
+        //mock the Http Context along with Service provider
+        var mockHttpContext = new Mock<HttpContext>();
+        var authServiceMock = new Mock<IAuthenticationService>();
+        authServiceMock
+            .Setup(_ => _.SignOutAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<AuthenticationProperties>()))
+            .Returns(Task.FromResult((object)null!));
+        var serviceProviderMock = new Mock<IServiceProvider>();
+        serviceProviderMock
+            .Setup(_ => _.GetService(typeof(IAuthenticationService)))
+            .Returns(authServiceMock.Object);
+        mockHttpContext
+            .Setup(x => x.RequestServices)
+            .Returns(serviceProviderMock.Object);
+
+        _systemUnderTest = new RegisteredBusinessBusinessPickerModel(_mockLogger.Object, _mockTraderService.Object, _mockUserService.Object)
+        {
+            PageContext = new Microsoft.AspNetCore.Mvc.RazorPages.PageContext
+            {
+                HttpContext = mockHttpContext.Object
+            }
+        };
+
+        // Act
+        var result = await _systemUnderTest!.OnGetRefreshBusinesses();
+
+        // Assert
         Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
     }
 }

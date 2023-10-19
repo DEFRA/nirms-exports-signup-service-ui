@@ -12,16 +12,19 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 {
     public class IsAuthorisedSignatoryModel : PageModel
     {
-        [BindProperty]      
+        [BindProperty]
         [Required(ErrorMessage = "Select if the contact person is the authorised representative")]
         public string? IsAuthorisedSignatory { get; set; } = null;
+
         [BindProperty]
         public string? BusinessName { get; set; }
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
+
         [BindProperty]
         public Guid ContactId { get; set; }
+
         [BindProperty]
         public Guid SignatoryId { get; set; }
 
@@ -35,6 +38,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             TradePartyId = id;
@@ -76,7 +80,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     countryFlag = "NI";
                 }
 
-                
                 if (establishments != null && establishments.Any())
                 {
                     return RedirectToPage(
@@ -105,6 +108,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         }
 
         #region private methods
+
         private async Task SubmitAuthSignatory()
         {
             TradePartyDto tradeParty = await GenerateDTO();
@@ -113,7 +117,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var updatedTradeParty = await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
 
             IsAuthorisedSignatory ??= updatedTradeParty?.Contact?.IsAuthorisedSignatory.ToString();
-
         }
 
         private async Task<TradePartyDto?> GetIsAuthorisedSignatoryFromApiAsync()
@@ -129,72 +132,57 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return tradeParty;
         }
 
-        private async Task<AuthorisedSignatoryDto?> GetAuthorisedSignatoryFromApiAsync()
-        {
-            var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-            return tradeParty?.AuthorisedSignatory;
-        }
-
         private async Task<TradePartyDto> GenerateDTO()
         {
             var tradeParty = await GetIsAuthorisedSignatoryFromApiAsync();
+            var authorisedSignatory = tradeParty?.AuthorisedSignatory;
 
+            //Checking if there was previously an authorised signatory assigned
             var previousState = tradeParty?.Contact?.IsAuthorisedSignatory;
-            var authroisedSignatory = await GetAuthorisedSignatoryFromApiAsync();
-
             var isSignatory = Convert.ToBoolean(IsAuthorisedSignatory);
+
+            var authorisedSignatoryStub = new AuthorisedSignatoryDto
+            {
+                Id = SignatoryId,
+            };
+
+            var tradeContactDto = new TradeContactDto
+            {
+                Id = ContactId,
+                PersonName = (tradeParty != null) ? tradeParty.Contact?.PersonName : null,
+                Email = (tradeParty != null) ? tradeParty.Contact?.Email : null,
+                Position = (tradeParty != null) ? tradeParty.Contact?.Position : null,
+                TelephoneNumber = (tradeParty != null) ? tradeParty.Contact?.TelephoneNumber : null,
+                IsAuthorisedSignatory = isSignatory
+            };
 
             if (tradeParty != null)
             {
                 if (isSignatory)
                 {
+                    authorisedSignatoryStub.Name = tradeParty.Contact?.PersonName;
+                    authorisedSignatoryStub.EmailAddress = tradeParty.Contact?.Email;
+                    authorisedSignatoryStub.Position = tradeParty.Contact?.Position;
+                    authorisedSignatoryStub.TradePartyId = TradePartyId;
+
                     return new TradePartyDto()
                     {
                         Id = TradePartyId,
-                        Contact = new TradeContactDto()
-                        {
-                            Id = ContactId,
-                            PersonName = tradeParty.Contact?.PersonName,
-                            Email = tradeParty.Contact?.Email,
-                            Position = tradeParty.Contact?.Position,
-                            TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
-                            IsAuthorisedSignatory = isSignatory
-                        },
-                        AuthorisedSignatory = new AuthorisedSignatoryDto()
-                        {
-                            Id = SignatoryId,
-                            Name = tradeParty.Contact?.PersonName,
-                            EmailAddress = tradeParty.Contact?.Email,
-                            Position = tradeParty.Contact?.Position,
-                            TradePartyId = TradePartyId
-                        }
+                        Contact = tradeContactDto,
+                        AuthorisedSignatory = authorisedSignatoryStub
                     };
                 }
-
                 else
                 {
                     if (previousState == true)
                     {
+                        authorisedSignatoryStub.TradePartyId = TradePartyId;
+
                         return new TradePartyDto()
                         {
                             Id = TradePartyId,
-                            Contact = new TradeContactDto()
-                            {
-                                Id = ContactId,
-                                PersonName = tradeParty.Contact?.PersonName,
-                                Email = tradeParty.Contact?.Email,
-                                Position = tradeParty.Contact?.Position,
-                                TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
-                                IsAuthorisedSignatory = isSignatory
-                            },
-                            AuthorisedSignatory = new AuthorisedSignatoryDto()
-                            {
-                                Id = SignatoryId,
-                                Name = null,
-                                EmailAddress = null,
-                                Position = null,
-                                TradePartyId = TradePartyId
-                            }
+                            Contact = tradeContactDto,
+                            AuthorisedSignatory = authorisedSignatoryStub
                         };
                     }
                     else
@@ -202,16 +190,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                         return new TradePartyDto()
                         {
                             Id = TradePartyId,
-                            Contact = new TradeContactDto()
-                            {
-                                Id = ContactId,
-                                PersonName = tradeParty.Contact?.PersonName,
-                                Email = tradeParty.Contact?.Email,
-                                Position = tradeParty.Contact?.Position,
-                                TelephoneNumber = tradeParty.Contact?.TelephoneNumber,
-                                IsAuthorisedSignatory = isSignatory
-                            },
-                            AuthorisedSignatory = authroisedSignatory
+                            Contact = tradeContactDto,
+                            AuthorisedSignatory = authorisedSignatory
                         };
                     }
                 }
@@ -225,16 +205,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     Id = ContactId,
                     IsAuthorisedSignatory = isSignatory
                 },
-                AuthorisedSignatory = new AuthorisedSignatoryDto()
-                {
-                    Id = SignatoryId,
-                    Name = null,
-                    EmailAddress = null,
-                    Position = null
-                }
-
+                AuthorisedSignatory = authorisedSignatoryStub
             };
         }
-        #endregion
+
+        #endregion private methods
     }
 }

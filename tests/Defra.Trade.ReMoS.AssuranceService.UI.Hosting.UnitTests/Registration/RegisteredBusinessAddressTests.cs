@@ -161,6 +161,81 @@ public class RegisteredBusinessAddressTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnPostSave_SubmitInvalidInput_LineOne_LengthChecks()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.CityName = "City Name - '";
+        _systemUnderTest!.PostCode = "SW1W 0NY";
+
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidInput_LineTwo_LengthChecks()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.LineTwo = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.CityName = "City Name - '";
+        _systemUnderTest!.PostCode = "SW1W 0NY";
+
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(2);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidInput_CityName_LengthChecks()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.LineTwo = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.CityName = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.PostCode = "SW1W 0NY";
+
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(3);
+    }
+
+    [Test]
+    public async Task OnPostSave_SubmitInvalidInput_Postcode_LengthChecks()
+    {
+        //Arrange
+        _systemUnderTest!.LineOne = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.LineTwo = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.CityName = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters";
+        _systemUnderTest!.PostCode = "This is a sentence that has 103 characters pretty cool right Yay over one Hundred free range characters"; ;
+
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+
+        //Act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert            
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(4);
+    }
+
+    [Test]
     public async Task OnGet_NoAddressPresentIfNoSavedData_GetTradeParty()
     {
         //Arrange

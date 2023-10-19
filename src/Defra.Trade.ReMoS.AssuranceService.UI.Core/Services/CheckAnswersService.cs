@@ -105,11 +105,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         {
             if (tradeParty.Address != null)
             {
-                if (tradeParty.Address!.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboNumber) && tradeParty.RegulationsConfirmed)
+                if (tradeParty.Address!.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboPhrOption) && tradeParty.RegulationsConfirmed)
                 {
                     return TaskListStatus.COMPLETE;
                 }
-                if (tradeParty.Address!.TradeCountry == null || string.IsNullOrEmpty(tradeParty.FboNumber) || !tradeParty.RegulationsConfirmed)
+                if (tradeParty.Address!.TradeCountry == null || string.IsNullOrEmpty(tradeParty.FboPhrOption) || !tradeParty.RegulationsConfirmed)
                 {
                     return TaskListStatus.INPROGRESS;
                 }

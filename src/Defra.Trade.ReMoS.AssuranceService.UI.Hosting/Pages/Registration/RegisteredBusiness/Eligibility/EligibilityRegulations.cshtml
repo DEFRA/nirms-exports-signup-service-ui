@@ -6,7 +6,14 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegisteredBusinessFboPhrGuidance))
+    {
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+    }  
 }
 
 <div class="govuk-grid-row">
@@ -20,7 +27,7 @@
         <h2 class="govuk-heading-m">Signing up for the scheme</h2>
 
         <p>Your sign-up request must be approved before your business can move goods under the scheme.</p>
-        <p>In addition to an FBO number, your business must have:</p>
+        <p>In addition to an FBO number or PHR number (if you are eligible for one), your business must have:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>an address in the United Kingdom</li>
             <li>an authorised representative who can agree to the terms and conditions of the scheme</li>
@@ -35,16 +42,15 @@
             <li>originate in Great Britain </li>
             <li>be processed in Great Britain</li>
             <li>originate in the EU</li>
-            <li>be on the list of <a href="https://www.gov.uk/government/publications/retail-movement-scheme-how-the-scheme-will-work/retail-movement-scheme-how-the-scheme-will-work#product-eligibility" target="_blank" rel="noopener noreferrer">Rest of World Goods</a></li>
+            <li>be on the list of <a href="https://www.gov.uk/government/publications/retail-movement-scheme-how-the-scheme-will-work/retail-movement-scheme-how-the-scheme-will-work#product-eligibility" target="_blank">Rest of World Goods</a></li>
         </ul>
-        <p>The goods must also follow any relevant <a href="https://www.gov.uk/guidance/labelling-requirements-for-certain-products-moving-from-great-britain-to-retail-premises-in-northern-ireland-under-the-retail-movement-scheme" target="_blank" rel="noopener noreferrer">labelling requirements</a> in accordance with the scheme.</p>
+        <p>The goods must also follow any relevant <a href="https://www.gov.uk/guidance/labelling-requirements-for-certain-products-moving-from-great-britain-to-retail-premises-in-northern-ireland-under-the-retail-movement-scheme" target="_blank">labelling requirements</a> in accordance with the scheme.</p>
         <p>Goods moved under the scheme must not enter the EU after arriving in Northern Ireland.</p>
 
         <h2 class="govuk-heading-m">Sending consignments under the scheme</h2>
-        <p>All consignments must be accompanied by: </p>
+        <p>To move consignments under the scheme, you must submit a packing list with your General Certificate. You will also need:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>an approved General Certificate</li>
-            <li>a packing list</li>
             <li>a commercial seal with a unique identifier and associated number</li>
         </ul>
         <p>All businesses moving, handling or receiving consignments under the scheme must comply with the requirements of the scheme. Competent authorities may conduct checks on any consignments.</p>
@@ -55,7 +61,8 @@
         <p>The usual customs requirements will still apply to all consignments moved under the scheme.</p>
 
         <h2 class="govuk-heading-m">Privacy notice</h2>
-        <p>To learn more about the personal data that we collect, you can read the privacy notice in the <a href="https://www.gov.uk/government/collections/the-windsor-framework-further-detail-and-publications" target="_blank" rel="noopener noreferrer">guidance for the Windsor Framework</a>.</p>
+        @*<p>To learn more about the personal data that we collect, you can read the privacy notice in the <a href="https://www.gov.uk/government/collections/the-windsor-framework-further-detail-and-publications" target="_blank" rel="noopener noreferrer">guidance for the Windsor Framework</a>.</p>*@
+        <p>To learn more about the personal data that we collect, you can read the <a href="/privacy-policy">privacy notice</a>.</p>
 
         <form method="POST" novalidate>
             <div class="govuk-form-group @(ModelState.HasError("Confirmed") ? "govuk-form-group--error" : null)">
