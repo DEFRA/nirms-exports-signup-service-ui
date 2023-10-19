@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+using Microsoft.Extensions.Options;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Footer;
 
@@ -14,12 +16,16 @@ public class CookiesModel : PageModel
     [BindProperty]
     [Required(ErrorMessage = "Select if you want to accept Google Analytics cookies")]
     public string? Analytics { get; set; } = string.Empty;
+    [BindProperty]
+    public string? MeasurementId { get; set; } = string.Empty;
 
     private readonly ILogger<CookiesModel> _logger;
+    private readonly IOptions<GoogleTagManager> _googleTagManager;
 
-    public CookiesModel(ILogger<CookiesModel> logger) 
+    public CookiesModel(ILogger<CookiesModel> logger, IOptions<GoogleTagManager> googleTagManager) 
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _googleTagManager = googleTagManager ?? throw new ArgumentNullException(nameof(googleTagManager));
     }
 
     #endregion
@@ -27,6 +33,7 @@ public class CookiesModel : PageModel
     public IActionResult OnGet()
     {
         Analytics = Request.Cookies["cookie_policy"];
+        MeasurementId = "_ga_" + _googleTagManager.Value.MeasurementId;
         return Page();
     }
 
@@ -52,7 +59,7 @@ public class CookiesModel : PageModel
         if (Analytics == "reject")
         {
             Response.Cookies.Append("cookie_policy", "reject", cookieOptions);
-            Response.Cookies.Delete("_ga_JHVKVL9M7R");
+            Response.Cookies.Delete(MeasurementId!);
             Response.Cookies.Delete("_ga");
         }
         else
