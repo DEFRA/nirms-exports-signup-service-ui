@@ -13,7 +13,6 @@ public class RegisteredBusinessContactEmailModel : PageModel
     #region UI Model
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-    [StringLength(100, ErrorMessage = "Email is too long")]
     [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
     [BindProperty]
