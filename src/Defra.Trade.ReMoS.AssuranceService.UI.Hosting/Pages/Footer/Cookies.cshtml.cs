@@ -50,7 +50,8 @@ public class CookiesModel : PageModel
         { 
             Expires = DateTime.UtcNow.AddMonths(12), 
             IsEssential = true, 
-            Secure = true 
+            Secure = true,
+            HttpOnly = true
         };
         Response.Cookies.Delete("seen_cookie_message");
         Response.Cookies.Delete("cookie_policy");
