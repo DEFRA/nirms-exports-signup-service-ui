@@ -14,7 +14,6 @@ public class ContactEmailModel : PageModel
 {
     #region UI Models
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-    [StringLength(100, ErrorMessage = "Email is too long")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
@@ -78,7 +77,7 @@ public class ContactEmailModel : PageModel
     {
         _logger.LogInformation("Establishment contact email OnPostSubmit");
 
-        if (!ModelState.IsValid)
+        if (!IsInputValid())
         {
             return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
@@ -88,6 +87,13 @@ public class ContactEmailModel : PageModel
         return RedirectToPage(
             Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
             new { id = TradePartyId, NI_GBFlag});
+    }
+
+    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.EstablishmentNameAndAddressPath,
+            new { id = tradePartyId, establishmentId, NI_GBFlag });
     }
 
     private async Task SaveEmailToApi()
@@ -101,10 +107,14 @@ public class ContactEmailModel : PageModel
         }
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    private bool IsInputValid()
     {
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = tradePartyId, establishmentId, NI_GBFlag });
+        if (Email != null && Email.Length > 100)
+            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
+
+        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
     }
 }

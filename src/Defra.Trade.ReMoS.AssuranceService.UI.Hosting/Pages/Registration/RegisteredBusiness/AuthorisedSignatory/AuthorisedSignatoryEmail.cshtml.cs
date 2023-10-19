@@ -14,7 +14,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     {
         #region ui model
         [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-        [StringLength(100, ErrorMessage = "Email is too long")]
         [BindProperty]
         [Required(ErrorMessage = "Enter an email address")]
         public string? Email { get; set; }
@@ -64,7 +63,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             _logger.LogInformation("Signatory Email OnPostSubmit");
 
-            if (!ModelState.IsValid)
+            if (!IsInputValid())
             {
                 return await OnGetAsync(TraderId);
             }
@@ -96,7 +95,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             _logger.LogInformation("Signatory Email OnPostSave");
 
-            if (!ModelState.IsValid)
+            if (!IsInputValid())
             {
                 return await OnGetAsync(TraderId);
             }
@@ -141,6 +140,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     EmailAddress = Email
                 }
             };
+        }
+
+        private bool IsInputValid()
+        {
+            if (Email != null && Email.Length > 100)
+                ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
+
+            if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+                return false;
+
+            return true;
         }
     }
 }
