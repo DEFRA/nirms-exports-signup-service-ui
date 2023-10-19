@@ -65,28 +65,29 @@ public class RegisteredBusinessFboNumberModel : PageModel
     {
         _logger.LogInformation("Country OnPostSubmit");
 
-        if (OptionSelected == "fbo" && string.IsNullOrEmpty(FboNumber))
-            ModelState.AddModelError(nameof(FboNumber), "Enter your business' FBO number");
+        if (ModelState.IsValid)
+        {
+            if (OptionSelected == "fbo" && string.IsNullOrEmpty(FboNumber))
+                ModelState.AddModelError(nameof(FboNumber), "Enter your business' FBO number");
 
-        if (OptionSelected == "phr" && string.IsNullOrEmpty(PhrNumber))
-            ModelState.AddModelError(nameof(FboNumber), "Enter your business' PHR number");
+            if (OptionSelected == "phr" && string.IsNullOrEmpty(PhrNumber))
+                ModelState.AddModelError(nameof(PhrNumber), "Enter your business' PHR number");
+        }
 
         if (!ModelState.IsValid)
         {
             return await OnGetAsync(TraderId);
         }
 
+        await SaveNumberToApiAsync();
         if (OptionSelected == "none")
-        {
-            await SaveNumberToApiAsync();
+        {      
             return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
                 new { id = TraderId });
-            //todo
         }
         else
         {
-            await SaveNumberToApiAsync();
             return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessRegulationsPath,
                 new { id = TraderId });
