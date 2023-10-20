@@ -60,8 +60,8 @@ public class CookiesModel : PageModel
         if (Analytics == "reject")
         {
             Response.Cookies.Append("cookie_policy", "reject", cookieOptions);
-            Response.Cookies.Delete(MeasurementId!, new CookieOptions { Path = "/", Domain = _googleTagManager.Value.Domain });
-            Response.Cookies.Delete("_ga", new CookieOptions { Path = "/", Domain = _googleTagManager.Value.Domain });
+            Response.Cookies.Delete(MeasurementId!, new CookieOptions { Path = "/", Domain = _googleTagManager.Value.Domain, Secure = true });
+            Response.Cookies.Delete("_ga", new CookieOptions { Path = "/", Domain = _googleTagManager.Value.Domain, Secure = true });
         }
         else
         {
