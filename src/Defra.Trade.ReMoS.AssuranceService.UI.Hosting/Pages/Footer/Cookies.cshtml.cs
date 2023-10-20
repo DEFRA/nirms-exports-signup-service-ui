@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Microsoft.Extensions.Options;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Microsoft.AspNetCore.Http;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Footer;
 
@@ -50,8 +51,7 @@ public class CookiesModel : PageModel
         { 
             Expires = DateTime.UtcNow.AddMonths(12), 
             IsEssential = true, 
-            Secure = true,
-            HttpOnly = true
+            Secure = true
         };
         Response.Cookies.Delete("seen_cookie_message");
         Response.Cookies.Delete("cookie_policy");
@@ -60,8 +60,8 @@ public class CookiesModel : PageModel
         if (Analytics == "reject")
         {
             Response.Cookies.Append("cookie_policy", "reject", cookieOptions);
-            Response.Cookies.Delete(MeasurementId!);
-            Response.Cookies.Delete("_ga");
+            Response.Cookies.Delete(MeasurementId!, new CookieOptions { Path = "/", Domain = _googleTagManager.Value.Domain });
+            Response.Cookies.Delete("_ga", new CookieOptions { Path = "/", Domain = _googleTagManager.Value.Domain });
         }
         else
         {
