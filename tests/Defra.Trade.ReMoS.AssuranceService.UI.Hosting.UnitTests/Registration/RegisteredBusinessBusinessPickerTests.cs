@@ -11,10 +11,13 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;
 
@@ -336,7 +339,37 @@ public class RegisteredBusinessBusinessPickerTests
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         // Assert
-        _systemUnderTest.ModelState.HasError("SelectedBusiness").Should().BeTrue();
+        _systemUnderTest.ModelState.HasError("SelectedBusiness", "User role not found").Should().BeTrue();
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_WhenOrgNotEnrolledAndUserRoleNotDefined_ReturnModelError()
+    {
+        // Arrange
+        var userOrg = new Organisation
+        {
+            OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"),
+            PracticeName = "org1",
+            Enrolled = false,
+            UserRole = "New role"
+        };
+        var userOrgs = new List<Organisation>();
+        userOrgs.Add(userOrg);
+        _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockUserService
+           .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+           .Returns(userOrg);
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.RegisterBusinessForExporterServicePath,
+            new { id = _systemUnderTest.TraderId });
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.HasError("SelectedBusiness", "User role not found").Should().BeTrue();
+        
     }
 
     [Test]

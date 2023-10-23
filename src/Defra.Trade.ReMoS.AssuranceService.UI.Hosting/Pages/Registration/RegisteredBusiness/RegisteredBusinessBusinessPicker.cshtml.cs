@@ -65,11 +65,13 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         {
             SelectedBusiness = null;
             ModelState.AddModelError("SelectedBusiness", "Select a business");
+            return OnGet();
         }
 
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             ModelState.AddModelError("UnregisteredBusiness", "UnregisteredBusiness");
+            return OnGet();
         }
 
         if (!Guid.TryParse(SelectedBusiness, out _))
@@ -81,7 +83,8 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
         var orgDetails = _userService.GetOrgDetailsById(User, Guid.Parse(SelectedBusiness!));
         if (orgDetails == null)
         {
-            ModelState.AddModelError(nameof(SelectedBusiness), "Business not found");
+            ModelState.AddModelError(nameof(SelectedBusiness), "Business not found, refresh list of businesses");
+            return OnGet();
         }
 
         if (!ModelState.IsValid)
