@@ -111,7 +111,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -142,7 +142,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -173,7 +173,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -204,7 +204,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -235,7 +235,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -266,7 +266,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+            _systemUnderTest!.PostCode = "BTES1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -297,7 +297,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-            _systemUnderTest!.PostCode = "TES";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -308,6 +308,69 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
             _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("County must be 100 characters or less");
             _systemUnderTest.ModelState.HasError("County").Should().Be(true);
+        }
+
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInvalidCounty_PostcodeNICheckFailed()
+        {
+            //Arrange
+
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
+                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockEstablishmentService
+                .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
+                .Throws(new BadHttpRequestException("error message"));
+
+            _systemUnderTest!.EstablishmentName = "Test name";
+            _systemUnderTest!.LineOne = "Line one";
+            _systemUnderTest!.LineTwo = "Line two";
+            _systemUnderTest!.CityName = "City";
+            _systemUnderTest!.County = "Berkshire";
+            _systemUnderTest!.PostCode = "E15 1YL";
+
+            _systemUnderTest.NI_GBFlag = "NI";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+
+            //Assert
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Enter a postcode in Northern Ireland");
+            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(true);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SubmitInvalidCounty_PostcodeGBCheckFailed()
+        {
+            //Arrange
+
+            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
+                Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
+            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockEstablishmentService
+                .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
+                .Throws(new BadHttpRequestException("error message"));
+
+            _systemUnderTest!.EstablishmentName = "Test name";
+            _systemUnderTest!.LineOne = "Line one";
+            _systemUnderTest!.LineTwo = "Line two";
+            _systemUnderTest!.CityName = "City";
+            _systemUnderTest!.County = "Berkshire";
+            _systemUnderTest!.PostCode = "BT1 1YL";
+
+            _systemUnderTest.NI_GBFlag = "GB";
+
+            //Act
+            await _systemUnderTest.OnPostSubmitAsync();
+
+            //Assert
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Enter a postcode in England, Scotland or Wales");
+            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(true);
         }
 
         [Test]

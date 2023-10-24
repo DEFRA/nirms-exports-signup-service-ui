@@ -204,6 +204,12 @@ public class EstablishmentNameAndAddressModel : PageModel
         if (County != null && County.Length > 100)
             ModelState.AddModelError(nameof(County), "County must be 100 characters or less");
 
+        if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
+            ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
+
+        if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
+            ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
+
         if (!ModelState.IsValid || ModelState.ErrorCount > 0)
             return false;
 
