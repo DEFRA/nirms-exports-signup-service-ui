@@ -152,14 +152,14 @@
                 <form class="form" method="post">
                     <input type="hidden" asp-for="MeasurementId" />
                     <div class="govuk-form-group @(ModelState.HasError("Analytics") ? "govuk-form-group--error" : null)">
-                        <fieldset class="govuk-fieldset js-cookies-page-form-fieldset" id="analytics">
+                        <fieldset class="govuk-fieldset js-cookies-page-form-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Do you want to accept Google Analytics cookies?
                             </legend>
 
-                            <p id="OptionSelected_Error" class="govuk-error-message" gds-validation-for="Analytics"></p>
+                            <p id="Analytics_Error" class="govuk-error-message" gds-validation-for="Analytics"></p>
 
-                            <div class="govuk-radios" data-module="govuk-radios" id="cookies-radio">
+                            <div class="govuk-radios" data-module="govuk-radios" id="Analytics">
                                 <div class="govuk-radios__item">
                                     <input class="govuk-radios__input" id="radio-analytics-yes" asp-for="Analytics" type="radio" value="accept">
                                     <label class="govuk-label govuk-radios__label" for="radio-analytics-yes">
