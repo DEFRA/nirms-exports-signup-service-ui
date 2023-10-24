@@ -179,7 +179,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Assert
             _mockHttpClientFactory.Verify();
-            Assert.AreEqual(returnedValue, null);
+            Assert.AreEqual(null, returnedValue);
         }
 
         [Test]
