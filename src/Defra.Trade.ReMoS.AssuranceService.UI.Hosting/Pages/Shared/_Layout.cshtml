@@ -49,19 +49,20 @@
         @await RenderSectionAsync("Signout", false)
         @if (!IsSectionDefined("Signout"))
         {
-            <div class="login-border">
-                <div class="login-nav">
-                    <ul class="login-nav__list">
-                        <li class="login-nav__list-item"><a href="/Signout" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
-                    </ul>
-                    <ul class="login-nav__list">
-                        <li class="login-nav__list-item"> | </li>
-                    </ul>
-                    <ul class="login-nav__list">
-                        <li class="login-nav__list-item"><a href="@_config["ExternalLinks:ManageAccountPage"]" target="_blank" rel="noopener noreferrer" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-ManageAccount">Manage Account</a></li>
-                    </ul>
+            <div class="govuk-phase-banner govuk-phase-banner--user">
+                <span class="govuk-phase-banner__content">
+                    <strong class="govuk-tag govuk-phase-banner__content__tag">
+                        Beta
+                    </strong>
+                    <span class="govuk-phase-banner__text">
+                        This is a new service – your <a class="govuk-link" href="https://defragroup.eu.qualtrics.com/jfe/form/SV_6naiJFARv8EzpSS" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
+                    </span>
+                </span>
+                <ul class="govuk-phase-banner__content__user-list">
+                    <li class="govuk-phase-banner__content__user-list__list-item"><a href="@_config["ExternalLinks:ManageAccountPage"]" target="_blank" rel="noopener noreferrer" class="govuk-link login-nav__link govuk-link--no-visited-state govuk-link-16" id="Link-ManageAccount">Manage Account</a></li>
+                    <li class="govuk-phase-banner__content__user-list__list-item"> | <a href="/Signout" class="govuk-link govuk-link--no-visited-state govuk-link-16" id="Link-SignOut">Sign out</a></li>
+                </ul>
                 </div>
-            </div>
 
         }
         @await RenderSectionAsync("Back", required: false)
