@@ -111,7 +111,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -142,7 +142,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -173,7 +173,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -204,7 +204,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -235,7 +235,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -266,7 +266,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+            _systemUnderTest!.PostCode = "BTES1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
@@ -297,7 +297,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-            _systemUnderTest!.PostCode = "TES";
+            _systemUnderTest!.PostCode = "BT1";
 
             _systemUnderTest.NI_GBFlag = "NI";
 
