@@ -119,7 +119,5 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 
             return tradeParty?.SignUpRequestSubmittedBy == Guid.Empty ? false : true;
         }
-
-
     }
 }

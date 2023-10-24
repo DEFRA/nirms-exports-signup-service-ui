@@ -369,7 +369,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         _systemUnderTest.ModelState.HasError("SelectedBusiness", "User role not found").Should().BeTrue();
-        
+        _systemUnderTest.ModelState.HasError("SelectedBusiness", "Select a business").Should().BeFalse();
     }
 
     [Test]

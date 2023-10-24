@@ -249,6 +249,7 @@ public class TradePartyDTORelationshipTests
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
+            TradePartyId = Guid.Parse("c14eb7a7-2949-4880-b5d7-0405f4f7d901"),
             PersonName = "John Doe",
             TelephoneNumber = "1234567890",
             Email = "John.Doe@contactemail.com"
@@ -281,6 +282,7 @@ public class TradePartyDTORelationshipTests
 
         //Assert
         tradeContact.Id.Should().Be(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"));
+        tradeContact.TradePartyId.Should().Be(Guid.Parse("c14eb7a7-2949-4880-b5d7-0405f4f7d901"));
         tradeContact.PersonName.Should().Be("John Doe");
         tradeContact.TelephoneNumber.Should().Be("1234567890");
 

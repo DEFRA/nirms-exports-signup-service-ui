@@ -219,10 +219,12 @@ public class ApiIntegration : IApiIntegration
                 results = await JsonSerializer.DeserializeAsync<Guid>(contentStream, _jsonSerializerOptions);
             }
         }
+
         if (results != Guid.Empty)
         {
             return results;
         }
+
         throw new BadHttpRequestException("null return from API");
     }
 
