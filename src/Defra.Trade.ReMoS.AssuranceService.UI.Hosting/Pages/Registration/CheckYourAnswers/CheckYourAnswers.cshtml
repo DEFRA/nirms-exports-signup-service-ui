@@ -26,20 +26,20 @@
             <dl class="govuk-summary-list govuk-!-margin-bottom-9">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Selected business
+                        Selected business
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-details-name">
                         @Model.TradeParty?.PracticeName
                     </dd>
                     <dd class="govuk-summary-list__actions govuk-!-width-one-third">
                         <a class="govuk-link" asp-page="@Routes.Pages.Path.SelectedBusinessPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-name">
-                        Sign up another business
-                    </a>
+                            Sign up another business
+                        </a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Country
+                        Country
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-details-country">
                         @Model.TradeParty?.Address?.TradeCountry
@@ -47,73 +47,110 @@
                     <dd class="govuk-summary-list__actions">
                     </dd>
                 </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                    FBO number
-                    </dt>
-                    <dd class="govuk-summary-list__value" id="business-details-fbo">
-                        @Model.TradeParty?.FboNumber
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
-                        Edit<span class="govuk-visually-hidden"> FBO number</span>
-                    </a>
-                    </dd>
-                </div>
+                
+                @if (string.IsNullOrEmpty(Model.TradeParty?.FboNumber) && string.IsNullOrEmpty(Model.TradeParty?.PhrNumber) )
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            FBO or PHR
+                        </dt>
+                        <dd class="govuk-summary-list__value" id="business-details-fbo">
+                            Not provided
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
+                                Edit<span class="govuk-visually-hidden"> PHR number</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+                else if (Model.TradeParty?.FboPhrOption?.ToUpper() == "PHR")
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            PHR number
+                        </dt>
+                        <dd class="govuk-summary-list__value" id="business-details-fbo">
+                            @Model.TradeParty?.PhrNumber
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
+                                Edit<span class="govuk-visually-hidden"> PHR number</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+                else
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            FBO number
+                        </dt>
+                        <dd class="govuk-summary-list__value" id="business-details-fbo">
+                            @Model.TradeParty?.FboNumber
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
+                                Edit<span class="govuk-visually-hidden"> FBO number</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+
             </dl>
 
             <h2 class="govuk-heading-m">Contact person</h2>
             <dl class="govuk-summary-list govuk-!-margin-bottom-9">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Contact name
+                        Contact name
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-contact-name">
                         @Model.TradeParty?.Contact?.PersonName
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-name">
-                        Edit<span class="govuk-visually-hidden"> contact name</span>
-                    </a>
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-name">
+                            Edit<span class="govuk-visually-hidden"> contact name</span>
+                        </a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Contact position
+                        Contact position
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-contact-position">
                         @Model.TradeParty?.Contact?.Position
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-position">
-                        Edit<span class="govuk-visually-hidden"> contact position</span>
-                    </a>
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-position">
+                            Edit<span class="govuk-visually-hidden"> contact position</span>
+                        </a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Contact email address
+                        Contact email address
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-contact-email">
                         @Model.TradeParty?.Contact?.Email
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-email">
-                        Edit<span class="govuk-visually-hidden"> contact email address</span>
-                    </a>
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-email">
+                            Edit<span class="govuk-visually-hidden"> contact email address</span>
+                        </a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                    Contact telephone number
+                        Contact telephone number
                     </dt>
                     <dd class="govuk-summary-list__value" id="business-contact-phone">
                         @Model.TradeParty?.Contact?.TelephoneNumber
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPhonePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-phone">
-                        Edit<span class="govuk-visually-hidden"> contact telephone number</span>
-                    </a>
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPhonePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-phone">
+                            Edit<span class="govuk-visually-hidden"> contact telephone number</span>
+                        </a>
                     </dd>
                 </div>
             </dl>
@@ -124,18 +161,18 @@
                     <dt class="govuk-summary-list__key">
                         Contact person is the authorised representative
                     </dt>
-                        @if (Model.TradeParty?.Contact?.IsAuthorisedSignatory == true)
-                        {
-                            <dd class="govuk-summary-list__value" id="business-authorisied-signatory">Yes</dd>
-                        }
-                        else
-                        {
+                    @if (Model.TradeParty?.Contact?.IsAuthorisedSignatory == true)
+                    {
+                        <dd class="govuk-summary-list__value" id="business-authorisied-signatory">Yes</dd>
+                    }
+                    else
+                    {
                         <dd class="govuk-summary-list__value" id="business-authorisied-signatory">No</dd>
-                        }
+                    }
                     <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryDetailsPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
-                        Edit<span class="govuk-visually-hidden"> Authorised Representative name</span>
-                    </a>
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryDetailsPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                            Edit<span class="govuk-visually-hidden"> Authorised Representative name</span>
+                        </a>
                     </dd>
                 </div>
                 @if (Model.TradeParty?.Contact?.IsAuthorisedSignatory == false)
@@ -191,10 +228,10 @@
                         <div class="govuk-summary-card__title-wrapper">
                             <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.Name</h2>
                             <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
-                            asp-page-handler="RemoveEstablishment"
-                            asp-route-tradepartyid="@Model.RegistrationID"
-                            asp-route-establishmentId="@location.Id"
-                            asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                               asp-page-handler="RemoveEstablishment"
+                               asp-route-tradepartyid="@Model.RegistrationID"
+                               asp-route-establishmentId="@location.Id"
+                               asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                 Remove
                             </a>
                         </div>
@@ -206,27 +243,27 @@
                                     </dt>
                                     <dd class="govuk-summary-list__value">
                                         @(
-                                        location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty
-                                        )
+                                            location.Address?.LineOne != null ? $"{location.Address?.LineOne}," : string.Empty
+                                            )
                                         @(
-                                        location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty
-                                        )
+                                            location.Address?.LineTwo != null ? $"{location.Address?.LineTwo}," : string.Empty
+                                            )
                                         @(
-                                        location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty
-                                        )
+                                            location.Address?.CityName != null ? $"{location.Address?.CityName}," : string.Empty
+                                            )
                                         @(
-                                        location.Address?.County != null ? $"{location.Address?.County}," : string.Empty
-                                        )
+                                            location.Address?.County != null ? $"{location.Address?.County}," : string.Empty
+                                            )
                                         @(
-                                        location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty
-                                        )
+                                            location.Address?.PostCode != null ? $"{location.Address?.PostCode}" : string.Empty
+                                            )
                                     </dd>
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link"
-                                        asp-page-handler="ChangeEstablishmentAddress"
-                                        asp-route-tradepartyid="@Model.RegistrationID"
-                                        asp-route-establishmentId="@location.Id"
-                                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                           asp-page-handler="ChangeEstablishmentAddress"
+                                           asp-route-tradepartyid="@Model.RegistrationID"
+                                           asp-route-establishmentId="@location.Id"
+                                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                             Change<span class="govuk-visually-hidden"> address</span>
                                         </a>
                                     </dd>
@@ -240,10 +277,10 @@
                                     </dd>
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link"
-                                        asp-page-handler="ChangeEmail"
-                                        asp-route-tradepartyid="@Model.RegistrationID"
-                                        asp-route-establishmentId="@location.Id"
-                                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                                           asp-page-handler="ChangeEmail"
+                                           asp-route-tradepartyid="@Model.RegistrationID"
+                                           asp-route-establishmentId="@location.Id"
+                                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                             Change<span class="govuk-visually-hidden"> email address</span>
                                         </a>
                                     </dd>
@@ -260,7 +297,7 @@
                 </a>
             </div>
 
-            
+
             <button class="govuk-button" asp-page-handler="submit" disabled="@(!Model.LogisticsLocations?.Any())">
                 Continue
             </button>

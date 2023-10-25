@@ -26,4 +26,26 @@ public static class ModelStateExtensions
         }
         return false;
     }
+
+    /// <summary>
+    /// Checks if an error exists with a given key/value in the model state.
+    /// </summary>
+    /// <param name="modelState">The model state.</param>
+    /// <param name="key">The key of the field to check.</param>
+    /// <param name="value">The error message to check.</param>
+    /// <returns><c>true</c> if an error is found with given error message.</returns>
+    public static bool HasError(this ModelStateDictionary modelState, string key, string value)
+    {
+        if (modelState[key]?.Errors != null && modelState[key].Errors.Any())
+        {
+            foreach (var error in modelState[key].Errors)
+            {
+                if (error.ErrorMessage == value)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

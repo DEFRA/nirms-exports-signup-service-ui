@@ -1,0 +1,41 @@
+﻿@page
+@inject IConfiguration _config
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisterBusinessForExporterServiceNonAdminModel
+@{
+}
+
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            Your admin will need to register your business’ account for the exporter service before you can submit a sign-up request
+        </h1>
+
+        <p>Contact your admin so they can register your business account for the service and give access to everyone who needs it.</p>
+
+        <p>They will need to open their Defra account and follow these steps: </p>
+
+        <ol class="govuk-list govuk-list--number">
+            <li>Select 'Manage' for the business account you want to sign up with.</li>
+            <li>Select 'Register for more services'.</li>
+            <li>Select 'Exporter Service' from the list of services.</li>
+            <li>Select your business.</li>
+            <li>Select 'Manage team access' for your business and add anyone who needs access.</li>
+        </ol>
+
+        <p>Once your admin has done this, you can return to the previous page to <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">select your business</a> – you will need to select 'Refresh list of businesses' to make sure your account has updated.</p>
+
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+        <h2 class="govuk-heading-m" id="help-with-your-application">Help with signing up for the Northern Ireland Retail Movement Scheme</h2>
+        <p class="govuk-body">Call APHA on <a href="tel:03000200301">03000 200 301</a>, Monday to Friday 8:30am - 5pm.</p>
+        <p class="govuk-body"><a href="https://www.gov.uk/call-charges" target="_blank" rel="noopener">Find out about call charges</a>.</p>
+
+    </div>
+</div>

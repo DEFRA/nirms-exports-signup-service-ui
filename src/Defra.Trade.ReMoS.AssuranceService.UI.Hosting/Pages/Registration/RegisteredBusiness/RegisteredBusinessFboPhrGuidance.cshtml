@@ -1,0 +1,78 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.RegisteredBusinessCanNotRegisterModel
+@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@{
+    ViewData["Title"] = "You cannot sign up your business";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            You can still submit a sign-up request now
+        </h1>
+
+        <p>You can still submit a sign-up request for the Northern Ireland Retail Movement Scheme, but you may also need to apply for an FBO or PHR number, depending on the goods that your business will move.</p>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    If your business will only move cut flowers, wreaths and conifers
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p>Register for a PHR number by contacting the plant authority for the country where your business is based.</p>
+
+                <p>When you receive it, you must provide your PHR number by contacting the Animal and Plant Health Agency (APHA) on 0300 1000 313.</p>
+
+                <p>
+                    For England or Wales, <a href="https://submit.forms.service.gov.uk/form/261/register-to-become-a-plant-health-professional-operator/498" target="_blank" rel="noopener noreferrer">
+                        apply to become a plant
+                        health operator in England or Wales
+                    </a>.
+                </p>
+
+                <p>
+                    For Scotland, contact the Science and Advice for Scottish Agriculture (SASA) by email at <a href="mailto:hort.marketing@gov.sco">hort.marketing@gov.sco</a> or call them on 0131 244 8890.
+                </p>
+
+                <p>For Northern Ireland, contact the Department of Agriculture, Environment and Rural Affairs (DAERA) on 0300 200 7847.</p>
+            </div>
+        </details>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    If your business will move any other goods
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p><a href="https://www.gov.uk/food-business-registration" target="_blank" rel="noopener noreferrer">Register for an FBO number</a> with your local authority for free.</p>
+
+                <p>When you receive it, you must provide your FBO number by contacting the Animal and Plant Health Agency (APHA) on 0300 1000 313.</p>
+            </div>
+        </details>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    If your business is unable to get an FBO number or PHR number
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p>You can still submit a sign-up request for the Northern Ireland Retail Movement Scheme.</p>
+            </div>
+        </details>
+
+        <form method="post">
+            <input type="hidden" asp-for="TraderId" />
+            <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbGuidanceSubmit">Continue</button>
+        </form>
+        
+
+    </div>
+</div>

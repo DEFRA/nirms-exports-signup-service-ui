@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 
@@ -12,7 +13,6 @@ public class RegisteredBusinessContactEmailModel : PageModel
     #region UI Model
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-    [StringLength(100, ErrorMessage = "Email is too long")]
     [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
     [BindProperty]
@@ -57,7 +57,8 @@ public class RegisteredBusinessContactEmailModel : PageModel
     public async Task<IActionResult> OnPostSubmitAsync()
     {            
         _logger.LogInformation("Email OnPostSubmit");
-        if (!ModelState.IsValid)
+
+        if (!IsInputValid())
         {
             return await OnGetAsync(TradePartyId);
         }
@@ -71,7 +72,8 @@ public class RegisteredBusinessContactEmailModel : PageModel
     public async Task<IActionResult> OnPostSaveAsync()
     {
         _logger.LogInformation("Email OnPostSave");
-        if (!ModelState.IsValid)
+
+        if (!IsInputValid())
         {
             return await OnGetAsync(TradePartyId);
         }
@@ -121,6 +123,17 @@ public class RegisteredBusinessContactEmailModel : PageModel
                 IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
+    }
+
+    private bool IsInputValid()
+    {
+        if (Email != null && Email.Length > 100)
+            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
+
+        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
     }
     #endregion
 }

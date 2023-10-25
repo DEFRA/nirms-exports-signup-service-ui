@@ -63,7 +63,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             _logger.LogInformation("Signatory Email OnPostSubmit");
 
-            if (!ModelState.IsValid)
+            if (!IsInputValid())
             {
                 return await OnGetAsync(TraderId);
             }
@@ -95,7 +95,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         {
             _logger.LogInformation("Signatory Email OnPostSave");
 
-            if (!ModelState.IsValid)
+            if (!IsInputValid())
             {
                 return await OnGetAsync(TraderId);
             }
@@ -140,6 +140,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                     EmailAddress = Email
                 }
             };
+        }
+
+        private bool IsInputValid()
+        {
+            if (Email != null && Email.Length > 100)
+                ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
+
+            if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+                return false;
+
+            return true;
         }
     }
 }

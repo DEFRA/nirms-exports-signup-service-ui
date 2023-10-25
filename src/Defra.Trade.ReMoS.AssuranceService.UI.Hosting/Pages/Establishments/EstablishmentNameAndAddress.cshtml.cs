@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
@@ -15,36 +16,30 @@ public class EstablishmentNameAndAddressModel : PageModel
 {
     #region ui model variables
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter establishment name using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
-    [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter an establishment name using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter an establishment name")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
-    [StringLength(50, ErrorMessage = "Address line 1 must be 50 characters or less")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter address line 1")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
-    [StringLength(50, ErrorMessage = "Address line 2 must be 50 characters or less")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
-    [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter a town or city")]
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
-    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, brackets, full stops, underscores, forward slashes, hyphens, apostrophes or ampersands")]
-    [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
+    [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode")]
-    [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     [Required(ErrorMessage = "Enter a postcode")]
     public string PostCode { get; set; } = string.Empty;
 
@@ -118,13 +113,10 @@ public class EstablishmentNameAndAddressModel : PageModel
 
         Guid? establishmentId = Guid.Empty;
 
-        if (!ModelState.IsValid)
+        if(!IsInputValid())
         {
             return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
-
-
-
 
         try
         {
@@ -139,22 +131,6 @@ public class EstablishmentNameAndAddressModel : PageModel
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
-    }
-
-    private string GenerateDuplicateError()
-    {
-        string place;
-        if (NI_GBFlag == "NI")
-        {
-            place = "destination";
-        }
-        else
-        {
-            place = "dispatch";
-        }
-
-        return $"This address has already been added as a place of {place} - enter a different address";
-
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()
@@ -206,6 +182,53 @@ public class EstablishmentNameAndAddressModel : PageModel
         County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
 
+    }
+
+    private bool IsInputValid()
+    {
+        if (EstablishmentName != null && EstablishmentName.Length > 100)
+            ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
+
+        if (LineOne != null && LineOne.Length > 50)
+            ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");
+
+        if (LineTwo != null && LineTwo.Length > 50)
+            ModelState.AddModelError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
+
+        if (CityName != null && CityName.Length > 100)
+            ModelState.AddModelError(nameof(CityName), "Town or city must be 100 characters or less");
+
+        if (PostCode != null && PostCode.Length > 100)
+            ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
+
+        if (County != null && County.Length > 100)
+            ModelState.AddModelError(nameof(County), "County must be 100 characters or less");
+
+        if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
+            ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
+
+        if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
+            ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
+
+        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
+    }
+
+    private string GenerateDuplicateError()
+    {
+        string place;
+        if (NI_GBFlag == "NI")
+        {
+            place = "destination";
+        }
+        else
+        {
+            place = "dispatch";
+        }
+
+        return $"This address has already been added as a place of {place} - enter a different address";
     }
 
 }

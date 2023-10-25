@@ -71,3 +71,44 @@
         margin-bottom: 0;
     }
 }
+
+.govuk-phase-banner--user:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.govuk-phase-banner--user .govuk-phase-banner__content {
+    float: left;
+}
+
+.govuk-phase-banner__content__user-list {
+    margin: 0;
+    padding: 0;
+    margin-top: 2px;
+    list-style-type: none;
+    float: right;
+}
+
+.govuk-phase-banner__content__user-list__list-item {
+    position: relative;
+    margin-bottom: 5px;
+    padding-right: 5px;
+    padding-left: 0;
+    display: inline-block;
+}
+
+.govuk-link-16 {
+    font-size: 16px;
+}
+
+@media (max-width: 760px) {
+    .govuk-phase-banner--user .govuk-phase-banner__content {
+        float: none;
+    }
+
+    .govuk-phase-banner__content__user-list {
+        float: none;
+        margin-top: 15px;
+    }
+}

@@ -140,8 +140,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert            
-            validation.Count.Should().Be(1);
-            expectedResult.Should().Be(validation[0].ErrorMessage);
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
         }
 
         [Test]
@@ -156,8 +155,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert            
-            validation.Count.Should().Be(1);
-            expectedResult.Should().Be(validation[0].ErrorMessage);
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
         }
 
         [Test]

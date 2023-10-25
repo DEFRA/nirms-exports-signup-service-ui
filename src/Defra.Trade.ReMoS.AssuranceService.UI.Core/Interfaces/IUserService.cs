@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
 public interface IUserService
 {
-    Dictionary<Guid, string> GetDefraOrgsForUser(ClaimsPrincipal user);
+    List<Organisation> GetDefraOrgsForUser(ClaimsPrincipal user);
+    Organisation? GetOrgDetailsById(ClaimsPrincipal user, Guid orgId);
     Guid GetUserContactId(ClaimsPrincipal user);
 }
