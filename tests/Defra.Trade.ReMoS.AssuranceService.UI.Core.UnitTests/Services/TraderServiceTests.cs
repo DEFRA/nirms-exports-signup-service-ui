@@ -394,6 +394,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 Id = Guid.NewGuid(),
                 Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" },
                 FboNumber = "1234",
+                FboPhrOption = "fbo"
             };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
