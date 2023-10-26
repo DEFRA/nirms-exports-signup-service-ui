@@ -29,12 +29,10 @@
             </div>
         </div>
 
-        <div id="hide-accepted" class="govuk-cookie-banner__message govuk-width-container" role="alert" style="display:none;">
+        <div id="hide-message" class="govuk-cookie-banner__message govuk-width-container" role="alert" style="display:none;">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
-                    <div class="govuk-cookie-banner__content">
-                        <p class="govuk-body">You’ve accepted additional cookies. You can <a class="govuk-link" href="../Footer/Cookies" target="_blank" rel="noopener noreferrer">change your cookie settings</a> at any time.</p>
-                    </div>
+                    <div class="govuk-cookie-banner__content" id="content-message"></div>
                 </div>
             </div>
             <div class="govuk-button-group">
@@ -43,42 +41,21 @@
                 </button>
                 <script>
                     (function () {
-                        var buttonRef = document.getElementById("hide-accepted");
+                        var buttonRef = document.getElementById("hide-message");
                         buttonRef.addEventListener("click", function (event) {
-                            document.getElementById("hide-accepted").style.display = 'none';
+                            document.getElementById("hide-message").style.display = 'none';
                         }, false)
                     })();
                 </script>
             </div>
         </div>
 
-        <div id="hide-rejected" class="govuk-cookie-banner__message govuk-width-container" role="alert" style="display:none;">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <div class="govuk-cookie-banner__content">
-                        <p class="govuk-body">You’ve rejected additional cookies. You can <a class="govuk-link" href="../Footer/Cookies" target="_blank" rel="noopener noreferrer">change your cookie settings</a> at any time.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="govuk-button-group">
-                <button value="yes" type="submit" name="cookies[hide]" class="govuk-button">
-                    Hide cookie message
-                </button>
-                <script>
-                    (function () {
-                        var buttonRef = document.getElementById("hide-rejected");
-                        buttonRef.addEventListener("click", function (event) {
-                            document.getElementById("hide-rejected").style.display = 'none';
-                        }, false)
-                    })();
-                </script>
-            </div>
-        </div>
         <script>
             (function () {
                 var buttonRef = document.getElementById("accept-cookies");
                 buttonRef.addEventListener("click", function (event) {
-                    showMessage("accept", "hide-accepted");
+                    buildMessage("accepted");
+                    showMessage("accept");
                     window.dataLayer = window.dataLayer || [];
                     (function (w, d, s, l, i) {
                         w[l] = w[l] || []; w[l].push({
@@ -91,15 +68,23 @@
                 }, false)
                 var buttonRef = document.getElementById("reject-cookies");
                 buttonRef.addEventListener("click", function (event) {
-                    showMessage("reject", "hide-rejected");
+                    buildMessage("rejected");
+                    showMessage("reject");
                 }, false)
             })();
-            function showMessage(cookiePolicy, element) {
+            function buildMessage(policy) {
+                let p = document.createElement('p');
+                p.classList.add("govuk-body");
+                p.innerHTML = "You’ve " + policy + " additional cookies. You can <a class=\"govuk-link\" href=\"/cookies\" target=\"_blank\" rel=\"noopener noreferrer\">change your cookie settings</a> at any time";
+                var t = document.getElementById("content-message");
+                t.appendChild(p);
+            };
+            function showMessage(cookiePolicy) {
                 setCookie("seen_cookie_message", "yes");
                 setCookie("cookie_policy", cookiePolicy);
                 document.getElementById("cookieConsent").style.display = 'none';
-                document.getElementById(element).style.display = 'block';
-                document.getElementById(element).tabIndex = -1;
+                document.getElementById("hide-message").style.display = 'block';
+                document.getElementById("hide-message").tabIndex = -1;
             };
             function setCookie(cname, cvalue) {
                 if (!cookieExists(cname)) {
