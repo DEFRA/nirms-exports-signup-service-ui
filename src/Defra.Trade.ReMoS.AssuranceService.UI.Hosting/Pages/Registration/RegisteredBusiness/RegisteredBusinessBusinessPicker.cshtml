@@ -7,11 +7,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <!-- Dont display error summary if its an unregistered business error -->
-        @if (!ModelState.HasError("UnregisteredBusiness"))
-        {
-            <partial name="_ErrorSummary" model="ModelState" />
-        }
+        <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TraderId" />
@@ -24,27 +20,6 @@
                     </legend>
 
                     <p id="Business_Error" class="govuk-error-message" gds-validation-for="SelectedBusiness"></p>
-
-                    @if (ModelState.HasError("UnregisteredBusiness"))
-                    {
-                        <div class="govuk-error-summary" data-module="govuk-error-summary" id="anotherBusinessError">
-                            <div role="alert">
-                                <h2 class="govuk-error-summary__title">
-                                    You do not have access to any other businesses
-                                </h2>
-                                <div class="govuk-error-summary__body">
-                                    <ul class="govuk-list govuk-error-summary__list">
-                                        <li class="govuk-!-margin-bottom-4">
-                                            If the business you want to select already has a Defra account, you'll need to contact your business' account administrator so they can give you access. To learn more about account access, you can read about how to <a rel="noopener noreferrer" href="https://www.gov.uk/government/publications/how-to-register-for-export-health-certificate-ehc-online/ehc-online-manage-access-using-your-defra-account" target="_blank">manage access using your Defra account</a>.
-                                        </li>
-                                        <li>
-                                            If your business does not have a Defra account, you'll need to add a business to your individual account.
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    }
 
                     <div class="govuk-form-group @(ModelState.HasError("SelectedBusiness") ? "govuk-form-group--error" : null)">
                         @if (Model.Businesses.Count > 7)
@@ -84,13 +59,5 @@
     </div>
 </div>
 
-@section scripts
-    {
-    <script>
-        function RemoveUnregisteredBusinessError() {
-            document.getElementById("anotherBusinessError").style.display = 'none';
-        }
-    </script>
-}
 
 

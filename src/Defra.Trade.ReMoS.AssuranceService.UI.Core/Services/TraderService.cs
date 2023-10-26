@@ -86,7 +86,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                     signupStatus = TradePartySignupStatus.InProgress;
                 else if (tradeParty.Address.TradeCountry == null)
                     signupStatus = TradePartySignupStatus.InProgressEligibilityCountry;
-                else if (tradeParty.FboNumber == null)
+                else if (tradeParty.FboPhrOption == null)
                     signupStatus = TradePartySignupStatus.InProgressEligibilityFboNumber;
                 else if(!tradeParty.RegulationsConfirmed)
                     signupStatus = TradePartySignupStatus.InProgressEligibilityRegulations;
