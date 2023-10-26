@@ -4,6 +4,7 @@ public static class Routes
 {
     public const string SelectedBusiness = "/selected-business";
     public const string RegisteredBusinessBusinessPicker = "/registered-business-picker";
+    public const string RegisteredBusinessNoBusinessChosen = "/registered-business-not-chosen";
     public const string RegisteredBusinessAlreadyRegistered = "/business-already-registered";
     public const string RegisteredBusinessCountry = "/registered-business-country";
     public const string RegisteredBusinessRegulations = "/registered-business-regulations";
@@ -42,6 +43,7 @@ public static class Routes
     {
         (Pages.Path.SelectedBusinessPath, SelectedBusiness),
         (Pages.Path.RegisteredBusinessBusinessPickerPath, RegisteredBusinessBusinessPicker),
+        (Pages.Path.RegisteredBusinessPickerNoBusinessPickedPath, RegisteredBusinessNoBusinessChosen),
         (Pages.Path.RegisteredBusinessAlreadyRegisteredPath, RegisteredBusinessAlreadyRegistered),
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
         (Pages.Path.RegisteredBusinessRegulationsPath, RegisteredBusinessRegulations),
@@ -84,6 +86,7 @@ public static class Routes
         {
             public const string SelectedBusinessName = "SelectedBusiness";
             public const string RegisteredBusinessBusinessPickerName = "RegisteredBusinessBusinessPicker";
+            public const string RegisteredBusinessPickerNoBusinessPickedName = "RegisteredBusinessPickerNoBusinessPicked";
             public const string RegisteredBusinessAlreadyRegisteredName = "RegisteredBusinessAlreadyRegistered";
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
             public const string RegisteredBusinessRegulationsName = "EligibilityRegulations";
@@ -123,6 +126,7 @@ public static class Routes
         {
             public const string SelectedBusinessPath = $"/Registration/RegisteredBusiness/{Names.SelectedBusinessName}";
             public const string RegisteredBusinessBusinessPickerPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessBusinessPickerName}";
+            public const string RegisteredBusinessPickerNoBusinessPickedPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessPickerNoBusinessPickedName}";
             public const string RegisteredBusinessAlreadyRegisteredPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAlreadyRegisteredName}";
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryName}";
             public const string RegisteredBusinessRegulationsPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessRegulationsName}";

@@ -70,8 +70,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
-            ModelState.AddModelError("UnregisteredBusiness", "UnregisteredBusiness");
-            return OnGet();
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPickerNoBusinessPickedPath);
         }
 
         if (!Guid.TryParse(SelectedBusiness, out _))
