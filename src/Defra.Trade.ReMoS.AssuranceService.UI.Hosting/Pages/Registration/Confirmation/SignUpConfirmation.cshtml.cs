@@ -56,7 +56,7 @@ public class SignUpConfirmationModel : PageModel
     
     public string RetrieveGB_NIFLAG(string remosNumber)
     {
-        var nIGbFlagMatch = Regex.Match(remosNumber, @"\b(?:NI|GB)\b");
+        var nIGbFlagMatch = Regex.Match(remosNumber, @"\b(?:NI|GB)\b", RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
         return nIGbFlagMatch.Value;
     }
