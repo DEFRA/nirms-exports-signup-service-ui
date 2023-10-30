@@ -5,6 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
@@ -98,7 +99,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
     private async Task PopulateModelProperties()
     {
         if (TraderId == Guid.Empty)
-            throw new ArgumentNullException(nameof(TraderId));
+            throw new ArgumentNullException(nameof(this.TraderId));
 
         TradePartyDto? tradeParty = await GetNumberFromApiAsync();
         
@@ -121,7 +122,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
     {
         if (TraderId == Guid.Empty)
         {
-            throw new ArgumentNullException(nameof(TraderId));
+            throw new ArgumentNullException(nameof(this.TraderId));
         }
         
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);

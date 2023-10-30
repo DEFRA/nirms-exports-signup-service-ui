@@ -117,7 +117,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         {
             var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
 
-            return tradeParty?.SignUpRequestSubmittedBy == Guid.Empty ? false : true;
+            return (tradeParty?.SignUpRequestSubmittedBy) != Guid.Empty;
         }
     }
 }
