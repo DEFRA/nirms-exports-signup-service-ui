@@ -638,6 +638,48 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             returnedValue!.Should().Be(guid);
         }
 
+        [Test]
+        [ExpectedException(typeof(BadHttpRequestException), "Establishment already exists")]
+        public async Task Integration_Returns_Already_Exists_Calling_AddEstablishmentToPartyAsync()
+        {
+            // Arrange
+            var logisticsLocationDto = new LogisticsLocationDto
+            {
+                Name = "Trade party Ltd"
+            };
+            var partyId = Guid.NewGuid();
+            var appConfigurationSettings = new AppConfigurationService();
+            appConfigurationSettings.SubscriptionKey = "testkey";
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var guid = Guid.NewGuid();
+            var errMessage = "\"Establishment already exists\"";
+
+            var jsonString = JsonConvert.SerializeObject(errMessage);
+            var httpContent = new StringContent(errMessage, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
+            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddEstablishmentToPartyAsync(partyId, logisticsLocationDto));
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
+
 
         [Test]
         [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
