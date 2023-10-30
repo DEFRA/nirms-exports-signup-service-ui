@@ -133,7 +133,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = $"{new string('a', 100)}@email.com";
-            var expectedResult = "Email is too long";
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -148,7 +147,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = $"{new string('a', 100)}@email.com";
-            var expectedResult = "Email is too long";
 
             //Act
             await _systemUnderTest.OnPostSaveAsync();
