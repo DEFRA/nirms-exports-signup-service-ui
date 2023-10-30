@@ -14,6 +14,7 @@ public class TradePartyDto
     public string? PhrNumber { get; set; }
     public string? FboPhrOption { get; set; }
     public bool RegulationsConfirmed { get; set; }
+    public string? RemosBusinessSchemeNumber { get; set; }
     public DateTime AssuranceCommitmentsSignedDate { get; set; }
     public DateTime TermsAndConditionsSignedDate { get; set; }
     public Guid SignUpRequestSubmittedBy { get; set; }
