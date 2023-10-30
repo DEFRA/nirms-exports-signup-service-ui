@@ -153,6 +153,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
             _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Establishment name must be 100 characters or less");
             _systemUnderTest.ModelState.HasError("EstablishmentName").Should().Be(true);
+            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(false);
         }
 
         [Test]

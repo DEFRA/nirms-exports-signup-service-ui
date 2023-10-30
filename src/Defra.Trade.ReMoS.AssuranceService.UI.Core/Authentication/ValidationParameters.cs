@@ -1,15 +1,18 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
+
 
 public interface IValidationParameters
 {
     TokenValidationParameters TokenValidationParameters { get; }
 }
 
+[ExcludeFromCodeCoverage]
 public class ValidationParameters : IValidationParameters
 {
     public ValidationParameters(IOptions<EhcoIntegration> ehcoIntegrationSettings)

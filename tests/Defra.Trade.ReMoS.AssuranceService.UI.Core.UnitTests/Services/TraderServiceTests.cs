@@ -521,6 +521,5 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Assert
             Assert.IsFalse(result);
         }
-
     }
 }

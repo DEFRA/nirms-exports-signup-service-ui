@@ -152,10 +152,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Act
             var result = await _systemUnderTest!.OnPostSubmitAsync();
-            var redirectResult = result as RedirectToPageResult;
 
             //Assert
-            redirectResult!.PageName.Should().Be("/Establishments/PostcodeSearch");
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
         }
@@ -237,6 +235,113 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
         }
+
+        [Test]
+        public async Task OnPostSubmit_SignatoryTrue_AuthorisedSignatoryNamePath_NI()
+        {
+            //Arrange
+            _systemUnderTest!.IsAuthorisedSignatory = "true";
+            _systemUnderTest.TradePartyId = Guid.NewGuid();
+            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
+
+            _mockTraderService
+                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDto>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
+                {
+                    Id = tradePartyId,
+                    Contact = new Core.DTOs.TradeContactDto()
+                    {
+                        IsAuthorisedSignatory = true
+                    },
+                    Address = new TradeAddressDto()
+                    {
+                        TradeCountry = "NI"
+                    }
+                });
+
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
+                {
+                    Id = tradePartyId,
+                    Contact = new Core.DTOs.TradeContactDto()
+                    {
+                        IsAuthorisedSignatory = true
+                    },
+                    Address = new TradeAddressDto()
+                    {
+                        TradeCountry = "NI"
+                    }
+                });
+
+            //Act
+            var result = await _systemUnderTest!.OnPostSubmitAsync();
+            var redirectResult = result as RedirectToPageResult;
+
+            //Assert
+            redirectResult!.PageName.Should().Be("/Establishments/PostcodeSearch");
+            var validation = ValidateModel(_systemUnderTest);
+            validation.Count.Should().Be(0);
+        }
+
+        [Test]
+        public async Task OnPostSubmit_SignatoryTrue_EstablishmentsPresent_AuthorisedSignatoryNamePath_NI()
+        {
+            //Arrange
+            _systemUnderTest!.IsAuthorisedSignatory = "true";
+            _systemUnderTest.TradePartyId = Guid.NewGuid();
+            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
+
+            _mockTraderService
+                .Setup(x => x.UpdateAuthorisedSignatoryAsync(It.IsAny<TradePartyDto>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
+                {
+                    Id = tradePartyId,
+                    Contact = new Core.DTOs.TradeContactDto()
+                    {
+                        IsAuthorisedSignatory = true
+                    },
+                    Address = new TradeAddressDto()
+                    {
+                        TradeCountry = "NI"
+                    }
+                });
+
+            _mockTraderService
+                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()).Result)
+                .Returns(new Core.DTOs.TradePartyDto()
+                {
+                    Id = tradePartyId,
+                    Contact = new Core.DTOs.TradeContactDto()
+                    {
+                        IsAuthorisedSignatory = true
+                    },
+                    Address = new TradeAddressDto()
+                    {
+                        TradeCountry = "NI"
+                    }
+                });
+
+            _mockEstablishmentService
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>()).Result)
+                .Returns(new List<LogisticsLocationDto>()
+                {
+                    new LogisticsLocationDto()
+                    {
+                        Id = new Guid()
+                    }
+                });
+
+            //Act
+            var result = await _systemUnderTest!.OnPostSubmitAsync();
+            var redirectResult = result as RedirectToPageResult;
+
+            //Assert
+            redirectResult!.PageName.Should().Be("/Establishments/AdditionalEstablishmentAddress");
+            var validation = ValidateModel(_systemUnderTest);
+            validation.Count.Should().Be(0);
+        }
+
 
         [Test]
         public async Task OnPostSave_SignatoryFalse_AuthorisedSignatoryNamePath()

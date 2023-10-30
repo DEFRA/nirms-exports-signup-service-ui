@@ -223,6 +223,22 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
+    public async Task OnGetAsync_TaskListCompleted()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
+            .ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(new TradePartyDto());
+        _mockCheckAnswersService.Setup(x => x.GetEligibilityProgress(It.IsAny<TradePartyDto>()))
+            .Returns(TaskListStatus.COMPLETE);
+
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(0);
+    }
+
+    [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);

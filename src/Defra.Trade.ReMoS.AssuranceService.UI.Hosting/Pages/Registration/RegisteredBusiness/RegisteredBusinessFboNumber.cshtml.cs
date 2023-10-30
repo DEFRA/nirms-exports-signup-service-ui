@@ -5,6 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
@@ -56,7 +57,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
-        await PopulateModelProperties();
+        await PopulateModelProperties(TraderId);
 
         return Page();
     }
@@ -79,7 +80,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        await SaveNumberToApiAsync();
+        await SaveNumberToApiAsync(TraderId);
         if (OptionSelected == "none")
         {      
             return RedirectToPage(
@@ -95,7 +96,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     }
 
-    private async Task PopulateModelProperties()
+    private async Task PopulateModelProperties(Guid TraderId)
     {
         if (TraderId == Guid.Empty)
             throw new ArgumentNullException(nameof(TraderId));
@@ -117,7 +118,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     }   
 
-    private async Task SaveNumberToApiAsync()
+    private async Task SaveNumberToApiAsync(Guid TraderId)
     {
         if (TraderId == Guid.Empty)
         {

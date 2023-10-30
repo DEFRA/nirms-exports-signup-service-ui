@@ -7,9 +7,11 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Microsoft.Extensions.Options;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Footer;
 
+[ExcludeFromCodeCoverage]
 public class CookiesModel : PageModel
 {
     #region prop and ctor
