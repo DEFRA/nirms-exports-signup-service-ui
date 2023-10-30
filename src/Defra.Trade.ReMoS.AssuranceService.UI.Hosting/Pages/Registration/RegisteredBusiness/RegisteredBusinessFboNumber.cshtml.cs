@@ -57,7 +57,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
-        await PopulateModelProperties();
+        await PopulateModelProperties(TraderId);
 
         return Page();
     }
@@ -80,7 +80,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        await SaveNumberToApiAsync();
+        await SaveNumberToApiAsync(TraderId);
         if (OptionSelected == "none")
         {      
             return RedirectToPage(
@@ -96,10 +96,10 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     }
 
-    private async Task PopulateModelProperties()
+    private async Task PopulateModelProperties(Guid TraderId)
     {
         if (TraderId == Guid.Empty)
-            throw new ArgumentNullException(nameof(this.TraderId));
+            throw new ArgumentNullException(nameof(TraderId));
 
         TradePartyDto? tradeParty = await GetNumberFromApiAsync();
         
@@ -118,11 +118,11 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     }   
 
-    private async Task SaveNumberToApiAsync()
+    private async Task SaveNumberToApiAsync(Guid TraderId)
     {
         if (TraderId == Guid.Empty)
         {
-            throw new ArgumentNullException(nameof(this.TraderId));
+            throw new ArgumentNullException(nameof(TraderId));
         }
         
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
