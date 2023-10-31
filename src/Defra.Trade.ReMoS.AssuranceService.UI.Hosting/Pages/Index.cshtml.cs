@@ -121,7 +121,7 @@ public class IndexModel : PageModel
             var userEnrolledOrganisationsClaims = Request.Form["userEnrolledOrganisationsJWT"];
 
             var userEnrolledOrganisationsClaimsList = userEnrolledOrganisationsClaims.ToString().GetClaims();
-            claims?.AddRange(userEnrolledOrganisationsClaimsList);
+            claims.AddRange(userEnrolledOrganisationsClaimsList);
 
             var IsValid = ValidatePrincipal(claims!);
             if (!IsValid)
