@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 
 [ExcludeFromCodeCoverage]
 public static class TaskListStatus

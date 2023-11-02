@@ -1,9 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Reactive;
+using NUnit.Framework;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests.Models;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Models;
 
 [TestFixture]
 public class TradePartyTests
@@ -124,7 +122,7 @@ public class TradeAddressTests
             PostCode = "EC1N 2PB",
             CityName = "London",
             County = "Surrey",
-            TradeCountry = "United Kingdom", 
+            TradeCountry = "United Kingdom",
         };
 
         //Assert

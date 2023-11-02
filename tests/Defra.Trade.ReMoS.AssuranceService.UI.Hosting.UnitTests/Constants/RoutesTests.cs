@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests.Constants;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Constants;
 
 [TestFixture]
 public class RoutesTests
@@ -70,5 +65,6 @@ public class RoutesTests
         path.Should().Contain(pageName);
     }
 }
+
 
 
