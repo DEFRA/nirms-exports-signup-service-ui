@@ -22,6 +22,8 @@ public class RegisteredBusinessCountryModel : PageModel
     [BindProperty]
     public bool CountrySaved { get; set; }
 
+    [BindProperty]
+    public string? BusinessName { get; set; } = string.Empty;
     public bool AllowedToTasklist { get; set; }
     #endregion
 
@@ -57,6 +59,7 @@ public class RegisteredBusinessCountryModel : PageModel
         }
 
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
+        BusinessName = tradeParty!.PartyName;
         if (_checkAnswersService.GetEligibilityProgress(tradeParty!) == TaskListStatus.COMPLETE)
         {
             AllowedToTasklist = true;

@@ -32,7 +32,7 @@
                     <fieldset class="govuk-fieldset govuk-!-margin-bottom-5">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">
-                                What will your business do under the Northern Ireland Retail Movement Scheme?
+                                What will @(Model.BusinessName) do under the Northern Ireland Retail Movement Scheme?
                             </h1>
                         </legend>
 
@@ -69,7 +69,7 @@
                                 <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)" id="Country">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                            What is the location of your business' main address, for example the head office?
+                                            What is the location of @(Model.BusinessName)'s main address, for example the head office?
                                         </legend>
                                         <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
                                         <div class="govuk-radios__item">

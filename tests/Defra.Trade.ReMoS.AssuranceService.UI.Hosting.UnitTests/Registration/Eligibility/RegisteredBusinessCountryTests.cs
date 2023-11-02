@@ -31,6 +31,11 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         //TODO: Add setup for returning values when API referenced
         Guid guid = Guid.Empty;
+        var tradeParty = new TradePartyDto()
+        {
+            PartyName = "test"
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid).Result).Returns(tradeParty);
 
         //Act
         _ = await _systemUnderTest!.OnGetAsync(guid);
