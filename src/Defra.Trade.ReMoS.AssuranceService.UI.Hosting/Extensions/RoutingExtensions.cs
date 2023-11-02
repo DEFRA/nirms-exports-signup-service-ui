@@ -1,14 +1,8 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Extensions;
 
 /// <summary>
 /// routing extensions to add to program.cs
@@ -38,4 +32,5 @@ public static class RoutingExtensions
 
         return builder;
     }
-    }
+}
+

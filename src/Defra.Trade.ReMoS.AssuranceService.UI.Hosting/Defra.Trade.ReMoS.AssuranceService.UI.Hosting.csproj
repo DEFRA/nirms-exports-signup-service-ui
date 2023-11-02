@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Defra.Trade.ReMoS.AssuranceService.UI.Core\Defra.Trade.ReMoS.AssuranceService.UI.Core.csproj" />
-    <ProjectReference Include="..\Defra.Trade.ReMoS.AssuranceService.UI.Domain\Defra.Trade.ReMoS.AssuranceService.UI.Domain.csproj" />
   </ItemGroup>
 
 </Project>

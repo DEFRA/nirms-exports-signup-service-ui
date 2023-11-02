@@ -1,4 +1,4 @@
-﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 
 public static class Routes
 {
