@@ -49,7 +49,8 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         {
             Id = Guid.NewGuid(),
             FboNumber = "fbonum-123456-fbonum",
-            FboPhrOption = "fbo"
+            FboPhrOption = "fbo",
+            PartyName = "party"
         };
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -62,6 +63,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Assert
         _systemUnderTest.FboNumber.Should().Be("fbonum-123456-fbonum");
         _systemUnderTest.OptionSelected.Should().Be("fbo");
+        _systemUnderTest.BusinessName.Should().Be("party");
     }
 
     [Test]

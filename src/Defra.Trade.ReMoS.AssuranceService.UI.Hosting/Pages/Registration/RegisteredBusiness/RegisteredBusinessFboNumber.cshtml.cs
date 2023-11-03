@@ -32,6 +32,8 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     [BindProperty]
     public Guid TraderId { get; set; }
+    [BindProperty]
+    public string? BusinessName { get; set; } = string.Empty;
 
     private readonly ILogger<RegisteredBusinessFboNumberModel> _logger;
     private readonly ITraderService _traderService;
@@ -108,6 +110,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             FboNumber = tradeParty.FboNumber;
             PhrNumber = tradeParty.PhrNumber;
             OptionSelected = tradeParty.FboPhrOption;
+            BusinessName = tradeParty.PartyName;
         }      
             }
 
