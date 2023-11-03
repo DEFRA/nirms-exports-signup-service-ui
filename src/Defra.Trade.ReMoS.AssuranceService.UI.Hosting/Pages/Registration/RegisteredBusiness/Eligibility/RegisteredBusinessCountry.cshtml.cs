@@ -60,7 +60,7 @@ public class RegisteredBusinessCountryModel : PageModel
         }
 
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
-        BusinessName = tradeParty!.PartyName;
+        BusinessName = tradeParty!.PracticeName;
         if (_checkAnswersService.GetEligibilityProgress(tradeParty!) == TaskListStatus.COMPLETE)
         {
             AllowedToTasklist = true;

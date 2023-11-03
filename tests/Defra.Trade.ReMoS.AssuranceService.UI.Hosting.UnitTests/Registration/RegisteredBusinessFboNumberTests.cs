@@ -50,7 +50,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
             Id = Guid.NewGuid(),
             FboNumber = "fbonum-123456-fbonum",
             FboPhrOption = "fbo",
-            PartyName = "party"
+            PracticeName = "party"
         };
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))

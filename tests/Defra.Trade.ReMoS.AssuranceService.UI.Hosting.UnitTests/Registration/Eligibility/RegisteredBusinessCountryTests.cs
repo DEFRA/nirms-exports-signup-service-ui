@@ -34,7 +34,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         Guid guid = Guid.Empty;
         var tradeParty = new TradePartyDto()
         {
-            PartyName = "test"
+            PracticeName = "test"
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid).Result).Returns(tradeParty);
 
