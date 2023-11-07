@@ -328,11 +328,24 @@ public class ApiIntegration : IApiIntegration
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}");
 
-        response.EnsureSuccessStatusCode();
-
-        return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDto>>(
-            await response.Content.ReadAsStreamAsync(),
-            options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
+        if (response.IsSuccessStatusCode)
+        {
+            using var contentStream = await response.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDto>>(
+                await response.Content.ReadAsStreamAsync(),
+                options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <summary>
