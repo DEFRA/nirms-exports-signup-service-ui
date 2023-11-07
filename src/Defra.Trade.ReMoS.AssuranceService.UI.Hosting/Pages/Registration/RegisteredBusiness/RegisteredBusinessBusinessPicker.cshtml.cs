@@ -61,7 +61,12 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnPostSubmit");
 
-        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(SelectedBusiness))
+        if (!ModelState.IsValid)
+        {
+            return OnGet();
+        }
+
+        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             SelectedBusiness = null;
             ModelState.AddModelError("SelectedBusiness", "Select a business");
@@ -86,10 +91,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
             return OnGet();
         }
 
-        if (!ModelState.IsValid)
-        {
-            return OnGet();
-        }
+        
 
         if (!orgDetails!.Enrolled)
         {
