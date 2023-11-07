@@ -1,5 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory
 {
-    public class AuthorisedSignatoryEmailModel : PageModel
+    public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEmailModel>
     {
         #region ui model
         [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
@@ -26,20 +28,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         public string? Country { get; set; }
         #endregion
-
-        private readonly ITraderService _traderService;
-        private readonly IEstablishmentService _establishmentService;
-        private readonly ILogger<AuthorisedSignatoryEmailModel> _logger;
-
+        
         public AuthorisedSignatoryEmailModel(
-            ITraderService traderService, 
+            ITraderService traderService,
             IEstablishmentService establishmentService,
-            ILogger<AuthorisedSignatoryEmailModel> logger)
-        {
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+            ILogger<AuthorisedSignatoryEmailModel> logger) : base(traderService, establishmentService, logger)
+        {}
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {

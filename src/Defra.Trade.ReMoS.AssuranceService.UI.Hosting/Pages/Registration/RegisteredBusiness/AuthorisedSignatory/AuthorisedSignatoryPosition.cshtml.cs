@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 
-public class AuthorisedSignatoryPositionModel : PageModel
+public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignatoryPositionModel>
 {
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-_.,/()&]*$", ErrorMessage = "Enter a position using only letters, numbers, brackets, full stops, commas, hyphens, underscores, forward slashes or ampersands")]
@@ -23,14 +24,10 @@ public class AuthorisedSignatoryPositionModel : PageModel
     [BindProperty]
     public Guid SignatoryId { get; set; }
 
-    private readonly ITraderService _traderService;
-    private readonly ILogger<AuthorisedSignatoryPositionModel> _logger;
-
-    public AuthorisedSignatoryPositionModel(ITraderService traderService, ILogger<AuthorisedSignatoryPositionModel> logger)
-    {
-        _traderService = traderService;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    public AuthorisedSignatoryPositionModel(
+        ITraderService traderService, 
+        ILogger<AuthorisedSignatoryPositionModel> logger) : base(traderService, logger)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {

@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 
-public class AuthorisedSignatoryNameModel : PageModel
+public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNameModel>
 {
     #region ui model
     [BindProperty]
@@ -25,14 +26,10 @@ public class AuthorisedSignatoryNameModel : PageModel
     public Guid SignatoryId { get; set; }
     #endregion
 
-    private readonly ITraderService _traderService;
-    private readonly ILogger<AuthorisedSignatoryNameModel> _logger;
-
-    public AuthorisedSignatoryNameModel(ITraderService traderService, ILogger<AuthorisedSignatoryNameModel> logger)
-    {
-        _traderService = traderService;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    public AuthorisedSignatoryNameModel(
+        ITraderService traderService, 
+        ILogger<AuthorisedSignatoryNameModel> logger) : base(traderService, logger)
+    {}
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         TradePartyId = id;

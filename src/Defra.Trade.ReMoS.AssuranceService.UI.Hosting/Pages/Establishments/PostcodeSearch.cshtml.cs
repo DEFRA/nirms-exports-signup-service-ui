@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 {
-    public class PostcodeSearchModel : PageModel
+    public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
     {
         #region UI Models
 
@@ -28,15 +29,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         public Guid TradePartyId { get; set; }
 
         #endregion UI Models
+             
 
-        private readonly ILogger<PostcodeSearchModel> _logger;
-        private readonly ITraderService _traderService;
-
-        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-        }
+        public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService) : base(logger, traderService)
+        {}
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 

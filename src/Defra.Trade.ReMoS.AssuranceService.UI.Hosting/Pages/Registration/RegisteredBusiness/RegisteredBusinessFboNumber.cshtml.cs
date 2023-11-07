@@ -2,6 +2,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,7 +13,7 @@ using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
-public class RegisteredBusinessFboNumberModel : PageModel
+public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusinessFboNumberModel>
 {
     #region props and ctor
 
@@ -32,14 +33,11 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     [BindProperty]
     public Guid TraderId { get; set; }
-
-    private readonly ILogger<RegisteredBusinessFboNumberModel> _logger;
-    private readonly ITraderService _traderService;
-    public RegisteredBusinessFboNumberModel(ILogger<RegisteredBusinessFboNumberModel> logger, ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+        
+    public RegisteredBusinessFboNumberModel(
+        ILogger<RegisteredBusinessFboNumberModel> logger, 
+        ITraderService traderService) : base( logger, traderService )
+    {}
 
     #endregion props and ctor
 
