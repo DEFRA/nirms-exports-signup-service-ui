@@ -1,10 +1,12 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
-public class PostcodeNoResultModel : PageModel
+public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
 {
     #region UI models
     [BindProperty]
@@ -18,12 +20,8 @@ public class PostcodeNoResultModel : PageModel
     public string? ContentCountry { get; set; } = string.Empty;
     #endregion
 
-    private readonly ITraderService _traderService;
-
-    public PostcodeNoResultModel(ITraderService traderService)
-    {
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService)); 
-    }
+    public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
+    {}
 
     public IActionResult OnGet(Guid id, string NI_GBFlag, string postcode)
     {

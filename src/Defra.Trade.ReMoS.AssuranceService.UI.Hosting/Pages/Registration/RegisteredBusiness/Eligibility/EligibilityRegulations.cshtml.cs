@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,20 +8,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
-public class EligibilityRegulationsModel : PageModel
+public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsModel>
 {
     [BindProperty]
     public bool Confirmed { get; set; }
     [BindProperty]
     public Guid TraderId { get; set; }
-    private readonly ILogger<EligibilityRegulationsModel> _logger;
-    private readonly ITraderService _traderService;
-
-    public EligibilityRegulationsModel(ILogger<EligibilityRegulationsModel> logger, ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+    
+    public EligibilityRegulationsModel(
+        ILogger<EligibilityRegulationsModel> logger, 
+        ITraderService traderService) : base(logger, traderService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {

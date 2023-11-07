@@ -1,12 +1,13 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances
 {
-    public class TermsAndConditions : PageModel
+    public class TermsAndConditions : BasePageModel<TermsAndConditions>
     {
         #region UI Model
 
@@ -17,19 +18,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         public bool TandCs { get; set; }
 
         #endregion UI Model
-
-        private readonly ITraderService _traderService;
-        private readonly IUserService _userService;
-        private readonly IEstablishmentService _establishmentService;
-        private readonly ICheckAnswersService _checkAnswersService;
-
-        public TermsAndConditions(ITraderService traderService, IUserService userService, IEstablishmentService establishmentService, ICheckAnswersService? checkAnswersService)
-        {
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-            _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
-        }
+               
+        public TermsAndConditions(
+            ITraderService traderService, 
+            IUserService userService, 
+            IEstablishmentService establishmentService, 
+            ICheckAnswersService checkAnswersService) : base(traderService, establishmentService, checkAnswersService, userService)
+        {}
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {

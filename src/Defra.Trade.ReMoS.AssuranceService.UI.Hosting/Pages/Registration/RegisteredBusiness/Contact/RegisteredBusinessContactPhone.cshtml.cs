@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,11 +9,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 
-public class RegisteredBusinessContactPhoneModel : PageModel
+public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusinessContactPhoneModel>
 {
-    private readonly ITraderService _traderService;
-    private readonly ILogger<RegisteredBusinessContactPhoneModel> _logger;
-
+    
     #region ui model
     [BindProperty]
     // This regex pattern supports various formats of UK phone numbers, including landlines and mobile numbers. It allows for optional spaces in different positions.
@@ -27,11 +26,10 @@ public class RegisteredBusinessContactPhoneModel : PageModel
     public bool? IsAuthorisedSignatory { get; set; }
     #endregion
 
-    public RegisteredBusinessContactPhoneModel(ILogger<RegisteredBusinessContactPhoneModel> logger, ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+    public RegisteredBusinessContactPhoneModel(
+        ILogger<RegisteredBusinessContactPhoneModel> logger, 
+        ITraderService traderService) : base(logger, traderService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
