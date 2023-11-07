@@ -104,6 +104,8 @@ public class EstablishmentNameAndAddressModel : PageModel
             ContentHeading = "Add a place of dispatch";
         }
 
+        ViewData["Title"] = ContentHeading;
+
         return Page();
     }
 
@@ -186,6 +188,9 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private bool IsInputValid()
     {
+        if (!ModelState.IsValid)
+            return false;
+
         if (EstablishmentName != null && EstablishmentName.Length > 100)
             ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
 
@@ -210,7 +215,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
 
-        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+        if (ModelState.ErrorCount > 0)
             return false;
 
         return true;
