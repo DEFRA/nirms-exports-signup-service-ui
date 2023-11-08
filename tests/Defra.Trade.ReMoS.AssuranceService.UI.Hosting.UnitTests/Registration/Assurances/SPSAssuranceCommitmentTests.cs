@@ -232,7 +232,12 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
-            PartyName = "Test"
+            PartyName = "Test",
+            PracticeName = "TestLtd",
+            AuthorisedSignatory = new AuthorisedSignatoryDto()
+            {
+                Name = "Name1",
+            }
         };
 
         var assurance = true;
