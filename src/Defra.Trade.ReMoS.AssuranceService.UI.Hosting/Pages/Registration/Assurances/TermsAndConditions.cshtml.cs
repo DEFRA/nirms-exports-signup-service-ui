@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.AppService.Fluent.Models;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances
 {
@@ -16,9 +17,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         [BindProperty]
         public bool TandCs { get; set; }
+        [BindProperty]
+        public string AuthorisedSignatoryName { get; set; } = string.Empty;
+        [BindProperty]
+        public string PracticeName { get; set; } = string.Empty;
 
         #endregion UI Model
-               
+
         public TermsAndConditions(
             ITraderService traderService, 
             IUserService userService, 
@@ -41,6 +46,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             {
                 var partyWithSignUpStatus = await _traderService.GetDefraOrgBusinessSignupStatus(dto.OrgId);
 
+                AuthorisedSignatoryName = dto.AuthorisedSignatory?.Name ?? string.Empty;
+                PracticeName = dto.PracticeName ?? string.Empty;
+                
                 if (partyWithSignUpStatus.signupStatus == Core.Enums.TradePartySignupStatus.Complete)
                 {
                     return RedirectToPage(
