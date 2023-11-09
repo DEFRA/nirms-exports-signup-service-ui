@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
-public class EstablishmentNameAndAddressModel : PageModel
+public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameAndAddressModel>
 {
     #region ui model variables
     [BindProperty]
@@ -59,20 +60,12 @@ public class EstablishmentNameAndAddressModel : PageModel
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
-
-    private readonly ILogger<EstablishmentNameAndAddressModel> _logger;
-    private readonly IEstablishmentService _establishmentService;
-    private readonly ITraderService _traderService;
-
+        
     public EstablishmentNameAndAddressModel(
         ILogger<EstablishmentNameAndAddressModel> logger,
         IEstablishmentService establishmentService,
-        ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+        ITraderService traderService) : base(logger, traderService, establishmentService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
     {
@@ -103,6 +96,8 @@ public class EstablishmentNameAndAddressModel : PageModel
             ContextHint = "If your place of dispatch belongs to a different business";
             ContentHeading = "Add a place of dispatch";
         }
+
+        ViewData["Title"] = ContentHeading;
 
         return Page();
     }
@@ -186,6 +181,9 @@ public class EstablishmentNameAndAddressModel : PageModel
 
     private bool IsInputValid()
     {
+        if (!ModelState.IsValid)
+            return false;
+
         if (EstablishmentName != null && EstablishmentName.Length > 100)
             ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
 
@@ -210,7 +208,7 @@ public class EstablishmentNameAndAddressModel : PageModel
         if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
 
-        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
+        if (ModelState.ErrorCount > 0)
             return false;
 
         return true;

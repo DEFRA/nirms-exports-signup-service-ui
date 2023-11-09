@@ -1,14 +1,14 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
-
-public class RegisteredBusinessCountryModel : PageModel
+public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCountryModel>
 {
     #region ui model variables
     [BindProperty]
@@ -28,16 +28,11 @@ public class RegisteredBusinessCountryModel : PageModel
     public bool AllowedToTasklist { get; set; }
     #endregion
 
-    private readonly ILogger<RegisteredBusinessCountryModel> _logger;
-    private readonly ITraderService _traderService;
-    private readonly ICheckAnswersService _checkAnswersService;
-
-    public RegisteredBusinessCountryModel(ILogger<RegisteredBusinessCountryModel> logger, ITraderService traderService, ICheckAnswersService checkAnswersService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-        _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
-    }
+    public RegisteredBusinessCountryModel(
+        ILogger<RegisteredBusinessCountryModel> logger,
+        ITraderService traderService,
+        ICheckAnswersService checkAnswersService) : base(logger, traderService, checkAnswersService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
