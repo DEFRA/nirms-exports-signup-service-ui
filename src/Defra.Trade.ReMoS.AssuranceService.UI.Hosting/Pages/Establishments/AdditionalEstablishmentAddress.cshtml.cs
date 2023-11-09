@@ -23,6 +23,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     public string? NI_GBFlag { get; set; } = string.Empty;
+    public string? PracticeName { get; set; } = string.Empty;
 
     #endregion ui model variables
 
@@ -63,6 +64,8 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
             .Where(x => x.NI_GBFlag == this.NI_GBFlag)
             .OrderBy(x => x.CreatedDate)
             .ToList();
+
+        PracticeName = (await _traderService.GetTradePartyByIdAsync(TradePartyId))?.PracticeName ?? string.Empty;
 
         return Page();
     }
