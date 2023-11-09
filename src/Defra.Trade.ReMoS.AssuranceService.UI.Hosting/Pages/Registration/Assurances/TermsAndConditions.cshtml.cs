@@ -18,9 +18,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         [BindProperty]
         public bool TandCs { get; set; }
         [BindProperty]
-        public string AuthorisedSignatoryName { get; set; } = string.Empty;
+        public string? AuthorisedSignatoryName { get; set; } = string.Empty;
         [BindProperty]
-        public string PracticeName { get; set; } = string.Empty;
+        public string? PracticeName { get; set; } = string.Empty;
 
         #endregion UI Model
 
