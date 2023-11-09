@@ -2,7 +2,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Azure.Management.BatchAI.Fluent.Models;
@@ -12,7 +13,7 @@ using System.Diagnostics.Metrics;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
 [BindProperties]
-public class AdditionalEstablishmentAddressModel : PageModel
+public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstablishmentAddressModel>
 {
     #region ui model variables
 
@@ -25,22 +26,12 @@ public class AdditionalEstablishmentAddressModel : PageModel
 
     #endregion ui model variables
 
-    private readonly ILogger<AdditionalEstablishmentAddressModel> _logger;
-    private readonly IEstablishmentService _establishmentService;
-    private readonly ITraderService _traderService;
-    private readonly ICheckAnswersService _checkAnswersService;
-
     public AdditionalEstablishmentAddressModel(
         ILogger<AdditionalEstablishmentAddressModel> logger,
         IEstablishmentService establishmentService,
         ITraderService traderService,
-        ICheckAnswersService checkAnswersService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-        _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
-    }
+        ICheckAnswersService checkAnswersService) : base(logger, traderService, establishmentService, checkAnswersService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {

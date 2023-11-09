@@ -1,4 +1,5 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
 [ExcludeFromCodeCoverage]
-public class RegisteredBusinessCanNotRegisterModel : PageModel
+public class RegisteredBusinessCanNotRegisterModel : BasePageModel<RegisteredBusinessCanNotRegisterModel>
 {
     [BindProperty]
     public Guid TraderId { get; set; }

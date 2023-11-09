@@ -1,9 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Reactive;
+using NUnit.Framework;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Domain.UnitTests.Models;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Models;
 
 [TestFixture]
 public class TradePartyTests
@@ -124,7 +122,7 @@ public class TradeAddressTests
             PostCode = "EC1N 2PB",
             CityName = "London",
             County = "Surrey",
-            TradeCountry = "United Kingdom", 
+            TradeCountry = "United Kingdom",
         };
 
         //Assert
@@ -249,6 +247,7 @@ public class TradePartyDTORelationshipTests
         {
             //Act
             Id = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"),
+            TradePartyId = Guid.Parse("c14eb7a7-2949-4880-b5d7-0405f4f7d901"),
             PersonName = "John Doe",
             TelephoneNumber = "1234567890",
             Email = "John.Doe@contactemail.com"
@@ -281,6 +280,7 @@ public class TradePartyDTORelationshipTests
 
         //Assert
         tradeContact.Id.Should().Be(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d901"));
+        tradeContact.TradePartyId.Should().Be(Guid.Parse("c14eb7a7-2949-4880-b5d7-0405f4f7d901"));
         tradeContact.PersonName.Should().Be("John Doe");
         tradeContact.TelephoneNumber.Should().Be("1234567890");
 

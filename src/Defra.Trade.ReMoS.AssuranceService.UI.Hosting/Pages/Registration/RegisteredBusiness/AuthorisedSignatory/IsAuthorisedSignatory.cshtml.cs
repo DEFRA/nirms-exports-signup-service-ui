@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory
 {
-    public class IsAuthorisedSignatoryModel : PageModel
+    public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryModel>
     {
         [BindProperty]
         [Required(ErrorMessage = "Select if the contact person is the authorised representative")]
@@ -28,16 +29,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         public Guid SignatoryId { get; set; }
 
-        private readonly ITraderService _traderService;
-        private readonly IEstablishmentService _establishmentService;
-        private readonly ILogger<IsAuthorisedSignatoryModel> _logger;
-
-        public IsAuthorisedSignatoryModel(ITraderService traderService, IEstablishmentService establishmentService, ILogger<IsAuthorisedSignatoryModel> logger)
-        {
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+        public IsAuthorisedSignatoryModel(
+            ITraderService traderService, 
+            IEstablishmentService establishmentService, 
+            ILogger<IsAuthorisedSignatoryModel> logger) : base(traderService, establishmentService, logger)
+        {}
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {

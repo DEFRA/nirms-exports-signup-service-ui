@@ -2,23 +2,19 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
-public class RegisteredBusinessBusinessPickerModel : PageModel
+public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBusinessBusinessPickerModel>
 {
     #region model properties
     public List<Organisation> Businesses { get; set; } = default!;
@@ -30,19 +26,12 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     public List<SelectListItem> BusinessSelectList { get; set; } = new()!;
     #endregion
 
-    private readonly ILogger<RegisteredBusinessBusinessPickerModel> _logger;
-    private readonly ITraderService _traderService;
-    private readonly IUserService _userService;
-
+    
     public RegisteredBusinessBusinessPickerModel(
         ILogger<RegisteredBusinessBusinessPickerModel> logger,
         ITraderService traderService,
-        IUserService userService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-    }
+        IUserService userService) : base(logger, traderService, userService)
+    {}
 
     public IActionResult OnGet()
     {
@@ -61,7 +50,12 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
     {
         _logger.LogInformation("Business picker OnPostSubmit");
 
-        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(SelectedBusiness))
+        if (!ModelState.IsValid)
+        {
+            return OnGet();
+        }
+
+        if (string.Equals(SelectedBusiness, "Choose business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             SelectedBusiness = null;
             ModelState.AddModelError("SelectedBusiness", "Select a business");
@@ -70,8 +64,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
 
         if (string.Equals(SelectedBusiness, "Another business", comparisonType: StringComparison.OrdinalIgnoreCase))
         {
-            ModelState.AddModelError("UnregisteredBusiness", "UnregisteredBusiness");
-            return OnGet();
+            return RedirectToPage(Routes.Pages.Path.RegisteredBusinessPickerNoBusinessPickedPath);
         }
 
         if (!Guid.TryParse(SelectedBusiness, out _))
@@ -87,10 +80,7 @@ public class RegisteredBusinessBusinessPickerModel : PageModel
             return OnGet();
         }
 
-        if (!ModelState.IsValid)
-        {
-            return OnGet();
-        }
+        
 
         if (!orgDetails!.Enrolled)
         {

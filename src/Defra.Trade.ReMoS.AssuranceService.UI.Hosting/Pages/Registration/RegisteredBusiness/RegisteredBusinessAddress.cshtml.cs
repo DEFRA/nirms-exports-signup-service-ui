@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
-public class RegisteredBusinessAddressModel : PageModel
+public class RegisteredBusinessAddressModel : BasePageModel<RegisteredBusinessAddressModel>
 {
     #region ui model variables
     [BindProperty]
@@ -39,20 +40,15 @@ public class RegisteredBusinessAddressModel : PageModel
     public Guid TraderId { get; set; }
     #endregion
 
-    private readonly ILogger<RegisteredBusinessAddressModel> _logger;
-    private readonly ITraderService _traderService;
-
+    
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="logger"></param>
     public RegisteredBusinessAddressModel(
         ILogger<RegisteredBusinessAddressModel> logger,
-        ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService;
-    }
+        ITraderService traderService) : base( logger, traderService )
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid? id = null)
     {

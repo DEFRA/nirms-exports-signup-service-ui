@@ -1,7 +1,9 @@
 using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,7 +17,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
-public class PostcodeResultModel : PageModel
+public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 {
     #region UI Models
     [BindProperty]
@@ -39,20 +41,13 @@ public class PostcodeResultModel : PageModel
     [BindProperty]
     public bool IsSubmitDisabled { get; set; } = false;
     #endregion
-
-    private readonly ILogger<PostcodeResultModel> _logger;
-    private readonly IEstablishmentService _establishmentService;
-    private readonly ITraderService _traderService;
+      
 
     public PostcodeResultModel(
         ILogger<PostcodeResultModel> logger,
         IEstablishmentService establishmentService,
-        ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+        ITraderService traderService) : base(logger, traderService, establishmentService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string NI_GBFlag = "GB")
     {

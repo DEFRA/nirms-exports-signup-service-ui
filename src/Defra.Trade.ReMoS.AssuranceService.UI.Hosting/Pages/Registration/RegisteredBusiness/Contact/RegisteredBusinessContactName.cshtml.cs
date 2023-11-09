@@ -4,15 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
-public class RegisteredBusinessContactNameModel : PageModel
+public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusinessContactNameModel>
 {
-    private readonly ILogger<RegisteredBusinessContactNameModel> _logger;
-    private readonly ITraderService _traderService;
-
+   
     #region ui model variables
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
@@ -34,11 +33,8 @@ public class RegisteredBusinessContactNameModel : PageModel
     /// <exception cref="ArgumentNullException"></exception>
     public RegisteredBusinessContactNameModel(
         ILogger<RegisteredBusinessContactNameModel> logger,
-        ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService;
-    }
+        ITraderService traderService) : base(logger, traderService)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {

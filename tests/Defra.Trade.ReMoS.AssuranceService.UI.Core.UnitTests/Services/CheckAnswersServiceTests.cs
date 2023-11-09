@@ -1,27 +1,10 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
-using FluentAssertions.Execution;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using System.Runtime.Intrinsics.X86;
-using Microsoft.Azure.Management.ContainerInstance.Fluent.Models;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 {
@@ -704,7 +687,94 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 Contact = TradeContactDTO,
                 FboNumber = "1234567890",
                 AuthorisedSignatory = AuthorisedSignatoryDTO,
-                RegulationsConfirmed = true
+                RegulationsConfirmed = true,
+                TermsAndConditionsSignedDate = DateTime.UtcNow,
+                FboPhrOption = "2323"
+            };
+
+            // Act
+            var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
+
+            // Assert
+            Assert.IsFalse(returnedValue);
+        }
+
+        [Test]
+        public void ReadyForCheckAnswers_Returns_False_When_GetContactDetailsInProgress()
+        {
+            // Arrange
+            _checkAnswersService = new CheckAnswersService();
+
+            var TradeAddressDTO = new TradeAddressDto
+            {
+                Id = Guid.NewGuid(),
+                LineOne = "Addr 1",
+                TradeCountry = "England"
+            };
+
+            TradeContactDto TradeContactDTO = new TradeContactDto();
+
+            var AuthorisedSignatoryDTO = new AuthorisedSignatoryDto
+            {
+                TradePartyId = Guid.NewGuid(),
+                Name = "Test",
+                Position = "CEO",
+                EmailAddress = "Test@Test.Com"
+            };
+
+            var TradePartyDTO = new TradePartyDto
+            {
+                PracticeName = "Practicing",
+                Address = TradeAddressDTO,
+                Contact = TradeContactDTO,
+                FboNumber = "1234567890",
+                AuthorisedSignatory = AuthorisedSignatoryDTO,
+                RegulationsConfirmed = true,
+                TermsAndConditionsSignedDate = DateTime.UtcNow,
+                FboPhrOption = "2323",
+            };
+
+            // Act
+            var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
+
+            // Assert
+            Assert.IsFalse(returnedValue);
+        }
+
+
+        [Test]
+        public void ReadyForCheckAnswers_Returns_False_When_GetAuthorisedSignatoryNotStarted()
+        {
+            // Arrange
+            _checkAnswersService = new CheckAnswersService();
+
+            var TradeAddressDTO = new TradeAddressDto
+            {
+                Id = Guid.NewGuid(),
+                LineOne = "Addr 1",
+                TradeCountry = "England"
+            };
+
+            TradeContactDto TradeContactDTO = new TradeContactDto 
+            {
+                PersonName = "Test",
+                Email = "test@test.com",
+                Position = "test",
+                TelephoneNumber = "1234567890"
+            };
+
+            AuthorisedSignatoryDto AuthorisedSignatoryDTO = null!;
+
+            var TradePartyDTO = new TradePartyDto
+            {
+                PracticeName = "Practicing",
+                Address = TradeAddressDTO,
+                Contact = TradeContactDTO,
+                FboNumber = "1234567890",
+                AuthorisedSignatory = AuthorisedSignatoryDTO,
+                RegulationsConfirmed = true,
+                TermsAndConditionsSignedDate = DateTime.UtcNow,
+                FboPhrOption = "2323",
             };
 
             // Act

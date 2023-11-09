@@ -1,5 +1,5 @@
 ﻿@page
-@using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances.TermsAndConditions
 @{
     ViewData["Title"] = "Terms and conditions for the Northern Ireland Retail Movement Scheme";
@@ -27,7 +27,7 @@
                 <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
                     <input class="govuk-checkboxes__input" id="TandCs" asp-for="TandCs" type="checkbox" value="true">
                     <label class="govuk-label govuk-checkboxes__label govuk-!-font-weight-bold" for="TandCs">
-                        I confirm that my business' authorised representative has read and understood the terms and conditions of the Northern Ireland Retail Movement Scheme. The authorised representative is responsible for ensuring the requirements of the scheme are followed by the business.
+                        I confirm that @Model.PracticeName's authorised representative - @Model.AuthorisedSignatoryName has read and understood the terms and conditions of the Northern Ireland Retail Movement Scheme. @Model.AuthorisedSignatoryName is responsible for ensuring the requirements of the scheme are followed by the business.
                     </label>
                 </div>
             </div>

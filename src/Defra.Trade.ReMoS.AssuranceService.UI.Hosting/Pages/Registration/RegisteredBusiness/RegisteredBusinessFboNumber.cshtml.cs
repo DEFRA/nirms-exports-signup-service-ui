@@ -2,16 +2,18 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
-public class RegisteredBusinessFboNumberModel : PageModel
+public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusinessFboNumberModel>
 {
     #region props and ctor
 
@@ -31,14 +33,11 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     [BindProperty]
     public Guid TraderId { get; set; }
-
-    private readonly ILogger<RegisteredBusinessFboNumberModel> _logger;
-    private readonly ITraderService _traderService;
-    public RegisteredBusinessFboNumberModel(ILogger<RegisteredBusinessFboNumberModel> logger, ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+        
+    public RegisteredBusinessFboNumberModel(
+        ILogger<RegisteredBusinessFboNumberModel> logger, 
+        ITraderService traderService) : base( logger, traderService )
+    {}
 
     #endregion props and ctor
 
@@ -56,7 +55,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
-        await PopulateModelProperties();
+        await PopulateModelProperties(TraderId);
 
         return Page();
     }
@@ -79,7 +78,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
             return await OnGetAsync(TraderId);
         }
 
-        await SaveNumberToApiAsync();
+        await SaveNumberToApiAsync(TraderId);
         if (OptionSelected == "none")
         {      
             return RedirectToPage(
@@ -95,7 +94,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     }
 
-    private async Task PopulateModelProperties()
+    private async Task PopulateModelProperties(Guid TraderId)
     {
         if (TraderId == Guid.Empty)
             throw new ArgumentNullException(nameof(TraderId));
@@ -117,7 +116,7 @@ public class RegisteredBusinessFboNumberModel : PageModel
 
     }   
 
-    private async Task SaveNumberToApiAsync()
+    private async Task SaveNumberToApiAsync(Guid TraderId)
     {
         if (TraderId == Guid.Empty)
         {

@@ -1,6 +1,6 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confirmation;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             // arrange
             var tradePartyId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDto
+            {
+                Id = tradePartyId,
+                RemosBusinessSchemeNumber = "RMS-GB-000002"
+            };
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradePartyDto);
 
             //act
             await _systemUnderTest!.OnGet(tradePartyId);
@@ -74,7 +80,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public void OnGetAnswersNotComplete_Redirect_Successfully()
         {
             // arrange
-            var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
+            var tradeParty = new TradePartyDto { RemosBusinessSchemeNumber = "RMS-NI-000002", Address = new TradeAddressDto { TradeCountry = "NI" } };
             var tradePartyId = Guid.NewGuid();
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
@@ -101,6 +107,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var redirectResult = result as RedirectToPageResult;
 
             redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+        }
+
+        [Test]
+        [TestCase("RMS-GB-000002", "GB")]
+        [TestCase("RMS-NI-000002", "NI")]
+        [TestCase("RMS-Ngg-000002", "")]
+        [TestCase("Invalid", "")]
+        public void RetrieveGB_NIFLAG_TESTS(string remosNumber, string expectedResult)
+        {
+            var actualResult = _systemUnderTest!.RetrieveGB_NIFLAG(remosNumber);
+            Assert.AreEqual(expectedResult, actualResult);
         }
     }
 }

@@ -42,6 +42,7 @@
     <partial name="_CookieBannerPartial" />
 
     <header class="govuk-header " role="banner" data-module="govuk-header">
+        <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__logo">
                 <a href="https://www.gov.uk/" target="_blank" rel="noopener noreferrer" class="govuk-header__link govuk-header__link--homepage">
@@ -77,13 +78,6 @@
 </head>
 
 <body class="govuk-body">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=@_config["GoogleTagManager:ContainerId"]"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <div class="govuk-width-container">
         @await RenderSectionAsync("Signout", false)
         @if (!IsSectionDefined("Signout"))

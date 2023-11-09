@@ -13,7 +13,17 @@
         <h2 class="govuk-heading-m">What happens next?</h2>
         <p>You will receive a confirmation of your sign up at @Model.Email.</p>
         <p>We will review your sign-up request and email you with the outcome within 5 working days.</p>
-        <p>If your sign-up request is approved, you will be able to apply for General Certificates to move goods to Northern Ireland.</p>
+        @if(Model.NI_GBFlag == "NI")
+        {
+            <p>Your consignor – and any business that owns the places of dispatch for your consignments – will also need to sign up for the scheme. If their sign-up request is approved, they will be able to apply for General Certificates to send goods to Northern Ireland.</p>
+        }
+        @if(Model.NI_GBFlag == "GB")
+        {
+            <p>If your sign-up request is approved, you will be able to apply for General Certificates to move goods to Northern Ireland.</p>
+            <p>
+                Your consignee - and any business that owns the places of destination for your consignment - will also need to sign up for the scheme. If their sign-up request is approved, you will be able to apply for General Certificates to send goods to them in Northern Ireland.
+            </p>
+        }        
 
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">

@@ -1,6 +1,8 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +10,7 @@ using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 
-public class RegisteredBusinessContactEmailModel : PageModel
+public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusinessContactEmailModel>
 {
     #region UI Model
     [BindProperty]
@@ -21,17 +23,11 @@ public class RegisteredBusinessContactEmailModel : PageModel
     public Guid ContactId { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
     #endregion
-
-    private readonly ITraderService _traderService;
-    private readonly ILogger<RegisteredBusinessContactEmailModel> _logger;
-
+    
     public RegisteredBusinessContactEmailModel(
-        ILogger<RegisteredBusinessContactEmailModel> logger, 
-        ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-    }
+    ILogger<RegisteredBusinessContactEmailModel> logger, 
+        ITraderService traderService) : base(traderService, logger)
+    {}
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {

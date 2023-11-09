@@ -1,7 +1,8 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers
 {
-    public class CheckYourAnswersModel : PageModel
+    public class CheckYourAnswersModel : BasePageModel<CheckYourAnswersModel>
     {
         #region ui model variables
 
@@ -26,18 +27,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
         #endregion ui model variables
 
-        private readonly ILogger<CheckYourAnswersModel> _logger;    
-        private readonly IEstablishmentService _establishmentService;
-        private readonly ITraderService _traderService;
-        private readonly ICheckAnswersService _checkAnswersService;
-
-        public CheckYourAnswersModel(ILogger<CheckYourAnswersModel> logger, IEstablishmentService establishmentService, ITraderService traderService, ICheckAnswersService checkAnswersService)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _establishmentService = establishmentService ?? throw new ArgumentNullException(nameof(establishmentService));
-            _traderService = traderService ?? throw new ArgumentNullException(nameof(traderService));
-            _checkAnswersService = checkAnswersService ?? throw new ArgumentNullException(nameof(checkAnswersService));
-        }
+        public CheckYourAnswersModel(
+            ILogger<CheckYourAnswersModel> logger, 
+            IEstablishmentService establishmentService, 
+            ITraderService traderService, 
+            ICheckAnswersService checkAnswersService) : base(logger, traderService, establishmentService, checkAnswersService)
+        {}
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {

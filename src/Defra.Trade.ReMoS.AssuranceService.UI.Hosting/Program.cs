@@ -11,6 +11,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Defra.Trade.Common.Api.Infrastructure;
 using Microsoft.Azure.Management.Storage.Fluent.Models;
 using Defra.Trade.Common.Api.Health;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Extensions;
 #pragma warning disable CS1998
 
 [ExcludeFromCodeCoverage]

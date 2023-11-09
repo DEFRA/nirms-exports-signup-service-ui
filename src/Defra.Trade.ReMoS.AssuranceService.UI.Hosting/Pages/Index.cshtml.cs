@@ -1,5 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -121,7 +121,7 @@ public class IndexModel : PageModel
             var userEnrolledOrganisationsClaims = Request.Form["userEnrolledOrganisationsJWT"];
 
             var userEnrolledOrganisationsClaimsList = userEnrolledOrganisationsClaims.ToString().GetClaims();
-            claims?.AddRange(userEnrolledOrganisationsClaimsList);
+            claims.AddRange(userEnrolledOrganisationsClaimsList);
 
             var IsValid = ValidatePrincipal(claims!);
             if (!IsValid)

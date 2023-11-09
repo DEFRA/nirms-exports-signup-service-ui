@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
-public class RegisteredBusinessContactPositionModel : PageModel
+public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBusinessContactPositionModel>
 {
     #region ui model variables
     [BindProperty]
@@ -24,9 +25,6 @@ public class RegisteredBusinessContactPositionModel : PageModel
     public bool? IsAuthorisedSignatory { get; set; }
     #endregion
 
-    private readonly ILogger<RegisteredBusinessContactPositionModel> _logger;
-    private readonly ITraderService _traderService;
-
     /// <summary>
     /// Constructor
     /// </summary>
@@ -34,11 +32,8 @@ public class RegisteredBusinessContactPositionModel : PageModel
     /// <exception cref="ArgumentNullException"></exception>
     public RegisteredBusinessContactPositionModel(
         ILogger<RegisteredBusinessContactPositionModel> logger,
-        ITraderService traderService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _traderService = traderService;
-    }
+        ITraderService traderService) : base(logger, traderService)
+    {}
     
     public async Task<IActionResult> OnGetAsync(Guid id)
     {

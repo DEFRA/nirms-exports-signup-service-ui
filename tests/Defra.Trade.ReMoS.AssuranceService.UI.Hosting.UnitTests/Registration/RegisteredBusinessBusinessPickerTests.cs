@@ -2,7 +2,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
-using Defra.Trade.ReMoS.AssuranceService.UI.Domain.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -80,16 +80,21 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
-    public async Task OnPostSubmitAsync_IfAnotherBusinessSelected_AddModelError()
+    public async Task OnPostSubmitAsync_IfAnotherBusinessSelected_RouteToErrorPage()
     {
         // Arrange
         _systemUnderTest!.SelectedBusiness = "Another business";
+        _systemUnderTest!.TraderId = Guid.NewGuid();
+        var expected = new RedirectToPageResult(
+           Routes.Pages.Path.RegisteredBusinessPickerNoBusinessPickedPath,
+           new { id = _systemUnderTest.TraderId });
 
         // Act
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         // Assert
-        _systemUnderTest.ModelState.HasError("UnregisteredBusiness").Should().BeTrue();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
     }
 
     [Test]
@@ -369,7 +374,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         _systemUnderTest.ModelState.HasError("SelectedBusiness", "User role not found").Should().BeTrue();
-        
+        _systemUnderTest.ModelState.HasError("SelectedBusiness", "Select a business").Should().BeFalse();
     }
 
     [Test]
