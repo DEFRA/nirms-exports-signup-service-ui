@@ -55,6 +55,16 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     {
         // arrange
         _systemUnderTest.Name = "John Doe";
+        _systemUnderTest.PracticeName = "ACME Ltd";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = true,
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
 
         // act
         await _systemUnderTest.OnPostSaveAsync();
