@@ -122,7 +122,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
     {
         if (GBChosen == "" || GBChosen == null)
         {
-            ModelState.AddModelError(nameof(GBChosen), "Select what your business will do under the scheme");
+            ModelState.AddModelError(nameof(GBChosen), $"Select what {BusinessName} will do under the scheme");
             return;
         }
 

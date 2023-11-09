@@ -33,6 +33,9 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     [BindProperty]
     public Guid TraderId { get; set; }
+
+    [BindProperty]
+    public string? BusinessName { get; set; } = string.Empty;
         
     public RegisteredBusinessFboNumberModel(
         ILogger<RegisteredBusinessFboNumberModel> logger, 
