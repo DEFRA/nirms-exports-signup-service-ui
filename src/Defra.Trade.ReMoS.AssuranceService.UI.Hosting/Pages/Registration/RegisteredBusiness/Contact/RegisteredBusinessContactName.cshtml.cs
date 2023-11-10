@@ -24,6 +24,8 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
     [BindProperty]
     public Guid ContactId { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
+    [BindProperty]
+    public string? PracticeName { get; set; }
     #endregion
 
     /// <summary>
@@ -52,7 +54,7 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
 
         _logger.LogInformation("Name OnGet");
 
-        await GetContactNameFromApiAsync();
+        await GetTradePartyFromApiAsync();
 
         return Page();
 
@@ -98,9 +100,11 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
-    private async Task GetContactNameFromApiAsync()
+    private async Task GetTradePartyFromApiAsync()
     {
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        PracticeName = tradeParty?.PracticeName ?? string.Empty;
+
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Name = tradeParty.Contact.PersonName ?? string.Empty;
