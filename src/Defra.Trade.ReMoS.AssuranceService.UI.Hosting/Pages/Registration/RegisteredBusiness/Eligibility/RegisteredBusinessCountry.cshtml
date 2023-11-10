@@ -27,12 +27,13 @@
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TraderId" />
             <input type="hidden" asp-for="CountrySaved" />
+            <input type="hidden" asp-for="PracticeName" />
             <div class="govuk-form-group @(ModelState.HasError("GBChosen") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("GBChosen") ? "GBChosen_Error": null)">
                     <fieldset class="govuk-fieldset govuk-!-margin-bottom-5">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">
-                                What will your business do under the Northern Ireland Retail Movement Scheme?
+                                What will @(Model.PracticeName) do under the Northern Ireland Retail Movement Scheme?
                             </h1>
                         </legend>
 
@@ -69,7 +70,7 @@
                                 <div class="govuk-form-group @(ModelState.HasError("Country") ? "govuk-form-group--error" : null)" id="Country">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                            What is the location of your business' main address, for example the head office?
+                                            What is the location of @(Model.PracticeName)'s main address, for example the head office?
                                         </legend>
                                         <p id="Country_Error" class="govuk-error-message" gds-validation-for="Country"></p>
                                         <div class="govuk-radios__item">

@@ -23,6 +23,8 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
     [BindProperty]
     public bool CountrySaved { get; set; }
 
+    [BindProperty]
+    public string? PracticeName { get; set; } = string.Empty;
     public bool AllowedToTasklist { get; set; }
     #endregion
 
@@ -53,6 +55,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
         }
 
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
+        PracticeName = tradeParty?.PracticeName ?? string.Empty;
         if (_checkAnswersService.GetEligibilityProgress(tradeParty!) == TaskListStatus.COMPLETE)
         {
             AllowedToTasklist = true;
@@ -119,7 +122,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
     {
         if (GBChosen == "" || GBChosen == null)
         {
-            ModelState.AddModelError(nameof(GBChosen), "Select what your business will do under the scheme");
+            ModelState.AddModelError(nameof(GBChosen), $"Select what {PracticeName} will do under the scheme");
             return;
         }
 
