@@ -112,7 +112,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
             FboNumber = tradeParty.FboNumber;
             PhrNumber = tradeParty.PhrNumber;
             OptionSelected = tradeParty.FboPhrOption;
-            PracticeName = tradeParty?.PracticeName ?? string.Empty;
+            PracticeName = tradeParty.PracticeName;
         }      
             }
 
