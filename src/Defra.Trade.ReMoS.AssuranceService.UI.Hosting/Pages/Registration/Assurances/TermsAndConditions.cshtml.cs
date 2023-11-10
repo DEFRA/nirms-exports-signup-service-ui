@@ -47,6 +47,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 var partyWithSignUpStatus = await _traderService.GetDefraOrgBusinessSignupStatus(dto.OrgId);
 
                 AuthorisedSignatoryName = dto.AuthorisedSignatory?.Name ?? string.Empty;
+
                 PracticeName = dto.PracticeName ?? string.Empty;
                 
                 if (partyWithSignUpStatus.signupStatus == Core.Enums.TradePartySignupStatus.Complete)
@@ -62,15 +63,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
-            if (!TandCs)
-                ModelState.AddModelError(nameof(TandCs), "Confirm that the authorised representative has read and understood the terms and conditions");
+            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
 
+            if (!TandCs)
+            {                
+                ModelState.AddModelError(nameof(TandCs), $"Confirm that the authorised representative - {dto?.AuthorisedSignatory?.Name} has read and understood the terms and conditions");
+            }
+                
             if (!ModelState.IsValid)
             {
                 return await OnGetAsync(TraderId);
-            }
-
-            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+            }            
 
             if (dto == null)
             {
