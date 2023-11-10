@@ -24,11 +24,12 @@
 
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="PracticeName" />
             <div class="govuk-form-group @(ModelState.HasError("OptionSelected") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("OptionSelected") ? "OptionSelected_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            Does @(Model.BusinessName) have a Food Business Operator (FBO) or Plant Health Registration (PHR) number?
+                            Does @(Model.PracticeName) have a Food Business Operator (FBO) or Plant Health Registration (PHR) number?
                         </h1>
                     </legend>
 
@@ -42,7 +43,7 @@
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" id="OptionSelectedFbo" asp-for="OptionSelected" value="fbo" aria-controls="conditional-fbo" aria-expanded="false">
                                 <label class="govuk-label govuk-radios__label" for="OptionSelectedFbo">
-                                    @(Model.BusinessName) has an FBO
+                                    @(Model.PracticeName) has an FBO
                                 </label>
                             </div>
 
@@ -63,7 +64,7 @@
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" type="radio" id="OptionSelectedPhr" asp-for="OptionSelected" value="phr" aria-controls="conditional-phr" aria-expanded="false">
                                 <label class="govuk-label govuk-radios__label" for="OptionSelectedPhr">
-                                    @(Model.BusinessName) has a PHR
+                                    @(Model.PracticeName) has a PHR
                                 </label>
                             </div>
 
@@ -85,7 +86,7 @@
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="OptionSelectedNone" asp-for="OptionSelected" type="radio" value="none">
                                 <label class="govuk-label govuk-radios__label" for="OptionSelectedNone">
-                                    @(Model.BusinessName) does not have either of these numbers
+                                    @(Model.PracticeName) does not have either of these numbers
                                 </label>
                             </div>
 

@@ -18,7 +18,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
     #region props and ctor
 
     [BindProperty]
-    [Required(ErrorMessage = "Select if your business has an FBO or PHR number")]
+    //[Required(ErrorMessage = "Select if your business has an FBO or PHR number")]
     public string? OptionSelected { get; set; } = string.Empty;
 
     [BindProperty]
@@ -35,7 +35,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
     public Guid TraderId { get; set; }
 
     [BindProperty]
-    public string? BusinessName { get; set; } = string.Empty;
+    public string? PracticeName { get; set; } = string.Empty;
         
     public RegisteredBusinessFboNumberModel(
         ILogger<RegisteredBusinessFboNumberModel> logger, 
@@ -74,6 +74,9 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
             if (OptionSelected == "phr" && string.IsNullOrEmpty(PhrNumber))
                 ModelState.AddModelError(nameof(PhrNumber), "Enter your business' PHR number");
+
+            if (OptionSelected == "")
+                ModelState.AddModelError(nameof(OptionSelected), $"Select if {PracticeName} has an FBO or PHR number");
         }
 
         if (!ModelState.IsValid)
@@ -109,7 +112,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
             FboNumber = tradeParty.FboNumber;
             PhrNumber = tradeParty.PhrNumber;
             OptionSelected = tradeParty.FboPhrOption;
-            BusinessName = tradeParty.PracticeName;
+            PracticeName = tradeParty?.PracticeName ?? string.Empty;
         }      
             }
 

@@ -69,7 +69,8 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         {
             Id = guid,
             Contact = tradeContact,
-            Address = tradeAddress
+            Address = tradeAddress,
+            PracticeName = "Test"
         };
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -83,6 +84,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         _ = _systemUnderTest.GBChosen.Should().Be("send");
         _ = _systemUnderTest.Country.Should().Be("GB");
         _ = _systemUnderTest.CountrySaved.Should().Be(true);
+        _ = _systemUnderTest.PracticeName.Should().Be("Test");
     }
 
     [Test]
@@ -147,12 +149,14 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.CountrySaved = false;
         _systemUnderTest!.GBChosen = null;
+        _systemUnderTest.PracticeName = "Test";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
 
         //Assert            
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+        _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Select what Test will do under the scheme");
     }
 
     [Test]
