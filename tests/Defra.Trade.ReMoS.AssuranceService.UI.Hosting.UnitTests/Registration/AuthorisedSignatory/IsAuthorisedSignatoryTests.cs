@@ -57,57 +57,30 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         public async Task OnPostSubmit_InvalidInput()
         {
             //Arrange
-            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
             _systemUnderTest!.IsAuthorisedSignatory = null;
-            _systemUnderTest!.ModelState.AddModelError("IsAuthorisedSignatory", "Tick Yes or No");
-
-            _mockTraderService
-                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDto()
-                {
-                    Id = tradePartyId,
-                    Contact = new TradeContactDto()
-                    {
-                        IsAuthorisedSignatory = null
-                    }
-                });
+            _systemUnderTest.ContactName = "Joe Blogs";
 
             //Act
-            await _systemUnderTest!.OnPostSubmitAsync();
+            await _systemUnderTest.OnPostSubmitAsync();
 
-            //Assert
-            
-            var validation = ValidateModel(_systemUnderTest);
-            validation.Count.Should().Be(1);
+            //Assert            
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select if Joe Blogs is the authorised representative");
         }
 
         [Test]
         public async Task OnPostSave_InvalidInput()
         {
             //Arrange
-            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
             _systemUnderTest!.IsAuthorisedSignatory = null;
-            _systemUnderTest!.ModelState.AddModelError("IsAuthorisedSignatory", "Tick Yes or No");
-
-            _mockTraderService
-                .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDto()
-                {
-                    Id = tradePartyId,
-                    Contact = new TradeContactDto()
-                    {
-                        IsAuthorisedSignatory = null
-                    }
-                });
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _systemUnderTest.ContactName = "Joe Blogs";
 
             //Act
-            await _systemUnderTest!.OnPostSaveAsync();
+            await _systemUnderTest.OnPostSaveAsync();
 
-            //Assert
-
-            var validation = ValidateModel(_systemUnderTest);
-            validation.Count.Should().Be(1);
+            //Assert            
+            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select if Joe Blogs is the authorised representative");
         }
 
 
