@@ -152,5 +152,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
+
+        [Test]
+        public async Task OnGetAsync_SetBusinessNameToEmpty_WhenNoTradeParty()
+        {
+            TradePartyDto tradeParty = null!;
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(tradeParty);
+
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+
+            _systemUnderTest.BusinessName.Should().Be(null);
+        }
     }
 }
