@@ -208,4 +208,31 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
     }
+
+    [Test]
+    public async Task OnGet_ReturnsBusinessAndContactNames()
+    {
+        //Arrange
+        TradePartyDto tp = new()
+        {
+            Id = Guid.NewGuid(),
+            PracticeName = "testPractice",
+            Contact = new TradeContactDto()
+            {
+                Id = Guid.NewGuid(),
+                TradePartyId = Guid.NewGuid(),
+                PersonName = "testPersonName"
+            }
+        };
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(tp);
+
+        //Act
+        await _systemUnderTest.OnGetAsync(tp.Id);
+
+        //Assert
+        _systemUnderTest.BusinessName.Should().Be(tp.PracticeName);
+        _systemUnderTest.ContactName.Should().Be(tp.Contact.PersonName);
+    }
 }
