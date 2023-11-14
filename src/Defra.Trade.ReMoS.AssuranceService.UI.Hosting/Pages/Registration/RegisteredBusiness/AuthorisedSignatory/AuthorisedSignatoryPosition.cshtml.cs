@@ -23,6 +23,7 @@ public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignator
     public Guid TradePartyId { get; set; }
     [BindProperty]
     public Guid SignatoryId { get; set; }
+    public string? Name { get; set; } = string.Empty;
 
     public AuthorisedSignatoryPositionModel(
         ITraderService traderService, 
@@ -94,7 +95,7 @@ public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignator
             SignatoryId = tradeParty.AuthorisedSignatory.Id;
             Position = string.IsNullOrEmpty(Position) ? tradeParty.AuthorisedSignatory.Position ?? "" : Position;
             BusinessName = tradeParty.PracticeName;
-
+            Name = tradeParty.AuthorisedSignatory.Name;
             return tradeParty;
         }
 
