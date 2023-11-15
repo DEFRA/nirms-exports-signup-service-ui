@@ -198,12 +198,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             //Arrange
             var guid = new Guid();
 
-            var tradeContact = new TradeContactDto();
+            var tradeContact = new TradeContactDto() { PersonName = "Test1" };
 
             var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
-                Contact = tradeContact
+                Contact = tradeContact,
+                PracticeName = "Test Ltd",
+
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
