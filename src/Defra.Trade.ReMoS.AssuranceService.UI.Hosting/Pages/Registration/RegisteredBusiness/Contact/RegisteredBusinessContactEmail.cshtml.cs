@@ -21,6 +21,10 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     public Guid TradePartyId { get; set; }
     [BindProperty]
     public Guid ContactId { get; set; }
+    [BindProperty]
+    public string? PracticeName { get; set; }
+    [BindProperty]
+    public string? ContactName { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
     #endregion
     
@@ -45,7 +49,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
 
         _logger.LogInformation("Email OnGet");
 
-        await GetEmailAddressFromApiAsync();
+        await GetTradePartyFromApiAsync();
 
         return Page();
     }
@@ -88,13 +92,15 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
         await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
-    private async Task GetEmailAddressFromApiAsync()
+    private async Task GetTradePartyFromApiAsync()
     {
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Email = tradeParty.Contact.Email ?? string.Empty;
             ContactId = tradeParty.Contact.Id;
+            ContactName = tradeParty.Contact.PersonName ?? string.Empty;
+            PracticeName = tradeParty.PracticeName ?? string.Empty;
         }
     }
 
