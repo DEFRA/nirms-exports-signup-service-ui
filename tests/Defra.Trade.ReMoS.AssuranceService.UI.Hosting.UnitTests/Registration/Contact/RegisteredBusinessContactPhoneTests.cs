@@ -6,17 +6,17 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact 
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact
 {
     [TestFixture]
     public class RegisteredBusinessContactPhoneTests : PageModelTestsBase
     {
         private RegisteredBusinessContactPhoneModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactPhoneModel>> _mockLogger = new();
-        protected Mock<ITraderService> _mockTraderService = new();        
+        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
-        public void TestCaseSetup() 
+        public void TestCaseSetup()
         {
             _systemUnderTest = new RegisteredBusinessContactPhoneModel(_mockLogger.Object, _mockTraderService.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
@@ -175,20 +175,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnGetAsync_GuidLookupFillsInGapsForProperties(string phoneNumber)
         {
             //Arrange
-            var guid = new Guid();
+            var guid = Guid.Empty;
 
-            var tradeContact = new TradeContactDto();
+            var tradeContact = new TradeContactDto() { PersonName = "Test1" };
 
             var tradePartyDto = new TradePartyDto
             {
                 Id = guid,
-                Contact = tradeContact
+                Contact = tradeContact,
+                PracticeName = "ACME Ltd"
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
             _systemUnderTest!.PhoneNumber = phoneNumber;
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);            
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest.OnGetAsync(guid);
