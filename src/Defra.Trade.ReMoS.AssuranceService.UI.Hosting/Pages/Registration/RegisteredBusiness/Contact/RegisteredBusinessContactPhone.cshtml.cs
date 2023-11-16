@@ -24,6 +24,10 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
     public Guid TradePartyId { get; set; }
     [BindProperty]
     public bool? IsAuthorisedSignatory { get; set; }
+    [BindProperty]
+    public string? PracticeName { get; set; }
+    [BindProperty]
+    public string? ContactName { get; set; }
     #endregion
 
     public RegisteredBusinessContactPhoneModel(
@@ -45,7 +49,7 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
         }
 
         _logger.LogInformation("PhoneNumber OnGet");
-        await GetPhoneNumberFromApiAsync();
+        await GetTradePartyFromApiAsync();
 
         return Page();
     }
@@ -88,12 +92,14 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
         TradePartyId = await _traderService.UpdateTradePartyContactAsync(tradeParty);
     }
 
-    private async Task GetPhoneNumberFromApiAsync()
+    private async Task GetTradePartyFromApiAsync()
     {
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             PhoneNumber = tradeParty.Contact.TelephoneNumber ?? string.Empty;
+            ContactName = tradeParty.Contact.PersonName ?? string.Empty;
+            PracticeName = tradeParty.PracticeName ?? string.Empty;
         }
     }
 
