@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
@@ -17,6 +18,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
         [StringLength(100, ErrorMessage = "Postcode must be 100 characters or less")]
         [Required(ErrorMessage = "Enter a postcode.")]
         public string? Postcode { get; set; } = string.Empty;
+
+        public string? BusinessName { get; set; }
 
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
@@ -42,6 +45,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             _logger.LogTrace("Establishment postcode search on get");
             TradePartyId = id;
             this.NI_GBFlag = NI_GBFlag;
+
+            await GetBusinessNameAsync();
 
             if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
             {
@@ -93,6 +98,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentPostcodeResultPath,
                 new { id = TradePartyId, postcode = Postcode, NI_GBFlag });
+        }
+
+        private async Task GetBusinessNameAsync()
+        {
+            TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+            if (tradeParty != null)
+            {
+                BusinessName = tradeParty.PracticeName;
+            }
         }
     }
 }

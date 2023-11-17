@@ -175,5 +175,26 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             if (errorCount != 0) _systemUnderTest.ModelState.Values.First().Errors.First().ErrorMessage.Should().Be(errorMessage);
             else _systemUnderTest.ModelState.Values.Should().BeEmpty();
         }
+
+        [Test]
+        public async Task OnPostcodeGet_ReturnBusinessName()
+        {
+            //arrange
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(false);
+            TradePartyDto dto = new()
+            {
+                Id = Guid.NewGuid(),
+                PracticeName = "Test"
+            };
+
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(dto);
+
+            //act
+            await _systemUnderTest!.OnGetAsync(dto.Id);
+
+            //assert
+            _systemUnderTest.BusinessName.Should().Be(dto.PracticeName);
+        }
     }
 }
