@@ -201,7 +201,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPost_IfModelValid_ReturnRedirectToFboNumberPage()
+    public async Task OnPost_IfModelValid_ReturnRedirectToTaskList()
     {
         //Arrange
         _systemUnderTest!.CountrySaved = false;
@@ -218,7 +218,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        ((RedirectToPageResult)result!).PageName.Should().Be(Routes.Pages.Path.RegisteredBusinessFboNumberPath);
+        ((RedirectToPageResult)result!).PageName.Should().Be(Routes.Pages.Path.RegistrationTaskListPath);
     }
 
     [Test]

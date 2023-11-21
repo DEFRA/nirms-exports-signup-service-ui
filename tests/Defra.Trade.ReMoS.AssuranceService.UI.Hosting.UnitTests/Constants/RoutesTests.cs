@@ -6,6 +6,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Constants;
 public class RoutesTests
 {
     [TestCase(Routes.RegisteredBusinessCountry, Routes.Pages.Path.RegisteredBusinessCountryPath)]
+    [TestCase(Routes.RegisteredBusinessCountryStatic, Routes.Pages.Path.RegisteredBusinessCountryStaticPath)]
     [TestCase(Routes.RegistrationTasklist, Routes.Pages.Path.RegistrationTaskListPath)]
     [TestCase(Routes.RegisteredBusinessContactPosition, Routes.Pages.Path.RegisteredBusinessContactPositionPath)]
     [TestCase(Routes.RegisteredBusinessContactName, Routes.Pages.Path.RegisteredBusinessContactNamePath)]
@@ -41,6 +42,7 @@ public class RoutesTests
     }
 
     [TestCase(Routes.Pages.Names.RegisteredBusinessCountryName, Routes.Pages.Path.RegisteredBusinessCountryPath)]
+    [TestCase(Routes.Pages.Names.RegisteredBusinessCountryStaticName, Routes.Pages.Path.RegisteredBusinessCountryStaticPath)]
     [TestCase(Routes.Pages.Names.RegistrationTasklistName, Routes.Pages.Path.RegistrationTaskListPath)]
     [TestCase(Routes.Pages.Names.RegisteredBusinessNameName, Routes.Pages.Path.RegisteredBusinessNamePath)]
     [TestCase(Routes.Pages.Names.RegisteredBusinessContactNameName, Routes.Pages.Path.RegisteredBusinessContactNamePath)]
