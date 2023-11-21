@@ -25,7 +25,6 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
 
     [BindProperty]
     public string? PracticeName { get; set; } = string.Empty;
-    public bool AllowedToTasklist { get; set; }
     #endregion
 
     public RegisteredBusinessCountryModel(
@@ -56,10 +55,6 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
 
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
         PracticeName = tradeParty?.PracticeName ?? string.Empty;
-        if (_checkAnswersService.GetEligibilityProgress(tradeParty!) == TaskListStatus.COMPLETE)
-        {
-            AllowedToTasklist = true;
-        }
 
         if (Country != "")
         {
@@ -93,14 +88,14 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
         if (CountrySaved)
         {
             return RedirectToPage(
-            Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+            Routes.Pages.Path.RegistrationTaskListPath,
             new { id = TraderId });
         }
 
         await SaveCountryToApiAsync();
 
         return RedirectToPage(
-            Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+            Routes.Pages.Path.RegistrationTaskListPath,
             new { id = TraderId });
     }
 
