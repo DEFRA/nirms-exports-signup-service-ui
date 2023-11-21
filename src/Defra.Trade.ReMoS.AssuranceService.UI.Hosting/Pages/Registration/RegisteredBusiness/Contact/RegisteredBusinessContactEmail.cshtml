@@ -28,11 +28,11 @@
                 <label for="Email">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
-                        What is the contact person's email address?
+                        What is @Model.ContactName's email address?
                     </h1>
                 </label>
                 <p class="govuk-hint" id="email-hint">
-                    This is the email address that we will use to contact your business about the outcome of your sign-up request, and other information relating to the scheme.
+                    This is the email address that we will use to contact @Model.PracticeName about the outcome of your sign-up request, and other information relating to the scheme.
                 </p>
                 <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
                 <input class="govuk-input" asp-for="Email" id="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email" />

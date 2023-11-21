@@ -15,7 +15,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
     public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEmailModel>
     {
         #region ui model
-        [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+        [RegularExpression(
+            @"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", 
+            ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [BindProperty]
         [Required(ErrorMessage = "Enter an email address")]
         public string? Email { get; set; }
@@ -27,8 +29,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         public Guid SignatoryId { get; set; }
         [BindProperty]
         public string? Country { get; set; }
+        public string? Name { get; set; } = string.Empty;
         #endregion
-        
+
         public AuthorisedSignatoryEmailModel(
             ITraderService traderService,
             IEstablishmentService establishmentService,
@@ -114,7 +117,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
                 Email = string.IsNullOrEmpty(Email) ? tradeParty.AuthorisedSignatory.EmailAddress ?? "" : Email;
                 Country = tradeParty.Address.TradeCountry;
-
+                Name = tradeParty.AuthorisedSignatory.Name;
                 return tradeParty;
             }
             return null;

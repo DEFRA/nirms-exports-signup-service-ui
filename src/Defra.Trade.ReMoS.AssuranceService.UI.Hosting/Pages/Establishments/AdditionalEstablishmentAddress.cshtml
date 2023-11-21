@@ -84,7 +84,7 @@
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AddAddressesComplete") ? "AdditionalAddress_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
                         <h3 class="govuk-fieldset__heading">
-                            Have you added all your business’ places of @Model.ContentText?
+                            Have you added all @(Model.PracticeName)'s places of @Model.ContentText?
                         </h3>
                     </legend>
                     <p class="govuk-hint">You have to provide the details for all locations, so they can be used when applying for General Certificates.</p>

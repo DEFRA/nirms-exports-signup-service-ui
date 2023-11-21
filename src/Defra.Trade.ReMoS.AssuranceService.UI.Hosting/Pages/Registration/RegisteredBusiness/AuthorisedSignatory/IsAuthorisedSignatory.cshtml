@@ -24,12 +24,13 @@
         
         <form method="POST" novalidate>
             <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="ContactName" />
             <div class="govuk-form-group @(ModelState.HasError("IsAuthorisedSignatory") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("IsAuthorisedSignatory") ? "IsAuthorisedSignatory_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Contact details</span>
-                            Is the contact person the authorised representative at @Model.BusinessName?
+                            Is @Model.ContactName the authorised representative at @Model.BusinessName?
                         </h1>
                     </legend>
 

@@ -49,7 +49,8 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         {
             Id = Guid.NewGuid(),
             FboNumber = "fbonum-123456-fbonum",
-            FboPhrOption = "fbo"
+            FboPhrOption = "fbo",
+            PracticeName = "party"
         };
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -62,6 +63,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Assert
         _systemUnderTest.FboNumber.Should().Be("fbonum-123456-fbonum");
         _systemUnderTest.OptionSelected.Should().Be("fbo");
+        _systemUnderTest.PracticeName.Should().Be("party");
     }
 
     [Test]
@@ -153,6 +155,23 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Assert            
         validation.Count.Should().Be(1);
         expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitNoOption()
+    {
+        //Arrange
+        _systemUnderTest!.OptionSelected = "";
+        _systemUnderTest!.PracticeName = "Test";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        var expectedResult = "Select if Test has an FBO or PHR number";
+
+        //Act
+        await _systemUnderTest.OnPostAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        _systemUnderTest!.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be(expectedResult);
     }
 
     [Test]

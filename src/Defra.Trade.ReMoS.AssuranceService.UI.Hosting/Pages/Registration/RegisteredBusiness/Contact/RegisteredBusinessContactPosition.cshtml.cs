@@ -17,6 +17,9 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     [Required(ErrorMessage = "Enter a position")]
     public string Position { get; set; } = string.Empty;
 
+    public string BusinessName { get; set; } = string.Empty;
+    public string ContactName { get; set; } = string.Empty;
+
     [BindProperty]
     public Guid TradePartyId { get; set; }
 
@@ -97,6 +100,8 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Position = tradeParty.Contact.Position ?? string.Empty;
+            BusinessName = tradeParty.PracticeName ?? string.Empty;
+            ContactName = tradeParty.Contact.PersonName ?? string.Empty;
         }
     }
 
@@ -113,6 +118,7 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     {
         return new TradePartyDto()
         {
+
             Id = TradePartyId,
             Contact = new TradeContactDto()
             {

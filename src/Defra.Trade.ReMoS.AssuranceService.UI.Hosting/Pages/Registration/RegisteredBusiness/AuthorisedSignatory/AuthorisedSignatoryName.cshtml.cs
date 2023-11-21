@@ -45,8 +45,7 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
 
         _logger.LogInformation("Name OnGet");
 
-        var party = await GetSignatoryNameFromApiAsync();
-        BusinessName = party?.PracticeName;
+        await GetSavedDataFromApi();
 
         return Page();
     }
@@ -82,6 +81,22 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
     }
 
     #region private methods
+    private async Task GetSavedDataFromApi()
+    {
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+
+        if (tradeParty == null)
+            return;
+
+        BusinessName = tradeParty.PracticeName;
+
+        if (tradeParty.AuthorisedSignatory != null)
+        {
+            SignatoryId = tradeParty.AuthorisedSignatory.Id;
+            Name = string.IsNullOrEmpty(Name) ? tradeParty.AuthorisedSignatory.Name ?? "" : Name;
+        }
+    }
+
     private async Task SubmitName()
     {
         var tradeParty = await GenerateDTO();

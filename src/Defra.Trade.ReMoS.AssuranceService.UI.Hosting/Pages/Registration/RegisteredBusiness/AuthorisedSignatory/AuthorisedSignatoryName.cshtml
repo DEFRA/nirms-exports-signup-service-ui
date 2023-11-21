@@ -25,10 +25,12 @@
                 <label for="Name">
                     <h1 class="govuk-heading-l">
                         <span class="govuk-caption-l">Contact details</span>
-                        Who is the authorised representative at your business?
+                        Who is the authorised representative at @(Model.BusinessName)?
                     </h1>
                 </label>
-
+                <p class="govuk-hint" id="authorised-signatory-name-hint">
+                    The authorised representative is the person who is authorised to sign legal documents on behalf of @Model.BusinessName.
+                </p>
                 <div class="govuk-form-group">
                     <p id="name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
                     <input class="govuk-input" id="Name" asp-for="Name" type="text">
