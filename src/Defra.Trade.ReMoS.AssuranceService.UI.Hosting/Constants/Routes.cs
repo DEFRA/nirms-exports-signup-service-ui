@@ -7,6 +7,7 @@ public static class Routes
     public const string RegisteredBusinessNoBusinessChosen = "/registered-business-not-chosen";
     public const string RegisteredBusinessAlreadyRegistered = "/business-already-registered";
     public const string RegisteredBusinessCountry = "/registered-business-country";
+    public const string RegisteredBusinessCountryStatic = "/registered-business-country-complete";
     public const string RegisteredBusinessRegulations = "/registered-business-regulations";
     public const string RegisteredBusinessFboNumber = "/registered-business-fbo-number";
     public const string RegisteredBusinessFboPhrGuidance = "/registered-business-fbo-phr-guidance";
@@ -46,6 +47,7 @@ public static class Routes
         (Pages.Path.RegisteredBusinessPickerNoBusinessPickedPath, RegisteredBusinessNoBusinessChosen),
         (Pages.Path.RegisteredBusinessAlreadyRegisteredPath, RegisteredBusinessAlreadyRegistered),
         (Pages.Path.RegisteredBusinessCountryPath, RegisteredBusinessCountry),
+        (Pages.Path.RegisteredBusinessCountryStaticPath, RegisteredBusinessCountryStatic),
         (Pages.Path.RegisteredBusinessRegulationsPath, RegisteredBusinessRegulations),
         (Pages.Path.RegisteredBusinessFboNumberPath, RegisteredBusinessFboNumber),
         (Pages.Path.RegisteredBusinessFboPhrGuidancePath, RegisteredBusinessFboPhrGuidance),
@@ -89,6 +91,7 @@ public static class Routes
             public const string RegisteredBusinessPickerNoBusinessPickedName = "RegisteredBusinessPickerNoBusinessPicked";
             public const string RegisteredBusinessAlreadyRegisteredName = "RegisteredBusinessAlreadyRegistered";
             public const string RegisteredBusinessCountryName = "RegisteredBusinessCountry";
+            public const string RegisteredBusinessCountryStaticName = "RegisteredBusinessCountryStatic";
             public const string RegisteredBusinessRegulationsName = "EligibilityRegulations";
             public const string RegisteredBusinessFboNumberName = "RegisteredBusinessFboNumber";
             public const string RegisteredBusinessFboPhrGuidanceName = "RegisteredBusinessFboPhrGuidance";
@@ -129,6 +132,7 @@ public static class Routes
             public const string RegisteredBusinessPickerNoBusinessPickedPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessPickerNoBusinessPickedName}";
             public const string RegisteredBusinessAlreadyRegisteredPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessAlreadyRegisteredName}";
             public const string RegisteredBusinessCountryPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryName}";
+            public const string RegisteredBusinessCountryStaticPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessCountryStaticName}";
             public const string RegisteredBusinessRegulationsPath = $"/Registration/RegisteredBusiness/Eligibility/{Names.RegisteredBusinessRegulationsName}";
             public const string RegisteredBusinessFboNumberPath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboNumberName}";
             public const string RegisteredBusinessFboPhrGuidancePath = $"/Registration/RegisteredBusiness/{Names.RegisteredBusinessFboPhrGuidanceName}";
