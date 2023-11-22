@@ -57,7 +57,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnGet_CountrySavedSetToTrue_IfDataPresentInApi()
+    public async Task OnGet_CountrySavedSetToTrue_IfDataPresentInApi_RedirectToStatic()
     {
         //Arrange
         Guid guid = Guid.NewGuid();
@@ -78,42 +78,11 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
-        _ = await _systemUnderTest!.OnGetAsync(guid);
+        var result = await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
-        _ = _systemUnderTest.GBChosen.Should().Be("send");
-        _ = _systemUnderTest.Country.Should().Be("GB");
-        _ = _systemUnderTest.CountrySaved.Should().Be(true);
-        _ = _systemUnderTest.PracticeName.Should().Be("Test");
-    }
-
-    [Test]
-    public async Task OnGet_CountrySavedSetToTrueNI_IfDataPresentInApi()
-    {
-        //Arrange
-        Guid guid = Guid.NewGuid();
-
-        var tradeContact = new TradeContactDto();
-        var tradeAddress = new TradeAddressDto { TradeCountry = "NI" };
-
-        var tradePartyDto = new TradePartyDto
-        {
-            Id = guid,
-            Contact = tradeContact,
-            Address = tradeAddress
-        };
-
-        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
-        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-
-        //Act
-        _ = await _systemUnderTest!.OnGetAsync(guid);
-
-        //Assert
-        _ = _systemUnderTest.GBChosen.Should().Be("recieve");
-        _ = _systemUnderTest.Country.Should().Be("NI");
-        _ = _systemUnderTest.CountrySaved.Should().Be(true);
+        var redirectResult = result as RedirectToPageResult;
+        redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/Eligibility/RegisteredBusinessCountryStatic");
     }
 
     [Test]
