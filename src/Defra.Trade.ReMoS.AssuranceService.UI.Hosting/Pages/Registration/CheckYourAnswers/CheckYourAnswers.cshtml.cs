@@ -20,6 +20,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
+        public string Purpose { get; set; } = string.Empty;
         public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
 
         [BindProperty]
@@ -59,6 +60,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
             NI_GBFlag = TradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
+            Purpose = TradeParty?.Address?.TradeCountry == "NI" ? "Receive Consignments" : "Send Consignments";
 
             LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?
                 .Where(x => x.NI_GBFlag == this.NI_GBFlag)
