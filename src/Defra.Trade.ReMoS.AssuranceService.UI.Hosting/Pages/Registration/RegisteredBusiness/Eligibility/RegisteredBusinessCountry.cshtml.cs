@@ -51,6 +51,12 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
 
             Country = await GetCountryFromApiAsync();
             CountrySaved = !string.IsNullOrEmpty(Country);
+
+            if (CountrySaved)
+            {
+                return RedirectToPage(Routes.Pages.Path.RegisteredBusinessCountryStaticPath,
+                new { id = TraderId });
+            }
         }
 
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
