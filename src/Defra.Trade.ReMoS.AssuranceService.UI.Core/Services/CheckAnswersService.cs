@@ -23,6 +23,16 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return false;
             }
 
+            if (GetPurposeOfBusinessProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
+            if (GetFboPhrProgress(tradeParty) != TaskListStatus.COMPLETE)
+            {
+                return false;
+            }
+
             if (GetContactDetailsProgress(tradeParty) != TaskListStatus.COMPLETE)
             {
                 return false;
@@ -98,11 +108,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         {
             if (tradeParty.Address != null)
             {
-                if (tradeParty.Address!.TradeCountry != null && !string.IsNullOrEmpty(tradeParty.FboPhrOption) && tradeParty.RegulationsConfirmed)
+                if (tradeParty.Address!.TradeCountry != null && tradeParty.RegulationsConfirmed)
                 {
                     return TaskListStatus.COMPLETE;
                 }
-                if (tradeParty.Address!.TradeCountry == null || string.IsNullOrEmpty(tradeParty.FboPhrOption) || !tradeParty.RegulationsConfirmed)
+                if (tradeParty.Address!.TradeCountry == null || !tradeParty.RegulationsConfirmed)
                 {
                     return TaskListStatus.INPROGRESS;
                 }
@@ -117,6 +127,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
                 return false;
             }
             return true;
+        }
+
+        public string GetPurposeOfBusinessProgress(TradePartyDto tradeParty)
+        {
+            if (tradeParty.Address != null)
+            {                
+                return tradeParty.Address!.TradeCountry != null ? TaskListStatus.COMPLETE : TaskListStatus.INPROGRESS;
+            }
+
+            return TaskListStatus.NOTSTART;
+        }
+
+        public string GetFboPhrProgress(TradePartyDto tradeParty)
+        {
+            return string.IsNullOrEmpty(tradeParty.FboPhrOption) ? TaskListStatus.NOTSTART : TaskListStatus.COMPLETE;
         }
     }
 }

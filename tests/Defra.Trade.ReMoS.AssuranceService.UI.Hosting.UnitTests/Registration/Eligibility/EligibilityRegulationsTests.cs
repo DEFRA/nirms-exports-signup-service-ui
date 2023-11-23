@@ -121,7 +121,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_RedirectToTaskList()
+    public async Task OnPostSubmit_RedirectToCountryPage()
     {
         // Arrange
         var traderId = Guid.NewGuid();
@@ -135,7 +135,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
             .Setup(action => action.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(traderId);
         var expected = new RedirectToPageResult(
-            Routes.Pages.Path.RegistrationTaskListPath,
+            Routes.Pages.Path.RegisteredBusinessCountryPath,
             new { id = _systemUnderTest!.TraderId });
 
         // Act

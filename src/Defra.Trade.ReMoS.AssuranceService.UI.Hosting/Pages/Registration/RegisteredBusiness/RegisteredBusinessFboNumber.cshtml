@@ -14,7 +14,7 @@
     }
     else
     {
-        <a asp-page="@Routes.Pages.Path.RegisteredBusinessCountryPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back to dashboard</a>
     }  
 }
 
@@ -93,7 +93,8 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbFboSubmit">Continue</button>
+                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbFboSubmit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbContactEmailSave">Save and return to dashboard</button>
             </div>
         </form>
 

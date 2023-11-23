@@ -15,5 +15,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         string GetEligibilityProgress(TradePartyDto tradeParty);
 
         bool IsLogisticsLocationsDataPresent(TradePartyDto tradeParty, IEnumerable<LogisticsLocationDto> logisticsLocations);
+        string GetPurposeOfBusinessProgress(TradePartyDto tradeParty);
+        string GetFboPhrProgress(TradePartyDto tradeParty);
     }
 }

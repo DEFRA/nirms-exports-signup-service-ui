@@ -63,10 +63,61 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Country OnPostSubmit");
+        _logger.LogInformation("FBO OnPostSubmit");
+        ValidateFboPhr();
 
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TraderId);
+        }
+
+        await SaveNumberToApiAsync(TraderId);
+
+        if (OptionSelected == "none")
+        {      
+            return RedirectToPage(
+                Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
+                new { id = TraderId });
+        }
+        else
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.RegisteredBusinessContactNamePath,
+                new { id = TraderId });
+        }
+
+    }
+
+    public async Task<IActionResult> OnPostSaveAsync()
+    {
+        _logger.LogInformation("FBO OnPostSave");
+        ValidateFboPhr();
+
+        if (!ModelState.IsValid)
+        {
+            return await OnGetAsync(TraderId);
+        }
+
+        await SaveNumberToApiAsync(TraderId);
+
+        if (OptionSelected == "none")
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
+                new { id = TraderId });
+        }
+        else
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.RegistrationTaskListPath,
+                new { id = TraderId });
+        }
+    }
+
+    private void ValidateFboPhr()
+    {
         if (ModelState.IsValid)
         {
             if (OptionSelected == "fbo" && string.IsNullOrEmpty(FboNumber))
@@ -78,26 +129,6 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
             if (OptionSelected == "")
                 ModelState.AddModelError(nameof(OptionSelected), $"Select if {PracticeName} has an FBO or PHR number");
         }
-
-        if (!ModelState.IsValid)
-        {
-            return await OnGetAsync(TraderId);
-        }
-
-        await SaveNumberToApiAsync(TraderId);
-        if (OptionSelected == "none")
-        {      
-            return RedirectToPage(
-                Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
-                new { id = TraderId });
-        }
-        else
-        {
-            return RedirectToPage(
-                Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                new { id = TraderId });
-        }
-
     }
 
     private async Task PopulateModelProperties(Guid TraderId)

@@ -69,7 +69,7 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
         }                
 
         return RedirectToPage(
-            Routes.Pages.Path.RegistrationTaskListPath, 
+            Routes.Pages.Path.RegisteredBusinessCountryPath, 
             new { id = TraderId });
     }
 }
