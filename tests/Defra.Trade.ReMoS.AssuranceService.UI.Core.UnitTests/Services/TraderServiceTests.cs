@@ -361,29 +361,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityFboNumber_When_FboNumber_Is_Null()
-        {
-            // Arrange
-            _traderService = new TraderService(_mockApiIntegration.Object);
-            var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDto
-            {
-                Id = Guid.NewGuid(),
-                Address = new TradeAddressDto { Id = Guid.NewGuid(), TradeCountry = "GB" },
-            };
-            _mockApiIntegration
-                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(tradePartyDto);
-            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityFboNumber);
-
-            // Act
-            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
-
-            // Assert
-            returnedValue.Should().Be(expectedResult);
-        }
-
-        [Test]
         public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityRegulations_When_Regulatons_Not_Confirmed()
         {
             // Arrange
