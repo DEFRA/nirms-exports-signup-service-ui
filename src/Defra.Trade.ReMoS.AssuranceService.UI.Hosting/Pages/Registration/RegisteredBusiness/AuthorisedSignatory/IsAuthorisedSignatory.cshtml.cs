@@ -118,7 +118,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         {
             ModelState.AddModelError(
                    nameof(IsAuthorisedSignatory),
-                   $"Select if {ContactName} is the authorised representative");
+                   $"Select 'yes' if {ContactName} is the authorised representative");
         }
     }
 
