@@ -251,16 +251,42 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task GetDefraOrgBusinessSignupStatus_Returns_New_WhenAddressIsNull()
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityRegulations_WhenAddressIsNull_And_RegulationsNotConfirmed()
         {
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid() };
+            var tradePartyDto = new TradePartyDto 
+            { 
+                Id = Guid.NewGuid(),
+            };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(tradePartyDto);
-            var expectedResult = (tradePartyDto, TradePartySignupStatus.New);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityRegulations);
+
+            // Act
+            var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
+
+            // Assert
+            returnedValue.Should().Be(expectedResult);
+        }
+
+        [Test]
+        public async Task GetDefraOrgBusinessSignupStatus_Returns_InProgressEligibilityCountry_WhenAddressIsNull_And_RegulationsConfirmed()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            var tradePartyDto = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                RegulationsConfirmed = true,
+            };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(tradePartyDto);
+            var expectedResult = (tradePartyDto, TradePartySignupStatus.InProgressEligibilityCountry);
 
             // Act
             var returnedValue = await _traderService!.GetDefraOrgBusinessSignupStatus(orgId);
@@ -346,6 +372,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var tradePartyDto = new TradePartyDto
             {
                 Id = Guid.NewGuid(),
+                RegulationsConfirmed = true,
                 Address = new TradeAddressDto { Id = Guid.NewGuid() },
             };
             _mockApiIntegration
