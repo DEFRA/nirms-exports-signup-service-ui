@@ -122,6 +122,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         {
             if (EligibilityStatus == TaskListStatus.COMPLETE
                 && BusinessDetails == TaskListStatus.COMPLETE
+                && FboPhrStatus == TaskListStatus.COMPLETE
                 && ContactDetails == TaskListStatus.COMPLETE
                 && AuthorisedSignatoryDetails == TaskListStatus.COMPLETE
                 && ((PlacesOfDispatch == TaskListStatus.COMPLETE && Country != "NI") || (PlacesOfDestination == TaskListStatus.COMPLETE && Country == "NI")))
