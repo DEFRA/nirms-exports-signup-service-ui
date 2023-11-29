@@ -25,4 +25,11 @@ public class RegisteredBusinessCanNotRegisterModel : BasePageModel<RegisteredBus
                 Routes.Pages.Path.RegisteredBusinessContactNamePath,
                 new { id = TraderId });
     }
+
+    public IActionResult OnPostReturnToDashboard()
+    {
+        return RedirectToPage(
+                Routes.Pages.Path.RegistrationTaskListPath,
+                new { id = TraderId });
+    }
 }

@@ -93,11 +93,41 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbFboSubmit">Save and continue</button>
-                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbContactEmailSave">Save and return to dashboard</button>
+                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="btnFboSubmit">Save and continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="btnFboSave" style="display: none">Save and return to dashboard</button>
             </div>
         </form>
 
 
     </div>
 </div>
+
+@section Scripts 
+{
+    <script>
+        (function(){
+            var rbFboSelection = document.getElementById("OptionSelectedFbo");
+            var rbPhrSelection = document.getElementById("OptionSelectedPhr");
+            var rbNoneSelection = document.getElementById("OptionSelectedNone");
+            rbFboSelection.addEventListener('change', toggleSaveAndReturnToDashboardButton);
+            rbPhrSelection.addEventListener('change', toggleSaveAndReturnToDashboardButton);
+            rbNoneSelection.addEventListener('change', toggleSaveAndReturnToDashboardButton);
+            toggleSaveAndReturnToDashboardButton();
+        })();
+        function toggleSaveAndReturnToDashboardButton(){
+            var btnSaveAndReturnToDashboard = document.getElementById("btnFboSave");
+            if (isFboOrPhrSelected()){
+                btnSaveAndReturnToDashboard.style.display = 'inline-block';
+            }
+            else{
+                btnSaveAndReturnToDashboard.style.display = 'none';
+            }
+        };
+        function isFboOrPhrSelected(){
+            if (document.getElementById("OptionSelectedFbo").checked || document.getElementById("OptionSelectedPhr").checked) {
+                return true;
+            }
+            return false;
+        };
+    </script>
+}

@@ -70,7 +70,10 @@
 
         <form method="post">
             <input type="hidden" asp-for="TraderId" />
-            <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbGuidanceSubmit">Continue</button>
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbGuidanceSubmit">Continue</button>
+                <button class="govuk-button govuk-button--secondary" asp-page-handler="returntodashboard" id="btnReturnToDashboard">Return to dashboard</button>
+            </div>
         </form>
         
 
