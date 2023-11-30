@@ -24,8 +24,10 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
     [BindProperty]
     public Guid ContactId { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
+    public Guid AuthorisedSignatoryId { get; set; }
     [BindProperty]
     public string? PracticeName { get; set; }
+    public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
     #endregion
 
     /// <summary>
@@ -96,8 +98,8 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
     private async Task SubmitName()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDto tradeParty = GenerateDTO();
-        await _traderService.UpdateTradePartyContactAsync(tradeParty);
+        TradePartyDto = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(TradePartyDto);
     }
 
     private async Task GetTradePartyFromApiAsync()
@@ -117,12 +119,16 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+            if (tradeParty!.AuthorisedSignatory != null)
+            {
+                AuthorisedSignatoryId = tradeParty.AuthorisedSignatory.Id;
+            }
         }
     }
 
     private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDto()
+        var tradePartyDto = new TradePartyDto()
         {
             Id = TradePartyId,
             Contact = new TradeContactDto()
@@ -132,6 +138,17 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
                 IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
+
+        if (IsAuthorisedSignatory == true)
+        {
+            tradePartyDto.AuthorisedSignatory = new AuthorisedSignatoryDto()
+            {
+                Id = AuthorisedSignatoryId,
+                Name = tradePartyDto.Contact.PersonName
+            };
+        }
+
+        return tradePartyDto;
     }
     #endregion
 }
