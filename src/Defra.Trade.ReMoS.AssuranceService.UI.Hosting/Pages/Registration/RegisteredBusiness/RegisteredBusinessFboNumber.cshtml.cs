@@ -121,10 +121,10 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         if (ModelState.IsValid)
         {
             if (OptionSelected == "fbo" && string.IsNullOrEmpty(FboNumber))
-                ModelState.AddModelError(nameof(FboNumber), "Enter your business' FBO number");
+                ModelState.AddModelError(nameof(FboNumber), "Enter your business's FBO number");
 
             if (OptionSelected == "phr" && string.IsNullOrEmpty(PhrNumber))
-                ModelState.AddModelError(nameof(PhrNumber), "Enter your business' PHR number");
+                ModelState.AddModelError(nameof(PhrNumber), "Enter your business's PHR number");
 
             if (OptionSelected == "")
                 ModelState.AddModelError(nameof(OptionSelected), $"Select if {PracticeName} has an FBO or PHR number");
