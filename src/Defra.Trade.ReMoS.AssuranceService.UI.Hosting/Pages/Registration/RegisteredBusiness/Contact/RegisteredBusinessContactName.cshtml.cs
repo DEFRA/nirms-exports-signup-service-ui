@@ -11,7 +11,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
 public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusinessContactNameModel>
 {
-   
+
     #region ui model variables
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
@@ -28,6 +28,7 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
     [BindProperty]
     public string? PracticeName { get; set; }
     public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
+    public TradePartyDto? TradePartyDtoCurrent { get; set; } = new TradePartyDto();
     #endregion
 
     /// <summary>
@@ -115,13 +116,13 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null && tradeParty.Contact != null)
+        TradePartyDtoCurrent = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (TradePartyDtoCurrent != null && TradePartyDtoCurrent.Contact != null)
         {
-            IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
-            if (tradeParty!.AuthorisedSignatory != null)
+            IsAuthorisedSignatory = TradePartyDtoCurrent.Contact.IsAuthorisedSignatory;
+            if (TradePartyDtoCurrent!.AuthorisedSignatory != null)
             {
-                AuthorisedSignatoryId = tradeParty.AuthorisedSignatory.Id;
+                AuthorisedSignatoryId = TradePartyDtoCurrent.AuthorisedSignatory.Id;
             }
         }
     }
@@ -144,7 +145,9 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
             tradePartyDto.AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Id = AuthorisedSignatoryId,
-                Name = tradePartyDto.Contact.PersonName
+                EmailAddress = TradePartyDtoCurrent!.Contact!.Email,
+                Name = Name,
+                Position = TradePartyDtoCurrent.Contact.Position
             };
         }
 

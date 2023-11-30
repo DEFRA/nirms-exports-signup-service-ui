@@ -25,6 +25,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     public bool? IsAuthorisedSignatory { get; set; }
     public Guid AuthorisedSignatoryId { get; set; }
     public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
+    public TradePartyDto? TradePartyDtoCurrent { get; set; } = new TradePartyDto();
     #endregion
 
     public RegisteredBusinessContactEmailModel(
@@ -105,13 +106,13 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null && tradeParty.Contact != null)
+        TradePartyDtoCurrent = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (TradePartyDtoCurrent != null && TradePartyDtoCurrent.Contact != null)
         {
-            IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
-            if (tradeParty!.AuthorisedSignatory != null)
+            IsAuthorisedSignatory = TradePartyDtoCurrent.Contact.IsAuthorisedSignatory;
+            if (TradePartyDtoCurrent!.AuthorisedSignatory != null)
             {
-                AuthorisedSignatoryId = tradeParty.AuthorisedSignatory.Id;
+                AuthorisedSignatoryId = TradePartyDtoCurrent.AuthorisedSignatory.Id;
             }
         }
     }
@@ -134,7 +135,9 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
             tradePartyDto.AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Id = AuthorisedSignatoryId,
-                EmailAddress = Email
+                EmailAddress = Email,
+                Name = TradePartyDtoCurrent!.Contact!.PersonName,
+                Position = TradePartyDtoCurrent.Contact.Position
             };
         }
 
