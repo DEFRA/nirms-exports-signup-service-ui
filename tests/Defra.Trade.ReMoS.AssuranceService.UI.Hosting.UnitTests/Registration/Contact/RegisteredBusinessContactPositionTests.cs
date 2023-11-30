@@ -235,4 +235,93 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _systemUnderTest.BusinessName.Should().Be(tp.PracticeName);
         _systemUnderTest.ContactName.Should().Be(tp.Contact.PersonName);
     }
+
+    [Test]
+    public async Task OnPostSave_PopulateAuthRepWhenChangePosition()
+    {
+        // arrange
+        _systemUnderTest.Position = "John Doe";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = true,
+            },
+            AuthorisedSignatory = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+                Position = "John Doe Old"
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(tradeParty.AuthorisedSignatory.Id);
+        _systemUnderTest.TradePartyDto.Contact.Position.Should().Be("John Doe");
+        _systemUnderTest.TradePartyDto.Contact.Position.Should().Be(_systemUnderTest.TradePartyDto.AuthorisedSignatory.Position);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(_systemUnderTest.TradePartyDto.AuthorisedSignatory.Id);
+    }
+
+    [Test]
+    public async Task OnPostSave_NotPopulateAuthRepWhenChangeName()
+    {
+        // arrange
+        _systemUnderTest.Position = "John Doe";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = false,
+            },
+            AuthorisedSignatory = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+                Position = "John Doe Old"
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(tradeParty.AuthorisedSignatory.Id);
+        _systemUnderTest.TradePartyDto.Contact.Position.Should().Be("John Doe");
+        _systemUnderTest.TradePartyDto.AuthorisedSignatory.Should().BeNull();
+    }
+
+    [Test]
+    public async Task OnPostSave_NotCompletedAuthRep()
+    {
+        // arrange
+        _systemUnderTest.Position = "John Doe";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = null,
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(Guid.Empty);
+        _systemUnderTest.TradePartyDto.Contact.Position.Should().Be("John Doe");
+        _systemUnderTest.TradePartyDto.AuthorisedSignatory.Should().BeNull();
+    }
 }

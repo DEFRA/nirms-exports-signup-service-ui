@@ -1,12 +1,9 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 
@@ -26,8 +23,10 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     [BindProperty]
     public string? ContactName { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
+    public Guid AuthorisedSignatoryId { get; set; }
+    public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
     #endregion
-    
+
     public RegisteredBusinessContactEmailModel(
     ILogger<RegisteredBusinessContactEmailModel> logger, 
         ITraderService traderService) : base(traderService, logger)
@@ -88,8 +87,8 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     private async Task SubmitEmail()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDto tradeParty = GenerateDTO();
-        await _traderService.UpdateTradePartyContactAsync(tradeParty);
+        TradePartyDto = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(TradePartyDto);
     }
 
     private async Task GetTradePartyFromApiAsync()
@@ -110,12 +109,16 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+            if (tradeParty!.AuthorisedSignatory != null)
+            {
+                AuthorisedSignatoryId = tradeParty.AuthorisedSignatory.Id;
+            }
         }
     }
 
     private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDto()
+        var tradePartyDto = new TradePartyDto()
         {
             Id = TradePartyId,
             Contact = new TradeContactDto()
@@ -125,6 +128,17 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
                 IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
+
+        if (IsAuthorisedSignatory == true)
+        {
+            tradePartyDto.AuthorisedSignatory = new AuthorisedSignatoryDto()
+            {
+                Id = AuthorisedSignatoryId,
+                EmailAddress = Email
+            };
+        }
+
+        return tradePartyDto;
     }
 
     private bool IsInputValid()

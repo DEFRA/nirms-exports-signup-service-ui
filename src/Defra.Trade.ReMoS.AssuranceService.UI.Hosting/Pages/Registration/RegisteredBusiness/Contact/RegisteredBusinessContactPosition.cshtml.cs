@@ -26,6 +26,8 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     [BindProperty]
     public Guid ContactId { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
+    public Guid AuthorisedSignatoryId { get; set; }
+    public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
     #endregion
 
     /// <summary>
@@ -91,8 +93,8 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     private async Task SubmitPosition()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDto tradeParty = GenerateDTO();
-        await _traderService.UpdateTradePartyContactAsync(tradeParty);
+        TradePartyDto = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(TradePartyDto);
     }
     private async Task GetContactPositionFromApiAsync()
     {
@@ -111,14 +113,17 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
         if (tradeParty != null && tradeParty.Contact != null)
         {
             IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+            if (tradeParty!.AuthorisedSignatory != null)
+            {
+                AuthorisedSignatoryId = tradeParty.AuthorisedSignatory.Id;
+            }
         }
     }
 
     private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDto()
+        var tradePartyDto = new TradePartyDto()
         {
-
             Id = TradePartyId,
             Contact = new TradeContactDto()
             {
@@ -127,6 +132,17 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
                 IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
+
+        if (IsAuthorisedSignatory == true)
+        {
+            tradePartyDto.AuthorisedSignatory = new AuthorisedSignatoryDto()
+            {
+                Id = AuthorisedSignatoryId,
+                Position = Position
+            };
+        }
+
+        return tradePartyDto;
     }
     #endregion
 }
