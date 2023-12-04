@@ -164,7 +164,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _systemUnderTest!.OptionSelected = "";
         _systemUnderTest!.PracticeName = "Test";
         _systemUnderTest.TraderId = Guid.NewGuid();
-        var expectedResult = "Select if Test has an FBO or PHR number";
+        var expectedResult = "Select if your business has an FBO or PHR number";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
