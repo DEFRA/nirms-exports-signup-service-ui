@@ -127,7 +127,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
                 ModelState.AddModelError(nameof(PhrNumber), "Enter your business's PHR number");
 
             if (OptionSelected == "")
-                ModelState.AddModelError(nameof(OptionSelected), $"Select if {PracticeName} has an FBO or PHR number");
+                ModelState.AddModelError(nameof(OptionSelected), $"Select if your business has an FBO or PHR number");
         }
     }
 
