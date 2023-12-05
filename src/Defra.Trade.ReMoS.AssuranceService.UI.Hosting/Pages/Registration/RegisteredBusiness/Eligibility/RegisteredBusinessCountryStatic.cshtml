@@ -1,0 +1,49 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Eligibility.RegisteredBusinessCountryStaticModel
+@{
+    ViewData["Title"] = "Business Purpose";
+}
+
+@section Back{
+    @{
+        var referer = ViewContext.HttpContext.Request.Headers["Referer"].ToString();
+        if (referer.Contains(Routes.RegistrationCheckYourAnswers))
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+               asp-route-id="@Model.TraderId"
+            class="govuk-back-link">Back</a>
+        }
+        else
+        {
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
+               asp-route-id="@Model.TraderId"
+               class="govuk-back-link">Back to dashboard</a>
+        }
+    }      
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            Business purpose
+        </h1>
+
+
+        <p>Your business will be @Model.ContentText consignments from Great Britain to Northern Ireland under the NI Retail Movement Scheme. </p>
+        @if (@Model.Country != "Northern Ireland" && @Model.Country != "NI")
+        {
+            <p>Your business is based in @Model.Country.</p>
+        }
+
+        <p>To sign up a business with a different purpose, <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">start a new sign up request</a>.</p>
+
+        <p>If you need to change your answer, call us.</p>
+
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+        <partial name="_ContactDetailsPartial" />
+    </div>
+</div>

@@ -17,6 +17,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         public string SelectedBusinessName { get; set; } = default!;
         [BindProperty]
         public string EligibilityStatus { get; set; } = TaskListStatus.NOTSTART;
+        public string PurposeOfBusinessStatus { get; set; } = TaskListStatus.NOTSTART;
+        public string FboPhrStatus { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
         public string BusinessDetails { get; set; } = TaskListStatus.NOTSTART;
         [BindProperty]
@@ -77,6 +79,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
             {
                 EligibilityStatus = _checkAnswersService.GetEligibilityProgress(tradeParty);
+                PurposeOfBusinessStatus = _checkAnswersService.GetPurposeOfBusinessProgress(tradeParty);
+                FboPhrStatus = _checkAnswersService.GetFboPhrProgress(tradeParty);
                 BusinessDetails = GetBusinessDetailsProgress(tradeParty!);
                 ContactDetails = GetContactDetailsProgress(tradeParty!);
                 AuthorisedSignatoryDetails = GetAuthorisedSignatoryProgress(tradeParty!);
@@ -118,6 +122,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         {
             if (EligibilityStatus == TaskListStatus.COMPLETE
                 && BusinessDetails == TaskListStatus.COMPLETE
+                && FboPhrStatus == TaskListStatus.COMPLETE
                 && ContactDetails == TaskListStatus.COMPLETE
                 && AuthorisedSignatoryDetails == TaskListStatus.COMPLETE
                 && ((PlacesOfDispatch == TaskListStatus.COMPLETE && Country != "NI") || (PlacesOfDestination == TaskListStatus.COMPLETE && Country == "NI")))

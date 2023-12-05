@@ -44,11 +44,19 @@
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.RegistrationID" aria-describedby="eligibility">
-                                Check eligibility
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.RegistrationID" aria-describedby="purposeofbusiness">
+                                Purpose of business
                             </a>
                         </span>
-                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.EligibilityStatus)" id="eligibility">@Model.EligibilityStatus</strong>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.PurposeOfBusinessStatus)" id="purposeofbusiness">@Model.PurposeOfBusinessStatus</strong>
+                    </li>
+                    <li class="app-task-list__item">
+                        <span class="app-task-list__task-name">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessFboNumberPath asp-route-id="@Model.RegistrationID" aria-describedby="fbophr">
+                                FBO or PHR number
+                            </a>
+                        </span>
+                        <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.FboPhrStatus)" id="fbophr">@Model.FboPhrStatus</strong>
                     </li>
                 </ul>
             </li>

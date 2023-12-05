@@ -12,7 +12,7 @@
     }
     else
     {
-        <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
     }  
 }
 
@@ -27,11 +27,12 @@
         <h2 class="govuk-heading-m">Signing up for the scheme</h2>
 
         <p>Your sign-up request must be approved before your business can move goods under the scheme.</p>
-        <p>In addition to an FBO number or PHR number (if you are eligible for one), your business must have:</p>
+        <p>To sign up, your business must have:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>an address in the United Kingdom</li>
             <li>an authorised representative who can agree to the terms and conditions of the scheme</li>
         </ul>
+        <p>If your business has a Food Business Operator (FBO) number or Plant Health Registration (PHR) number, you will need to provide it.</p>
         <p>You must inform us if there are any changes to the information that you provide when you're signing up for the scheme.</p>
         <p>The places of dispatch and places of destination for all consignments must be registered for the scheme.</p>
 
@@ -70,7 +71,7 @@
                 <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
                     <input class="govuk-checkboxes__input" id="Confirmed" type="checkbox" asp-for="Confirmed" value="true">
                     <label class="govuk-label govuk-checkboxes__label govuk-!-font-weight-bold" for="Confirmed">
-                        I confirm that I have understood the guidance and regulations for moving goods under this scheme
+                        I confirm that I have read and understood the guidance and regulations for moving goods under this scheme
                     </label>
                 </div>
             </div>

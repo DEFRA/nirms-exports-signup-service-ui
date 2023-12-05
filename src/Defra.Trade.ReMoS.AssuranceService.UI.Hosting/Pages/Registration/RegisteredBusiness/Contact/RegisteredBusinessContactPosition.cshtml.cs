@@ -26,6 +26,9 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     [BindProperty]
     public Guid ContactId { get; set; }
     public bool? IsAuthorisedSignatory { get; set; }
+    public Guid AuthorisedSignatoryId { get; set; }
+    public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
+    public TradePartyDto? TradePartyDtoCurrent { get; set; } = new TradePartyDto();
     #endregion
 
     /// <summary>
@@ -91,34 +94,37 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     private async Task SubmitPosition()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDto tradeParty = GenerateDTO();
-        await _traderService.UpdateTradePartyContactAsync(tradeParty);
+        TradePartyDto = GenerateDTO();
+        await _traderService.UpdateTradePartyContactAsync(TradePartyDto);
     }
     private async Task GetContactPositionFromApiAsync()
     {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null && tradeParty.Contact != null)
+        TradePartyDtoCurrent = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (TradePartyDtoCurrent != null && TradePartyDtoCurrent.Contact != null)
         {
-            Position = tradeParty.Contact.Position ?? string.Empty;
-            BusinessName = tradeParty.PracticeName ?? string.Empty;
-            ContactName = tradeParty.Contact.PersonName ?? string.Empty;
+            Position = TradePartyDtoCurrent.Contact.Position ?? string.Empty;
+            BusinessName = TradePartyDtoCurrent.PracticeName ?? string.Empty;
+            ContactName = TradePartyDtoCurrent.Contact.PersonName ?? string.Empty;
         }
     }
 
     private async Task GetIsAuthorisedSignatoryFromApiAsync()
     {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null && tradeParty.Contact != null)
+        TradePartyDtoCurrent = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (TradePartyDtoCurrent != null && TradePartyDtoCurrent.Contact != null)
         {
-            IsAuthorisedSignatory = tradeParty.Contact.IsAuthorisedSignatory;
+            IsAuthorisedSignatory = TradePartyDtoCurrent.Contact.IsAuthorisedSignatory;
+            if (TradePartyDtoCurrent!.AuthorisedSignatory != null)
+            {
+                AuthorisedSignatoryId = TradePartyDtoCurrent.AuthorisedSignatory.Id;
+            }
         }
     }
 
     private TradePartyDto GenerateDTO()
     {
-        return new TradePartyDto()
+        var tradePartyDto = new TradePartyDto()
         {
-
             Id = TradePartyId,
             Contact = new TradeContactDto()
             {
@@ -127,6 +133,19 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
                 IsAuthorisedSignatory = IsAuthorisedSignatory
             }
         };
+
+        if (IsAuthorisedSignatory == true)
+        {
+            tradePartyDto.AuthorisedSignatory = new AuthorisedSignatoryDto()
+            {
+                Id = AuthorisedSignatoryId,
+                EmailAddress = TradePartyDtoCurrent!.Contact!.Email,
+                Name = TradePartyDtoCurrent.Contact.PersonName,
+                Position = Position
+            };
+        }
+
+        return tradePartyDto;
     }
     #endregion
 }

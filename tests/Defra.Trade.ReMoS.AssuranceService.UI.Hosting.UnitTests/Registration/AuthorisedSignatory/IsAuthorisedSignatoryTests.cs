@@ -65,7 +65,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Assert            
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select if Joe Blogs is the authorised representative");
+            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select 'yes' if Joe Blogs is the authorised representative");
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Assert            
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select if Joe Blogs is the authorised representative");
+            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select 'yes' if Joe Blogs is the authorised representative");
         }
 
 

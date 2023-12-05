@@ -111,11 +111,12 @@ public class RegisteredBusinessBusinessPickerTests
     }
 
     [Test]
-    public async Task OnPostSubmitAsync_When_SignupStatus_Is_New_RedirectToCountryPage()
+    public async Task OnPostSubmitAsync_When_SignupStatus_Is_New_RedirectToRegulationsPage()
     {
         // Arrange
         var userOrgs = new List<Organisation>();
-        userOrgs.Add(new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = false, UserRole = "Standard"});
+        var org = new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = true, UserRole = "Standard" };
+        userOrgs.Add(org);
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
         _mockTraderService
@@ -124,8 +125,11 @@ public class RegisteredBusinessBusinessPickerTests
         _mockUserService
             .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
             .Returns(userOrgs);
+        _mockUserService
+            .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+            .Returns(org);
         var expected = new RedirectToPageResult(
-            Routes.Pages.Path.RegisteredBusinessCountryPath,
+            Routes.Pages.Path.RegisteredBusinessRegulationsPath,
             new { id = _systemUnderTest.TraderId });
 
         // Act
@@ -204,9 +208,13 @@ public class RegisteredBusinessBusinessPickerTests
         // Arrange
         _systemUnderTest!.SelectedBusiness = "247d3fca-d874-45c8-b2ab-024b7bc8f701";
         _systemUnderTest.TraderId = Guid.NewGuid();
+        var org = new Organisation { OrganisationId = Guid.Parse("247d3fca-d874-45c8-b2ab-024b7bc8f701"), PracticeName = "org1", Enrolled = true, UserRole = "Standard" };
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry));
+        _mockUserService
+            .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
+            .Returns(org);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
             new { id = _systemUnderTest.TraderId });

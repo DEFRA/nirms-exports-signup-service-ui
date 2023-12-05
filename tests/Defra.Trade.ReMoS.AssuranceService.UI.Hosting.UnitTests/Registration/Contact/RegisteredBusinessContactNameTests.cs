@@ -216,4 +216,96 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
     }
+
+    [Test]
+    public async Task OnPostSave_PopulateAuthRepWhenChangeName()
+    {
+        // arrange
+        _systemUnderTest.Name = "John Doe";
+        _systemUnderTest.PracticeName = "ACME Ltd";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = true,
+            },
+            AuthorisedSignatory = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+                Name = "John Doe Old"
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(tradeParty.AuthorisedSignatory.Id);
+        _systemUnderTest.TradePartyDto.Contact.PersonName.Should().Be("John Doe");
+        _systemUnderTest.TradePartyDto.Contact.PersonName.Should().Be(_systemUnderTest.TradePartyDto.AuthorisedSignatory.Name);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(_systemUnderTest.TradePartyDto.AuthorisedSignatory.Id);
+    }
+
+    [Test]
+    public async Task OnPostSave_NotPopulateAuthRepWhenChangeName()
+    {
+        // arrange
+        _systemUnderTest.Name = "John Doe";
+        _systemUnderTest.PracticeName = "ACME Ltd";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = false,
+            },
+            AuthorisedSignatory = new AuthorisedSignatoryDto
+            {
+                Id = Guid.NewGuid(),
+                Name = "John Doe Old"
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(tradeParty.AuthorisedSignatory.Id);
+        _systemUnderTest.TradePartyDto.Contact.PersonName.Should().Be("John Doe");
+        _systemUnderTest.TradePartyDto.AuthorisedSignatory.Should().BeNull();
+    }
+
+    [Test]
+    public async Task OnPostSave_NotCompletedAuthRep()
+    {
+        // arrange
+        _systemUnderTest.Name = "John Doe";
+        _systemUnderTest.PracticeName = "ACME Ltd";
+        var tradeParty = new TradePartyDto
+        {
+            Contact = new TradeContactDto
+            {
+                IsAuthorisedSignatory = null,
+            }
+        };
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+
+        // act
+        await _systemUnderTest.OnPostSaveAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        validation.Count.Should().Be(0);
+        _systemUnderTest.AuthorisedSignatoryId.Should().Be(Guid.Empty);
+        _systemUnderTest.TradePartyDto.Contact.PersonName.Should().Be("John Doe");
+        _systemUnderTest.TradePartyDto.AuthorisedSignatory.Should().BeNull();
+    }
 }

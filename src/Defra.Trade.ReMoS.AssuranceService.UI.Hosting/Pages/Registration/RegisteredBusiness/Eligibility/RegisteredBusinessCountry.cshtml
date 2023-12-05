@@ -5,20 +5,9 @@
     ViewData["Title"] = "What will your business do under the Northern Ireland Retail Movement Scheme?";
 }
 
-@section Back{ 
-    @if (!Model.AllowedToTasklist)
-    {
-        <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" 
-            asp-route-id="@Model.TraderId" 
-            class="govuk-back-link">Back</a>
-    }
-    else
-    {
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
-            asp-route-id="@Model.TraderId" 
-            class="govuk-back-link">Back</a>
-    }
-}
+<a asp-page="@Routes.Pages.Path.RegisteredBusinessRegulationsPath"
+    asp-route-id="@Model.TraderId" 
+    class="govuk-back-link">Back</a>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

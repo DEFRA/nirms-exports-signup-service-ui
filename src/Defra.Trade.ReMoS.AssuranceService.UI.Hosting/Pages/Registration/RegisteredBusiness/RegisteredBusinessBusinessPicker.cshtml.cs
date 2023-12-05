@@ -111,35 +111,35 @@ public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBus
 
         switch (signupStatus)
         {
-            case Core.Enums.TradePartySignupStatus.New:
+            case TradePartySignupStatus.New:
                 await SaveSelectedBusinessToApi();
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber:
-                return RedirectToPage(
-                    Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-                    new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessRegulationsPath,
                     new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.InProgress:
+            case TradePartySignupStatus.InProgressEligibilityCountry:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessCountryPath,
+                    new { id = TraderId });
+            case TradePartySignupStatus.InProgressEligibilityFboNumber:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessFboNumberPath,
+                    new { id = TraderId });
+            case TradePartySignupStatus.InProgressEligibilityRegulations:
+                return RedirectToPage(
+                    Routes.Pages.Path.RegisteredBusinessRegulationsPath,
+                    new { id = TraderId });
+            case TradePartySignupStatus.InProgress:
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
                     new { id = TraderId });
-            case Core.Enums.TradePartySignupStatus.Complete:
+            case TradePartySignupStatus.Complete:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
                     new { id = TraderId });
         }
 
         return RedirectToPage(
-            Routes.Pages.Path.RegisteredBusinessCountryPath,
+            Routes.Pages.Path.RegisteredBusinessRegulationsPath,
             new { id = TraderId });
     }
 

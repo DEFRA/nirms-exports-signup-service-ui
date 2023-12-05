@@ -120,7 +120,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _systemUnderTest.TraderId = Guid.NewGuid();
 
         //Act
-        await _systemUnderTest.OnPostAsync();
+        await _systemUnderTest.OnPostSubmitAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -149,7 +149,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         var expectedResult = "FBO number must be 25 characters or less";
 
         //Act
-        await _systemUnderTest.OnPostAsync();
+        await _systemUnderTest.OnPostSubmitAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert            
@@ -164,10 +164,10 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _systemUnderTest!.OptionSelected = "";
         _systemUnderTest!.PracticeName = "Test";
         _systemUnderTest.TraderId = Guid.NewGuid();
-        var expectedResult = "Select if Test has an FBO or PHR number";
+        var expectedResult = "Select if your business has an FBO or PHR number";
 
         //Act
-        await _systemUnderTest.OnPostAsync();
+        await _systemUnderTest.OnPostSubmitAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -184,7 +184,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         var expectedResult = "PHR number must be 25 characters or less";
 
         //Act
-        await _systemUnderTest.OnPostAsync();
+        await _systemUnderTest.OnPostSubmitAsync();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert            
@@ -202,5 +202,67 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_RedirectToGuidence_IfSelectedNone()
+    {
+        // Arrange
+        _systemUnderTest!.OptionSelected = "none";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+
+        // Act
+        var result = await _systemUnderTest!.OnPostSubmitAsync();
+        var redirectResult = result as RedirectToPageResult;
+
+        // Assert
+        redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessFboPhrGuidance");
+    }
+
+    [Test]
+    public async Task OnPostSubmitAsync_RedirectToContactName_IfValidFboPhrGiven()
+    {
+        // Arrange
+        _systemUnderTest!.OptionSelected = "fbo";
+        _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+
+        // Act
+        var result = await _systemUnderTest!.OnPostSubmitAsync();
+        var redirectResult = result as RedirectToPageResult;
+
+        // Assert
+        redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/Contact/RegisteredBusinessContactName");
+    }
+
+    [Test]
+    public async Task OnPostSaveAsync_RedirectToGuidence_IfSelectedNone()
+    {
+        // Arrange
+        _systemUnderTest!.OptionSelected = "none";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+
+        // Act
+        var result = await _systemUnderTest!.OnPostSaveAsync();
+        var redirectResult = result as RedirectToPageResult;
+
+        // Assert
+        redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessFboPhrGuidance");
+    }
+
+    [Test]
+    public async Task OnPostSaveAsync_RedirectToTaskList_IfValidFboPhrGiven()
+    {
+        // Arrange
+        _systemUnderTest!.OptionSelected = "fbo";
+        _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
+        _systemUnderTest.TraderId = Guid.NewGuid();
+
+        // Act
+        var result = await _systemUnderTest!.OnPostSaveAsync();
+        var redirectResult = result as RedirectToPageResult;
+
+        // Assert
+        redirectResult!.PageName.Should().Be("/Registration/TaskList/RegistrationTaskList");
     }
 }

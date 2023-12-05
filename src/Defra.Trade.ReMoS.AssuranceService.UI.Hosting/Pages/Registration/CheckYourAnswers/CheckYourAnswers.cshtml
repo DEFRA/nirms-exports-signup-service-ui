@@ -39,12 +39,15 @@
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                        Country
+                        Business Purpose
                     </dt>
-                    <dd class="govuk-summary-list__value" id="business-details-country">
-                        @Model.TradeParty?.Address?.TradeCountry
+                    <dd class="govuk-summary-list__value" id="business-details-purpose">
+                        @Model.Purpose
                     </dd>
                     <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessCountryStaticPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-purpose">
+                            View<span class="govuk-visually-hidden"> Purpose of Business</span>
+                        </a>
                     </dd>
                 </div>
                 
