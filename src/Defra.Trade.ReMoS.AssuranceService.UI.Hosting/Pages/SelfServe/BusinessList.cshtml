@@ -1,0 +1,41 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.BusinessListModel
+@{
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Northern Ireland Retail Movement Scheme - PLACEHOLDER
+        </h1>
+        <h2 class="govuk-heading-m">
+            Your businesses
+        </h2>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+            @foreach (var business in Model.Businesses)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @business.PracticeName
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <div class="govuk-tag govuk-tag--green">
+                            Approved for NIRMS
+                        </div>
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" asp-page-handler="NavigateToBusinessDashboard" asp-route-orgId="@business.OrganisationId">
+                            Manage<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                        </a>
+                    </dd>
+                </div>
+            }
+
+        </dl>
+
+        <div class="govuk-button-group">
+            <a class="govuk-button govuk-button--secondary" href="business-add">Add a business</a>
+        </div>
+    </div>
+</div>

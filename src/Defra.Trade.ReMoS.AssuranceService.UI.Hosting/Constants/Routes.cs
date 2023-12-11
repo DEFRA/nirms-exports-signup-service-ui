@@ -39,6 +39,8 @@ public static class Routes
     public const string PostcodeNoResult = "/establishment-postcode-no-result";
     public const string RegisterBusinessForExporterService = "/register-business-error-admin";
     public const string RegisterBusinessForExporterServiceNonAdmin = "register-business-error-non-admin";
+    public const string SelfServeDashboard = "/self-serve-dashboard";
+    public const string BusinessList = "/business-list";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -79,6 +81,8 @@ public static class Routes
         (Pages.Path.PostcodeNoResultPath, PostcodeNoResult),
         (Pages.Path.RegisterBusinessForExporterServicePath, RegisterBusinessForExporterService),
         (Pages.Path.RegisterBusinessForExporterServiceNonAdminPath, RegisterBusinessForExporterServiceNonAdmin),
+        (Pages.Path.SelfServeDashboardPath, SelfServeDashboard),
+        (Pages.Path.BusinessListPath, BusinessList),
 
     };
 
@@ -123,6 +127,8 @@ public static class Routes
             public const string PostcodeNoResultName = "PostcodeNoResult";
             public const string RegisterBusinessForExporterServiceName = "RegisterBusinessForExporterService";
             public const string RegisterBusinessForExporterServiceNonAdminName = "RegisterBusinessForExporterServiceNonAdmin";
+            public const string SelfServeDashboardName = "SelfServeDashboard";
+            public const string BusinessListName = "BusinessList";
         }
 
         public static class Path
@@ -164,6 +170,8 @@ public static class Routes
             public const string PostcodeNoResultPath = $"/Establishments/{Names.PostcodeNoResultName}";
             public const string RegisterBusinessForExporterServicePath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceName}";
             public const string RegisterBusinessForExporterServiceNonAdminPath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceNonAdminName}";
+            public const string SelfServeDashboardPath = $"/SelfServe/{Names.SelfServeDashboardName}";
+            public const string BusinessListPath = $"/SelfServe/{Names.BusinessListName}";
         }
     }
 }

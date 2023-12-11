@@ -301,7 +301,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), Address = new TradeAddressDto { TradeCountry = "GB" }, TermsAndConditionsSignedDate = DateTime.Now };
+            var tradePartyDto = new TradePartyDto 
+            { 
+                Id = Guid.NewGuid(), 
+                RegulationsConfirmed = true,
+                Address = new TradeAddressDto { TradeCountry = "GB" }, 
+                TermsAndConditionsSignedDate = DateTime.Now 
+            };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(tradePartyDto);

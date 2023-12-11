@@ -41,7 +41,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 
         public async Task<TradePartyDto?> GetTradePartyByIdAsync(Guid Id)
         {
-            if(Id != Guid.Empty)
+            if (Id != Guid.Empty)
             {
                 return await _apiIntegration.GetTradePartyByIdAsync(Id);
             }
@@ -53,41 +53,42 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return await _apiIntegration.UpdateAuthorisedSignatoryAsync(tradePartyDTO);
         }
 
-        /// <summary>
-        /// Calculates a business's sign-up progress by inspecting data related to various stages
-        /// </summary>
-        /// <param name="orgId"></param>
-        /// <returns>A tuple containing the business and its sign-up status</returns>
         public async Task<(TradePartyDto? tradeParty, TradePartySignupStatus signupStatus)> GetDefraOrgBusinessSignupStatus(Guid orgId)
         {
             var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
-            var signupStatus = TradePartySignupStatus.New;
-
-            //if org is rejected, we need to blank it out to allow a retry
-            if (tradeParty != null && tradeParty.ApprovalStatus == TradePartyApprovalStatus.Rejected)
-                tradeParty = null;
 
             if (tradeParty == null)
-                signupStatus = TradePartySignupStatus.New;
-            else
             {
-                if (!tradeParty.RegulationsConfirmed)
-                    signupStatus = TradePartySignupStatus.InProgressEligibilityRegulations;
-                if (tradeParty.RegulationsConfirmed && tradeParty.Address == null)
-                    signupStatus = TradePartySignupStatus.InProgressEligibilityCountry;
-                if (tradeParty.TermsAndConditionsSignedDate != default && tradeParty.TermsAndConditionsSignedDate != DateTime.MinValue)
-                    signupStatus = TradePartySignupStatus.Complete;
-                if (tradeParty.RegulationsConfirmed && tradeParty.Address != null)
-                {
-                    if (tradeParty.Address.TradeCountry == null)
-                        signupStatus = TradePartySignupStatus.InProgressEligibilityCountry;
-                    else
-                        signupStatus = TradePartySignupStatus.InProgress;
-                }
-
+                return (tradeParty, TradePartySignupStatus.New);
             }
 
-            return (tradeParty, signupStatus);
+            if (tradeParty.ApprovalStatus == TradePartyApprovalStatus.Rejected)
+            {
+                tradeParty = null;
+                return (tradeParty, TradePartySignupStatus.New);
+            }
+
+            if (!tradeParty.RegulationsConfirmed)
+            {
+                return (tradeParty, TradePartySignupStatus.InProgressEligibilityRegulations);
+            }
+
+            if (tradeParty.Address == null)
+            {
+                return (tradeParty, TradePartySignupStatus.InProgressEligibilityCountry);
+            }
+
+            if (tradeParty.TermsAndConditionsSignedDate != default && tradeParty.TermsAndConditionsSignedDate != DateTime.MinValue)
+            {
+                return (tradeParty, TradePartySignupStatus.Complete);
+            }
+
+            if (tradeParty.Address.TradeCountry == null)
+            {
+                return (tradeParty, TradePartySignupStatus.InProgressEligibilityCountry);
+            }
+
+            return (tradeParty, TradePartySignupStatus.InProgress);
         }
 
         /// <summary>
