@@ -40,10 +40,10 @@ internal sealed class Program
         builder.Services.Configure<EhcoIntegration>(builder.Configuration.GetSection("EhcoIntegration"));
         builder.Services.Configure<GoogleTagManager>(builder.Configuration.GetSection("GoogleTagManager"));
         builder.Services.AddServiceConfigurations(builder.Configuration);
-        builder.Services.AddFeatureManagement();
         builder.Services.AddApimAuthentication(builder.Configuration.GetSection("Apim:Internal"));
         builder.Services.AddTradeApi(builder.Configuration);
         builder.Services.AddHealthChecks();
+        builder.Services.AddFeatureManagement();
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
