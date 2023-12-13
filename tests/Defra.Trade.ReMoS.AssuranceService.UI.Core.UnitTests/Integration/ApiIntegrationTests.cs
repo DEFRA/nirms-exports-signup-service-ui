@@ -36,8 +36,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         [SetUp]
         public void Setup() 
         {
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
             _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
         }
@@ -50,8 +52,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             var jsonString = JsonConvert.SerializeObject(tradeParties);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var expectedResponse = new HttpResponseMessage
@@ -61,9 +65,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             };
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
-            
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -82,8 +88,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         {
             // Arrange
             var tradeParty = new TradePartyDto();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(tradeParty);
@@ -97,8 +105,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -117,8 +127,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         {
             // Arrange
             var tradeParty = new TradePartyDto();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(tradeParty);
@@ -132,8 +144,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -152,8 +166,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         {
             // Arrange
             var tradeParty = new TradePartyDto();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(tradeParty);
@@ -167,8 +183,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -192,8 +210,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -209,8 +229,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -234,8 +256,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -251,8 +275,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -279,8 +305,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
@@ -294,8 +322,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -320,8 +350,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
@@ -335,8 +367,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -359,8 +393,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -376,8 +412,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -403,8 +441,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
@@ -418,8 +458,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -440,8 +482,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
                 TradeCountry = "United Kingdom",
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -459,8 +503,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -483,8 +529,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
                 TradeCountry = "United Kingdom",
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.Empty;
@@ -502,8 +550,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -523,8 +573,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -540,8 +592,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -549,6 +603,52 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Act
             var returnedValue = await _apiIntegration.UpdateTradePartyContactAsync(tradeParty);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Should().Be(guid);
+        }
+
+        [Test]
+        public async Task Integration_Returns_Guid_When_Calling_UpdateTradePartyContactSelfServeAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDto
+            {
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var guid = Guid.NewGuid();
+
+            var jsonString = JsonConvert.SerializeObject(guid);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.UpdateTradePartyContactSelfServeAsync(tradeParty);
 
             // Assert
             _mockHttpClientFactory.Verify();
@@ -568,8 +668,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
@@ -583,8 +685,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -592,6 +696,51 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyContactAsync(tradeParty));
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
+
+        [Test]
+        [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
+        public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactSelfServeAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDto
+            {
+                Id = Guid.Empty,
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var jsonString = JsonConvert.SerializeObject(Guid.Empty);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyContactSelfServeAsync(tradeParty));
 
             // Assert
             _mockHttpClientFactory.Verify();
@@ -606,8 +755,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 Name = "Trade party Ltd"
             };
             var partyId = Guid.NewGuid();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -623,8 +774,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -648,8 +801,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 Name = "Trade party Ltd"
             };
             var partyId = Guid.NewGuid();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -666,8 +821,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -690,8 +847,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 Name = "Trade party Ltd"
             };
             var partyId = Guid.NewGuid();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(Guid.Empty);
@@ -705,8 +864,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -727,8 +888,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             var location = new LogisticsLocationDto();
             var jsonString = JsonConvert.SerializeObject(location);
             var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var expectedResponse = new HttpResponseMessage
@@ -739,8 +902,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -769,8 +934,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                     TradePartyId = Guid.NewGuid(),
                 }
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
@@ -784,8 +951,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -819,8 +988,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 }
             };
             var postcode = "TES1";
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver= new CamelCasePropertyNamesContractResolver() });
@@ -834,8 +1005,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -871,8 +1044,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                     }
                 }
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
@@ -886,8 +1061,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -910,8 +1087,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom"
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -927,8 +1106,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -952,8 +1133,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
                 Name = "testname",
                 NI_GBFlag = "GB",
             };
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var guid = Guid.NewGuid();
@@ -969,8 +1152,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -993,8 +1178,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             {
             };
 
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(logisticsLocationDto);
@@ -1006,8 +1193,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -1043,8 +1232,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -1085,8 +1276,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 
@@ -1104,8 +1297,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
         {
             // Arrange
             var tradeParty = new TradePartyDto();
-            var appConfigurationSettings = new AppConfigurationService();
-            appConfigurationSettings.SubscriptionKey = "testkey";
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
             IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
             var jsonString = JsonConvert.SerializeObject(tradeParty);
@@ -1119,8 +1314,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
 
-            var httpClient = new HttpClient(_mockHttpMessageHandler.Object);
-            httpClient.BaseAddress = new Uri("https://localhost/");
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
 
             _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
 

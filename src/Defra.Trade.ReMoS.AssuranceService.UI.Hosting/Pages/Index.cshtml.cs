@@ -13,8 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
 using Microsoft.FeatureManagement;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-#pragma warning disable CS1998
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 

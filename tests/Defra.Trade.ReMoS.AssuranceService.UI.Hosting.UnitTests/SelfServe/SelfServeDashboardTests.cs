@@ -26,8 +26,10 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new SelfServeDashboardModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService);
-        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _systemUnderTest = new SelfServeDashboardModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService)
+        {
+            PageContext = PageModelMockingUtils.MockPageContext()
+        };
     }
 
     [Test]

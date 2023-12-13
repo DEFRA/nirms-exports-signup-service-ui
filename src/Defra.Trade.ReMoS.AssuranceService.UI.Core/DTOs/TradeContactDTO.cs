@@ -9,5 +9,8 @@
         public string? Email { get; set; }
         public string? Position { get; set; }
         public bool? IsAuthorisedSignatory { get; set; }
+        public DateTime SubmittedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+        public Guid ModifiedBy { get; set; }
     }
 }
