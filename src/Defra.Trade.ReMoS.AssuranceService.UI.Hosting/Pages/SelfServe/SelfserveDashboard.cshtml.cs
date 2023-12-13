@@ -1,12 +1,9 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
@@ -19,6 +16,12 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public Guid RegistrationID { get; set; }
     public string BusinessName { get; set; } = default!;
     public string RmsNumber { get; set; } = default!;
+    public string ContactName { get; set; } = default!;
+    public string ContactPosition { get; set; } = default!;
+    public string ContactEmail { get; set; } = default!;
+    public string ContactPhoneNumber { get; set; } = default!;
+    public DateTime ContactSubmittedDate { get; set; } = default!;
+    public DateTime ContactLastModifiedDate { get; set; } = default!;
     #endregion
 
     public SelfServeDashboardModel(
@@ -39,19 +42,41 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
-        await GetAPIData();
+        await PopulateModelPropertiesFromApi();
 
         return Page();
     }
 
-    private async Task GetAPIData()
+    private async Task PopulateModelPropertiesFromApi()
     {
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
 
-        if (tradeParty != null && tradeParty.Id != Guid.Empty)
+        if (tradeParty == null || tradeParty?.Id == Guid.Empty)
         {
-            BusinessName = tradeParty.PracticeName ?? string.Empty;
-            RmsNumber = tradeParty.RemosBusinessSchemeNumber ?? string.Empty;
+            return;
         }
+
+        BusinessName = tradeParty?.PracticeName ?? string.Empty;
+        RmsNumber = tradeParty?.RemosBusinessSchemeNumber ?? string.Empty;
+
+        if (tradeParty?.Contact != null)
+        {
+
+            ContactName = tradeParty.Contact.PersonName ?? string.Empty;
+            ContactPosition = tradeParty.Contact.Position ?? string.Empty;
+            ContactEmail = tradeParty.Contact.Email ?? string.Empty;
+            ContactPhoneNumber = tradeParty.Contact.TelephoneNumber ?? string.Empty;
+            ContactSubmittedDate = tradeParty.Contact.SubmittedDate;
+            ContactLastModifiedDate = tradeParty.Contact.LastModifiedDate;
+        }
+
     }
+
+    public IActionResult OnGetChangeContactDetails(Guid tradePartyId)
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.SelfServeUpdateContactPath,
+            new { id = tradePartyId});
+    }
+
 }

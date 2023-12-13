@@ -21,6 +21,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <dl class="govuk-summary-list">
+            <!-- Status -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     Status
@@ -34,6 +35,7 @@
                     <span class="govuk-visually-hidden">Blank cell</span>
                 </dd>
             </div>
+            <!-- RMS Number -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     Business RMS number
@@ -43,6 +45,35 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <span class="govuk-visually-hidden">Blank cell</span>
+                </dd>
+            </div>
+            <!-- Contact person -->
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Contact person
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.ContactName<br>
+                    @Model.ContactPosition<br>
+                    @Model.ContactEmail<br>
+                    @Model.ContactPhoneNumber
+                    
+                    @if (Model.ContactLastModifiedDate != default 
+                        && Model.ContactLastModifiedDate != DateTime.MinValue 
+                        && Model.ContactLastModifiedDate.ToShortDateString() != Model.ContactSubmittedDate.ToShortDateString())
+                    {
+                        <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last updated @Model.ContactLastModifiedDate.ToString("dd MMM yyyy")</div>
+                    }
+                    else
+                    {
+                        <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Submitted on @Model.ContactSubmittedDate.ToString("dd MMM yyyy")</div>
+                    }
+
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page-handler="ChangeContactDetails"
+                       asp-route-tradepartyid="@Model.RegistrationID">
+                       Change <span class="govuk-visually-hidden">contact person</span></a>
                 </dd>
             </div>
         </dl>
