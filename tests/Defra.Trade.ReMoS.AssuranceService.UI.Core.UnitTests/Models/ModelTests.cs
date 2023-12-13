@@ -313,10 +313,7 @@ public class LogisticsLocationTests
     {
         // arrange
         var logisticsLocationId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
-        var tradePartyId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d191");
         var tradeAddressId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d189");
-        var relationshipId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d190");
-        var tradeContactId = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d192");
         var created = DateTime.Now;
         var lastModified = DateTime.Now;
         var logisticsLocation = new LogisticsLocationDto

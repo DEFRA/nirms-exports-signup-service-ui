@@ -91,11 +91,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
 
-            var logisticsLocations = new List<LogisticsLocationDto>();
-            logisticsLocations.Add(new LogisticsLocationDto()
+            var logisticsLocations = new List<LogisticsLocationDto>
             {
-                TradeAddressId = Guid.NewGuid()
-            });
+                new LogisticsLocationDto()
+                {
+                    TradeAddressId = Guid.NewGuid()
+                }
+            };
             var postcode = "TES1";
 
             _mockApiIntegration.Setup(x => x.GetEstablishmentsByPostcodeAsync(postcode)).Verifiable();

@@ -18,8 +18,10 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object, _mockTraderService.Object);
-        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _systemUnderTest = new RegisteredBusinessContactNameModel(_mockLogger.Object, _mockTraderService.Object)
+        {
+            PageContext = PageModelMockingUtils.MockPageContext()
+        };
     }
 
     [Test]

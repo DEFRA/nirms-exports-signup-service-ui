@@ -1,0 +1,63 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.UpdateContactModel
+@{
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+    <form class="form" method="post" novalidate>
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+                    Contact person
+                </h1>
+            </legend>
+
+            @if(Model.LastModifiedOn > Model.SubmittedDate)
+            {
+                <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last Updated @Model.LastModifiedOn.ToString("d MMM yyyy")</div>
+            }
+            else
+            {
+                <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Submitted on @Model.SubmittedDate.ToString("d MMM yyyy")</div>
+            }
+
+            <p class="govuk-hint">This is the person who we will contact with information relating to the scheme.</p>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="contact-person-name">
+                    Name
+                </label>
+                <input class="govuk-input" id="contact-person-name" asp-for="Name" type="text">
+            </div>
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="contact-person-position">
+                    Position
+                </label>
+                <input class="govuk-input" id="contact-person-position" asp-for="Position" type="text">
+            </div>
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="contact-person-email">
+                    Email address
+                </label>
+                <input class="govuk-input govuk-!-width-full" id="contact-person-email" asp-for="Email" type="email">
+            </div>
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="contact-person-phone">
+                    Telephone number
+                </label>
+                <input class="govuk-input govuk-!-width-full" id="contact-person-phone" asp-for="PhoneNumber" type="tel">
+            </div>
+            <input type="hidden" asp-for="RegistrationID" />
+        </fieldset>
+
+        <div class="govuk-button-group">
+            <button asp-page-handler="submit" class="govuk-button" id="buttonSelfServeUpdateContactSubmit">Save contact person details</button>
+            <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath"asp-route-id="@Model.RegistrationID" class="govuk-link">Cancel</a>
+        </div>
+    </form>
+
+    </div>
+  </div>

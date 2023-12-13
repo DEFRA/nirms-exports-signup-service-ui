@@ -41,6 +41,7 @@ public static class Routes
     public const string RegisterBusinessForExporterServiceNonAdmin = "register-business-error-non-admin";
     public const string SelfServeDashboard = "/self-serve-dashboard";
     public const string BusinessList = "/business-list";
+    public const string SelfServeUpdateContact = "/update-contact-details";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -83,7 +84,7 @@ public static class Routes
         (Pages.Path.RegisterBusinessForExporterServiceNonAdminPath, RegisterBusinessForExporterServiceNonAdmin),
         (Pages.Path.SelfServeDashboardPath, SelfServeDashboard),
         (Pages.Path.BusinessListPath, BusinessList),
-
+        (Pages.Path.SelfServeUpdateContactPath, SelfServeUpdateContact)
     };
 
     public static class Pages
@@ -129,6 +130,7 @@ public static class Routes
             public const string RegisterBusinessForExporterServiceNonAdminName = "RegisterBusinessForExporterServiceNonAdmin";
             public const string SelfServeDashboardName = "SelfServeDashboard";
             public const string BusinessListName = "BusinessList";
+            public const string SelfServeUpdateContactdetailsName = "UpdateContact";
         }
 
         public static class Path
@@ -172,6 +174,7 @@ public static class Routes
             public const string RegisterBusinessForExporterServiceNonAdminPath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceNonAdminName}";
             public const string SelfServeDashboardPath = $"/SelfServe/{Names.SelfServeDashboardName}";
             public const string BusinessListPath = $"/SelfServe/{Names.BusinessListName}";
+            public const string SelfServeUpdateContactPath = $"/SelfServe/{Names.SelfServeUpdateContactdetailsName}";
         }
     }
 }
