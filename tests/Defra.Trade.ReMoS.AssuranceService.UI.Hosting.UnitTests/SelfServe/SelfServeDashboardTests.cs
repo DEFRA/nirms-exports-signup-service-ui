@@ -33,7 +33,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnGet_BusinessNameAndRmsNumberSetToValidValues_IfDataPresentInApi()
+    public async Task OnGet_ModelPropertiesSetToValidValues_IfDataPresentInApi()
     {
         //Arrange
         Guid guid = Guid.NewGuid();
@@ -50,6 +50,14 @@ public class SelfServeDashboardTests : PageModelTestsBase
                 TelephoneNumber = "1234567890",
                 LastModifiedDate = DateTime.Now,
                 SubmittedDate = DateTime.Now,
+            },
+            AuthorisedSignatory = new AuthorisedSignatoryDto()
+            {
+                Name = "John Doe",
+                Position = "Sales rep",
+                EmailAddress = "auth@sd.com",
+                LastModifiedDate = DateTime.Now,
+                SubmittedDate = DateTime.Now,
             }
         };
         _mockTraderService
@@ -57,7 +65,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .ReturnsAsync(true);
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-            .Returns(Task.FromResult(tradePartyDto)!);
+            .ReturnsAsync(tradePartyDto!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(guid);
@@ -67,16 +75,23 @@ public class SelfServeDashboardTests : PageModelTestsBase
         _systemUnderTest.RegistrationID.Should().Be(guid);
         _systemUnderTest.BusinessName.Should().Be("TestPractice");
         _systemUnderTest.RmsNumber.Should().Be("RMS-GB-000002");
+        
         _systemUnderTest.ContactName.Should().Be("Joe Blogs");
         _systemUnderTest.ContactPosition.Should().Be("Sales rep");
         _systemUnderTest.ContactEmail.Should().Be("sd@sd.com");
         _systemUnderTest.ContactPhoneNumber.Should().Be("1234567890");
         _systemUnderTest.ContactLastModifiedDate.Should().Be(tradePartyDto.Contact.LastModifiedDate);
         _systemUnderTest.ContactSubmittedDate.Should().Be(tradePartyDto.Contact.SubmittedDate);
+        
+        _systemUnderTest.AuthSignatoryName.Should().Be("John Doe");
+        _systemUnderTest.AuthSignatoryPosition.Should().Be("Sales rep");
+        _systemUnderTest.AuthSignatoryEmail.Should().Be("auth@sd.com");
+        _systemUnderTest.AuthSignatoryLastModifiedDate.Should().Be(tradePartyDto.AuthorisedSignatory.LastModifiedDate);
+        _systemUnderTest.AuthSignatorySubmittedDate.Should().Be(tradePartyDto.AuthorisedSignatory.SubmittedDate);
     }
 
     [Test]
-    public async Task OnGet_BusinessNameAndRmsNumberSetToNull_IfNoSavedData()
+    public async Task OnGet_ModelProperties_SetToNull_IfNoSavedData()
     {
         //Arrange
         Guid guid = Guid.NewGuid();
@@ -96,12 +111,19 @@ public class SelfServeDashboardTests : PageModelTestsBase
         _systemUnderTest.RegistrationID.Should().Be(guid);
         _systemUnderTest.BusinessName.Should().BeNullOrEmpty();
         _systemUnderTest.RmsNumber.Should().BeNullOrEmpty();
+        
         _systemUnderTest.ContactName.Should().BeNullOrEmpty();
         _systemUnderTest.ContactPosition.Should().BeNullOrEmpty();
         _systemUnderTest.ContactEmail.Should().BeNullOrEmpty();
         _systemUnderTest.ContactPhoneNumber.Should().BeNullOrEmpty();
         _systemUnderTest.ContactSubmittedDate.Should().Be(DateTime.MinValue);
         _systemUnderTest.ContactLastModifiedDate.Should().Be(DateTime.MinValue);
+
+        _systemUnderTest.AuthSignatoryName.Should().BeNullOrEmpty();
+        _systemUnderTest.AuthSignatoryPosition.Should().BeNullOrEmpty();
+        _systemUnderTest.AuthSignatoryEmail.Should().BeNullOrEmpty();
+        _systemUnderTest.AuthSignatorySubmittedDate.Should().Be(DateTime.MinValue);
+        _systemUnderTest.AuthSignatoryLastModifiedDate.Should().Be(DateTime.MinValue);
     }
 
     [Test]

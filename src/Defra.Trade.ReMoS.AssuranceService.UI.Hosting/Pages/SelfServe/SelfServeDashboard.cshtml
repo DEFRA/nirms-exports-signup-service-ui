@@ -76,6 +76,32 @@
                        Change <span class="govuk-visually-hidden">contact person</span></a>
                 </dd>
             </div>
+            <!-- Authorised representative -->
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Authorised representative
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.AuthSignatoryName<br>
+                    @Model.AuthSignatoryPosition<br>
+                    @Model.AuthSignatoryEmail<br>
+
+                    @if (Model.AuthSignatoryLastModifiedDate != default
+                    && Model.AuthSignatoryLastModifiedDate != DateTime.MinValue
+                    && Model.AuthSignatoryLastModifiedDate.ToShortDateString() != Model.AuthSignatorySubmittedDate.ToShortDateString())
+                    {
+                        <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last updated @Model.AuthSignatoryLastModifiedDate.ToString("dd MMM yyyy")</div>
+                    }
+                    else
+                    {
+                        <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Submitted on @Model.AuthSignatorySubmittedDate.ToString("dd MMM yyyy")</div>
+                    }
+
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a href="authorised-representative">Change <span class="govuk-visually-hidden">authorised representative</span></a>
+                </dd>
+            </div>
         </dl>
     </div>
 </div>

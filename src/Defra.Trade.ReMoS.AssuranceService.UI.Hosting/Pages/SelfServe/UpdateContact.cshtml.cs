@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
@@ -5,10 +6,12 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.FeatureManagement.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
+[FeatureGate(FeatureFlags.SelfServe)]
 public class UpdateContactModel : BasePageModel<UpdateContactModel>
 {
     #region UI Model

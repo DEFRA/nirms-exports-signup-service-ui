@@ -22,6 +22,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public string ContactPhoneNumber { get; set; } = default!;
     public DateTime ContactSubmittedDate { get; set; } = default!;
     public DateTime ContactLastModifiedDate { get; set; } = default!;
+    public string AuthSignatoryName { get; set; } = default!;
+    public string AuthSignatoryPosition { get; set; } = default!;
+    public string AuthSignatoryEmail { get; set; } = default!;
+    public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
+    public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     #endregion
 
     public SelfServeDashboardModel(
@@ -70,6 +75,16 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             ContactLastModifiedDate = tradeParty.Contact.LastModifiedDate;
         }
 
+        if (tradeParty?.AuthorisedSignatory != null)
+        {
+
+            AuthSignatoryName = tradeParty.AuthorisedSignatory.Name ?? string.Empty;
+            AuthSignatoryPosition = tradeParty.AuthorisedSignatory.Position ?? string.Empty;
+            AuthSignatoryEmail = tradeParty.AuthorisedSignatory.EmailAddress ?? string.Empty;
+            AuthSignatorySubmittedDate = tradeParty.AuthorisedSignatory.SubmittedDate;
+            AuthSignatoryLastModifiedDate = tradeParty.AuthorisedSignatory.LastModifiedDate;
+        }
+
     }
 
     public IActionResult OnGetChangeContactDetails(Guid tradePartyId)
@@ -77,6 +92,6 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         return RedirectToPage(
             Routes.Pages.Path.SelfServeUpdateContactPath,
             new { id = tradePartyId});
-    }
+    }   
 
 }
