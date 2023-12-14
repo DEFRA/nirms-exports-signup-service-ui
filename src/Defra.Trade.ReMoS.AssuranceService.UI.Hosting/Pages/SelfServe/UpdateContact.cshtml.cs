@@ -32,6 +32,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [StringLength(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
     [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
 

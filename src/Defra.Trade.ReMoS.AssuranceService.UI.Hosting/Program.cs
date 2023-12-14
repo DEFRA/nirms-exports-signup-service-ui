@@ -106,7 +106,6 @@ internal sealed class Program
         app.UseAuthorization();
         app.UseTradeHealthChecks();
         app.UseCookiePolicy();
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
