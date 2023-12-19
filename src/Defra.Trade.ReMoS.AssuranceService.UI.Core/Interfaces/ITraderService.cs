@@ -17,5 +17,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         Task<bool> ValidateOrgId(IEnumerable<Claim> claims, Guid id);
         public Task<bool> IsTradePartySignedUp(Guid id);
         Task<Guid> UpdateTradePartyContactSelfServeAsync(TradePartyDto tradePartyDTO);
+        Task<Guid> UpdateAuthRepSelfServeAsync(TradePartyDto tradePartyDTO);
     }
 }

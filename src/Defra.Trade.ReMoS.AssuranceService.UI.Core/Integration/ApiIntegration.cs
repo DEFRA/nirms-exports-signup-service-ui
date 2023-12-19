@@ -286,6 +286,33 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException("null return from API");
     }
 
+
+    public async Task<Guid> UpdateTradePartyAuthRepSelfServeAsync(TradePartyDto tradePartyToUpdate)
+    {
+        Guid results = Guid.Empty;
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(tradePartyToUpdate),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PutAsync($"TradeParties/SelfServe/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var contentStream = await response.Content.ReadAsStreamAsync();
+            if (contentStream != null)
+            {
+                results = await JsonSerializer.DeserializeAsync<Guid>(contentStream);
+            }
+        }
+        if (results != Guid.Empty)
+        {
+            return results;
+        }
+        throw new BadHttpRequestException("null return from API");
+    }
+
     /// <summary>
     /// Add an establishment to a trade party
     /// </summary>

@@ -58,6 +58,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return await _apiIntegration.UpdateAuthorisedSignatoryAsync(tradePartyDTO);
         }
 
+        public async Task<Guid> UpdateAuthRepSelfServeAsync(TradePartyDto tradePartyDTO)
+        {
+            return await _apiIntegration.UpdateTradePartyAuthRepSelfServeAsync(tradePartyDTO);
+        }
+
         public async Task<(TradePartyDto? tradeParty, TradePartySignupStatus signupStatus)> GetDefraOrgBusinessSignupStatus(Guid orgId)
         {
             var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);

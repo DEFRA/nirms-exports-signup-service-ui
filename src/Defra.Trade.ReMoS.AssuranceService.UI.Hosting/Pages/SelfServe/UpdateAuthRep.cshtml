@@ -1,0 +1,70 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.UpdateAuthRepModel
+@{
+    ViewData["Title"] = "Update Authorised Representative";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.RegistrationID" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form class="form" method="post" novalidate>
+
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        Authorised representative
+                    </h1>
+                </legend>
+
+                @if (Model.LastModifiedOn > Model.SubmittedDate)
+                {
+                    <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last Updated @Model.LastModifiedOn.ToString("d MMM yyyy")</div>
+                }
+                else
+                {
+                    <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Submitted on @Model.SubmittedDate.ToString("d MMM yyyy")</div>
+                }
+
+                <p class="govuk-hint">The authorised representative is the person who is authorised to sign legal documents on behalf of @Model.BusinessName. This is the person who will accept the <a href="/terms-conditions" target="_blank" rel="noopener noreferrer">terms and conditions of the scheme</a>.</p>
+                <div class="govuk-form-group" @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)>
+                    <label class="govuk-label" for="authorised-representative-name">
+                        Name
+                    </label>
+                    <input class="govuk-input" id="authorised-representative-name" asp-for="Name" type="text">
+                </div>
+                <div class="govuk-form-group" @(ModelState.HasError("Position") ? "govuk-form-group--error" : null)>
+                    <label class="govuk-label" for="authorised-representative-position">
+                        Position
+                    </label>
+                    <input class="govuk-input" id="authorised-representative-position" asp-for="Position" type="text">
+                </div>
+                <div class="govuk-form-group" @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)>
+                    <label class="govuk-label" for="authorised-representative-email">
+                        Email address
+                    </label>
+                    <input class="govuk-input govuk-!-width-full" id="authorised-representative-email" asp-for="Email" type="email">
+                </div>
+                <div class="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
+                        <input class="govuk-checkboxes__input" id="confirm" asp-for="TandCs" type="checkbox" value="true">
+                        <label class="govuk-label govuk-checkboxes__label" for="confirm">
+                            I confirm that the authorised representative has read and understood the <a target="_blank" href="">terms and conditions</a> of the Northern Ireland Retail Movement Scheme. They are responsible for ensuring the requirements of the scheme are followed by the business.
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="govuk-button-group">
+                <button asp-page-handler="submit" class="govuk-button" id="buttonSelfServeUpdateAuthRepSubmit">Save Authorised Representative details</button>
+                <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.RegistrationID" class="govuk-link">Cancel</a>
+            </div>
+        </form>
+
+    </div>
+</div>
