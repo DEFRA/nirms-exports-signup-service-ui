@@ -21,6 +21,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <dl class="govuk-summary-list">
+            
             <!-- Status -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -35,6 +36,7 @@
                     <span class="govuk-visually-hidden">Blank cell</span>
                 </dd>
             </div>
+            
             <!-- RMS Number -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -47,6 +49,7 @@
                     <span class="govuk-visually-hidden">Blank cell</span>
                 </dd>
             </div>
+            
             <!-- Contact person -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -76,6 +79,7 @@
                        Change <span class="govuk-visually-hidden">contact person</span></a>
                 </dd>
             </div>
+
             <!-- Authorised representative -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
@@ -99,7 +103,9 @@
 
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a href="authorised-representative">Change <span class="govuk-visually-hidden">authorised representative</span></a>
+                    <a asp-page-handler="ChangeAuthRepresentativeDetails"
+                       asp-route-tradepartyid="@Model.RegistrationID">
+                       Change <span class="govuk-visually-hidden">authorised representative</span></a>
                 </dd>
             </div>
         </dl>

@@ -92,6 +92,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         return RedirectToPage(
             Routes.Pages.Path.SelfServeUpdateContactPath,
             new { id = tradePartyId});
-    }   
+    }
+
+    public IActionResult OnGetChangeAuthRepresentativeDetails(Guid tradePartyId)
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.SelfServeUpdateAuthRepPath,
+            new { id = tradePartyId });
+    }
 
 }

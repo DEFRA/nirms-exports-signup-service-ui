@@ -144,4 +144,22 @@ public class SelfServeDashboardTests : PageModelTestsBase
         Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
     }
 
+    [Test]
+    public void OnGetChangeAuthRepresentativeDetails_Redirect_Successfully()
+    {
+        var tradePartyId = Guid.NewGuid();
+        var expected = new RedirectToPageResult(
+            Routes.Pages.Path.SelfServeUpdateAuthRepPath,
+            new { id = tradePartyId });
+
+        // Act
+        var result = _systemUnderTest?.OnGetChangeAuthRepresentativeDetails(tradePartyId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+    }
+
 }
