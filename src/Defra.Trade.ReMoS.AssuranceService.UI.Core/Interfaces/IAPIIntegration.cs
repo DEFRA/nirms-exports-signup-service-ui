@@ -23,4 +23,5 @@ public interface IApiIntegration
     Task<List<AddressDto>> GetTradeAddresApiByPostcodeAsync(string postcode);
     Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn);
     Task<Guid> UpdateTradePartyContactSelfServeAsync(TradePartyDto tradePartyToUpdate);
+    Task<Guid> UpdateTradePartyAuthRepSelfServeAsync(TradePartyDto tradePartyToUpdate);
 }

@@ -42,6 +42,7 @@ public static class Routes
     public const string SelfServeDashboard = "/self-serve-dashboard";
     public const string BusinessList = "/business-list";
     public const string SelfServeUpdateContact = "/update-contact-details";
+    public const string SelfServeUpdateAuthRep = "/update-authorised-representative";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -84,7 +85,8 @@ public static class Routes
         (Pages.Path.RegisterBusinessForExporterServiceNonAdminPath, RegisterBusinessForExporterServiceNonAdmin),
         (Pages.Path.SelfServeDashboardPath, SelfServeDashboard),
         (Pages.Path.BusinessListPath, BusinessList),
-        (Pages.Path.SelfServeUpdateContactPath, SelfServeUpdateContact)
+        (Pages.Path.SelfServeUpdateContactPath, SelfServeUpdateContact),
+        (Pages.Path.SelfServeUpdateAuthRepPath, SelfServeUpdateAuthRep)
     };
 
     public static class Pages
@@ -131,6 +133,7 @@ public static class Routes
             public const string SelfServeDashboardName = "SelfServeDashboard";
             public const string BusinessListName = "BusinessList";
             public const string SelfServeUpdateContactdetailsName = "UpdateContact";
+            public const string SelfServeUpdateAuthRepDetailsName = "UpdateAuthRep";
         }
 
         public static class Path
@@ -175,6 +178,7 @@ public static class Routes
             public const string SelfServeDashboardPath = $"/SelfServe/{Names.SelfServeDashboardName}";
             public const string BusinessListPath = $"/SelfServe/{Names.BusinessListName}";
             public const string SelfServeUpdateContactPath = $"/SelfServe/{Names.SelfServeUpdateContactdetailsName}";
+            public const string SelfServeUpdateAuthRepPath = $"/SelfServe/{Names.SelfServeUpdateAuthRepDetailsName}";
         }
     }
 }

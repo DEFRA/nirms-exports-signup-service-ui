@@ -655,6 +655,52 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
             returnedValue!.Should().Be(guid);
         }
 
+        [Test]
+        public async Task Integration_Returns_Guid_When_Calling_UpdateTradePartyAuthRepSelfServeAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDto
+            {
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var guid = Guid.NewGuid();
+
+            var jsonString = JsonConvert.SerializeObject(guid);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            var returnedValue = await _apiIntegration.UpdateTradePartyAuthRepSelfServeAsync(tradeParty);
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+            returnedValue!.Should().Be(guid);
+        }
+
 
         [Test]
         [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
@@ -741,6 +787,51 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration
 
             // Act
             await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyContactSelfServeAsync(tradeParty));
+
+            // Assert
+            _mockHttpClientFactory.Verify();
+        }
+
+        [Test]
+        [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
+        public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAuthRepSelfServeAsync()
+        {
+            // Arrange
+            var tradeParty = new TradePartyDto
+            {
+                Id = Guid.Empty,
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom"
+            };
+            var appConfigurationSettings = new AppConfigurationService
+            {
+                SubscriptionKey = "testkey"
+            };
+            IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
+
+            var jsonString = JsonConvert.SerializeObject(Guid.Empty);
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var expectedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = httpContent
+            };
+
+            _mockHttpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ReturnsAsync(expectedResponse);
+
+            var httpClient = new HttpClient(_mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://localhost/")
+            };
+
+            _mockHttpClientFactory.Setup(x => x.CreateClient("Assurance")).Returns(httpClient).Verifiable();
+
+            _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
+
+            // Act
+            await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateTradePartyAuthRepSelfServeAsync(tradeParty));
 
             // Assert
             _mockHttpClientFactory.Verify();
