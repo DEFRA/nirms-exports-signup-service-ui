@@ -63,7 +63,7 @@
                     
                     @if (Model.ContactLastModifiedDate != default 
                         && Model.ContactLastModifiedDate != DateTime.MinValue 
-                        && Model.ContactLastModifiedDate.ToShortDateString() != Model.ContactSubmittedDate.ToShortDateString())
+                        && Model.ContactLastModifiedDate != Model.ContactSubmittedDate)
                     {
                         <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last updated @Model.ContactLastModifiedDate.ToString("dd MMM yyyy")</div>
                     }
@@ -92,7 +92,7 @@
 
                     @if (Model.AuthSignatoryLastModifiedDate != default
                     && Model.AuthSignatoryLastModifiedDate != DateTime.MinValue
-                    && Model.AuthSignatoryLastModifiedDate.ToShortDateString() != Model.AuthSignatorySubmittedDate.ToShortDateString())
+                    && Model.AuthSignatoryLastModifiedDate != Model.AuthSignatorySubmittedDate)
                     {
                         <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last updated @Model.AuthSignatoryLastModifiedDate.ToString("dd MMM yyyy")</div>
                     }
