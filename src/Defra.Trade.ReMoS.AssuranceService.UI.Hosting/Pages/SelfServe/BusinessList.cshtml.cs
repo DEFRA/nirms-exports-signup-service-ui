@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
@@ -23,35 +24,23 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     [BindProperty]
     [Required(ErrorMessage = "Select a business")]
     public string? SelectedBusiness { get; set; } = default!;
+    
     public Guid TraderId { get; set; }
+    
     public List<SelectListItem> BusinessSelectList { get; set; } = new()!;
     #endregion
+    
     public BusinessListModel(
        ILogger<BusinessListModel> logger,
        ITraderService traderService,
        IUserService userService) : base(logger, traderService, userService)
     { }
 
-    public IActionResult OnGet()
-    {
-        _logger.LogInformation("Business picker OnGet");
-        Businesses = _userService.GetDefraOrgsForUser(User);
-
-        if (Businesses?.Count > 7)
-        {
-            BuildBusinessSelectList();
-        }
-
+    public async Task<IActionResult> OnGet()
+    {        
+        _logger.LogInformation("Business list OnGet");
+        await GetDefraOrgsForUserWithApprovalStatus();           
         return Page();
-    }
-
-    private void BuildBusinessSelectList()
-    {
-        BusinessSelectList.AddRange(Businesses.Select(keyValuePair => new SelectListItem()
-        {
-            Value = keyValuePair.OrganisationId.ToString(),
-            Text = keyValuePair.PracticeName
-        }));
     }
 
     public async Task<IActionResult> OnGetNavigateToBusinessDashboard(Guid orgId)
@@ -62,5 +51,15 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
         return RedirectToPage(
             Routes.Pages.Path.SelfServeDashboardPath,
             new { id = TraderId });
+    }
+
+    private async Task GetDefraOrgsForUserWithApprovalStatus()
+    {
+        Businesses = _userService.GetDefraOrgsForUser(User);
+
+        foreach (var business in Businesses)
+        {
+            business.ApprovalStatus = await _traderService.GetDefraOrgApprovalStatus(business.OrganisationId);
+        }
     }
 }

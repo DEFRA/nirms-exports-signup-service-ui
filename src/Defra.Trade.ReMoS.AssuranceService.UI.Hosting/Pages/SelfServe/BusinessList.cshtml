@@ -1,4 +1,5 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.BusinessListModel
 @{
 }
@@ -21,13 +22,37 @@
                     </dt>
                     <dd class="govuk-summary-list__value">
                         <div class="govuk-tag govuk-tag--green">
-                            Approved for NIRMS
+                            @business.ApprovalStatus.GetDescription()
                         </div>
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page-handler="NavigateToBusinessDashboard" asp-route-orgId="@business.OrganisationId">
-                            Manage<span class="govuk-visually-hidden"> @business.PracticeName</span>
-                        </a>
+
+                        @switch (business.ApprovalStatus)
+                        {
+                            case TradePartyApprovalStatus.NotSignedUp:
+                                <a class="govuk-link" asp-page-handler="NavigateToBusinessRegulations" asp-route-orgId="@business.OrganisationId">
+                                    Sign up<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.Approved:
+                                <a class="govuk-link" asp-page-handler="NavigateToBusinessDashboard" asp-route-orgId="@business.OrganisationId">
+                                    Manage<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.Rejected:
+                                <a class="govuk-link" asp-page-handler="NavigateToBusinessRegulations" asp-route-orgId="@business.OrganisationId">
+                                    Sign up again<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.SignupStarted:
+                                <a class="govuk-link" asp-page-handler="ContinueSignup" asp-route-orgId="@business.OrganisationId">
+                                    Continue<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.PendingApproval:
+                                break;
+                        }
+
                     </dd>
                 </div>
             }

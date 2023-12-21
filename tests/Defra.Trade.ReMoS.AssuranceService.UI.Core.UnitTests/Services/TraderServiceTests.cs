@@ -584,5 +584,55 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             Assert.IsFalse(result);
         }
 
+        [Test]
+        public void GetDefraOrgApprovalStatus_Throws_Exception_For_EmptyGuid()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            _mockApiIntegration.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(It.IsAny<TradePartyDto>());
+
+            // Act & Assert
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async () => await _traderService!.GetDefraOrgApprovalStatus(Guid.Empty));
+        }
+
+        [Test]
+        public async Task GetDefraOrgApprovalStatus_Returns_NotSIgnedUp_For_New_Org()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            TradePartyDto tradePartyDTO = null!;
+            _mockApiIntegration.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
+
+            // Act
+            var result = await _traderService!.GetDefraOrgApprovalStatus(Guid.NewGuid());
+
+            // Assert
+            Assert.AreEqual(TradePartyApprovalStatus.NotSignedUp, result);
+        }
+
+        [Test]
+        public async Task GetDefraOrgApprovalStatus_Returns_Correct_ApprovalStatus_If_Tradeparty_Exists()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            TradePartyDto tradePartyDTO = new TradePartyDto()
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = Guid.NewGuid(),
+                SignUpRequestSubmittedBy = Guid.Empty,
+                ApprovalStatus = TradePartyApprovalStatus.SignupStarted
+            };
+            _mockApiIntegration.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(tradePartyDTO);
+
+            // Act
+            var result = await _traderService!.GetDefraOrgApprovalStatus(tradePartyDTO.Id);
+
+            // Assert
+            Assert.AreEqual(TradePartyApprovalStatus.SignupStarted, result);
+        }
+
     }
 }

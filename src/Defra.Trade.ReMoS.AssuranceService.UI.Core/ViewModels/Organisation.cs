@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+using Newtonsoft.Json;
 using System.Security.Cryptography.Xml;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
@@ -15,6 +16,7 @@ public class Organisation
     public string UserRole { get; set; } = default!;
 
     public bool Enrolled { get; set; } = default!;
+    public TradePartyApprovalStatus ApprovalStatus { get; set; } = TradePartyApprovalStatus.NotSignedUp;
 
     public override bool Equals(object? obj)
     {

@@ -126,5 +126,21 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return (tradeParty?.SignUpRequestSubmittedBy) != Guid.Empty;
         }
 
+        public async Task<TradePartyApprovalStatus> GetDefraOrgApprovalStatus(Guid orgId)
+        {
+            if (orgId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(orgId));
+            }
+
+            var tradeParty = await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
+
+            if (tradeParty == null)
+            {
+                return TradePartyApprovalStatus.NotSignedUp;
+            }
+
+            return tradeParty.ApprovalStatus;
+        }
     }
 }
