@@ -61,9 +61,7 @@
                     @Model.ContactEmail<br>
                     @Model.ContactPhoneNumber
                     
-                    @if (Model.ContactLastModifiedDate != default 
-                        && Model.ContactLastModifiedDate != DateTime.MinValue 
-                        && Model.ContactLastModifiedDate != Model.ContactSubmittedDate)
+                    @if (Model.ContactLastModifiedDate > Model.ContactSubmittedDate)
                     {
                         <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last updated @Model.ContactLastModifiedDate.ToString("dd MMM yyyy")</div>
                     }
@@ -90,9 +88,7 @@
                     @Model.AuthSignatoryPosition<br>
                     @Model.AuthSignatoryEmail<br>
 
-                    @if (Model.AuthSignatoryLastModifiedDate != default
-                    && Model.AuthSignatoryLastModifiedDate != DateTime.MinValue
-                    && Model.AuthSignatoryLastModifiedDate != Model.AuthSignatorySubmittedDate)
+                    @if (Model.AuthSignatoryLastModifiedDate > Model.AuthSignatorySubmittedDate)
                     {
                         <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last updated @Model.AuthSignatoryLastModifiedDate.ToString("dd MMM yyyy")</div>
                     }

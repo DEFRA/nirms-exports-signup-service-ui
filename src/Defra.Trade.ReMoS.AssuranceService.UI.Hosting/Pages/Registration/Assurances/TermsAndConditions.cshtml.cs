@@ -94,9 +94,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
             dto.Contact!.SubmittedDate = DateTime.UtcNow;
-            dto.Contact!.LastModifiedDate = DateTime.UtcNow;
+            dto.Contact!.LastModifiedDate = dto.Contact!.SubmittedDate;
             dto.AuthorisedSignatory!.SubmittedDate = DateTime.UtcNow;
-            dto.AuthorisedSignatory!.LastModifiedDate = DateTime.UtcNow;
+            dto.AuthorisedSignatory!.LastModifiedDate = dto.AuthorisedSignatory!.SubmittedDate;
 
             await _traderService.UpdateTradePartyAsync(dto);
 
