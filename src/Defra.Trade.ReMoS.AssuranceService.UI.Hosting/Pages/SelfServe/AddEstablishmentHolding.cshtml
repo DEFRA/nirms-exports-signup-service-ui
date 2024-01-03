@@ -1,0 +1,29 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.AddEstablishmentHoldingModel
+@{
+    ViewData["Title"] = Model.CountryText;
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.RegistrationId" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            @Model.CountryText
+        </h1>
+
+        <partial name="_ContactDetailsPartial" />
+
+        <form method="post">
+            <input type="hidden" asp-for="RegistrationId" />
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbGuidanceSubmit">Back to Dashboard</button>
+            </div>
+        </form>
+
+    </div>
+</div>

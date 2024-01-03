@@ -27,6 +27,9 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public string AuthSignatoryEmail { get; set; } = default!;
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
+    [BindProperty]
+    public string Country { get; set; } = default!;
+    public string EstablishmentButtonText { get; set; } = "Add a place of dispatch";
     #endregion
 
     public SelfServeDashboardModel(
@@ -49,6 +52,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         await PopulateModelPropertiesFromApi();
 
+        if (Country == "NI")
+        {
+            EstablishmentButtonText = "Add a place of destination";
+        }
+
         return Page();
     }
 
@@ -63,6 +71,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         BusinessName = tradeParty?.PracticeName ?? string.Empty;
         RmsNumber = tradeParty?.RemosBusinessSchemeNumber ?? string.Empty;
+        Country = tradeParty?.Address!.TradeCountry!;
 
         if (tradeParty?.Contact != null)
         {
@@ -99,6 +108,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         return RedirectToPage(
             Routes.Pages.Path.SelfServeUpdateAuthRepPath,
             new { id = tradePartyId });
+    }
+
+    public IActionResult OnGetAddEstablishment(Guid tradePartyId, string countryChosen)
+    {
+        return RedirectToPage(
+            Routes.Pages.Path.SelfServeUpdateContactPath,
+            new { id = tradePartyId, country = countryChosen });
     }
 
 }
