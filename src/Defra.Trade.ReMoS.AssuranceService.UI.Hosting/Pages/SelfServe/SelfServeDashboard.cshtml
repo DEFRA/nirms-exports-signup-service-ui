@@ -4,7 +4,6 @@
 @{
 }
 
-
 @section Back{
     <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
 }
@@ -106,4 +105,11 @@
             </div>
         </dl>
     </div>
+</div>
+
+<div class="govuk-button-group">
+    <a class="govuk-button  govuk-button--secondary" asp-page-handler="AddEstablishment"
+       asp-route-tradepartyid="@Model.RegistrationID" asp-route-countrychosen="@Model.Country">
+        @Model.EstablishmentButtonText
+    </a>
 </div>
