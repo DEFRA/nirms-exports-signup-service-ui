@@ -113,7 +113,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public IActionResult OnGetAddEstablishment(Guid tradePartyId, string countryChosen)
     {
         return RedirectToPage(
-            Routes.Pages.Path.SelfServeUpdateContactPath,
+            Routes.Pages.Path.SelfServeEstablishmentHoldingPath,
             new { id = tradePartyId, country = countryChosen });
     }
 
