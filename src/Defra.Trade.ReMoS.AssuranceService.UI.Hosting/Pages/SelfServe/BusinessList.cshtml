@@ -1,5 +1,6 @@
 ﻿@page
 @using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.BusinessListModel
 @{
 }
@@ -30,7 +31,7 @@
                         @switch (business.ApprovalStatus)
                         {
                             case TradePartyApprovalStatus.NotSignedUp:
-                                <a class="govuk-link" asp-page-handler="NavigateToBusinessRegulations" asp-route-orgId="@business.OrganisationId">
+                                <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
                                     Sign up<span class="govuk-visually-hidden"> @business.PracticeName</span>
                                 </a>
                                 break;
@@ -40,12 +41,12 @@
                                 </a>
                                 break;
                             case TradePartyApprovalStatus.Rejected:
-                                <a class="govuk-link" asp-page-handler="NavigateToBusinessRegulations" asp-route-orgId="@business.OrganisationId">
+                                <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
                                     Sign up again<span class="govuk-visually-hidden"> @business.PracticeName</span>
                                 </a>
                                 break;
                             case TradePartyApprovalStatus.SignupStarted:
-                                <a class="govuk-link" asp-page-handler="ContinueSignup" asp-route-orgId="@business.OrganisationId">
+                                <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
                                     Continue<span class="govuk-visually-hidden"> @business.PracticeName</span>
                                 </a>
                                 break;
@@ -60,7 +61,12 @@
         </dl>
 
         <div class="govuk-button-group">
-            <a class="govuk-button govuk-button--secondary" href="business-add">Add a business</a>
+            <a class="govuk-button govuk-button--secondary" asp-page="@Routes.Pages.Path.SelfServeAddBusinessPath">Add a business</a>
         </div>
+        <p>
+            <a class="govuk-link" asp-page-handler="RefreshBusinesses">
+                Refresh list of businesses<span class="govuk-visually-hidden"> address</span>
+            </a>
+        </p>
     </div>
 </div>
