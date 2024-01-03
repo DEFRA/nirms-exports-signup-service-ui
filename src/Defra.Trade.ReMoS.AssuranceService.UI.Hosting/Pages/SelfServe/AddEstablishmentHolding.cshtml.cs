@@ -29,7 +29,7 @@ public class AddEstablishmentHoldingModel : BasePageModel<AddEstablishmentHoldin
     public IActionResult OnPostSubmit()
     {
         return RedirectToPage(
-                Routes.Pages.Path.RegisteredBusinessContactNamePath,
+                Routes.Pages.Path.SelfServeDashboardPath,
                 new { id = RegistrationId });
     }
 }
