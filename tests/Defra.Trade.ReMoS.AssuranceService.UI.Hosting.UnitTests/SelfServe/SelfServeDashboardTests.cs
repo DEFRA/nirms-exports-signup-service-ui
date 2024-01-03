@@ -42,7 +42,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             Id = guid,
             PracticeName = "TestPractice",
             RemosBusinessSchemeNumber = "RMS-GB-000002",
-            Contact = new TradeContactDto() 
+            Contact = new TradeContactDto()
             {
                 PersonName = "Joe Blogs",
                 Position = "Sales rep",
@@ -50,6 +50,10 @@ public class SelfServeDashboardTests : PageModelTestsBase
                 TelephoneNumber = "1234567890",
                 LastModifiedDate = DateTime.Now,
                 SubmittedDate = DateTime.Now,
+            },
+            Address = new TradeAddressDto()
+            {
+                TradeCountry = "England"
             },
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
