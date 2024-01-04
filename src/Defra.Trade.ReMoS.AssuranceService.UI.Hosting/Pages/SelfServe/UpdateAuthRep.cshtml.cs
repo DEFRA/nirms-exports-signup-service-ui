@@ -37,7 +37,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
         public bool TandCs { get; set; } = false;
         public DateTime LastModifiedOn { get; set; }
         public DateTime SubmittedDate { get; set; }
-        public string BusinessName { get; set; }
+        public string? BusinessName { get; set; }
         #endregion
 
 

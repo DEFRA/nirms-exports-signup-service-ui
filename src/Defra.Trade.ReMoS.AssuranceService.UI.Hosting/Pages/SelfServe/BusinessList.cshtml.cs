@@ -5,28 +5,20 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.FeatureManagement.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
 [FeatureGate(FeatureFlags.SelfServe)]
-[ExcludeFromCodeCoverage]
 public class BusinessListModel : BasePageModel<BusinessListModel>
 {
     #region model properties
     public List<Organisation> Businesses { get; set; } = default!;
-
-    [BindProperty]
-    [Required(ErrorMessage = "Select a business")]
-    public string? SelectedBusiness { get; set; } = default!;
     
     public Guid TraderId { get; set; }
     
@@ -39,7 +31,7 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
        IUserService userService) : base(logger, traderService, userService)
     { }
 
-    public async Task<IActionResult> OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {        
         _logger.LogInformation("Business list OnGet");
         await GetDefraOrgsForUserWithApprovalStatus();           
@@ -60,16 +52,11 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     {
         _logger.LogInformation("Business list OnGetNavigateToSignup");
 
-        if (!ModelState.IsValid)
-        {
-            return await OnGet();
-        }
-
         var orgDetails = _userService.GetOrgDetailsById(User, orgId);
         if (orgDetails == null)
         {
-            ModelState.AddModelError(nameof(SelectedBusiness), "Business not found, refresh list of businesses");
-            return await OnGet();
+            ModelState.AddModelError(nameof(Businesses), "Business not found, refresh list of businesses");
+            return await OnGetAsync();
         }
 
 
@@ -86,8 +73,8 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
             }
             else
             {
-                ModelState.AddModelError(nameof(SelectedBusiness), "User role not found");
-                return await OnGet();
+                ModelState.AddModelError(nameof(Businesses), "User role not found");
+                return await OnGetAsync();
             }
         }
 
@@ -128,6 +115,13 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
             new { id = TraderId });
     }
 
+    public async Task<IActionResult> OnGetRefreshBusinesses()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        return RedirectToPage("/Index");
+    }
+
     private async Task GetDefraOrgsForUserWithApprovalStatus()
     {
         Businesses = _userService.GetDefraOrgsForUser(User);
@@ -152,12 +146,5 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
         };
 
         TraderId = await _traderService.CreateTradePartyAsync(partyDto);
-    }
-
-    public async Task<IActionResult> OnGetRefreshBusinesses()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        return RedirectToPage("/Index");
     }
 }
