@@ -27,6 +27,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public string AuthSignatoryEmail { get; set; } = default!;
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
+    public int ApprovalStatus { get; set; }
     #endregion
 
     public SelfServeDashboardModel(
@@ -63,6 +64,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         BusinessName = tradeParty?.PracticeName ?? string.Empty;
         RmsNumber = tradeParty?.RemosBusinessSchemeNumber ?? string.Empty;
+        ApprovalStatus = (int)(tradeParty?.ApprovalStatus!);
 
         if (tradeParty?.Contact != null)
         {
