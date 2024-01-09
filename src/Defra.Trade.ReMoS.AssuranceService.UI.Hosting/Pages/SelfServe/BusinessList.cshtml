@@ -3,6 +3,24 @@
 @using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.BusinessListModel
 @{
+    string GetStatusColour(string approvalStatus)
+    {
+        switch (approvalStatus)
+        {
+            case "APPROVED FOR NIRMS":
+                return "green";
+            case "PENDING APPROVAL":
+                return "orange";
+            case "NOT SIGNED-UP":
+                return "grey";
+            case "SIGN-UP STARTED":
+                return "blue";
+            case "SIGN-UP REJECTED":
+                return "red";
+            default:
+                return "grey";
+        }
+    }
 }
 
 <div class="govuk-grid-row">
@@ -22,7 +40,7 @@
                         @business.PracticeName
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        <div class="govuk-tag govuk-tag--green">
+                        <div class="govuk-tag govuk-tag--@GetStatusColour(@business.ApprovalStatus.GetDescription())">
                             @business.ApprovalStatus.GetDescription()
                         </div>
                     </dd>

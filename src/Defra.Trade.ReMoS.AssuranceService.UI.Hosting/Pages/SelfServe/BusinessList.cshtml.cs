@@ -59,8 +59,6 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
             return await OnGetAsync();
         }
 
-
-
         if (!orgDetails!.Enrolled)
         {
             if (orgDetails.UserRole == DefraOrgUserRoles.Admin.ToString())
