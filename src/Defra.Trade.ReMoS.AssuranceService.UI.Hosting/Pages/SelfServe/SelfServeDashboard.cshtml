@@ -27,9 +27,12 @@
                     Status
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    <div class="govuk-tag govuk-tag--green">
-                        <!-- Approved for NIRMS -->
-                    </div>
+                    @if(Model.ApprovalStatus == 1)
+                    {
+                        <div class="govuk-tag govuk-tag--green">
+                            Approved for NIRMS
+                        </div>
+                    }
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <span class="govuk-visually-hidden">Blank cell</span>

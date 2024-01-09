@@ -30,6 +30,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     [BindProperty]
     public string Country { get; set; } = default!;
     public string EstablishmentButtonText { get; set; } = "Add a place of dispatch";
+    public int ApprovalStatus { get; set; }
     #endregion
 
     public SelfServeDashboardModel(
@@ -72,6 +73,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         BusinessName = tradeParty?.PracticeName ?? string.Empty;
         RmsNumber = tradeParty?.RemosBusinessSchemeNumber ?? string.Empty;
         Country = tradeParty?.Address!.TradeCountry!;
+        ApprovalStatus = (int)(tradeParty?.ApprovalStatus!);
 
         if (tradeParty?.Contact != null)
         {
