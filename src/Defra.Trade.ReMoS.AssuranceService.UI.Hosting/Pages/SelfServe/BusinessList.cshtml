@@ -1,0 +1,90 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.BusinessListModel
+@{
+    string GetStatusColour(string approvalStatus)
+    {
+        switch (approvalStatus)
+        {
+            case "APPROVED FOR NIRMS":
+                return "green";
+            case "PENDING APPROVAL":
+                return "orange";
+            case "NOT SIGNED-UP":
+                return "grey";
+            case "SIGN-UP STARTED":
+                return "blue";
+            case "SIGN-UP REJECTED":
+                return "red";
+            default:
+                return "grey";
+        }
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Northern Ireland Retail Movement Scheme - PLACEHOLDER
+        </h1>
+        <h2 class="govuk-heading-m">
+            Your businesses
+        </h2>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+            @foreach (var business in Model.Businesses)
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        @business.PracticeName
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <div class="govuk-tag govuk-tag--@GetStatusColour(@business.ApprovalStatus.GetDescription())">
+                            @business.ApprovalStatus.GetDescription()
+                        </div>
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+
+                        @switch (business.ApprovalStatus)
+                        {
+                            case TradePartyApprovalStatus.NotSignedUp:
+                                <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
+                                    Sign up<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.Approved:
+                                <a class="govuk-link" asp-page-handler="NavigateToBusinessDashboard" asp-route-orgId="@business.OrganisationId">
+                                    Manage<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.Rejected:
+                                <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
+                                    Sign up again<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.SignupStarted:
+                                <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
+                                    Continue<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                </a>
+                                break;
+                            case TradePartyApprovalStatus.PendingApproval:
+                                break;
+                        }
+
+                    </dd>
+                </div>
+            }
+
+        </dl>
+
+        <div class="govuk-button-group">
+            <a class="govuk-button govuk-button--secondary" asp-page="@Routes.Pages.Path.SelfServeAddBusinessPath">Add a business</a>
+        </div>
+        <p>
+            <a class="govuk-link" asp-page-handler="RefreshBusinesses">
+                Refresh list of businesses<span class="govuk-visually-hidden"> address</span>
+            </a>
+        </p>
+    </div>
+</div>

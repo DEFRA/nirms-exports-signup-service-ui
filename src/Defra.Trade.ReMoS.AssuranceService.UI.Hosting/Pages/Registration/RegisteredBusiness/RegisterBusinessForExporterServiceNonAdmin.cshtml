@@ -7,7 +7,14 @@
 
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.BusinessList))
+    {
+        <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
+    }
 }
 
 <div class="govuk-grid-row">

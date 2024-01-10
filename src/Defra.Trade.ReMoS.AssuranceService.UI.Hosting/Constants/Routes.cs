@@ -39,6 +39,12 @@ public static class Routes
     public const string PostcodeNoResult = "/establishment-postcode-no-result";
     public const string RegisterBusinessForExporterService = "/register-business-error-admin";
     public const string RegisterBusinessForExporterServiceNonAdmin = "register-business-error-non-admin";
+    public const string SelfServeDashboard = "/self-serve-dashboard";
+    public const string BusinessList = "/business-list";
+    public const string SelfServeUpdateContact = "/update-contact-details";
+    public const string SelfServeUpdateAuthRep = "/update-authorised-representative";
+    public const string SelfServeEstablishmentHolding = "/add-establishment-holding";
+    public const string SelfServeAddBusiness = "/add-business";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -79,7 +85,12 @@ public static class Routes
         (Pages.Path.PostcodeNoResultPath, PostcodeNoResult),
         (Pages.Path.RegisterBusinessForExporterServicePath, RegisterBusinessForExporterService),
         (Pages.Path.RegisterBusinessForExporterServiceNonAdminPath, RegisterBusinessForExporterServiceNonAdmin),
-
+        (Pages.Path.SelfServeDashboardPath, SelfServeDashboard),
+        (Pages.Path.BusinessListPath, BusinessList),
+        (Pages.Path.SelfServeUpdateContactPath, SelfServeUpdateContact),
+        (Pages.Path.SelfServeEstablishmentHoldingPath, SelfServeEstablishmentHolding),
+        (Pages.Path.SelfServeUpdateAuthRepPath, SelfServeUpdateAuthRep),
+        (Pages.Path.SelfServeAddBusinessPath, SelfServeAddBusiness)
     };
 
     public static class Pages
@@ -123,6 +134,12 @@ public static class Routes
             public const string PostcodeNoResultName = "PostcodeNoResult";
             public const string RegisterBusinessForExporterServiceName = "RegisterBusinessForExporterService";
             public const string RegisterBusinessForExporterServiceNonAdminName = "RegisterBusinessForExporterServiceNonAdmin";
+            public const string SelfServeDashboardName = "SelfServeDashboard";
+            public const string BusinessListName = "BusinessList";
+            public const string SelfServeUpdateContactdetailsName = "UpdateContact";
+            public const string SelfServeUpdateAuthRepDetailsName = "UpdateAuthRep";
+            public const string SelfServeEstablishmentHoldingName = "AddEstablishmentHolding";
+            public const string SelfServeAddBusinessName = "AddBusiness";
         }
 
         public static class Path
@@ -164,6 +181,12 @@ public static class Routes
             public const string PostcodeNoResultPath = $"/Establishments/{Names.PostcodeNoResultName}";
             public const string RegisterBusinessForExporterServicePath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceName}";
             public const string RegisterBusinessForExporterServiceNonAdminPath = $"/Registration/RegisteredBusiness/{Names.RegisterBusinessForExporterServiceNonAdminName}";
+            public const string SelfServeDashboardPath = $"/SelfServe/{Names.SelfServeDashboardName}";
+            public const string BusinessListPath = $"/SelfServe/{Names.BusinessListName}";
+            public const string SelfServeUpdateContactPath = $"/SelfServe/{Names.SelfServeUpdateContactdetailsName}";
+            public const string SelfServeUpdateAuthRepPath = $"/SelfServe/{Names.SelfServeUpdateAuthRepDetailsName}";
+            public const string SelfServeEstablishmentHoldingPath = $"/SelfServe/{Names.SelfServeEstablishmentHoldingName}";
+            public const string SelfServeAddBusinessPath = $"/SelfServe/{Names.SelfServeAddBusinessName}";
         }
     }
 }

@@ -73,22 +73,57 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
-            PartyName = "Test"
+            PartyName = "Test",
+            ApprovalStatus = TradePartyApprovalStatus.PendingApproval
         };
         var assurance = true;
-
-        //act
         _systemUnderTest!.TandCs = assurance;
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
         _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
 
+        //act
         await _systemUnderTest.OnPostSubmitAsync();
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
     }
+
+    [Test]
+    public async Task OnPost_TickedSuccessful_Redirect_Successfully()
+    {
+        //arrange
+        var tradePartyId = Guid.NewGuid();
+        TradePartyDto tradeParty = new()
+        {
+            Id = tradePartyId,
+            PartyName = "Test",
+            ApprovalStatus = TradePartyApprovalStatus.PendingApproval,
+            Contact = new TradeContactDto() { Id = Guid.NewGuid()},
+            AuthorisedSignatory = new AuthorisedSignatoryDto() { Id = Guid.NewGuid() },
+        };
+        var assurance = true;
+        _systemUnderTest!.TandCs = assurance;
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(tradeParty);
+        _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
+            .ReturnsAsync(tradePartyId);
+        _mockCheckAnswersService.Setup(x => x.IsLogisticsLocationsDataPresent(It.IsAny<TradePartyDto>(), It.IsAny<IEnumerable<LogisticsLocationDto>>()))
+            .Returns(true);
+        _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(It.IsAny<TradePartyDto>()))
+            .Returns(true);
+
+        //act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        //assert
+        _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
+        result.Should().BeOfType<RedirectToPageResult>();
+
+    }
+
+
 
     [Test]
     public async Task OnPost_TickedSuccessful_NullDto()

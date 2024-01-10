@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -93,6 +94,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
+            dto.ApprovalStatus = TradePartyApprovalStatus.PendingApproval;
+            dto.Contact!.SubmittedDate = DateTime.UtcNow;
+            dto.Contact!.LastModifiedDate = dto.Contact!.SubmittedDate;
+            dto.AuthorisedSignatory!.SubmittedDate = DateTime.UtcNow;
+            dto.AuthorisedSignatory!.LastModifiedDate = dto.AuthorisedSignatory!.SubmittedDate;
 
             await _traderService.UpdateTradePartyAsync(dto);
 

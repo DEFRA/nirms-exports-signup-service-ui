@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Authentication;
-#pragma warning disable CS1998
+using Microsoft.FeatureManagement;
 
 namespace Defra.ReMoS.AssuranceService.UI.Hosting.Pages;
 
@@ -29,21 +29,40 @@ public class IndexModel : PageModel
     private readonly IOptions<EhcoIntegration> _ehcoIntegrationSettings;
     private readonly IValidationParameters _validationParameters;
     private readonly IConfiguration _configuration;
+    private readonly IFeatureManager _featureManager;
 
     public IndexModel(
         ILogger<IndexModel> logger,
         IOptions<EhcoIntegration> ehcoIntegrationSettings,
         IValidationParameters validationParameters,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IFeatureManager featureManager)
     {
         _logger = logger;
         _ehcoIntegrationSettings = ehcoIntegrationSettings;
         _validationParameters = validationParameters;
         _configuration = configuration;
+        _featureManager = featureManager;
     }
 
     public async Task<IActionResult> OnGetAsync()
     {
+        //Test Feature Flag
+        if (await _featureManager.IsEnabledAsync(FeatureFlags.SelfServe))
+        {
+            // Run the following code
+            if (User.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                var correlationId = Guid.NewGuid().ToString();
+                var redirect = _ehcoIntegrationSettings.Value.ValidIssuer + "/b2c/remos_signup/login-or-refresh?correlationId=" + correlationId;
+                Response.Redirect(redirect);
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage(Routes.Pages.Path.BusinessListPath);
+            }
+        }
 
         if (_configuration.GetValue<bool>("ReMoS:MagicWordEnabled"))
         {
@@ -55,9 +74,7 @@ public class IndexModel : PageModel
             if (User.Identity == null || !User.Identity.IsAuthenticated)
             {
                 var correlationId = Guid.NewGuid().ToString();
-
                 var redirect = _ehcoIntegrationSettings.Value.ValidIssuer + "/b2c/remos_signup/login-or-refresh?correlationId=" + correlationId;
-
                 Response.Redirect(redirect);
             }
             else
@@ -145,6 +162,9 @@ public class IndexModel : PageModel
 
             _logger.LogInformation("User {Email} logged in at {Time}.", "user.Email", DateTime.UtcNow);
 
+            if (await _featureManager.IsEnabledAsync(FeatureFlags.SelfServe))
+                return RedirectToPage(Routes.Pages.Path.BusinessListPath);
+
             return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath);
 
         }
@@ -186,7 +206,7 @@ public class IndexModel : PageModel
         return true;
     }
 
-    public DateTime UnixSecondsToDateTime(string timestamp)
+    private static DateTime UnixSecondsToDateTime(string timestamp)
     {
         var offset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(timestamp));
         return offset.UtcDateTime;
