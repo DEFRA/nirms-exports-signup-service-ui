@@ -15,7 +15,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         #region ui model variables
 
         [BindProperty]
-        public Guid RegistrationID { get; set; }
+        public Guid TradePartyId { get; set; }
+        [BindProperty]
+        public Guid OrgId { get; set; }
 
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
@@ -39,30 +41,31 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
         {
             _logger.LogInformation("OnGet");
 
-            RegistrationID = Id;
+            OrgId = Id;
+            TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-            if (RegistrationID == Guid.Empty)
+            if (TradePartyId == Guid.Empty)
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = RegistrationID });
+                    new { id = OrgId });
             }
 
-            if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(RegistrationID).Result)
+            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }
 
-            TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+            TradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             NI_GBFlag = TradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
             Purpose = TradeParty?.Address?.TradeCountry == "NI" ? "Receive Consignments" : "Send Consignments";
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID))?
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
                 .Where(x => x.NI_GBFlag == this.NI_GBFlag)
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
@@ -81,41 +84,41 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             return Page();
         }
 
-        public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+        public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
         {
             var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
             logisticsLocation!.IsRemoved = true;
             await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 
             if (LogisticsLocations?.Count > 0)
-                return await OnGetAsync(tradePartyId);
+                return await OnGetAsync(orgId);
             else
-                return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId, NI_GBFlag });
+                return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = orgId, NI_GBFlag });
         }
 
-        public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+        public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
         {
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentNameAndAddressPath,
-                new { id = tradePartyId, establishmentId, NI_GBFlag });
+                new { id = orgId, establishmentId, NI_GBFlag });
         }
 
-        public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+        public IActionResult OnGetChangeEmail(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
         {
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentContactEmailPath,
-                new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
+                new { id = orgId, locationId = establishmentId, NI_GBFlag });
         }
 
-        public async Task<IActionResult> OnPostSubmitAsync(Guid RegistrationID)
+        public async Task<IActionResult> OnPostSubmitAsync(Guid OrgId)
         {
-            TradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+            TradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
-            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);
+            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
             if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!) &&
                 logisticsLocations != null &&
@@ -123,13 +126,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTermsAndConditionsPath,
-                    new { id = RegistrationID });
+                    new { id = OrgId });
             }
             else
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
-                    new { id = RegistrationID });
+                    new { id = OrgId });
             }
         }
     }

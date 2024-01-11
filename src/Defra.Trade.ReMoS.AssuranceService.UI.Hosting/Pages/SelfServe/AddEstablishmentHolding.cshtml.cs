@@ -10,12 +10,15 @@ public class AddEstablishmentHoldingModel : BasePageModel<AddEstablishmentHoldin
 {
     [BindProperty]
     public Guid RegistrationId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
     public string Country { get; set; } = default!;
     public string CountryText { get; set; } = "Add a place of dispatch";
 
     public IActionResult OnGet(Guid id, string country)
     {
-        RegistrationId = id;
+        OrgId = id;
+        RegistrationId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
         Country = country;
 
         if(Country == "NI")
@@ -30,6 +33,6 @@ public class AddEstablishmentHoldingModel : BasePageModel<AddEstablishmentHoldin
     {
         return RedirectToPage(
                 Routes.Pages.Path.SelfServeDashboardPath,
-                new { id = RegistrationId });
+                new { id = OrgId });
     }
 }

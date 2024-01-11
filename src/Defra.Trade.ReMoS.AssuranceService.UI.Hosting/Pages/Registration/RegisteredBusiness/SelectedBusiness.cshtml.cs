@@ -11,6 +11,8 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
     public string SelectedBusinessName { get; set; } = default!;
 
     public SelectedBusinessModel(
@@ -20,7 +22,8 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         _logger.LogInformation("SelectedBusiness OnGet");
-        TradePartyId = id;
+        OrgId = id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {

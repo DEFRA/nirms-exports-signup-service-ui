@@ -21,6 +21,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest = new PostcodeSearchModel(_mockLogger.Object, _mockTraderService.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
         }
 
         [Test]

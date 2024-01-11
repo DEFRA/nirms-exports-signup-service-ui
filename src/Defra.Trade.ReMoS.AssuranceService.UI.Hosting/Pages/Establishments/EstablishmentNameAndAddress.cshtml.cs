@@ -46,6 +46,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public Guid? EstablishmentId { get; set; }
@@ -70,10 +72,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
-        TradePartyId = id;
+        OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId;
         Uprn = uprn;
+
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
@@ -110,7 +114,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         if(!IsInputValid())
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         try
@@ -120,12 +124,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
+            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()

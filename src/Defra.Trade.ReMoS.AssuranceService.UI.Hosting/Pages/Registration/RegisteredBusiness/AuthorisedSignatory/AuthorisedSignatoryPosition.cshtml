@@ -8,11 +8,11 @@
 @section Back{
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
     {
-        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a>
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a>
     }
     else
     {
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back to dashboard</a>
     }    
 }
 
@@ -42,6 +42,7 @@
                 <button class="govuk-button govuk-button--secondary" asp-page-handler="save">Save and return to dashboard</button>
             </div>
             <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="OrgId" />
         </form>
     </div>
 </div>

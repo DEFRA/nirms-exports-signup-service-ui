@@ -23,6 +23,8 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
     [BindProperty]
     public Guid TradePartyId { get; set; }
     [BindProperty]
+    public Guid OrgId { get; set; }
+    [BindProperty]
     public bool? IsAuthorisedSignatory { get; set; }
     [BindProperty]
     public string? PracticeName { get; set; }
@@ -37,7 +39,8 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TradePartyId = id;
+        OrgId = id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
@@ -60,13 +63,13 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitPhone();
         return RedirectToPage(
             Routes.Pages.Path.AuthorisedSignatoryDetailsPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     public async Task<IActionResult> OnPostSaveAsync()
@@ -75,13 +78,13 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitPhone();
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     #region private methods

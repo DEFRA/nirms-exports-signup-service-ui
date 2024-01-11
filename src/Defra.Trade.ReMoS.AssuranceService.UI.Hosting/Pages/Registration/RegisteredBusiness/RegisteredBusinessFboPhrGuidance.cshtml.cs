@@ -10,11 +10,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class RegisteredBusinessCanNotRegisterModel : BasePageModel<RegisteredBusinessCanNotRegisterModel>
 {
     [BindProperty]
-    public Guid TraderId { get; set; }
+    public Guid OrgId { get; set; }
 
     public IActionResult OnGet(Guid id)
     {
-        TraderId = id;
+        OrgId = id;
         
         return Page();
     }
@@ -23,13 +23,13 @@ public class RegisteredBusinessCanNotRegisterModel : BasePageModel<RegisteredBus
     {
         return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessContactNamePath,
-                new { id = TraderId });
+                new { id = OrgId });
     }
 
     public IActionResult OnPostReturnToDashboard()
     {
         return RedirectToPage(
                 Routes.Pages.Path.RegistrationTaskListPath,
-                new { id = TraderId });
+                new { id = OrgId });
     }
 }

@@ -24,10 +24,11 @@ public class SelectedBusinessTests
     {
         _systemUnderTest = new SelectedBusinessModel(_mockLogger.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
     }
 
     [Test]
-    public async Task OnGet_TraderId_ShouldBeSetToId()
+    public async Task OnGet_TradePartyId_ShouldBeSetToId()
     {
         //Arrange
         var id = Guid.NewGuid();
@@ -37,7 +38,7 @@ public class SelectedBusinessTests
         await _systemUnderTest!.OnGetAsync(id);
 
         //Assert
-        _systemUnderTest.TradePartyId.Should().Be(id);
+        _systemUnderTest.OrgId.Should().Be(id);
     }
 
     [Test]

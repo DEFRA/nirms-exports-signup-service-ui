@@ -12,7 +12,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
     {
         #region ui model variables
         [BindProperty]
-        public Guid RegistrationID { get; set; }
+        public Guid TradePartyId { get; set; }
+        [BindProperty]
+        public Guid OrgId { get; set; }
         [BindProperty]
         public string SelectedBusinessName { get; set; } = default!;
         [BindProperty]
@@ -48,13 +50,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
         {
             _logger.LogInformation("OnGet");
 
-            RegistrationID = Id;
+            OrgId = Id;
+            TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-            if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(RegistrationID).Result)
+            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }
@@ -65,7 +68,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
             {
                 return RedirectToPage(
                         Routes.Pages.Path.RegisteredBusinessCountryPath,
-                        new { id = RegistrationID });
+                        new { id = OrgId });
             }
 
             return Page();
@@ -73,7 +76,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         public async Task<TradePartyDto> GetAPIData()
         {
-            TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+            TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             Country = tradeParty?.Address?.TradeCountry;
 
             if (tradeParty != null && tradeParty.Id != Guid.Empty)
@@ -94,7 +97,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         private async Task EstablishmentsStatuses()
         {
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(RegistrationID);
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
             var gbEstablishments = establishments?.Where(x => x.NI_GBFlag == "GB");
             var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
 

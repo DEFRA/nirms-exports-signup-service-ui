@@ -6,13 +6,14 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.RegistrationID" class="govuk-back-link">Back to dashboard</a>
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back to dashboard</a>
 }
 
 <div class="govuk-grid-row" id="checkYourAnswers">
     <div class="govuk-grid-column-two-thirds">
         <form class="form" method="post" novalidate="">
-            <input type="hidden" asp-for="RegistrationID" />
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="NI_GBFlag" />
 
             <h1 class="govuk-heading-xl">Check your answers</h1>
@@ -32,7 +33,7 @@
                         @Model.TradeParty?.PracticeName
                     </dd>
                     <dd class="govuk-summary-list__actions govuk-!-width-one-third">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.SelectedBusinessPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-name">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.SelectedBusinessPath" asp-route-id="@Model.OrgId" aria-describedby="business-details-name">
                             Sign up another business
                         </a>
                     </dd>
@@ -45,7 +46,7 @@
                         @Model.Purpose
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessCountryStaticPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-purpose">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessCountryStaticPath" asp-route-id="@Model.OrgId" aria-describedby="business-details-purpose">
                             View<span class="govuk-visually-hidden"> Purpose of Business</span>
                         </a>
                     </dd>
@@ -61,7 +62,7 @@
                             Not provided
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.OrgId" aria-describedby="business-details-fbo">
                                 Edit<span class="govuk-visually-hidden"> PHR number</span>
                             </a>
                         </dd>
@@ -77,7 +78,7 @@
                             @Model.TradeParty?.PhrNumber
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.OrgId" aria-describedby="business-details-fbo">
                                 Edit<span class="govuk-visually-hidden"> PHR number</span>
                             </a>
                         </dd>
@@ -93,7 +94,7 @@
                             @Model.TradeParty?.FboNumber
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-details-fbo">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessFboNumberPath" asp-route-id="@Model.OrgId" aria-describedby="business-details-fbo">
                                 Edit<span class="govuk-visually-hidden"> FBO number</span>
                             </a>
                         </dd>
@@ -112,7 +113,7 @@
                         @Model.TradeParty?.Contact?.PersonName
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-name">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactNamePath" asp-route-id="@Model.OrgId" aria-describedby="business-contact-name">
                             Edit<span class="govuk-visually-hidden"> contact name</span>
                         </a>
                     </dd>
@@ -125,7 +126,7 @@
                         @Model.TradeParty?.Contact?.Position
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-position">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPositionPath" asp-route-id="@Model.OrgId" aria-describedby="business-contact-position">
                             Edit<span class="govuk-visually-hidden"> contact position</span>
                         </a>
                     </dd>
@@ -138,7 +139,7 @@
                         @Model.TradeParty?.Contact?.Email
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-email">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactEmailPath" asp-route-id="@Model.OrgId" aria-describedby="business-contact-email">
                             Edit<span class="govuk-visually-hidden"> contact email address</span>
                         </a>
                     </dd>
@@ -151,7 +152,7 @@
                         @Model.TradeParty?.Contact?.TelephoneNumber
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPhonePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-contact-phone">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.RegisteredBusinessContactPhonePath" asp-route-id="@Model.OrgId" aria-describedby="business-contact-phone">
                             Edit<span class="govuk-visually-hidden"> contact telephone number</span>
                         </a>
                     </dd>
@@ -173,7 +174,7 @@
                         <dd class="govuk-summary-list__value" id="business-authorisied-signatory">No</dd>
                     }
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryDetailsPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                        <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryDetailsPath" asp-route-id="@Model.OrgId" aria-describedby="business-authorisied-signatory">
                             Edit<span class="govuk-visually-hidden"> Authorised Representative name</span>
                         </a>
                     </dd>
@@ -188,7 +189,7 @@
                             @Model.TradeParty?.AuthorisedSignatory?.Name
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryNamePath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryNamePath" asp-route-id="@Model.OrgId" aria-describedby="business-authorisied-signatory">
                                 Edit<span class="govuk-visually-hidden"> Authorised Representative name</span>
                             </a>
                     </div>
@@ -200,7 +201,7 @@
                             @Model.TradeParty?.AuthorisedSignatory?.Position
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryPositionPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryPositionPath" asp-route-id="@Model.OrgId" aria-describedby="business-authorisied-signatory">
                                 Edit<span class="govuk-visually-hidden"> Authorised Representative Position</span>
                             </a>
                     </div>
@@ -212,7 +213,7 @@
                             @Model.TradeParty?.AuthorisedSignatory?.EmailAddress
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryEmailPath" asp-route-id="@Model.RegistrationID" aria-describedby="business-authorisied-signatory">
+                            <a class="govuk-link" asp-page="@Routes.Pages.Path.AuthorisedSignatoryEmailPath" asp-route-id="@Model.OrgId" aria-describedby="business-authorisied-signatory">
                                 Edit<span class="govuk-visually-hidden"> Authorised Representative email address</span>
                             </a>
                     </div>
@@ -232,7 +233,7 @@
                             <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@location.Name</h2>
                             <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
                                asp-page-handler="RemoveEstablishment"
-                               asp-route-tradepartyid="@Model.RegistrationID"
+                       asp-route-orgid="@Model.OrgId"
                                asp-route-establishmentId="@location.Id"
                                asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                 Remove
@@ -264,7 +265,7 @@
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link"
                                            asp-page-handler="ChangeEstablishmentAddress"
-                                           asp-route-tradepartyid="@Model.RegistrationID"
+                                   asp-route-orgid="@Model.OrgId"
                                            asp-route-establishmentId="@location.Id"
                                            asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                             Change<span class="govuk-visually-hidden"> address</span>
@@ -281,7 +282,7 @@
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link"
                                            asp-page-handler="ChangeEmail"
-                                           asp-route-tradepartyid="@Model.RegistrationID"
+                                   asp-route-orgid="@Model.OrgId"
                                            asp-route-establishmentId="@location.Id"
                                            asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                             Change<span class="govuk-visually-hidden"> email address</span>
@@ -295,7 +296,7 @@
             }
 
             <div style="text-align:right" class="govuk-!-margin-bottom-6">
-                <a class="govuk-link govuk-body-m" asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath" asp-route-id="@Model.RegistrationID" asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                <a class="govuk-link govuk-body-m" asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath" asp-route-id="@Model.OrgId" asp-route-NI_GBFlag="@Model.NI_GBFlag">
                     Add another place of @Model.ContentText
                 </a>
             </div>

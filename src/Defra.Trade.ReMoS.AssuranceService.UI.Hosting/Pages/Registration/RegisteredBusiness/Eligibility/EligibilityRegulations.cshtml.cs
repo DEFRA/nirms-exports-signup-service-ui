@@ -13,8 +13,10 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
     [BindProperty]
     public bool Confirmed { get; set; }
     [BindProperty]
-    public Guid TraderId { get; set; }
-    
+    public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
+
     public EligibilityRegulationsModel(
         ILogger<EligibilityRegulationsModel> logger, 
         ITraderService traderService) : base(logger, traderService)
@@ -22,13 +24,14 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TraderId = id;
+        OrgId = id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(TraderId).Result)
+        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -36,7 +39,7 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
         _logger.LogInformation("Eligibility Regulations OnGet");
 
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
         if (tradeParty != null)
         {
@@ -57,10 +60,10 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
         if (!ModelState.IsValid)
         {
             _logger.LogInformation("Eligibility Regulations Model validation failed");
-            return await OnGetAsync(TraderId);
+            return await OnGetAsync(OrgId);
         }
 
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
         if (tradeParty != null) 
         { 
@@ -70,6 +73,6 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessCountryPath, 
-            new { id = TraderId });
+            new { id = OrgId });
     }
 }

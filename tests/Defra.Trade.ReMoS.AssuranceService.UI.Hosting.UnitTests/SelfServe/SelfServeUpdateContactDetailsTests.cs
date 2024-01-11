@@ -29,13 +29,14 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
         {
             PageContext = PageModelMockingUtils.MockPageContext()
         };
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
     }
 
     [Test]
     public async Task OnGet_ContactDetails_IfDataPresentInApi()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
         var expectedDate = new DateTime(2023, 1, 1, 0, 0, 0);
         TradePartyDto tradePartyDto = new()
         {
@@ -60,7 +61,7 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
 
         //Assert
 
-        _systemUnderTest.RegistrationID.Should().Be(guid);
+        _systemUnderTest.TradePartyId.Should().Be(guid);
         _systemUnderTest.Name.Should().Be("Test");
         _systemUnderTest.Position.Should().Be("Test");
         _systemUnderTest.Email.Should().Be("test@test.com");
@@ -73,7 +74,7 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
     public async Task OnPostSubmit_ValidInfoReturnsNoErrors()
     {
         // arrange
-        _systemUnderTest!.RegistrationID = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _systemUnderTest!.Name = "John Doe";
         _systemUnderTest!.Position = "Test";
         _systemUnderTest!.Email = "test@test.com";
@@ -93,7 +94,7 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
     public async Task OnPostSubmit_ValidInfoReturnsErrors()
     {
         // arrange
-        _systemUnderTest!.RegistrationID = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _systemUnderTest!.Name = "John Doe%^!£$";
         _systemUnderTest!.Position = "Tes£$%&^t";
         _systemUnderTest!.Email = "test@test.com$&£%^";
@@ -124,7 +125,7 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
     {
         //Arrange
         Guid guid = Guid.NewGuid();
-        _systemUnderTest!.RegistrationID = guid;
+        _systemUnderTest!.TradePartyId = guid;
         _systemUnderTest!.Name = "John Doe";
         _systemUnderTest!.Position = "Test";
         _systemUnderTest!.Email = "test@test.com";

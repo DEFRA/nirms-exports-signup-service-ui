@@ -19,6 +19,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
+    public Guid OrgId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
@@ -34,9 +35,11 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment dispatch destination OnGetAsync");
-        TradePartyId = id;
+        OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
+
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
@@ -73,21 +76,21 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
         if (!IsInputValid())
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         await SaveEmailToApi();
 
         return RedirectToPage(
             Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
-            new { id = TradePartyId, NI_GBFlag});
+            new { id = OrgId, NI_GBFlag});
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = tradePartyId, establishmentId, NI_GBFlag });
+            new { id = orgId, establishmentId, NI_GBFlag });
     }
 
     private async Task SaveEmailToApi()

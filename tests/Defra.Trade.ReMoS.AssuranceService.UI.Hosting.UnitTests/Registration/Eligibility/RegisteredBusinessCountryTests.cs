@@ -24,6 +24,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     {
         _systemUnderTest = new RegisteredBusinessCountryModel(_mockLogger.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
     }
 
     [Test]
@@ -60,7 +61,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnGet_CountrySavedSetToTrue_IfDataPresentInApi_RedirectToStatic()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto();
         var tradeAddress = new TradeAddressDto { TradeCountry = "GB"};
@@ -132,7 +133,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
     public async Task OnGet_IfNoSavedData_ReturnTradePartyDto()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto();
         var tradeAddress = new TradeAddressDto();
@@ -177,7 +178,7 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
         _systemUnderTest!.GBChosen = "send";
         _systemUnderTest.Country = "GB";
         var traderId = Guid.NewGuid();
-        _systemUnderTest.TraderId = traderId;
+        _systemUnderTest.TradePartyId = traderId;
         _mockTraderService
             .Setup(action => action.AddTradePartyAddressAsync(It.IsAny<Guid>(), It.IsAny<TradeAddressDto>()))
             .ReturnsAsync(traderId);

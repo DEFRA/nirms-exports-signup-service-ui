@@ -31,6 +31,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     {
         _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
     }
 
     [Test]
@@ -46,7 +47,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         //Assert
 
-        _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
+        _systemUnderTest.TradePartyId.Should().NotBe(Guid.Empty);
     }
 
     [Test]
@@ -87,14 +88,14 @@ public class RegistratonTaskListTests : PageModelTestsBase
         await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
-        _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
+        _systemUnderTest.TradePartyId.Should().NotBe(Guid.Empty);
     }
 
     [Test]
     public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPlacesOfDispatchComplete()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();            
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");            
 
         var tradeContact = new TradeContactDto
         {
@@ -184,7 +185,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_StatusTestsAllComplete()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         var tradeContact = new TradeContactDto
@@ -253,7 +254,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_StatusTestsNotAllComplete_NoReviewAnswers()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto
         {
@@ -310,7 +311,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_AuthorisedSignatoryIsContact()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto
         {

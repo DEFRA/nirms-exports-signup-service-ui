@@ -25,6 +25,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             _systemUnderTest = new CheckYourAnswersModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
         }
 
         [Test]
@@ -38,10 +39,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(tradePartyId).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
-            _systemUnderTest!.RegistrationID = tradePartyId;
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Empty });
+            _systemUnderTest!.TradePartyId = tradePartyId;
             var expected = new RedirectToPageResult(
               Routes.Pages.Path.RegisteredBusinessCountryPath,
-               new { id = _systemUnderTest!.RegistrationID });
+               new { id = _systemUnderTest!.TradePartyId });
 
             // act
             var result = await _systemUnderTest!.OnGetAsync(tradePartyId);
@@ -56,7 +59,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnGet_PopulateModelPropertiesNI()
         {
             // arrange
-            var tradePartyId = Guid.NewGuid();
+            var tradePartyId = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
             var logisticsLocations = new List<LogisticsLocationDto>();
             var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "NI" } };
 
@@ -69,7 +72,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("NI");
-            _systemUnderTest.RegistrationID.Should().Be(tradePartyId);
+            _systemUnderTest.TradePartyId.Should().Be(tradePartyId);
             _systemUnderTest.ContentHeading.Should().Be("Places of destination");
             _systemUnderTest.ContentText.Should().Be("destination");
         }
@@ -78,7 +81,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnGet_PopulateModelPropertiesGB()
         {
             // arrange
-            var tradePartyId = Guid.NewGuid();
+            var tradePartyId = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
             var logisticsLocations = new List<LogisticsLocationDto>();
             var tradeParty = new TradePartyDto { Address = new TradeAddressDto { TradeCountry = "England" } };
 
@@ -91,7 +94,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("GB");
-            _systemUnderTest.RegistrationID.Should().Be(tradePartyId);
+            _systemUnderTest.TradePartyId.Should().Be(tradePartyId);
             _systemUnderTest.ContentHeading.Should().Be("Places of dispatch");
             _systemUnderTest.ContentText.Should().Be("dispatch");
         }
@@ -164,6 +167,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var logisticLocations = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
             var tradePartyId = Guid.NewGuid();
 
+            _systemUnderTest!.TradePartyId = tradePartyId;
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>())).ReturnsAsync(logisticLocations);
             _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
@@ -187,6 +191,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var logisticLocations = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
             var tradePartyId = Guid.NewGuid();
 
+            _systemUnderTest!.TradePartyId = tradePartyId;
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>())).ReturnsAsync(logisticLocations);
             _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);

@@ -28,19 +28,20 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
     }
 
     [Test]
     public async Task OnGet_ReturnsId()
     {
         // arrange
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
 
         //act
-        await _systemUnderTest!.OnGetAsync(tradePartyId);
+        await _systemUnderTest!.OnGetAsync(orgId);
 
         //assert
-        _systemUnderTest.TraderId.Should().Be(tradePartyId);
+        _systemUnderTest.OrgId.Should().Be(orgId);
     }
 
     [Test]

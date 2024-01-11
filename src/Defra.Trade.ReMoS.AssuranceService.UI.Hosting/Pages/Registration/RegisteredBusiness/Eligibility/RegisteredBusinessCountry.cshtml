@@ -6,7 +6,7 @@
 }
 
 <a asp-page="@Routes.Pages.Path.RegisteredBusinessRegulationsPath"
-    asp-route-id="@Model.TraderId" 
+    asp-route-id="@Model.OrgId" 
     class="govuk-back-link">Back</a>
 
 <div class="govuk-grid-row">
@@ -14,7 +14,8 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
-            <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="CountrySaved" />
             <input type="hidden" asp-for="PracticeName" />
             <div class="govuk-form-group @(ModelState.HasError("GBChosen") ? "govuk-form-group--error" : null)">

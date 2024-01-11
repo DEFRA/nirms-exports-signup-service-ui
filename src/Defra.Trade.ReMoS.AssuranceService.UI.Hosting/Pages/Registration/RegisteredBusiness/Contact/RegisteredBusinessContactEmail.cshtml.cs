@@ -17,6 +17,8 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     [BindProperty]
     public Guid TradePartyId { get; set; }
     [BindProperty]
+    public Guid OrgId { get; set; }
+    [BindProperty]
     public Guid ContactId { get; set; }
     [BindProperty]
     public string? PracticeName { get; set; }
@@ -35,7 +37,8 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TradePartyId = id;
+        OrgId = id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
@@ -60,13 +63,13 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
 
         if (!IsInputValid())
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitEmail();
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessContactPhonePath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     public async Task<IActionResult> OnPostSaveAsync()
@@ -75,13 +78,13 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
 
         if (!IsInputValid())
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitEmail();
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     #region private methods

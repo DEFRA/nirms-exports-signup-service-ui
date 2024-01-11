@@ -20,6 +20,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             _systemUnderTest = new RegisteredBusinessContactPhoneModel(_mockLogger.Object, _mockTraderService.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8") });
         }
 
         [Test]
@@ -175,7 +176,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public async Task OnGetAsync_GuidLookupFillsInGapsForProperties(string phoneNumber)
         {
             //Arrange
-            var guid = Guid.Empty;
+            var guid = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8");
 
             var tradeContact = new TradeContactDto() { PersonName = "Test1" };
 

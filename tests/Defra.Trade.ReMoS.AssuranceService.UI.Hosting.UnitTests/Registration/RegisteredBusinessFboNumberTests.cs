@@ -25,6 +25,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         _systemUnderTest = new RegisteredBusinessFboNumberModel(_mockLogger.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
     }
 
     [Test]
@@ -117,7 +118,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
         _systemUnderTest.OptionSelected = "fbo";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -145,7 +146,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = new string('1', 26);
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "FBO number must be 25 characters or less";
 
         //Act
@@ -163,7 +164,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "";
         _systemUnderTest!.PracticeName = "Test";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "Select if your business has an FBO or PHR number";
 
         //Act
@@ -180,7 +181,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "phr";
         _systemUnderTest!.PhrNumber = new string('1', 26);
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "PHR number must be 25 characters or less";
 
         //Act
@@ -209,7 +210,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         // Arrange
         _systemUnderTest!.OptionSelected = "none";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSubmitAsync();
@@ -225,7 +226,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSubmitAsync();
@@ -240,7 +241,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         // Arrange
         _systemUnderTest!.OptionSelected = "none";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSaveAsync();
@@ -256,7 +257,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSaveAsync();

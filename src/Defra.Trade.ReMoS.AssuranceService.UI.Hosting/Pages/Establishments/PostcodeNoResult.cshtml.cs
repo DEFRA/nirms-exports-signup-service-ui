@@ -12,6 +12,8 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     [BindProperty]
     public Guid TradePartyId { get; set; }
     [BindProperty]
+    public Guid OrgId { get; set; }
+    [BindProperty]
     public string Postcode { get; set; } = string.Empty;
     [BindProperty]
     public string NI_GBFlag { get; set; } = string.Empty;
@@ -25,9 +27,11 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
 
     public IActionResult OnGet(Guid id, string NI_GBFlag, string postcode)
     {
-        TradePartyId = id;
+        OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;
+
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
         {

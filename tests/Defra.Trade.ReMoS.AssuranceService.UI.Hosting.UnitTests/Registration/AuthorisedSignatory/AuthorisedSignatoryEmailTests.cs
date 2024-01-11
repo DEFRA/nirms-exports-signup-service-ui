@@ -29,6 +29,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 _mockEstabService.Object, 
                 _mockLogger.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
             //Assert
-            _systemUnderTest.TraderId.Should().NotBeEmpty();
+            _systemUnderTest.TradePartyId.Should().NotBeEmpty();
             _systemUnderTest.SignatoryId.Should().NotBeEmpty();
         }
 

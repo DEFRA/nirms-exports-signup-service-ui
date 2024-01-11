@@ -30,21 +30,22 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
         [BindProperty]
         public Guid TradePartyId { get; set; }
+        [BindProperty]
+        public Guid OrgId { get; set; }
 
         #endregion UI Models
-             
+
 
         public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService) : base(logger, traderService)
         {}
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-
         public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _logger.LogTrace("Establishment postcode search on get");
-            TradePartyId = id;
+            OrgId = id;
             this.NI_GBFlag = NI_GBFlag;
+
+            TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
             await GetBusinessNameAsync();
 
@@ -79,25 +80,25 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments
 
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync(TradePartyId, NI_GBFlag!);
+                return await OnGetAsync(OrgId, NI_GBFlag!);
             }
 
             if (Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             {
                 var baseError = "Enter a postcode in England, Scotland or Wales";
                 ModelState.AddModelError(nameof(Postcode), baseError);
-                return await OnGetAsync(TradePartyId, NI_GBFlag);
+                return await OnGetAsync(OrgId, NI_GBFlag);
             }
             if (!Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             {
                 var baseError = "Enter a postcode in Northern Ireland";
                 ModelState.AddModelError(nameof(Postcode), baseError);
-                return await OnGetAsync(TradePartyId, NI_GBFlag);
+                return await OnGetAsync(OrgId, NI_GBFlag);
             }
 
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentPostcodeResultPath,
-                new { id = TradePartyId, postcode = Postcode, NI_GBFlag });
+                new { id = OrgId, postcode = Postcode, NI_GBFlag });
         }
 
         private async Task GetBusinessNameAsync()

@@ -22,6 +22,8 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public Guid ContactId { get; set; }
@@ -43,7 +45,8 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
     
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TradePartyId = id;
+        OrgId = id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
@@ -66,13 +69,13 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitPosition();
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessContactEmailPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     public async Task<IActionResult> OnPostSaveAsync()
@@ -81,13 +84,13 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitPosition();
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     #region private methods

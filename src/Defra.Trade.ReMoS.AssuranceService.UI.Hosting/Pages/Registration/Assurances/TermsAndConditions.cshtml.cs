@@ -14,7 +14,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         #region UI Model
 
         [BindProperty]
-        public Guid TraderId { get; set; }
+        public Guid TradePartyId { get; set; }
+        [BindProperty]
+        public Guid OrgId { get; set; }
 
         [BindProperty]
         public bool TandCs { get; set; }
@@ -34,14 +36,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            TraderId = id;
+            OrgId = id;
+            TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
 
-            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             if (dto != null)
             {
@@ -55,7 +58,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 {
                     return RedirectToPage(
                         Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                        new { Id = TraderId });
+                        new { Id = OrgId });
                 }
             }
 
@@ -64,7 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
-            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TraderId);
+            TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             if (!TandCs)
             {                
@@ -73,14 +76,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 
             if (!ModelState.IsValid)
             {
-                return await OnGetAsync(TraderId);
+                return await OnGetAsync(OrgId);
             }            
 
             if (dto == null)
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
-                        new { id = TraderId });
+                        new { id = OrgId });
             }
 
             var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id);
@@ -89,7 +92,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
-                        new { id = TraderId });
+                        new { id = OrgId });
             }
 
             dto!.TermsAndConditionsSignedDate = DateTime.UtcNow;
@@ -104,7 +107,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
             return RedirectToPage(
                 Routes.Pages.Path.SignUpConfirmationPath,
-                new { id = TraderId });
+                new { id = OrgId });
         }
     }
 }

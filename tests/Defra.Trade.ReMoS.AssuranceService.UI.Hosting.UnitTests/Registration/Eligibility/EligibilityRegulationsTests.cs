@@ -26,6 +26,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         _systemUnderTest = new EligibilityRegulationsModel(_mockLogger.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
     }
 
     [Test]
@@ -36,7 +37,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 
         //act
         await _systemUnderTest!.OnGetAsync(Guid.Empty);
-        var result = _systemUnderTest.TraderId;
+        var result = _systemUnderTest.OrgId;
 
         //assert
         result.Should().Be(expected);
@@ -51,7 +52,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 
         //act
         await _systemUnderTest!.OnGetAsync(expected);
-        var result = _systemUnderTest.TraderId;
+        var result = _systemUnderTest.OrgId;
 
         //assert
         result.Should().Be(expected);
@@ -61,7 +62,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     public async Task OnGet_SetConfirmedTo_SavedTradePartyConfirmedFlag()
     {
         // Arrange
-        var tradeId = Guid.NewGuid();
+        var tradeId = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
         var tradePartyDto = new TradePartyDto { Id = tradeId, RegulationsConfirmed = true };
         _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(tradeId))
@@ -69,7 +70,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         // Act
-        var result = await _systemUnderTest!.OnGetAsync(tradeId);
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         // Assert
         _systemUnderTest.Confirmed.Should().BeTrue();
@@ -80,11 +81,11 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         //arrange
         var expected = Guid.NewGuid();
-        _systemUnderTest!.TraderId = expected;
+        _systemUnderTest!.OrgId = expected;
 
         //act
         await _systemUnderTest!.OnPostSubmitAsync();
-        var result = _systemUnderTest.TraderId;
+        var result = _systemUnderTest.OrgId;
 
         //assert
         result.Should().Be(expected);
@@ -127,7 +128,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
         var traderId = Guid.NewGuid();
         var tradePartyDto = new TradePartyDto { Id = traderId};
         _systemUnderTest!.Confirmed = true;
-        _systemUnderTest!.TraderId = traderId;
+        _systemUnderTest!.TradePartyId = traderId;
         _mockTraderService
             .Setup(action => action.GetTradePartyByIdAsync(traderId))
             .ReturnsAsync(tradePartyDto);
@@ -136,7 +137,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
             .ReturnsAsync(traderId);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
-            new { id = _systemUnderTest!.TraderId });
+            new { id = _systemUnderTest!.TradePartyId });
 
         // Act
         var result = await _systemUnderTest!.OnPostSubmitAsync();

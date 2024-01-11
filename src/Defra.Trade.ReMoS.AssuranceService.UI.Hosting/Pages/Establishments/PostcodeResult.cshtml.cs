@@ -25,6 +25,8 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public List<SelectListItem>? EstablishmentsList { get; set; } = default!;
@@ -53,9 +55,11 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
     {
         _logger.LogInformation("Postcode result OnGetAsync");
         Postcode = postcode;
-        TradePartyId= id;
+        OrgId = id;
 
         this.NI_GBFlag = NI_GBFlag;
+
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
         {
@@ -96,7 +100,7 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
-            return RedirectToPage(Routes.Pages.Path.PostcodeNoResultPath, new { id = TradePartyId, NI_GBFlag, postcode = Postcode });
+            return RedirectToPage(Routes.Pages.Path.PostcodeNoResultPath, new { id = OrgId, NI_GBFlag, postcode = Postcode });
         }
 
         return Page();
@@ -108,12 +112,12 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, Postcode!);
+            return await OnGetAsync(OrgId, Postcode!);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = TradePartyId, uprn = SelectedEstablishment, NI_GBFlag });
+            new { id = OrgId, uprn = SelectedEstablishment, NI_GBFlag });
         
 
     }

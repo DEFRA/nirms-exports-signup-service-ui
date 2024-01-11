@@ -75,7 +75,7 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a asp-page-handler="ChangeContactDetails"
-                       asp-route-tradepartyid="@Model.RegistrationID">
+                       asp-route-orgid="@Model.OrgId">
                        Change <span class="govuk-visually-hidden">contact person</span></a>
                 </dd>
             </div>
@@ -102,7 +102,7 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a asp-page-handler="ChangeAuthRepresentativeDetails"
-                       asp-route-tradepartyid="@Model.RegistrationID">
+                       asp-route-orgid="@Model.OrgId">
                        Change <span class="govuk-visually-hidden">authorised representative</span></a>
                 </dd>
             </div>
@@ -112,7 +112,7 @@
 
 <div class="govuk-button-group">
     <a class="govuk-button  govuk-button--secondary" asp-page-handler="AddEstablishment"
-       asp-route-tradepartyid="@Model.RegistrationID" asp-route-countrychosen="@Model.Country">
+       asp-route-orgid="@Model.OrgId" asp-route-countrychosen="@Model.Country">
         @Model.EstablishmentButtonText
     </a>
 </div>
