@@ -84,13 +84,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             return Page();
         }
 
-        public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
+        public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
         {
             var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
             logisticsLocation!.IsRemoved = true;
             await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 

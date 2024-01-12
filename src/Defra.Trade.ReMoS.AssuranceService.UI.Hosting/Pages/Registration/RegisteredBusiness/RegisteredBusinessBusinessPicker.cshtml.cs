@@ -107,7 +107,8 @@ public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBus
          * if COMPLETE (T&C checked), redirect to error page
          */
 
-        var (tradeParty, signupStatus) = await _traderService.GetDefraOrgBusinessSignupStatus(Guid.Parse(SelectedBusiness));
+        OrgId = Guid.Parse(SelectedBusiness);
+        var (tradeParty, signupStatus) = await _traderService.GetDefraOrgBusinessSignupStatus(OrgId);
         TradePartyId = (tradeParty != null) ? tradeParty.Id : Guid.Empty;
 
         switch (signupStatus)
