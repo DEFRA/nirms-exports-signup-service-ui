@@ -83,32 +83,32 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
                 await SaveSelectedBusinessToApi(orgId);
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                    new { id = OrgId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgressEligibilityCountry:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = OrgId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgressEligibilityFboNumber:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-                    new { id = OrgId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgressEligibilityRegulations:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                    new { id = OrgId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgress:
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
-                    new { id = OrgId });
+                    new { id = orgId });
             case TradePartySignupStatus.Complete:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                    new { id = OrgId });
+                    new { id = orgId });
         }
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-            new { id = OrgId });
+            new { id = orgId });
     }
 
     public async Task<IActionResult> OnGetRefreshBusinesses()
