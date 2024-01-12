@@ -36,11 +36,11 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     [BindProperty]
     public string? PracticeName { get; set; } = string.Empty;
-        
+
     public RegisteredBusinessFboNumberModel(
-        ILogger<RegisteredBusinessFboNumberModel> logger, 
-        ITraderService traderService) : base( logger, traderService )
-    {}
+        ILogger<RegisteredBusinessFboNumberModel> logger,
+        ITraderService traderService) : base(logger, traderService)
+    { }
 
     #endregion props and ctor
 
@@ -76,7 +76,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         await SaveNumberToApiAsync(TraderId);
 
         if (OptionSelected == "none")
-        {      
+        {
             return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
                 new { id = TraderId });
@@ -137,22 +137,22 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
             throw new ArgumentNullException(nameof(TraderId));
 
         TradePartyDto? tradeParty = await GetNumberFromApiAsync();
-        
-        if(tradeParty != null)
+
+        if (tradeParty != null)
         {
             FboNumber = tradeParty.FboNumber;
             PhrNumber = tradeParty.PhrNumber;
             OptionSelected = tradeParty.FboPhrOption;
             PracticeName = tradeParty.PracticeName;
-        }      
-            }
+        }
+    }
 
     private async Task<TradePartyDto?> GetNumberFromApiAsync()
     {
         TradePartyDto? tradePartyDto = await _traderService.GetTradePartyByIdAsync(TraderId);
         return tradePartyDto;
 
-    }   
+    }
 
     private async Task SaveNumberToApiAsync(Guid TraderId)
     {
@@ -160,7 +160,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         {
             throw new ArgumentNullException(nameof(TraderId));
         }
-        
+
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
         if (tradeParty != null)
         {

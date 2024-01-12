@@ -265,4 +265,44 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Assert
         redirectResult!.PageName.Should().Be("/Registration/TaskList/RegistrationTaskList");
     }
+
+    [Test]
+    public async Task OnPostSaveAsync_SubmitInvalidFbo()
+    {
+        // Arrange
+        _systemUnderTest!.OptionSelected = "fbo";
+        _systemUnderTest!.FboNumber = string.Empty;
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockTraderService
+            .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
+            .ReturnsAsync(true);
+        var expectedResult = "Enter your business's FBO number";
+
+        // Act
+        var result = await _systemUnderTest!.OnPostSaveAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.Count.Should().Be(1);
+        _systemUnderTest!.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be(expectedResult);
+    }
+
+    [Test]
+    public async Task OnPostSaveAsync_SubmitInvalidPhr()
+    {
+        // Arrange
+        _systemUnderTest!.OptionSelected = "phr";
+        _systemUnderTest!.PhrNumber = string.Empty;
+        _systemUnderTest.TraderId = Guid.NewGuid();
+        _mockTraderService
+            .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
+            .ReturnsAsync(true);
+        var expectedResult = "Enter your business's PHR number";
+
+        // Act
+        var result = await _systemUnderTest!.OnPostSaveAsync();
+
+        // Assert
+        _systemUnderTest.ModelState.Count.Should().Be(1);
+        _systemUnderTest!.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be(expectedResult);
+    }
 }

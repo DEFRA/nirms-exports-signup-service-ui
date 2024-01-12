@@ -62,17 +62,6 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
         PracticeName = tradeParty?.PracticeName ?? string.Empty;
 
-        if (Country != "")
-        {
-            if (Country == "NI")
-            {
-                GBChosen = "recieve";
-            }
-            else{
-                GBChosen = "send";
-            }
-        }
-
         return Page();
     }
 
