@@ -62,7 +62,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
             }
         }
 
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(Id);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         PracticeName = tradeParty?.PracticeName ?? string.Empty;
 
         if (Country != "")
