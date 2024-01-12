@@ -26,7 +26,7 @@ public class PostcodeNoResultTests : PageModelTestsBase
     {
         _systemUnderTest = new PostcodeNoResultModel(_mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
     }
 
@@ -61,23 +61,23 @@ public class PostcodeNoResultTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGetAsync_InvalidOrgId()
+    public async Task OnGetAsync_InvalidOrgId()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
-        var result = _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TES1");
+        var result = await _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TES1");
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
     [Test]
-    public void OnGetAsync_RedirectRegisteredBusiness()
+    public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
-        var result = _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TEST1");
+        var result = await _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TEST1");
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");

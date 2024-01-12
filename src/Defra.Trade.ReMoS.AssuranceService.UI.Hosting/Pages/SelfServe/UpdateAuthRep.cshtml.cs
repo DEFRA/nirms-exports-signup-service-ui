@@ -54,7 +54,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
             OrgId = Id;
             TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }

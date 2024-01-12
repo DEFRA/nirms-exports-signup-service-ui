@@ -67,7 +67,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
         };
         _mockTraderService
             .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
-            .ReturnsAsync(true);
+            .Returns(true);
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
@@ -103,7 +103,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
         TradePartyDto tradePartyDto = null!;
         _mockTraderService
             .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
-            .ReturnsAsync(true);
+            .Returns(true);
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .Returns(Task.FromResult(tradePartyDto)!);

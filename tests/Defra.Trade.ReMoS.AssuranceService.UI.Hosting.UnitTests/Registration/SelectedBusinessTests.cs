@@ -32,7 +32,7 @@ public class SelectedBusinessTests
     {
         //Arrange
         var id = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(id);
@@ -47,9 +47,9 @@ public class SelectedBusinessTests
         //ARrange
         var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), PracticeName = "Test name" };
         _mockTraderService
-            .Setup(action => action.GetTradePartyByIdAsync(It.IsAny<Guid>()))
+            .Setup(action => action.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
@@ -61,7 +61,7 @@ public class SelectedBusinessTests
     [Test]
     public async Task OnGetAsync_InvalidOrgId()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;
@@ -72,8 +72,8 @@ public class SelectedBusinessTests
     [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;

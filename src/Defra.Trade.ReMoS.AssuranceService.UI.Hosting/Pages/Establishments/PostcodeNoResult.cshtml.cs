@@ -25,15 +25,16 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
     {}
 
-    public IActionResult OnGet(Guid id, string NI_GBFlag, string postcode)
+    public async Task<IActionResult> OnGet(Guid id, string NI_GBFlag, string postcode)
     {
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;
 
-        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
 
-        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -51,7 +52,7 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
             ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }

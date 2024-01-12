@@ -42,7 +42,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             _logger.LogInformation("OnGet");
 
             OrgId = Id;
-            TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+            var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+            TradePartyId = tradeParty!.Id;
 
             if (TradePartyId == Guid.Empty)
             {
@@ -51,11 +52,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
                     new { id = OrgId });
             }
 
-            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+            if (_traderService.IsTradePartySignedUp(tradeParty))
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }

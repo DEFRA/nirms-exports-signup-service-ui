@@ -39,15 +39,16 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
     {
         _logger.LogInformation("Country OnGet");
         OrgId = Id;
-        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
 
         if (Id != Guid.Empty)
         {
-            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+            if (_traderService.IsTradePartySignedUp(tradeParty))
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }
@@ -62,7 +63,6 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
             }
         }
 
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         PracticeName = tradeParty?.PracticeName ?? string.Empty;
 
         if (Country != "")

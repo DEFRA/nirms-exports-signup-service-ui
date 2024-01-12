@@ -27,15 +27,16 @@ public class RegisteredBusinessCountryStaticModel : BasePageModel<RegisteredBusi
     {
         _logger.LogInformation("Country Static OnGet");
         OrgId = Id;
-        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
 
         if (Id != Guid.Empty)
         {
-            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+            if (_traderService.IsTradePartySignedUp(tradeParty))
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }

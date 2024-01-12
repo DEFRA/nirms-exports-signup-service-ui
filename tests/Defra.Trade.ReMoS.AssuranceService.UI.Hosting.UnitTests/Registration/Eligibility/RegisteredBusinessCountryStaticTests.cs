@@ -24,8 +24,8 @@ public class RegisteredBusinessCountryStaticTests : PageModelTestsBase
     {
         _systemUnderTest = new RegisteredBusinessCountryStaticModel(_mockLogger.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
     }
 
@@ -50,7 +50,7 @@ public class RegisteredBusinessCountryStaticTests : PageModelTestsBase
     {
         // arrange
         var guid = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
         // act
         var result = await _systemUnderTest!.OnGetAsync(guid);
@@ -65,7 +65,7 @@ public class RegisteredBusinessCountryStaticTests : PageModelTestsBase
     {
         // arrange
         var guid = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         // act
         var result = await _systemUnderTest!.OnGetAsync(guid);

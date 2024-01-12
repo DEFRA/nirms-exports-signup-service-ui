@@ -34,7 +34,7 @@ public class SignUpConfirmationModel : BasePageModel<SignUpConfirmationModel>
 
         if (TradePartyId != Guid.Empty)
         {
-            if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
