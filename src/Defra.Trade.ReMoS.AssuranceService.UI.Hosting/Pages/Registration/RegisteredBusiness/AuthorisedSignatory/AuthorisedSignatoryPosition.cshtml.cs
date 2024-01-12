@@ -41,7 +41,7 @@ public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignator
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(id).Result)
+        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }

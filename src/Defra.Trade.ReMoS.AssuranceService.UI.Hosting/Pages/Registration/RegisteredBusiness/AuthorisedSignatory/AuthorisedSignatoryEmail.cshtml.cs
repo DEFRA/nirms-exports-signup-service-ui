@@ -49,7 +49,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(id).Result)
+            if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }
