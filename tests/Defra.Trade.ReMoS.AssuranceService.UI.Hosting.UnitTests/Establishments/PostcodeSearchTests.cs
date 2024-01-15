@@ -29,10 +29,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             //TODO: Add setup for returning values when API referenced
-            var id = Guid.NewGuid();
+            var orgId = Guid.NewGuid();
 
             //Act
-            await _systemUnderTest!.OnGetAsync(id);
+            await _systemUnderTest!.OnGetAsync(orgId);
 
             //Assert
             _systemUnderTest.Postcode.Should().Be("");
@@ -182,14 +182,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
             TradePartyDto dto = new()
             {
-                Id = Guid.NewGuid(),
+                OrgId = Guid.NewGuid(),
                 PracticeName = "Test"
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(dto);
 
             //act
-            await _systemUnderTest!.OnGetAsync(dto.Id);
+            await _systemUnderTest!.OnGetAsync(dto.OrgId);
 
             //assert
             _systemUnderTest.BusinessName.Should().Be(dto.PracticeName);

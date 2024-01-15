@@ -113,7 +113,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         Guid? establishmentId = Guid.Empty;
 
-        if(!IsInputValid())
+        if(!IsInputValid() || !IsPostCodeValid())
         {
             return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
@@ -207,6 +207,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         if (County != null && County.Length > 100)
             ModelState.AddModelError(nameof(County), "County must be 100 characters or less");
 
+        if (ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
+    }
+
+    private bool IsPostCodeValid()
+    {
         if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 

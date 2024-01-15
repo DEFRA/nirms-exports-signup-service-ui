@@ -33,10 +33,10 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     public async Task OnGet_IfNoSavedParty_FboNumberShouldBeNull()
     {
         //Arrange
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyId);
+        await _systemUnderTest!.OnGetAsync(orgId);
 
         //Assert
         _systemUnderTest.FboNumber.Should().Be(string.Empty);
@@ -58,7 +58,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
             .ReturnsAsync(tradePartyFromApi);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.FboNumber.Should().Be("fbonum-123456-fbonum");
@@ -81,7 +81,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
             .ReturnsAsync(tradePartyFromApi);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.PhrNumber.Should().Be("123123");
@@ -102,7 +102,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
             .ReturnsAsync(tradePartyFromApi);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         //_systemUnderTest.FboNumber.Should().BeNull();

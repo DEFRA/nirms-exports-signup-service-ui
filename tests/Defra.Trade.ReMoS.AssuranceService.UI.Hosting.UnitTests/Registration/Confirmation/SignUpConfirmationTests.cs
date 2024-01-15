@@ -71,7 +71,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradePartyDto);
 
             //Act
-            _systemUnderTest?.OnGet(tradePartyId);
+            _systemUnderTest?.OnGet(Guid.NewGuid());
 
             //Assert
             _systemUnderTest?.Email?.Should().Be("test@test.com");
@@ -83,16 +83,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // arrange
             var tradeParty = new TradePartyDto { RemosBusinessSchemeNumber = "RMS-NI-000002", Address = new TradeAddressDto { TradeCountry = "NI" } };
             var tradePartyId = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8");
+            var orgId = Guid.NewGuid();
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
             _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(false);
 
             // act
-            var result = _systemUnderTest!.OnGet(tradePartyId);
+            var result = _systemUnderTest!.OnGet(orgId);
 
             // assert
             var expected =
-                new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = tradePartyId });
+                new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = orgId });
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
         }

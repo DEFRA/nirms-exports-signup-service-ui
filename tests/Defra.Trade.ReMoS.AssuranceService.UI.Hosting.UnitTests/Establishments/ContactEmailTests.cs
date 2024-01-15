@@ -75,12 +75,12 @@ public class ContactEmailTests : PageModelTestsBase
     public void OnGetChangeEstablishmentAddress_Returns_RedirectResult()
     {
         //Arrange
-        var tradePartyId = new Guid();
+        var orgId = new Guid();
         var establishmentId = new Guid();
         string NI_GBFlag = "GB";
 
         //Act
-        var result = _systemUnderTest?.OnGetChangeEstablishmentAddress(tradePartyId, establishmentId, NI_GBFlag);
+        var result = _systemUnderTest?.OnGetChangeEstablishmentAddress(orgId, establishmentId, NI_GBFlag);
 
         //Assert
         result?.GetType().Should().Be(typeof(RedirectToPageResult));

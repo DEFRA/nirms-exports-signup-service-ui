@@ -47,7 +47,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
                new { id = _systemUnderTest!.TradePartyId });
 
             // act
-            var result = await _systemUnderTest!.OnGetAsync(tradePartyId);
+            var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
             // assert
 
@@ -67,7 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
             _mockCheckAnswersService.Setup(x => x.ReadyForCheckAnswers(tradeParty)).Returns(true);
             // act
-            await _systemUnderTest!.OnGetAsync(tradePartyId);
+            await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("NI");
@@ -88,7 +88,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(tradePartyId).Result).Returns(tradeParty);
 
             // act
-            await _systemUnderTest!.OnGetAsync(tradePartyId);
+            await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
             // assert
             _systemUnderTest.NI_GBFlag.Should().Be("GB");
@@ -128,15 +128,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public void OnGetChangeEstablishmentAddress_Redirect_Successfully()
         {
             // arrange
-            var tradePartyId = Guid.NewGuid();
+            var orgId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
 
             // act
-            var result = _systemUnderTest!.OnGetChangeEstablishmentAddress(tradePartyId, establishmentId, NI_GBFlag);
+            var result = _systemUnderTest!.OnGetChangeEstablishmentAddress(orgId, establishmentId, NI_GBFlag);
 
             // assert
-            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = tradePartyId, establishmentId, NI_GBFlag });
+            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = orgId, establishmentId, NI_GBFlag });
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
         }
@@ -145,15 +145,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public void OnGetChangeEmail_Redirect_Successfully()
         {
             // arrange
-            var tradePartyId = Guid.NewGuid();
+            var orgId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             var NI_GBFlag = "NI";
 
             // act
-            var result = _systemUnderTest!.OnGetChangeEmail(tradePartyId, establishmentId, NI_GBFlag);
+            var result = _systemUnderTest!.OnGetChangeEmail(orgId, establishmentId, NI_GBFlag);
 
             // assert
-            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentContactEmailPath, new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
+            var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentContactEmailPath, new { id = orgId, locationId = establishmentId, NI_GBFlag });
             Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
             Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
         }

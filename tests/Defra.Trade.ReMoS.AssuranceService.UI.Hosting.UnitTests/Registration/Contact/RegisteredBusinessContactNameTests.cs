@@ -187,7 +187,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _mockTraderService.Verify();

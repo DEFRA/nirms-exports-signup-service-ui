@@ -229,7 +229,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
-        await _systemUnderTest.OnGetAsync(tradePartyId);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
@@ -254,7 +254,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
-        await _systemUnderTest.OnGetAsync(tradePartyId);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
@@ -286,7 +286,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.Complete));
 
-        await _systemUnderTest.OnGetAsync(tradePartyId);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);

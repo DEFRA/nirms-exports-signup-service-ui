@@ -355,15 +355,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [Test]
         public void OnGetChangeEmail_Redirect_Successfully()
         {
-            var tradePartyId = Guid.NewGuid();
+            var orgId = Guid.NewGuid();
             var establishmentId = Guid.NewGuid();
             string NI_GBFlag = "GB";
             var expected = new RedirectToPageResult(
                 Routes.Pages.Path.EstablishmentContactEmailPath, 
-                new { id = tradePartyId, locationId = establishmentId, NI_GBFlag});
+                new { id = orgId, locationId = establishmentId, NI_GBFlag});
 
             // Act
-            var result = _systemUnderTest?.OnGetChangeEmail(tradePartyId, establishmentId, NI_GBFlag);
+            var result = _systemUnderTest?.OnGetChangeEmail(orgId, establishmentId, NI_GBFlag);
 
             // Assert
             result.Should().NotBeNull();

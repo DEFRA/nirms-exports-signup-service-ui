@@ -71,7 +71,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .ReturnsAsync(tradePartyDto!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
 
@@ -129,13 +129,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [Test]
     public void OnGetChangeContactDetails_Redirect_Successfully()
     {
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeUpdateContactPath,
-            new { id = tradePartyId});
+            new { id = orgId});
 
         // Act
-        var result = _systemUnderTest?.OnGetChangeContactDetails(tradePartyId);
+        var result = _systemUnderTest?.OnGetChangeContactDetails(orgId);
 
         // Assert
         result.Should().NotBeNull();
@@ -147,13 +147,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [Test]
     public void OnGetChangeAuthRepresentativeDetails_Redirect_Successfully()
     {
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeUpdateAuthRepPath,
-            new { id = tradePartyId });
+            new { id = orgId });
 
         // Act
-        var result = _systemUnderTest?.OnGetChangeAuthRepresentativeDetails(tradePartyId);
+        var result = _systemUnderTest?.OnGetChangeAuthRepresentativeDetails(orgId);
 
         // Assert
         result.Should().NotBeNull();

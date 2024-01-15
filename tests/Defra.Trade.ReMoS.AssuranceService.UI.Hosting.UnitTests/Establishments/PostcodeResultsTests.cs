@@ -40,13 +40,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                     Address = "Test 2, line 1, city, TES1"
                 }
             };
-            var id = Guid.NewGuid();
+            var orgId = Guid.NewGuid();
             var postcode = "TES1";
 
             _mockEstablishmentService.Setup(x => x.GetTradeAddressApiByPostcodeAsync(postcode).Result).Returns(logisticsLocations);
             _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
             // act
-            await _systemUnderTest!.OnGetAsync(id, postcode);
+            await _systemUnderTest!.OnGetAsync(orgId, postcode);
 
             // assert
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
@@ -79,12 +79,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.SelectedEstablishment = Guid.NewGuid().ToString();
 
             _systemUnderTest!.ModelState.AddModelError("TestError", "Something broke");
-
-            var logisticsLocations = new LogisticsLocationDto
-            {
-                TradePartyId = _systemUnderTest!.TradePartyId,
-                Id = Guid.NewGuid()
-            };
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

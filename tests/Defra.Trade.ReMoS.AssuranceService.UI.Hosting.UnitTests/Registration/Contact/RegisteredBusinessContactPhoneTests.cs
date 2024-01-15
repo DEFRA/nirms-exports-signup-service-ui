@@ -190,7 +190,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _systemUnderTest!.PhoneNumber = phoneNumber;
 
             //Act
-            await _systemUnderTest.OnGetAsync(guid);
+            await _systemUnderTest.OnGetAsync(Guid.NewGuid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert            

@@ -178,7 +178,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.Position.Should().Be("");
@@ -225,7 +225,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(tp);
 
         //Act
-        await _systemUnderTest.OnGetAsync(tp.Id);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.BusinessName.Should().Be(tp.PracticeName);

@@ -84,7 +84,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.TradePartyId.Should().NotBe(Guid.Empty);
@@ -130,7 +130,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.EstablishmentsAdded.Should().Be(true);
@@ -234,7 +234,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.EstablishmentsAdded.Should().Be(true);
@@ -292,7 +292,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.BusinessDetails.Should().Be(TaskListStatus.COMPLETE);
@@ -342,7 +342,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);

@@ -56,7 +56,7 @@ public class SelfServeUpdateAuthRepDetailsTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
 
