@@ -11,19 +11,19 @@
         if (referer.Contains(Routes.RegistrationCheckYourAnswers))
         {
             <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
-   asp-route-id="@Model.TradePartyId"
+   asp-route-id="@Model.OrgId"
    class="govuk-back-link">Back</a>
         }
         else if (referer.Contains(Routes.AdditionalEstablishmentAddress))
         {
             <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
-   asp-route-id="@Model.TradePartyId"
+   asp-route-id="@Model.OrgId"
    asp-route-NI_GBFlag="@Model.NI_GBFlag"
    class="govuk-back-link">Back to dashboard</a>
         }
         else
         {
-            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+            <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back to dashboard</a>
         }
     }
 }
@@ -33,6 +33,7 @@
         <partial name="_ErrorSummary" model="ModelState" />
 
         <form method="POST" novalidate>
+            <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="NI_GBFlag" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">

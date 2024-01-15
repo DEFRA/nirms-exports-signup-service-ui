@@ -20,7 +20,7 @@ public class RegisteredBusinessAlreadyRegisteredTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGet_TraderId_ShouldBeSetToId()
+    public void OnGet_TradePartyId_ShouldBeSetToId()
     {
         //Arrange
         var id = Guid.NewGuid();
@@ -29,6 +29,6 @@ public class RegisteredBusinessAlreadyRegisteredTests : PageModelTestsBase
         _systemUnderTest!.OnGetAsync(id);
 
         //Assert
-        _systemUnderTest.TraderId.Should().Be(id);
+        _systemUnderTest.OrgId.Should().Be(id);
     }
 }

@@ -20,6 +20,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
     public string? AddAddressesComplete { get; set; } = string.Empty;
     public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
     public Guid TradePartyId { get; set; }
+    public Guid OrgId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     public string? NI_GBFlag { get; set; } = string.Empty;
@@ -37,14 +38,17 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Additional establishment manual address OnGet");
-        TradePartyId = id;
+        OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -83,14 +87,14 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, NI_GBFlag!);
+            return await OnGetAsync(OrgId, NI_GBFlag!);
         }
 
         if (AddAddressesComplete != null && AddAddressesComplete.Equals("no", StringComparison.OrdinalIgnoreCase))
         {
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentPostcodeSearchPath, 
-                new { id = TradePartyId, NI_GBFlag });
+                new { id = OrgId, NI_GBFlag });
         }
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
@@ -98,12 +102,12 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
         {
             return RedirectToPage(
              Routes.Pages.Path.RegistrationCheckYourAnswersPath,
-             new { id = TradePartyId });
+             new { id = OrgId });
         }
 
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
     public async Task<IActionResult> OnPostSaveAsync()
@@ -119,41 +123,41 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId, NI_GBFlag!);
+            return await OnGetAsync(OrgId, NI_GBFlag!);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = TradePartyId });
+            new { id = OrgId });
     }
 
-    public async Task<IActionResult> OnGetRemoveEstablishment(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
         logisticsLocation!.IsRemoved = true;
         await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
 
         if (LogisticsLocations?.Count > 0)
-            return await OnGetAsync(tradePartyId, NI_GBFlag);
+            return await OnGetAsync(orgId, NI_GBFlag);
         else
         {
-            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = tradePartyId, NI_GBFlag });
+            return RedirectToPage(Routes.Pages.Path.EstablishmentPostcodeSearchPath, new { id = orgId, NI_GBFlag });
         }
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = tradePartyId, establishmentId, NI_GBFlag });
+            new { id = orgId, establishmentId, NI_GBFlag });
     }
 
-    public IActionResult OnGetChangeEmail(Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEmail(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = tradePartyId, locationId = establishmentId, NI_GBFlag });
+            new { id = orgId, locationId = establishmentId, NI_GBFlag });
     }
 }

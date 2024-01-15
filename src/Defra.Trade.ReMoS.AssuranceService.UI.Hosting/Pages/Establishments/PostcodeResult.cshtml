@@ -6,7 +6,7 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+    <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back to dashboard</a>
 }
 
 <div class="govuk-grid-row">
@@ -27,13 +27,13 @@
                             <li>
                                 No addresses found for this postcode. Try searching for
                                 <a asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath"
-                                   asp-route-id="@Model.TradePartyId"
+                                   asp-route-id="@Model.OrgId"
                                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                     a different postcode
                                 </a>
                                 or
                                 <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
-                                   asp-route-id="@Model.TradePartyId"
+                                   asp-route-id="@Model.OrgId"
                                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                     enter an address manually.
                                 </a>
@@ -50,7 +50,7 @@
         }
 
 
-
+            <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="NI_GBFlag" />
             <h1 class="govuk-heading-l">
@@ -65,7 +65,7 @@
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
                 <p><span>@Model.Postcode</span> 
                     <a  asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath 
-                        asp-route-id="@Model.TradePartyId"
+                        asp-route-id="@Model.OrgId"
                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         Change
                     </a>
@@ -87,7 +87,7 @@
                 </summary>
                 <div class="govuk-details__text">
                     You can <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
-                       asp-route-id="@Model.TradePartyId"
+                       asp-route-id="@Model.OrgId"
                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         enter the full establishment address
                     </a>

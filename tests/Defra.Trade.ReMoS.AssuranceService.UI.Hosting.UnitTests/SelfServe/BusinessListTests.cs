@@ -56,7 +56,7 @@ public class BusinessListTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnGetNavigateToBusinessDashboard_RedirectsToSelfServeDashboard()
+    public void OnGetNavigateToBusinessDashboard_RedirectsToSelfServeDashboard()
     {
         // Arrange
         var orgId = Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649");
@@ -75,7 +75,7 @@ public class BusinessListTests : PageModelTestsBase
             new { id = tradePartyId });
 
         // Act
-        var result = await _systemUnderTest!.OnGetNavigateToBusinessDashboard(orgId);
+        var result = _systemUnderTest!.OnGetNavigateToBusinessDashboard(orgId);
 
         // Assert
         result.Should().NotBeNull();
@@ -259,7 +259,7 @@ public class BusinessListTests : PageModelTestsBase
             .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityRegulations));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-            new { id = _systemUnderTest!.TraderId });
+            new { id = _systemUnderTest!.TradePartyId });
 
         // Act
         var result = await _systemUnderTest.OnGetNavigateToSignup(orgId);
@@ -287,13 +287,13 @@ public class BusinessListTests : PageModelTestsBase
         _mockUserService
             .Setup(x => x.GetOrgDetailsById(_systemUnderTest!.User, It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
-        _systemUnderTest!.TraderId = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityFboNumber));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-            new { id = _systemUnderTest.TraderId });
+            new { id = _systemUnderTest.TradePartyId });
 
         // Act
         var result = await _systemUnderTest.OnGetNavigateToSignup(orgId);
@@ -320,7 +320,7 @@ public class BusinessListTests : PageModelTestsBase
         _mockUserService
             .Setup(x => x.GetOrgDetailsById(_systemUnderTest!.User, It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
-        _systemUnderTest!.TraderId = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgressEligibilityCountry));
@@ -329,7 +329,7 @@ public class BusinessListTests : PageModelTestsBase
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessCountryPath,
-            new { id = _systemUnderTest.TraderId });
+            new { id = _systemUnderTest.TradePartyId });
 
         // Act
         var result = await _systemUnderTest.OnGetNavigateToSignup(orgId);
@@ -356,7 +356,7 @@ public class BusinessListTests : PageModelTestsBase
         _mockUserService
             .Setup(x => x.GetOrgDetailsById(_systemUnderTest!.User, It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
-        _systemUnderTest!.TraderId = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.InProgress));
@@ -365,7 +365,7 @@ public class BusinessListTests : PageModelTestsBase
             .Returns(userOrgs);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegistrationTaskListPath,
-            new { id = _systemUnderTest.TraderId });
+            new { id = _systemUnderTest.TradePartyId });
 
         // Act
         var result = await _systemUnderTest.OnGetNavigateToSignup(orgId);
@@ -392,7 +392,7 @@ public class BusinessListTests : PageModelTestsBase
         _mockUserService
             .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
-        _systemUnderTest!.TraderId = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync((new TradePartyDto { Id = Guid.NewGuid() }, Core.Enums.TradePartySignupStatus.Complete));
@@ -401,7 +401,7 @@ public class BusinessListTests : PageModelTestsBase
             .Returns(userOrgs);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-            new { id = _systemUnderTest.TraderId });
+            new { id = _systemUnderTest.TradePartyId });
 
         // Act
         var result = await _systemUnderTest.OnGetNavigateToSignup(orgId);
@@ -428,7 +428,7 @@ public class BusinessListTests : PageModelTestsBase
         _mockUserService
             .Setup(x => x.GetOrgDetailsById(It.IsAny<ClaimsPrincipal>(), It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
-        _systemUnderTest!.TraderId = Guid.NewGuid();
+        _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.New));
@@ -437,7 +437,7 @@ public class BusinessListTests : PageModelTestsBase
             .Returns(userOrgs);
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-            new { id = _systemUnderTest.TraderId });
+            new { id = _systemUnderTest.TradePartyId });
 
         // Act
         var result = await _systemUnderTest.OnGetNavigateToSignup(orgId);

@@ -6,7 +6,7 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+    <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -33,7 +33,8 @@
             </div>
 
             <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-assuranceSubmit">Submit sign up</button>
-            <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="OrgId" />
         </form>
     </div>
 </div>

@@ -11,6 +11,8 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
     public string SelectedBusinessName { get; set; } = default!;
 
     public SelectedBusinessModel(
@@ -20,19 +22,19 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         _logger.LogInformation("SelectedBusiness OnGet");
-        TradePartyId = id;
+        OrgId = id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;
+        TradePartyId = tradeParty!.Id;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(id).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
-
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;
         
         return Page();
     }

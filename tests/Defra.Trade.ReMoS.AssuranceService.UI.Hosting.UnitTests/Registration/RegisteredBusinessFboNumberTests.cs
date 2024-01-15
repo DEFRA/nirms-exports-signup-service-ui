@@ -25,17 +25,18 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         _systemUnderTest = new RegisteredBusinessFboNumberModel(_mockLogger.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
     public async Task OnGet_IfNoSavedParty_FboNumberShouldBeNull()
     {
         //Arrange
-        var tradePartyId = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        var orgId = Guid.NewGuid();
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyId);
+        await _systemUnderTest!.OnGetAsync(orgId);
 
         //Assert
         _systemUnderTest.FboNumber.Should().Be(string.Empty);
@@ -55,10 +56,9 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyFromApi);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.FboNumber.Should().Be("fbonum-123456-fbonum");
@@ -79,10 +79,9 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyFromApi);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.PhrNumber.Should().Be("123123");
@@ -101,10 +100,9 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyFromApi);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(tradePartyFromApi.Id);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         //_systemUnderTest.FboNumber.Should().BeNull();
@@ -117,7 +115,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
         _systemUnderTest.OptionSelected = "fbo";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -130,7 +128,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_InvalidOrgId()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;
@@ -145,7 +143,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = new string('1', 26);
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "FBO number must be 25 characters or less";
 
         //Act
@@ -163,7 +161,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "";
         _systemUnderTest!.PracticeName = "Test";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "Select if your business has an FBO or PHR number";
 
         //Act
@@ -180,7 +178,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         //Arrange
         _systemUnderTest!.OptionSelected = "phr";
         _systemUnderTest!.PhrNumber = new string('1', 26);
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "PHR number must be 25 characters or less";
 
         //Act
@@ -195,8 +193,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;
@@ -209,7 +206,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         // Arrange
         _systemUnderTest!.OptionSelected = "none";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSubmitAsync();
@@ -225,7 +222,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSubmitAsync();
@@ -240,7 +237,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
     {
         // Arrange
         _systemUnderTest!.OptionSelected = "none";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSaveAsync();
@@ -256,7 +253,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = "fbonum-123456-fbonum";
-        _systemUnderTest.TraderId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // Act
         var result = await _systemUnderTest!.OnPostSaveAsync();
@@ -272,10 +269,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Arrange
         _systemUnderTest!.OptionSelected = "fbo";
         _systemUnderTest!.FboNumber = string.Empty;
-        _systemUnderTest.TraderId = Guid.NewGuid();
-        _mockTraderService
-            .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
-            .ReturnsAsync(true);
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "Enter your business's FBO number";
 
         // Act
@@ -292,10 +286,7 @@ public class RegisteredBusinessFboNumberTests : PageModelTestsBase
         // Arrange
         _systemUnderTest!.OptionSelected = "phr";
         _systemUnderTest!.PhrNumber = string.Empty;
-        _systemUnderTest.TraderId = Guid.NewGuid();
-        _mockTraderService
-            .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
-            .ReturnsAsync(true);
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var expectedResult = "Enter your business's PHR number";
 
         // Act

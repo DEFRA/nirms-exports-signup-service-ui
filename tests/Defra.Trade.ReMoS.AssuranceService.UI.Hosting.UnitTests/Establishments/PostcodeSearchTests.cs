@@ -20,7 +20,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             _systemUnderTest = new PostcodeSearchModel(_mockLogger.Object, _mockTraderService.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
         }
 
         [Test]
@@ -28,10 +29,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             //TODO: Add setup for returning values when API referenced
-            var id = Guid.NewGuid();
+            var orgId = Guid.NewGuid();
 
             //Act
-            await _systemUnderTest!.OnGetAsync(id);
+            await _systemUnderTest!.OnGetAsync(orgId);
 
             //Assert
             _systemUnderTest.Postcode.Should().Be("");
@@ -119,7 +120,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [Test]
         public async Task OnGetAsync_InvalidOrgId()
         {
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
             var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
             var redirectResult = result as RedirectToPageResult;
@@ -134,7 +135,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var expectedHint = "If your place of destination belongs to a different business";
             var expectedHeading = "Add a place of destination";
             var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
 
@@ -147,8 +147,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [Test]
         public async Task OnGetAsync_RedirectRegisteredBusiness()
         {
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
             var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
             var redirectResult = result as RedirectToPageResult;
@@ -180,18 +179,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnPostcodeGet_ReturnBusinessName()
         {
             //arrange
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(false);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
             TradePartyDto dto = new()
             {
-                Id = Guid.NewGuid(),
+                OrgId = Guid.NewGuid(),
                 PracticeName = "Test"
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(dto);
 
             //act
-            await _systemUnderTest!.OnGetAsync(dto.Id);
+            await _systemUnderTest!.OnGetAsync(dto.OrgId);
 
             //assert
             _systemUnderTest.BusinessName.Should().Be(dto.PracticeName);

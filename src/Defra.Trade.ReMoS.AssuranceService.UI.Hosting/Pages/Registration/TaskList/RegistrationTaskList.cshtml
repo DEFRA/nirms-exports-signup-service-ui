@@ -36,7 +36,7 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.SelectedBusinessPath asp-route-id="@Model.RegistrationID" aria-describedby="selected-business">
+                            <a asp-page=@Routes.Pages.Path.SelectedBusinessPath asp-route-id="@Model.OrgId" aria-describedby="selected-business">
                                 Selected business
                             </a>
                         </span>
@@ -44,7 +44,7 @@
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.RegistrationID" aria-describedby="purposeofbusiness">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessCountryPath asp-route-id="@Model.OrgId" aria-describedby="purposeofbusiness">
                                 Purpose of business
                             </a>
                         </span>
@@ -52,7 +52,7 @@
                     </li>
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessFboNumberPath asp-route-id="@Model.RegistrationID" aria-describedby="fbophr">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessFboNumberPath asp-route-id="@Model.OrgId" aria-describedby="fbophr">
                                 FBO or PHR number
                             </a>
                         </span>
@@ -68,7 +68,7 @@
                 <ul class="app-task-list__items">
                     <li class="app-task-list__item">
                         <span class="app-task-list__task-name">
-                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.RegistrationID" aria-describedby="contact-details">
+                            <a asp-page=@Routes.Pages.Path.RegisteredBusinessContactNamePath asp-route-id="@Model.OrgId" aria-describedby="contact-details">
                                 Contact person
                             </a>
                         </span>
@@ -85,7 +85,7 @@
                             }
                             else
                             {
-                                <a asp-page=@Routes.Pages.Path.AuthorisedSignatoryDetailsPath asp-route-id="@Model.RegistrationID" aria-describedby="authorised-signatory-details">
+                                <a asp-page=@Routes.Pages.Path.AuthorisedSignatoryDetailsPath asp-route-id="@Model.OrgId" aria-describedby="authorised-signatory-details">
                                     Authorised representative
                                 </a>
                             }
@@ -107,7 +107,7 @@
                                 @if (Model.EstablishmentsAdded)
                                 {
                                     <a asp-page=@Routes.Pages.Path.AdditionalEstablishmentAddressPath
-                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-id="@Model.OrgId"
                                        asp-route-NI_GBFlag="GB"
                                        aria-describedby="establistment-dispatch">
                                         Places of dispatch
@@ -116,7 +116,7 @@
                                 else
                                 {
                                     <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
-                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-id="@Model.OrgId"
                                        asp-route-NI_GBFlag="GB"
                                        aria-describedby="establistment-dispatch">
                                         Places of dispatch
@@ -146,7 +146,7 @@
                                 @if (Model.EstablishmentsAdded)
                                 {
                                     <a asp-page=@Routes.Pages.Path.AdditionalEstablishmentAddressPath
-                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-id="@Model.OrgId"
                                        asp-route-NI_GBFlag="NI"
                                        aria-describedby="establistment-destination">
                                         Places of destination
@@ -155,7 +155,7 @@
                                 else
                                 {
                                     <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
-                                       asp-route-id="@Model.RegistrationID"
+                                       asp-route-id="@Model.OrgId"
                                        asp-route-NI_GBFlag="NI"
                                        aria-describedby="establistment-destination">
                                         Places of destination
@@ -196,7 +196,7 @@
                             }
                             else
                             {
-                                <a asp-page=@Routes.Pages.Path.RegistrationCheckYourAnswersPath asp-route-id="@Model.RegistrationID" aria-describedby="complete_submit">
+                                <a asp-page=@Routes.Pages.Path.RegistrationCheckYourAnswersPath asp-route-id="@Model.OrgId" aria-describedby="complete_submit">
                                     Check answers and submit sign up
                                 </a>
                             }     
@@ -209,5 +209,6 @@
 
         </ol>
     </div>
-    <input type="hidden" asp-for="RegistrationID" />
+    <input type="hidden" asp-for="TradePartyId" />
+    <input type="hidden" asp-for="OrgId" />
 </div>

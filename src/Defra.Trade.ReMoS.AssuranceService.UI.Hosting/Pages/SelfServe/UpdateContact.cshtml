@@ -5,7 +5,7 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.RegistrationID" class="govuk-back-link">Back</a>
+    <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a>
 }
 
 <div class="govuk-grid-row">
@@ -59,12 +59,13 @@
                     <p id="Number_Error" class="govuk-error-message" gds-validation-for="PhoneNumber"></p>
                     <input class="govuk-input govuk-!-width-full" id="PhoneNumber" asp-for="PhoneNumber" type="tel">
                 </div>
-                <input type="hidden" asp-for="RegistrationID" />
+                <input type="hidden" asp-for="TradePartyId" />
+                <input type="hidden" asp-for="OrgId" />
             </fieldset>
 
             <div class="govuk-button-group">
                 <button asp-page-handler="submit" class="govuk-button" id="buttonSelfServeUpdateContactSubmit">Save contact person details</button>
-                <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath"asp-route-id="@Model.RegistrationID" class="govuk-link">Cancel</a>
+                <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath"asp-route-id="@Model.OrgId" class="govuk-link">Cancel</a>
             </div>
         </form>
 

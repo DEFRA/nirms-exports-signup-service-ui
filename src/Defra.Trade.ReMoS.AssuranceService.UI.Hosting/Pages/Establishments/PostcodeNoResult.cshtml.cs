@@ -12,6 +12,8 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     [BindProperty]
     public Guid TradePartyId { get; set; }
     [BindProperty]
+    public Guid OrgId { get; set; }
+    [BindProperty]
     public string Postcode { get; set; } = string.Empty;
     [BindProperty]
     public string NI_GBFlag { get; set; } = string.Empty;
@@ -23,13 +25,16 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
     {}
 
-    public IActionResult OnGet(Guid id, string NI_GBFlag, string postcode)
+    public async Task<IActionResult> OnGet(Guid id, string NI_GBFlag, string postcode)
     {
-        TradePartyId = id;
+        OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;
 
-        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
+
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -47,7 +52,7 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
             ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }

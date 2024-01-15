@@ -31,6 +31,8 @@ public class RegistratonTaskListTests : PageModelTestsBase
     {
         _systemUnderTest = new RegistrationTaskListModel(_mockLogger.Object, _mockTraderService.Object, _mockEstablishmentService.Object, _checkAnswersService);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
@@ -38,15 +40,14 @@ public class RegistratonTaskListTests : PageModelTestsBase
     {
         //Arrange
         //TODO: Add setup for returning values when API referenced
-        Guid guid = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);            
+        Guid guid = Guid.NewGuid();          
 
         //Act
         await _systemUnderTest!.OnGetAsync(guid);
 
         //Assert
 
-        _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
+        _systemUnderTest.TradePartyId.Should().NotBe(Guid.Empty);
     }
 
     [Test]
@@ -54,7 +55,6 @@ public class RegistratonTaskListTests : PageModelTestsBase
     {
         //Arrange
         Guid guid = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         var tradeContact = new TradeContactDto
         {
@@ -84,17 +84,17 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
-        _systemUnderTest.RegistrationID.Should().NotBe(Guid.Empty);
+        _systemUnderTest.TradePartyId.Should().NotBe(Guid.Empty);
     }
 
     [Test]
     public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPlacesOfDispatchComplete()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();            
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");            
 
         var tradeContact = new TradeContactDto
         {
@@ -128,10 +128,9 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.EstablishmentsAdded.Should().Be(true);
@@ -184,8 +183,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_StatusTestsAllComplete()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto
         {
@@ -236,7 +234,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.EstablishmentsAdded.Should().Be(true);
@@ -253,7 +251,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_StatusTestsNotAllComplete_NoReviewAnswers()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto
         {
@@ -294,7 +292,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.BusinessDetails.Should().Be(TaskListStatus.COMPLETE);
@@ -310,7 +308,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_AuthorisedSignatoryIsContact()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto
         {
@@ -342,10 +340,9 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
         _systemUnderTest.ContactDetails.Should().Be(TaskListStatus.COMPLETE);
@@ -507,7 +504,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_InvalidOrgId()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;
@@ -518,8 +515,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;

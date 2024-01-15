@@ -52,6 +52,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public Guid? EstablishmentId { get; set; }
@@ -76,16 +78,19 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
-        TradePartyId = id;
+        OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId;
         Uprn = uprn;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -114,9 +119,9 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         Guid? establishmentId = Guid.Empty;
 
-        if(!IsInputValid())
+        if(!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         try
@@ -126,12 +131,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
+            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()
@@ -190,6 +195,32 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         if (!ModelState.IsValid)
             return false;
 
+        if (EstablishmentName != null && EstablishmentName.Length > 100)
+            ModelState.AddModelError(nameof(EstablishmentName), "Establishment name must be 100 characters or less");
+
+        if (LineOne != null && LineOne.Length > 50)
+            ModelState.AddModelError(nameof(LineOne), "Address line 1 must be 50 characters or less");
+
+        if (LineTwo != null && LineTwo.Length > 50)
+            ModelState.AddModelError(nameof(LineTwo), "Address line 2 must be 50 characters or less");
+
+        if (CityName != null && CityName.Length > 100)
+            ModelState.AddModelError(nameof(CityName), "Town or city must be 100 characters or less");
+
+        if (PostCode != null && PostCode.Length > 100)
+            ModelState.AddModelError(nameof(PostCode), "Post code must be 100 characters or less");
+
+        if (County != null && County.Length > 100)
+            ModelState.AddModelError(nameof(County), "County must be 100 characters or less");
+
+        if (ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
+    }
+
+    private bool IsPostCodeValid()
+    {
         if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 

@@ -24,7 +24,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
         [BindProperty]
         public string? BusinessName { get; set; }
         [BindProperty]
-        public Guid TraderId { get; set; }
+        public Guid TradePartyId { get; set; }
+        [BindProperty]
+        public Guid OrgId { get; set; }
         [BindProperty]
         public Guid SignatoryId { get; set; }
         [BindProperty]
@@ -40,13 +42,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            TraderId = id;
+            OrgId = id;
+            var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+            TradePartyId = tradeParty!.Id;
 
-            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
-            if (_traderService.IsTradePartySignedUp(id).Result)
+            if (_traderService.IsTradePartySignedUp(tradeParty))
             {
                 return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
             }
@@ -62,7 +66,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             if (!IsInputValid())
             {
-                return await OnGetAsync(TraderId);
+                return await OnGetAsync(OrgId);
             }
 
             await SubmitEmail();
@@ -74,18 +78,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 countryFlag = "NI";
             }
 
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TraderId);
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
 
             if ( establishments != null && establishments.Any())
             {
                 return RedirectToPage(
                     Routes.Pages.Path.AdditionalEstablishmentAddressPath,
-                    new { id = TraderId, NI_GBFlag = countryFlag });
+                    new { id = OrgId, NI_GBFlag = countryFlag });
             }
 
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentPostcodeSearchPath,
-                new { id = TraderId, NI_GBFlag = countryFlag });
+                new { id = OrgId, NI_GBFlag = countryFlag });
         }
 
         public async Task<IActionResult> OnPostSaveAsync()
@@ -94,13 +98,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
             if (!IsInputValid())
             {
-                return await OnGetAsync(TraderId);
+                return await OnGetAsync(OrgId);
             }
 
             await SubmitEmail();
             return RedirectToPage(
                 Routes.Pages.Path.RegistrationTaskListPath,
-                new { id = TraderId });
+                new { id = OrgId });
         }
 
         private async Task SubmitEmail()
@@ -111,7 +115,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 
         private async Task<TradePartyDto?> GetSignatoryEmailFromApiAsync()
         {
-            var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+            var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             if (tradeParty != null && tradeParty.AuthorisedSignatory != null)
             {
                 SignatoryId = tradeParty.AuthorisedSignatory.Id;
@@ -128,7 +132,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             var tradeParty = await GetSignatoryEmailFromApiAsync();
             return new TradePartyDto()
             {
-                Id = TraderId,
+                Id = TradePartyId,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,

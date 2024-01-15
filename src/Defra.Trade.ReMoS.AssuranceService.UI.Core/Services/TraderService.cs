@@ -53,6 +53,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return new TradePartyDto();
         }
 
+        public async Task<TradePartyDto?> GetTradePartyByOrgIdAsync(Guid orgId)
+        {
+            if (orgId != Guid.Empty)
+            {
+                return await _apiIntegration.GetTradePartyByOrgIdAsync(orgId);
+            }
+            return new TradePartyDto();
+        }
+
         public async Task<TradePartyDto?> UpdateAuthorisedSignatoryAsync(TradePartyDto tradePartyDTO)
         {
             return await _apiIntegration.UpdateAuthorisedSignatoryAsync(tradePartyDTO);
@@ -107,11 +116,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
         /// <param name="claims"></param>
         /// <param name="id"></param>
         /// <returns><c>true</c> if organisation is present in user's claims, <c>false</c> otherwise</returns>
-        public async Task<bool> ValidateOrgId(IEnumerable<Claim> claims, Guid id)
+        public bool ValidateOrgId(IEnumerable<Claim> claims, Guid id)
         {
-            var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
             var userEnrolledOrganisations = claims.ToList().Find(c => c.Type == "userEnrolledOrganisations")!.Value;
-            var str = tradeParty?.OrgId.ToString();
+            var str = id.ToString();
             if (str != null)
             {
                 return userEnrolledOrganisations.Contains(str);
@@ -119,10 +127,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return false;
         }
 
-        public async Task<bool> IsTradePartySignedUp(Guid id)
+        public bool IsTradePartySignedUp(TradePartyDto? tradeParty)
         {
-            var tradeParty = await _apiIntegration.GetTradePartyByIdAsync(id);
-
             return (tradeParty?.SignUpRequestSubmittedBy) != Guid.Empty;
         }
 

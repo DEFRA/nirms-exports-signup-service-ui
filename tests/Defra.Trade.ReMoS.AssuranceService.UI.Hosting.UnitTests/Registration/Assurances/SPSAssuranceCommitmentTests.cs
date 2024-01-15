@@ -28,19 +28,21 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     {
         _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
     public async Task OnGet_ReturnsId()
     {
         // arrange
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
 
         //act
-        await _systemUnderTest!.OnGetAsync(tradePartyId);
+        await _systemUnderTest!.OnGetAsync(orgId);
 
         //assert
-        _systemUnderTest.TraderId.Should().Be(tradePartyId);
+        _systemUnderTest.OrgId.Should().Be(orgId);
     }
 
     [Test]
@@ -57,7 +59,6 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         //act
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
         await _systemUnderTest!.OnPostSubmitAsync();
 
@@ -228,7 +229,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
-        await _systemUnderTest.OnGetAsync(tradePartyId);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
@@ -253,7 +254,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
 
-        await _systemUnderTest.OnGetAsync(tradePartyId);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
@@ -284,9 +285,8 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
             .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.Complete));
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
-        await _systemUnderTest.OnGetAsync(tradePartyId);
+        await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
@@ -295,7 +295,7 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_InvalidOrgId()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
         var redirectResult = result as RedirectToPageResult;
