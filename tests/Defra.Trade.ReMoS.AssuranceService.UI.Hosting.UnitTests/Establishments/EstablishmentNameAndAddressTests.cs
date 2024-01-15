@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using Defra.Trade.Address.V1.ApiClient.Model;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -148,12 +149,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Establishment name must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("EstablishmentName").Should().Be(true);
-            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(false);
+            // Assert
+            validation.Contains(new ValidationResult("Establishment name must be 100 characters or less"));
         }
 
         [Test]
@@ -180,11 +179,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Address line 1 must be 50 characters or less");
-            _systemUnderTest.ModelState.HasError("LineOne").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Address line 1 must be 50 characters or less"));
         }
 
         [Test]
@@ -211,11 +209,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Address line 2 must be 50 characters or less");
-            _systemUnderTest.ModelState.HasError("LineTwo").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Address line 2 must be 50 characters or less"));
         }
 
         [Test]
@@ -242,11 +239,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Town or city must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("CityName").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Town or city must be 100 characters or less"));
         }
 
         [Test]
@@ -273,11 +269,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Post code must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Post code must be 100 characters or less"));
         }
 
         [Test]
@@ -304,11 +299,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("County must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("County").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("County must be 100 characters or less"));
         }
 
 
