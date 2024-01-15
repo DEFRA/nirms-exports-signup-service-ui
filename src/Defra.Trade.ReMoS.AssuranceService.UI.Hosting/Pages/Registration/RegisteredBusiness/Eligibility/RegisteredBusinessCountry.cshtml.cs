@@ -40,6 +40,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
         _logger.LogInformation("Country OnGet");
         OrgId = Id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        PracticeName = tradeParty?.PracticeName ?? string.Empty;
         TradePartyId = tradeParty!.Id;
 
         if (Id != Guid.Empty)
@@ -62,8 +63,6 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
                 new { id = OrgId });
             }
         }
-
-        PracticeName = tradeParty?.PracticeName ?? string.Empty;
 
         return Page();
     }

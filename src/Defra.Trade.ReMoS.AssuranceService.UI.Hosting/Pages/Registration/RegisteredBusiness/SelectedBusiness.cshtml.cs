@@ -24,6 +24,7 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
         _logger.LogInformation("SelectedBusiness OnGet");
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;
         TradePartyId = tradeParty!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
@@ -34,8 +35,6 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
-
-        SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;
         
         return Page();
     }
