@@ -1,3 +1,4 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -26,7 +27,6 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
     {
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
-        TradePartyId = tradeParty!.Id;
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -44,7 +44,9 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
         {
             Confirmed = tradeParty.RegulationsConfirmed;
         }
-            return Page();
+
+        TradePartyId = tradeParty!.Id;
+        return Page();
     }
 
     public async Task<IActionResult> OnPostSubmitAsync()

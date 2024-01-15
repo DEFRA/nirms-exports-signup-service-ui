@@ -127,7 +127,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
             return false;
         }
 
-        public bool IsTradePartySignedUp(TradePartyDto tradeParty)
+        public bool IsTradePartySignedUp(TradePartyDto? tradeParty)
         {
             return (tradeParty?.SignUpRequestSubmittedBy) != Guid.Empty;
         }
