@@ -19,29 +19,35 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter an establishment name using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter an establishment name")]
+    [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter address line 1")]
+    [StringLength(50, ErrorMessage = "Address line 1 must be 50 characters or less")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
+    [StringLength(50, ErrorMessage = "Address line 2 must be 50 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter a town or city")]
+    [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
+    [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode")]
     [Required(ErrorMessage = "Enter a postcode")]
+    [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     public string PostCode { get; set; } = string.Empty;
 
     [BindProperty]
