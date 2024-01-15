@@ -30,6 +30,7 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
             PageContext = PageModelMockingUtils.MockPageContext()
         };
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
@@ -53,7 +54,6 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
                 ModifiedBy = Guid.NewGuid()
             }
         };
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDto)!);
 
         //Act

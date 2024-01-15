@@ -25,6 +25,7 @@ public class SelectedBusinessTests
         _systemUnderTest = new SelectedBusinessModel(_mockLogger.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
@@ -32,7 +33,6 @@ public class SelectedBusinessTests
     {
         //Arrange
         var id = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(id);
@@ -49,7 +49,6 @@ public class SelectedBusinessTests
         _mockTraderService
             .Setup(action => action.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>());
@@ -72,7 +71,6 @@ public class SelectedBusinessTests
     [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());

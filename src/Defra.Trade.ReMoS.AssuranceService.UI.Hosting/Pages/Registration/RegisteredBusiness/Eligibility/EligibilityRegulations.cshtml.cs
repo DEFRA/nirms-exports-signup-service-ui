@@ -27,6 +27,10 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
     {
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        if (tradeParty != null)
+        {
+            Confirmed = tradeParty.RegulationsConfirmed;
+        }
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -39,11 +43,6 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
 
         _logger.LogInformation("Eligibility Regulations OnGet");
-
-        if (tradeParty != null)
-        {
-            Confirmed = tradeParty.RegulationsConfirmed;
-        }
 
         TradePartyId = tradeParty!.Id;
         return Page();

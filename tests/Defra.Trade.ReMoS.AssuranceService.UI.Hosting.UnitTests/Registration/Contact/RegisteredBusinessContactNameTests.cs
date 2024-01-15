@@ -23,6 +23,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
             PageContext = PageModelMockingUtils.MockPageContext()
         };
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
@@ -30,7 +31,6 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     {
         // arrange
         Guid test = Guid.NewGuid();
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         // act
         await _systemUnderTest.OnGetAsync(test);
@@ -140,7 +140,6 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         _systemUnderTest!.Name = "";
         var expectedResult = "Enter a name";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -158,7 +157,6 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         _systemUnderTest!.Name = "";
         var expectedResult = "Enter a name";
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest.OnPostSaveAsync();
@@ -187,7 +185,6 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(guid);
@@ -211,7 +208,6 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());

@@ -31,12 +31,12 @@ public class PostcodeNoResultTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGet_PopulateModelPopertiesNI()
+    public async Task OnGet_PopulateModelPopertiesNI()
     {
         // arrange
 
         // act
-        _systemUnderTest!.OnGet(Guid.NewGuid(), "NI", "TES1");
+        await _systemUnderTest!.OnGet(Guid.NewGuid(), "NI", "TES1");
 
         // assert
         _systemUnderTest.ContentCountry.Should().Be("Northern Ireland");
@@ -46,12 +46,12 @@ public class PostcodeNoResultTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGet_PopulateModelPopertiesGB()
+    public async Task OnGet_PopulateModelPopertiesGB()
     {
         // arrange
 
         // act
-        _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TES1");
+        await _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TES1");
 
         // assert
         _systemUnderTest.ContentCountry.Should().Be("England, Scotland and Wales");
@@ -74,7 +74,6 @@ public class PostcodeNoResultTests : PageModelTestsBase
     [Test]
     public async Task OnGetAsync_RedirectRegisteredBusiness()
     {
-        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
         var result = await _systemUnderTest!.OnGet(Guid.NewGuid(), "GB", "TEST1");
