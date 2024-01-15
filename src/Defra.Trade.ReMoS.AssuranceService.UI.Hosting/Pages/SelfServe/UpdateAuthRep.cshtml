@@ -33,27 +33,27 @@
 
                 <p class="govuk-hint">The authorised representative is the person who is authorised to sign legal documents on behalf of @Model.BusinessName. This is the person who will accept the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" target="_blank" rel="noopener noreferrer">terms and conditions of the scheme</a>.</p>
                 <div class="govuk-form-group" @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)>
-                    <label class="govuk-label" for="authorised-representative-name">
+                    <label class="govuk-label" for="Name">
                         Name
                     </label>
-                    <input class="govuk-input" id="authorised-representative-name" asp-for="Name" type="text">
+                    <input class="govuk-input" id="Name" asp-for="Name" type="text">
                 </div>
                 <div class="govuk-form-group" @(ModelState.HasError("Position") ? "govuk-form-group--error" : null)>
-                    <label class="govuk-label" for="authorised-representative-position">
+                    <label class="govuk-label" for="Position">
                         Position
                     </label>
-                    <input class="govuk-input" id="authorised-representative-position" asp-for="Position" type="text">
+                    <input class="govuk-input" id="Position" asp-for="Position" type="text">
                 </div>
                 <div class="govuk-form-group" @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)>
-                    <label class="govuk-label" for="authorised-representative-email">
+                    <label class="govuk-label" for="Email">
                         Email address
                     </label>
-                    <input class="govuk-input govuk-!-width-full" id="authorised-representative-email" asp-for="Email" type="email">
+                    <input class="govuk-input govuk-!-width-full" id="Email" asp-for="Email" type="email">
                 </div>
                 <div class="govuk-checkboxes">
                     <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
-                        <input class="govuk-checkboxes__input" id="confirm" asp-for="TandCs" type="checkbox" value="true">
-                        <label class="govuk-label govuk-checkboxes__label" for="confirm">
+                        <input class="govuk-checkboxes__input" id="TandCs" asp-for="TandCs" type="checkbox" value="true">
+                        <label class="govuk-label govuk-checkboxes__label" for="TandCs">
                             I confirm that the authorised representative has read and understood the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" target="_blank" rel="noopener noreferrer">terms and conditions</a> of the Northern Ireland Retail Movement Scheme. They are responsible for ensuring the requirements of the scheme are followed by the business.
                         </label>
                     </div>

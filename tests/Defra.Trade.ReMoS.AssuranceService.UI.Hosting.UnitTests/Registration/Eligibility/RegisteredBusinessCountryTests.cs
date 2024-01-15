@@ -2,10 +2,8 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -44,6 +42,23 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         //Assert
         _ = _systemUnderTest.Country.Should().Be("");
+    }
+
+    [Test]
+    public async Task OnGet_CountrySavedSetToFalse_IfNoSavedTradeParty()
+    {
+        //Arrange
+        TradePartyDto tradeParty = null!;
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()).Result).Returns(tradeParty);
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
+
+        //Act
+        _ = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+
+        //Assert
+        _ = _systemUnderTest.Country.Should().Be("");
+        _ = _systemUnderTest.CountrySaved.Should().Be(false);
     }
 
     [Test]
@@ -229,6 +244,24 @@ public class RegisteredBusinessCountryTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
     }
+
+    [Test]
+    public async Task OnPostSubmitAsync_SaevCountry()
+    {
+        // Arrange
+        _systemUnderTest!.CountrySaved = false;
+        _systemUnderTest!.GBChosen = "send";
+        _systemUnderTest!.Country = "GB";
+        _systemUnderTest!.TradePartyId = Guid.Empty;
+
+        // Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // Assert
+        result.Should().BeOfType<RedirectToPageResult>();
+        ((RedirectToPageResult)result!).PageName.Should().Be(Routes.Pages.Path.RegistrationTaskListPath);
+    }
+
 }
 
 

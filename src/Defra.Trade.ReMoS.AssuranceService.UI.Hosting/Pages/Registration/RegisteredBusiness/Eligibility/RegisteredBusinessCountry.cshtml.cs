@@ -65,17 +65,6 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
 
         PracticeName = tradeParty?.PracticeName ?? string.Empty;
 
-        if (Country != "")
-        {
-            if (Country == "NI")
-            {
-                GBChosen = "recieve";
-            }
-            else{
-                GBChosen = "send";
-            }
-        }
-
         return Page();
     }
 
