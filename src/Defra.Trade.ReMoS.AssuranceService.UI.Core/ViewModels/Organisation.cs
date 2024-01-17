@@ -1,5 +1,6 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.Xml;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
@@ -31,6 +32,7 @@ public class Organisation
             && this.PracticeName.Equals(item.PracticeName);
     }
 
+    [ExcludeFromCodeCoverage]
     public override int GetHashCode()
     {
         return this.OrganisationId.GetHashCode();
