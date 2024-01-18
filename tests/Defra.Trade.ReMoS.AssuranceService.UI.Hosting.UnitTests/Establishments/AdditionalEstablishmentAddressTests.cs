@@ -257,7 +257,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
 
             //Act
-            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
+            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -278,7 +278,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
             //Act
-            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
+            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -300,7 +300,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
 
             //Act
-            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid());
+            await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert

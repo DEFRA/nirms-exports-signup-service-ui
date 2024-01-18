@@ -131,13 +131,13 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
             new { id = OrgId });
     }
 
-    public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
         var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
         logisticsLocation!.IsRemoved = true;
         await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?.ToList();
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
 
         if (LogisticsLocations?.Count > 0)
             return await OnGetAsync(orgId, NI_GBFlag);
