@@ -604,5 +604,45 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             Assert.AreEqual(TradePartyApprovalStatus.SignupStarted, result);
         }
 
+        [Test]
+        public async Task GetTradePartyByOrgIdAsync_WhenOrgIdIsEmpty_ReturnNewTradePartyDto()
+        {
+            // arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.Empty;
+
+            // act
+            var result = await _traderService.GetTradePartyByOrgIdAsync(orgId);
+
+            // assert
+            result!.Id.Should().Be(Guid.Empty);
+            result!.OrgId.Should().Be(Guid.Empty);
+        }
+
+        [Test]
+        public async Task GetTradePartyByOrgIdAsync_WhenOrgIdIsValid_ReturnValidTradePartyDto()
+        {
+            // arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            TradePartyDto tradePartyDTO = new TradePartyDto()
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = orgId,
+                SignUpRequestSubmittedBy = Guid.Empty,
+                ApprovalStatus = TradePartyApprovalStatus.SignupStarted
+            };
+            _mockApiIntegration.Setup(x => x.GetTradePartyByOrgIdAsync(orgId)).ReturnsAsync(tradePartyDTO);
+
+            // act
+            var result = await _traderService.GetTradePartyByOrgIdAsync(orgId);
+
+            // assert
+            Assert.AreEqual(tradePartyDTO, result);
+        }
+
     }
 }

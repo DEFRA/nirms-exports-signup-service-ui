@@ -5,6 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -108,5 +109,20 @@ public class ContactEmailTests : PageModelTestsBase
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+    }
+
+    [Test]
+    public async Task OnPostSubmit_IfInputNotValid_ReloadPage()
+    {
+        //Arrange
+        _systemUnderTest!.Email = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest@test.com";
+
+        //Act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+        //var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        result?.GetType().Should().Be(typeof(RedirectToPageResult));
+        (result as RedirectToPageResult)?.PageName?.Equals(Routes.Pages.Path.EstablishmentContactEmailPath);
     }
 }
