@@ -1,4 +1,4 @@
-﻿@import "../../node_modules/govuk-frontend/govuk/all";
+﻿@import "../../node_modules/govuk-frontend/dist/govuk/all";
 
 // Task list pattern
 
@@ -100,6 +100,11 @@
 
 .govuk-link-16 {
     font-size: 16px;
+}
+
+// govuk-frontend v5 override for tag component
+.govuk-tag {
+    max-width: none;
 }
 
 @media (max-width: 760px) {

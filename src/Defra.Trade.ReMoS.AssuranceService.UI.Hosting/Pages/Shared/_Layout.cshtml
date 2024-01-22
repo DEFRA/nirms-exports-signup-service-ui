@@ -77,7 +77,8 @@
     </header>
 </head>
 
-<body class="govuk-body">
+<body class="govuk-template__body">
+    <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script> <!-- NEW 5.0 -->
     <div class="govuk-width-container">
         @await RenderSectionAsync("Signout", false)
         @if (!IsSectionDefined("Signout"))
@@ -168,9 +169,10 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/all.js"></script>
-<script>
-    window.GOVUKFrontend.initAll()
+<script type="module" src="~/js/govuk-frontend.min.js"></script>
+<script type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
 </script>
 
 @await RenderSectionAsync("Scripts", required: false)
