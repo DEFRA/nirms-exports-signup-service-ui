@@ -31,7 +31,7 @@
         <h2 class="govuk-heading-m">
             Your businesses
         </h2>
-        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        <dl class="govuk-summary-list   ">
             
                 @foreach (var business in Model.Businesses)
                 {
@@ -77,14 +77,15 @@
                 }
             
         </dl>
+        <p class="govuk-!-margin-bottom-9 govuk-!-font-size-19">
+            <a class="govuk-link" asp-page-handler="RefreshBusinesses">
+                Refresh list of businesses
+            </a>
+        </p>
 
         <div class="govuk-button-group">
             <a class="govuk-button govuk-button--secondary" asp-page="@Routes.Pages.Path.SelfServeAddBusinessPath">Add a business</a>
         </div>
-        <p>
-            <a class="govuk-link" asp-page-handler="RefreshBusinesses">
-                Refresh list of businesses<span class="govuk-visually-hidden"> address</span>
-            </a>
-        </p>
+        
     </div>
 </div>
