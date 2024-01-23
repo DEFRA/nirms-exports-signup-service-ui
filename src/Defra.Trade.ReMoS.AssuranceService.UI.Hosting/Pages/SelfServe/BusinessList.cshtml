@@ -7,15 +7,15 @@
     {
         switch (approvalStatus)
         {
-            case "APPROVED FOR NIRMS":
+            case "Approved for NIRMS":
                 return "green";
-            case "PENDING APPROVAL":
+            case "Pending approval":
                 return "orange";
-            case "NOT SIGNED-UP":
+            case "Not signed-up":
                 return "grey";
-            case "SIGN-UP STARTED":
+            case "Sign-up started":
                 return "blue";
-            case "SIGN-UP REJECTED":
+            case "Sign-up rejected":
                 return "red";
             default:
                 return "grey";
@@ -26,14 +26,13 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">
-            Northern Ireland Retail Movement Scheme - PLACEHOLDER
+            Northern Ireland Retail Movement Scheme
         </h1>
         <h2 class="govuk-heading-m">
             Your businesses
         </h2>
         <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-            <form method="post">
-                <input type="hidden" asp-for="OrgId" />
+            
                 @foreach (var business in Model.Businesses)
                 {
                     <div class="govuk-summary-list__row">
@@ -76,7 +75,7 @@
                         </dd>
                     </div>
                 }
-            </form>
+            
         </dl>
 
         <div class="govuk-button-group">
