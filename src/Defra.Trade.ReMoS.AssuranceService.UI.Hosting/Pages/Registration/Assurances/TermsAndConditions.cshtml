@@ -18,10 +18,10 @@
         </h1>
 
         <form class="form" method="post">
-            <p>You must share the <a href="~/terms-conditions" target="_blank" rel="noopener noreferrer">full terms and conditions of the scheme</a> with the authorised representative for your business.</p>
+            <p class="govuk-body">You must share the <a href="~/terms-conditions" target="_blank" rel="noopener noreferrer">full terms and conditions of the scheme</a> with the authorised representative for your business.</p>
 
 
-            <p>Date of declaration: @DateTime.Now.ToString("d MMMM yyyy")</p>
+            <p class="govuk-body">Date of declaration: @DateTime.Now.ToString("d MMMM yyyy")</p>
             <div class="govuk-form-group @(ModelState.HasError("TandCs") ? "govuk-form-group--error" : null)">
                 <p id="TandCs_Error" class="govuk-error-message" gds-validation-for="TandCs"></p>
                 <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
