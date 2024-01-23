@@ -117,3 +117,13 @@
         margin-top: 15px;
     }
 }
+
+.govuk-link-16 {
+    font-size: 16px;
+}
+
+@media print {
+    .govuk-link-16 {
+        font-size: 14px;
+    }
+}
