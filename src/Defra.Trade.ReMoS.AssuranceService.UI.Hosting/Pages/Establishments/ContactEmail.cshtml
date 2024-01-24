@@ -9,20 +9,20 @@
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
     {
         <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
-           asp-route-id="@Model.TradePartyId"
+           asp-route-id="@Model.OrgId"
            class="govuk-back-link">Back</a>
     }
     else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.AdditionalEstablishmentAddress))
     {
         <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
-           asp-route-id="@Model.TradePartyId"
+           asp-route-id="@Model.OrgId"
            asp-route-NI_GBFlag="@Model.NI_GBFlag"
            class="govuk-back-link">Back to dashboard</a>
     }
     else
     {
         <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
-            asp-route-id="@Model.TradePartyId"
+            asp-route-id="@Model.OrgId"
             asp-route-establishmentId="@Model.EstablishmentId"
             asp-route-NI_GBFlag="@Model.NI_GBFlag"
            class="govuk-back-link">Back to dashboard</a>
@@ -33,6 +33,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ErrorSummary" model="ModelState" />
         <form method="POST" novalidate>
+            <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />
             <input type="hidden" asp-for="NI_GBFlag" />
@@ -50,7 +51,7 @@
                         </p>
 
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
-                    <p>
+                    <p class="govuk-body">
                         <span>
                             @(Model.Location?.Name != null ? $"{Model.Location.Name}," : string.Empty)
                             @(Model.Location?.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
@@ -61,7 +62,7 @@
                         </span>
                         <a class="govuk-link"
                            asp-page-handler="ChangeEstablishmentAddress"
-                           asp-route-tradepartyid="@Model.TradePartyId"
+                           asp-route-orgid="@Model.OrgId"
                            asp-route-establishmentId="@Model.EstablishmentId"
                            asp-route-NI_GBFlag="@Model.NI_GBFlag">
                             Change<span class="govuk-visually-hidden"> address</span>

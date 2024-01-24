@@ -8,14 +8,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class RegisteredBusinessAlreadyRegisteredModel : BasePageModel<RegisteredBusinessAlreadyRegisteredModel>
 {
     [BindProperty]
-    public Guid TraderId { get; set; }
+    public Guid OrgId { get; set; }
 
     public RegisteredBusinessAlreadyRegisteredModel(ILogger<RegisteredBusinessAlreadyRegisteredModel> logger) : base(logger)
     {}
     public IActionResult OnGetAsync(Guid id)
     {
         _logger.LogInformation("Already registered OnGet");
-        TraderId = id;
+        OrgId = id;
 
         return Page();
     }

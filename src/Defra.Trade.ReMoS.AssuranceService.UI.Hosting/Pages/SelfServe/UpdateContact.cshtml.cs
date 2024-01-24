@@ -16,7 +16,9 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 {
     #region UI Model
     [BindProperty]
-    public Guid RegistrationID { get; set; }
+    public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
@@ -57,9 +59,10 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
         _logger.LogInformation("Self Serve Update Contact OnGet");
-        RegistrationID = Id;
+        OrgId = Id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-        if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
@@ -74,17 +77,17 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(RegistrationID);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitContactInfo();
         return RedirectToPage(
             Routes.Pages.Path.SelfServeDashboardPath,
-            new { id = RegistrationID });
+            new { id = OrgId });
     }
     private async Task GetTradePartyInfoFromApiAsync()
     {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null && tradeParty.Contact != null)
         {
             Name = tradeParty.Contact.PersonName ?? string.Empty;
@@ -100,7 +103,8 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
     {
         return new TradePartyDto()
         {
-            Id = RegistrationID,
+            Id = TradePartyId,
+            ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
             SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
             Contact = new TradeContactDto()
             {
@@ -117,6 +121,6 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
     private async Task SubmitContactInfo()
     {
         TradePartyDto tradeParty = GenerateDTO();
-        RegistrationID = await _traderService.UpdateTradePartyContactSelfServeAsync(tradeParty);
+        TradePartyId = await _traderService.UpdateTradePartyContactSelfServeAsync(tradeParty);
     }
 }

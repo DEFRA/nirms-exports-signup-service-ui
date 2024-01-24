@@ -7,7 +7,7 @@
 
 @section Back{
     @{
-        <a asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath" asp-route-NI_GBFlag="@Model.NI_GBFlag" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back</a >
+        <a asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath" asp-route-NI_GBFlag="@Model.NI_GBFlag" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a >
     }
 }
 
@@ -25,16 +25,16 @@
 
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-            <p>If you cannot find the address for the postcode you entered, try:</p>
+            <p class="govuk-body">If you cannot find the address for the postcode you entered, try:</p>
 
             <ul class="govuk-list govuk-list--bullet">
                 <li>making sure you've <a asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath
-                                       asp-route-id="@Model.TradePartyId"
+                                       asp-route-id="@Model.OrgId"
                                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                         entered the postcode correctly</a></li>
                 <li>
                     <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
-                       asp-route-id="@Model.TradePartyId"
+                       asp-route-id="@Model.OrgId"
                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         enter the full establishment address
                     </a>

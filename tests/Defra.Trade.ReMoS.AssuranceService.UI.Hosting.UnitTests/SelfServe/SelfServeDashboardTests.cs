@@ -30,13 +30,15 @@ public class SelfServeDashboardTests : PageModelTestsBase
         {
             PageContext = PageModelMockingUtils.MockPageContext()
         };
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf") });
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
 
     [Test]
     public async Task OnGet_ModelPropertiesSetToValidValues_IfDataPresentInApi()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
         TradePartyDto tradePartyDto = new()
         {
             Id = guid,
@@ -65,18 +67,15 @@ public class SelfServeDashboardTests : PageModelTestsBase
             }
         };
         _mockTraderService
-            .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
-            .ReturnsAsync(true);
-        _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
 
         //Assert
 
-        _systemUnderTest.RegistrationID.Should().Be(guid);
+        _systemUnderTest.TradePartyId.Should().Be(guid);
         _systemUnderTest.BusinessName.Should().Be("TestPractice");
         _systemUnderTest.RmsNumber.Should().Be("RMS-GB-000002");
         
@@ -98,11 +97,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
     public async Task OnGet_ModelProperties_SetToNull_IfNoSavedData()
     {
         //Arrange
-        Guid guid = Guid.NewGuid();
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
         TradePartyDto tradePartyDto = null!;
-        _mockTraderService
-            .Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>()))
-            .ReturnsAsync(true);
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .Returns(Task.FromResult(tradePartyDto)!);
@@ -112,7 +108,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
 
         //Assert
 
-        _systemUnderTest.RegistrationID.Should().Be(guid);
+        _systemUnderTest.TradePartyId.Should().Be(guid);
         _systemUnderTest.BusinessName.Should().BeNullOrEmpty();
         _systemUnderTest.RmsNumber.Should().BeNullOrEmpty();
         
@@ -133,13 +129,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [Test]
     public void OnGetChangeContactDetails_Redirect_Successfully()
     {
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeUpdateContactPath,
-            new { id = tradePartyId});
+            new { id = orgId});
 
         // Act
-        var result = _systemUnderTest?.OnGetChangeContactDetails(tradePartyId);
+        var result = _systemUnderTest?.OnGetChangeContactDetails(orgId);
 
         // Assert
         result.Should().NotBeNull();
@@ -151,13 +147,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [Test]
     public void OnGetChangeAuthRepresentativeDetails_Redirect_Successfully()
     {
-        var tradePartyId = Guid.NewGuid();
+        var orgId = Guid.NewGuid();
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeUpdateAuthRepPath,
-            new { id = tradePartyId });
+            new { id = orgId });
 
         // Act
-        var result = _systemUnderTest?.OnGetChangeAuthRepresentativeDetails(tradePartyId);
+        var result = _systemUnderTest?.OnGetChangeAuthRepresentativeDetails(orgId);
 
         // Assert
         result.Should().NotBeNull();

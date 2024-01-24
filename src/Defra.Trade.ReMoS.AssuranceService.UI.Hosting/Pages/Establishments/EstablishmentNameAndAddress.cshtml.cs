@@ -19,33 +19,41 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter an establishment name using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter an establishment name")]
+    [StringLength(100, ErrorMessage = "Establishment name must be 100 characters or less")]
     public string EstablishmentName { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 1 using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter address line 1")]
+    [StringLength(50, ErrorMessage = "Address line 1 must be 50 characters or less")]
     public string LineOne { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter address line 2 using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
+    [StringLength(50, ErrorMessage = "Address line 2 must be 50 characters or less")]
     public string? LineTwo { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a town or city using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
     [Required(ErrorMessage = "Enter a town or city")]
+    [StringLength(100, ErrorMessage = "Town or city must be 100 characters or less")]
     public string CityName { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-&'._/()]*$", ErrorMessage = "Enter a county using only letters, numbers, brackets, full stops, hyphens, underscores, forward slashes, apostrophes or ampersands")]
+    [StringLength(100, ErrorMessage = "County must be 100 characters or less")]
     public string? County { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})", ErrorMessage = "Enter a real postcode")]
     [Required(ErrorMessage = "Enter a postcode")]
+    [StringLength(100, ErrorMessage = "Post code must be 100 characters or less")]
     public string PostCode { get; set; } = string.Empty;
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public Guid? EstablishmentId { get; set; }
@@ -70,16 +78,19 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
-        TradePartyId = id;
+        OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId;
         Uprn = uprn;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
+
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(TradePartyId).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -108,9 +119,9 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         Guid? establishmentId = Guid.Empty;
 
-        if(!IsInputValid())
+        if(!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         try
@@ -120,12 +131,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(TradePartyId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = TradePartyId, locationId = establishmentId, NI_GBFlag });
+            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()
@@ -202,6 +213,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         if (County != null && County.Length > 100)
             ModelState.AddModelError(nameof(County), "County must be 100 characters or less");
 
+        if (ModelState.ErrorCount > 0)
+            return false;
+
+        return true;
+    }
+
+    private bool IsPostCodeValid()
+    {
         if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 

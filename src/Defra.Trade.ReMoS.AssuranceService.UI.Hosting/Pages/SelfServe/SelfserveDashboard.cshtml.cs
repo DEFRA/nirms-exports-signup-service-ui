@@ -13,7 +13,9 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 {
     #region ui model variables
     [BindProperty]
-    public Guid RegistrationID { get; set; }
+    public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
     public string BusinessName { get; set; } = default!;
     public string RmsNumber { get; set; } = default!;
     public string ContactName { get; set; } = default!;
@@ -44,9 +46,10 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     {
         _logger.LogInformation("OnGet Self serve dashboard");
 
-        RegistrationID = Id;
+        OrgId = Id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
-        if (!_traderService.ValidateOrgId(User.Claims, RegistrationID).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
@@ -63,7 +66,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
     private async Task PopulateModelPropertiesFromApi()
     {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(RegistrationID);
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
         if (tradeParty == null || tradeParty?.Id == Guid.Empty)
         {
@@ -98,25 +101,25 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
     }
 
-    public IActionResult OnGetChangeContactDetails(Guid tradePartyId)
+    public IActionResult OnGetChangeContactDetails(Guid orgId)
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeUpdateContactPath,
-            new { id = tradePartyId});
+            new { id = orgId});
     }
 
-    public IActionResult OnGetChangeAuthRepresentativeDetails(Guid tradePartyId)
+    public IActionResult OnGetChangeAuthRepresentativeDetails(Guid orgId)
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeUpdateAuthRepPath,
-            new { id = tradePartyId });
+            new { id = orgId });
     }
 
-    public IActionResult OnGetAddEstablishment(Guid tradePartyId, string countryChosen)
+    public IActionResult OnGetAddEstablishment(Guid orgId, string countryChosen)
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentHoldingPath,
-            new { id = tradePartyId, country = countryChosen });
+            new { id = orgId, country = countryChosen });
     }
 
 }

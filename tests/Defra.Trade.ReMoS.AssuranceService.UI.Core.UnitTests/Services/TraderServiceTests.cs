@@ -471,7 +471,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
         }
 
         [Test]
-        public async Task ValidateOrgId_Returns_True()
+        public void ValidateOrgId_Returns_True()
         {
             // Assert
             _traderService = new TraderService(_mockApiIntegration.Object);
@@ -480,28 +480,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 new Claim("userEnrolledOrganisations", "[{\"organisationId\":\"152691a1-6d8b-e911-a96f-000d3a29b5de\",\"practiceName\":\"ABC ACCOUNTANCY & MARKETING SERVICES LTD\"}]")
             };
 
-            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
-
-            var tradePartyDTO = new TradePartyDto
-            {
-                Id = Guid.NewGuid(),
-                PartyName = "Trade party Ltd",
-                NatureOfBusiness = "Wholesale Hamster Supplies",
-                CountryName = "United Kingdom",
-                OrgId = Guid.Parse("152691a1-6d8b-e911-a96f-000d3a29b5de")
-            };
-
-            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
+            var guid = Guid.Parse("152691a1-6d8b-e911-a96f-000d3a29b5de");
 
             // Act
-            var result = await _traderService!.ValidateOrgId(claims, Guid.NewGuid());
+            var result = _traderService!.ValidateOrgId(claims, guid);
 
             // Assert
             Assert.IsTrue(result);
         }
 
         [Test]
-        public async Task ValidateOrgId_Returns_False()
+        public void ValidateOrgId_Returns_False()
         {
             // Assert
             _traderService = new TraderService(_mockApiIntegration.Object);
@@ -512,31 +501,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
 
-            var tradePartyDTO = new TradePartyDto
-            {
-                Id = Guid.NewGuid(),
-                PartyName = "Trade party Ltd",
-                NatureOfBusiness = "Wholesale Hamster Supplies",
-                CountryName = "United Kingdom",
-                OrgId = Guid.NewGuid()
-            };
-
-            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
-
             // Act
-            var result = await _traderService!.ValidateOrgId(claims, Guid.NewGuid());
+            var result = _traderService!.ValidateOrgId(claims, guid);
 
             // Assert
             Assert.IsFalse(result);
         }
 
         [Test]
-        public async Task IsTradePartySignedUp_Returns_True()
+        public void IsTradePartySignedUp_Returns_True()
         {
             // Assert
             _traderService = new TraderService(_mockApiIntegration.Object);
-
-            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
 
             var tradePartyDTO = new TradePartyDto
             {
@@ -548,22 +524,18 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 SignUpRequestSubmittedBy = Guid.NewGuid()                
             };
 
-            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
-
             // Act
-            var result = await _traderService!.IsTradePartySignedUp(Guid.NewGuid());
+            var result = _traderService!.IsTradePartySignedUp(tradePartyDTO);
 
             // Assert
             Assert.IsTrue(result);
         }
 
         [Test]
-        public async Task IsTradePartySignedUp_Returns_False()
+        public void IsTradePartySignedUp_Returns_False()
         {
             // Assert
             _traderService = new TraderService(_mockApiIntegration.Object);
-
-            var guid = Guid.Parse("4e2df7aa-8141-49b7-ad54-44e15ba24bec");
 
             var tradePartyDTO = new TradePartyDto
             {
@@ -575,10 +547,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 SignUpRequestSubmittedBy = Guid.Empty
             };
 
-            _mockApiIntegration.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).Returns(Task.FromResult(tradePartyDTO)!);
-
             // Act
-            var result = await _traderService!.IsTradePartySignedUp(Guid.NewGuid());
+            var result = _traderService!.IsTradePartySignedUp(tradePartyDTO);
 
             // Assert
             Assert.IsFalse(result);
@@ -632,6 +602,46 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 
             // Assert
             Assert.AreEqual(TradePartyApprovalStatus.SignupStarted, result);
+        }
+
+        [Test]
+        public async Task GetTradePartyByOrgIdAsync_WhenOrgIdIsEmpty_ReturnNewTradePartyDto()
+        {
+            // arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.Empty;
+
+            // act
+            var result = await _traderService.GetTradePartyByOrgIdAsync(orgId);
+
+            // assert
+            result!.Id.Should().Be(Guid.Empty);
+            result!.OrgId.Should().Be(Guid.Empty);
+        }
+
+        [Test]
+        public async Task GetTradePartyByOrgIdAsync_WhenOrgIdIsValid_ReturnValidTradePartyDto()
+        {
+            // arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var orgId = Guid.NewGuid();
+            TradePartyDto tradePartyDTO = new TradePartyDto()
+            {
+                Id = Guid.NewGuid(),
+                PartyName = "Trade party Ltd",
+                NatureOfBusiness = "Wholesale Hamster Supplies",
+                CountryName = "United Kingdom",
+                OrgId = orgId,
+                SignUpRequestSubmittedBy = Guid.Empty,
+                ApprovalStatus = TradePartyApprovalStatus.SignupStarted
+            };
+            _mockApiIntegration.Setup(x => x.GetTradePartyByOrgIdAsync(orgId)).ReturnsAsync(tradePartyDTO);
+
+            // act
+            var result = await _traderService.GetTradePartyByOrgIdAsync(orgId);
+
+            // assert
+            Assert.AreEqual(tradePartyDTO, result);
         }
 
     }

@@ -12,11 +12,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         public Task<Guid> UpdateTradePartyContactAsync(TradePartyDto tradePartyDTO);
         public Task<TradePartyDto?> UpdateAuthorisedSignatoryAsync(TradePartyDto tradePartyDTO);
         public Task<TradePartyDto?> GetTradePartyByIdAsync(Guid Id);
+        public Task<TradePartyDto?> GetTradePartyByOrgIdAsync(Guid orgId);
         Task<Guid> AddTradePartyAddressAsync(Guid partyId, TradeAddressDto addressDTO);
         Task<(TradePartyDto? tradeParty, TradePartySignupStatus signupStatus)> GetDefraOrgBusinessSignupStatus(Guid orgId);
         Task<TradePartyApprovalStatus> GetDefraOrgApprovalStatus(Guid orgId);
-        Task<bool> ValidateOrgId(IEnumerable<Claim> claims, Guid id);
-        public Task<bool> IsTradePartySignedUp(Guid id);
+        bool ValidateOrgId(IEnumerable<Claim> claims, Guid id);
+        public bool IsTradePartySignedUp(TradePartyDto? tradeParty);
         Task<Guid> UpdateTradePartyContactSelfServeAsync(TradePartyDto tradePartyDTO);
         Task<Guid> UpdateAuthRepSelfServeAsync(TradePartyDto tradePartyDTO);
     }

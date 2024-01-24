@@ -28,6 +28,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         {
             _systemUnderTest = new IsAuthorisedSignatoryModel(_mockTraderService.Object, _mockEstablishmentService.Object, _mockLogger.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         }
 
         [Test]
@@ -42,7 +44,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 {
                     Id = tradePartyId
                 });
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -348,7 +349,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         [Test]
         public async Task OnGetAsync_InvalidOrgId()
         {
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
             var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
             var redirectResult = result as RedirectToPageResult;
@@ -359,8 +360,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         [Test]
         public async Task OnGetAsync_RedirectRegisteredBusiness()
         {
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
             var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
             var redirectResult = result as RedirectToPageResult;

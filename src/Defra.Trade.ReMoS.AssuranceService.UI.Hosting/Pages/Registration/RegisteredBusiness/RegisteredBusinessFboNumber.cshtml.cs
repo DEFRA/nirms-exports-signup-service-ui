@@ -32,33 +32,37 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
     public string? PhrNumber { get; set; } = string.Empty;
 
     [BindProperty]
-    public Guid TraderId { get; set; }
+    public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public string? PracticeName { get; set; } = string.Empty;
-        
+
     public RegisteredBusinessFboNumberModel(
-        ILogger<RegisteredBusinessFboNumberModel> logger, 
-        ITraderService traderService) : base( logger, traderService )
-    {}
+        ILogger<RegisteredBusinessFboNumberModel> logger,
+        ITraderService traderService) : base(logger, traderService)
+    { }
 
     #endregion props and ctor
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
         _logger.LogInformation("FBO Number OnGet");
-        TraderId = Id;
+        OrgId = Id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(TraderId).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
-        await PopulateModelProperties(TraderId);
+        await PopulateModelProperties(TradePartyId);
 
         return Page();
     }
@@ -70,22 +74,22 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TraderId);
+            return await OnGetAsync(OrgId);
         }
 
-        await SaveNumberToApiAsync(TraderId);
+        await SaveNumberToApiAsync(TradePartyId);
 
         if (OptionSelected == "none")
-        {      
+        {
             return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
-                new { id = TraderId });
+                new { id = OrgId });
         }
         else
         {
             return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessContactNamePath,
-                new { id = TraderId });
+                new { id = OrgId });
         }
 
     }
@@ -97,22 +101,22 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TraderId);
+            return await OnGetAsync(OrgId);
         }
 
-        await SaveNumberToApiAsync(TraderId);
+        await SaveNumberToApiAsync(TradePartyId);
 
         if (OptionSelected == "none")
         {
             return RedirectToPage(
                 Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath,
-                new { id = TraderId });
+                new { id = OrgId });
         }
         else
         {
             return RedirectToPage(
                 Routes.Pages.Path.RegistrationTaskListPath,
-                new { id = TraderId });
+                new { id = OrgId });
         }
     }
 
@@ -131,37 +135,37 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         }
     }
 
-    private async Task PopulateModelProperties(Guid TraderId)
+    private async Task PopulateModelProperties(Guid TradePartyId)
     {
-        if (TraderId == Guid.Empty)
-            throw new ArgumentNullException(nameof(TraderId));
+        if (TradePartyId == Guid.Empty)
+            throw new ArgumentNullException(nameof(TradePartyId));
 
         TradePartyDto? tradeParty = await GetNumberFromApiAsync();
-        
-        if(tradeParty != null)
+
+        if (tradeParty != null)
         {
             FboNumber = tradeParty.FboNumber;
             PhrNumber = tradeParty.PhrNumber;
             OptionSelected = tradeParty.FboPhrOption;
             PracticeName = tradeParty.PracticeName;
-        }      
-            }
+        }
+    }
 
     private async Task<TradePartyDto?> GetNumberFromApiAsync()
     {
-        TradePartyDto? tradePartyDto = await _traderService.GetTradePartyByIdAsync(TraderId);
+        TradePartyDto? tradePartyDto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         return tradePartyDto;
 
-    }   
+    }
 
-    private async Task SaveNumberToApiAsync(Guid TraderId)
+    private async Task SaveNumberToApiAsync(Guid TradePartyId)
     {
-        if (TraderId == Guid.Empty)
+        if (TradePartyId == Guid.Empty)
         {
-            throw new ArgumentNullException(nameof(TraderId));
+            throw new ArgumentNullException(nameof(TradePartyId));
         }
         
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TraderId);
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null)
         {
             tradeParty.FboNumber = FboNumber;

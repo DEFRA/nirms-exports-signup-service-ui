@@ -8,7 +8,7 @@
 @section Back{
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegisteredBusinessFboPhrGuidance))
     {
-        <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath" asp-route-id="@Model.TraderId" class="govuk-back-link">Back</a>
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a>
     }
     else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.BusinessList))
     {
@@ -67,7 +67,7 @@
 
         <h2 class="govuk-heading-m">Privacy notice</h2>
         @*<p>To learn more about the personal data that we collect, you can read the privacy notice in the <a href="https://www.gov.uk/government/collections/the-windsor-framework-further-detail-and-publications" target="_blank" rel="noopener noreferrer">guidance for the Windsor Framework</a>.</p>*@
-        <p>To learn more about the personal data that we collect, you can read the <a href="/privacy-policy">privacy notice</a>.</p>
+        <p>To learn more about the personal data that we collect, you can read the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">privacy notice</a>.</p>
 
         <form method="POST" novalidate>
             <div class="govuk-form-group @(ModelState.HasError("Confirmed") ? "govuk-form-group--error" : null)">
@@ -81,7 +81,8 @@
             </div>
 
             <button class="govuk-button" asp-page-handler="submit" id="button-elig_regulations_Submit data-module="govuk-button">Continue</button>
-            <input type="hidden" asp-for="TraderId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="OrgId" />
         </form>
     </div>
 </div>

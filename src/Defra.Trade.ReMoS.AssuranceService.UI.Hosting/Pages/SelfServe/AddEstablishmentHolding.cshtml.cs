@@ -1,5 +1,7 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 
@@ -10,12 +12,23 @@ public class AddEstablishmentHoldingModel : BasePageModel<AddEstablishmentHoldin
 {
     [BindProperty]
     public Guid RegistrationId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
     public string Country { get; set; } = default!;
     public string CountryText { get; set; } = "Add a place of dispatch";
 
-    public IActionResult OnGet(Guid id, string country)
+    public AddEstablishmentHoldingModel(
+    ILogger<AddEstablishmentHoldingModel> logger,
+    IEstablishmentService establishmentService,
+    ITraderService traderService) : base(logger, traderService, establishmentService)
+    { }
+
+    public async Task<IActionResult> OnGet(Guid id, string country)
     {
-        RegistrationId = id;
+        OrgId = id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        RegistrationId = tradeParty!.Id;
+
         Country = country;
 
         if(Country == "NI")
@@ -30,6 +43,6 @@ public class AddEstablishmentHoldingModel : BasePageModel<AddEstablishmentHoldin
     {
         return RedirectToPage(
                 Routes.Pages.Path.SelfServeDashboardPath,
-                new { id = RegistrationId });
+                new { id = OrgId });
     }
 }

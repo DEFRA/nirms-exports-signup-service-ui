@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using Defra.Trade.Address.V1.ApiClient.Model;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -25,6 +26,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             _systemUnderTest = new EstablishmentNameAndAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         }
 
         [Test]
@@ -32,7 +35,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             //TODO: Add setup for returning values when API referenced
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             //Act
             await _systemUnderTest!.OnGetAsync(Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"), Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188"), null);
 
@@ -71,7 +73,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -101,7 +102,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -132,7 +132,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -148,12 +147,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Establishment name must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("EstablishmentName").Should().Be(true);
-            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(false);
+            // Assert
+            validation.Contains(new ValidationResult("Establishment name must be 100 characters or less"));
         }
 
         [Test]
@@ -164,7 +161,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -180,11 +176,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Address line 1 must be 50 characters or less");
-            _systemUnderTest.ModelState.HasError("LineOne").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Address line 1 must be 50 characters or less"));
         }
 
         [Test]
@@ -195,7 +190,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -211,11 +205,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Address line 2 must be 50 characters or less");
-            _systemUnderTest.ModelState.HasError("LineTwo").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Address line 2 must be 50 characters or less"));
         }
 
         [Test]
@@ -226,7 +219,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -242,11 +234,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Town or city must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("CityName").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Town or city must be 100 characters or less"));
         }
 
         [Test]
@@ -257,7 +248,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -273,11 +263,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("Post code must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("PostCode").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("Post code must be 100 characters or less"));
         }
 
         [Test]
@@ -288,7 +277,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -304,11 +292,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
+            var validation = ValidateModel(_systemUnderTest);
 
-            //Assert
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-            _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be("County must be 100 characters or less");
-            _systemUnderTest.ModelState.HasError("County").Should().Be(true);
+            // Assert
+            validation.Contains(new ValidationResult("County must be 100 characters or less"));
         }
 
 
@@ -320,7 +307,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -351,7 +337,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
             _mockEstablishmentService
                 .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
                 .Throws(new BadHttpRequestException("error message"));
@@ -401,7 +386,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.PostCode = "";
 
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
@@ -416,7 +400,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         {
             //Arrange
             var expectedHeading = "Add a place of destination";
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
 
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), null, "NI");
@@ -428,7 +411,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [Test]
         public async Task OnGetAsync_InvalidOrgId()
         {
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(false);
+            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
             var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), null);
             var redirectResult = result as RedirectToPageResult;
@@ -573,8 +556,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         [Test]
         public async Task OnGetAsync_RedirectRegisteredBusiness()
         {
-            _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).ReturnsAsync(true);
-            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<Guid>())).ReturnsAsync(true);
+            _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(true);
 
             var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), null);
             var redirectResult = result as RedirectToPageResult;

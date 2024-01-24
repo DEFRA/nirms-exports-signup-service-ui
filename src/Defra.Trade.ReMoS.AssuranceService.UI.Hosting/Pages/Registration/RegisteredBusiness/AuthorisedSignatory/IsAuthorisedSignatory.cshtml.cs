@@ -21,6 +21,8 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     [BindProperty]
     public Guid ContactId { get; set; }
@@ -39,13 +41,15 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        TradePartyId = id;
+        OrgId = id;
+        var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
+        TradePartyId = tradeParty!.Id;
 
-        if (!_traderService.ValidateOrgId(User.Claims, TradePartyId).Result)
+        if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(id).Result)
+        if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -66,7 +70,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
 
         if (!ModelState.IsValid)
         {           
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitAuthSignatory();
@@ -86,15 +90,15 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
             {
                 return RedirectToPage(
                     Routes.Pages.Path.AdditionalEstablishmentAddressPath,
-                    new { id = TradePartyId, NI_GBFlag = countryFlag });
+                    new { id = OrgId, NI_GBFlag = countryFlag });
             }
 
             return RedirectToPage(
                 Routes.Pages.Path.EstablishmentPostcodeSearchPath,
-                new { id = TradePartyId, NI_GBFlag = countryFlag });
+                new { id = OrgId, NI_GBFlag = countryFlag });
         }
 
-        return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = TradePartyId });
+        return RedirectToPage(Routes.Pages.Path.AuthorisedSignatoryNamePath, new { id = OrgId });
     }
 
     public async Task<IActionResult> OnPostSaveAsync()
@@ -103,11 +107,11 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         ValidateAttribute();
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(TradePartyId);
+            return await OnGetAsync(OrgId);
         }
 
         await SubmitAuthSignatory();
-        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = TradePartyId });
+        return RedirectToPage(Routes.Pages.Path.RegistrationTaskListPath, new { id = OrgId });
     }
 
     #region private methods

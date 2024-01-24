@@ -12,7 +12,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confi
 public class SignUpConfirmationModel : BasePageModel<SignUpConfirmationModel>
 {
     [BindProperty]
-    public Guid TraderId { get; set; }
+    public Guid TradePartyId { get; set; }
+    [BindProperty]
+    public Guid OrgId { get; set; }
 
     public string? Email { get; set; } = string.Empty;
     public string StartNowPage { get; set; } = string.Empty;
@@ -26,17 +28,18 @@ public class SignUpConfirmationModel : BasePageModel<SignUpConfirmationModel>
 
     public async Task<IActionResult> OnGet(Guid id)
     {
-        TraderId = id;
+        OrgId = id;
+        TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
         StartNowPage = _config.GetValue<string>("ExternalLinks:StartNowPage");
 
-        if (TraderId != Guid.Empty)
+        if (TradePartyId != Guid.Empty)
         {
-            if (!_traderService.ValidateOrgId(User.Claims, TraderId).Result)
+            if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
                 return RedirectToPage("/Errors/AuthorizationError");
             }
 
-            var trader = await _traderService.GetTradePartyByIdAsync(TraderId);
+            var trader = await _traderService.GetTradePartyByIdAsync(TradePartyId);
             Email = trader?.Contact?.Email;
             NI_GBFlag = RetrieveGB_NIFLAG(trader?.RemosBusinessSchemeNumber!);
 
@@ -44,7 +47,7 @@ public class SignUpConfirmationModel : BasePageModel<SignUpConfirmationModel>
             {
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTermsAndConditionsPath,
-                    new { id = TraderId });
+                    new { id = OrgId });
             }
         }
         return Page();

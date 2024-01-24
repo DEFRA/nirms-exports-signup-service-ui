@@ -9,11 +9,11 @@
     @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
     {
         <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
-           asp-route-id="@Model.TradePartyId"
+           asp-route-id="@Model.OrgId"
            class="govuk-back-link">Back</a>
     }
     else{
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.TradePartyId" class="govuk-back-link">Back to dashboard</a>
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back to dashboard</a>
     }
 }
 
@@ -23,7 +23,7 @@
 
         
         <form method="POST" novalidate>
-            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="ContactName" />
             <div class="govuk-form-group @(ModelState.HasError("IsAuthorisedSignatory") ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("IsAuthorisedSignatory") ? "IsAuthorisedSignatory_Error": null)">
@@ -62,6 +62,7 @@
                 <button class="govuk-button govuk-button--secondary" asp-page-handler="save" id="button-rbNatureSave">Save and return to dashboard</button>
             </div>
             <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="OrgId" />
         </form>
     </div>
 </div>

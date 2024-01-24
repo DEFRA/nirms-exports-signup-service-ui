@@ -1,4 +1,4 @@
-﻿@import "../../node_modules/govuk-frontend/govuk/all";
+﻿@import "../../node_modules/govuk-frontend/dist/govuk/all";
 
 // Task list pattern
 
@@ -102,6 +102,11 @@
     font-size: 16px;
 }
 
+// govuk-frontend v5 override for tag component
+.govuk-tag {
+    max-width: none;
+}
+
 @media (max-width: 760px) {
     .govuk-phase-banner--user .govuk-phase-banner__content {
         float: none;
@@ -110,5 +115,15 @@
     .govuk-phase-banner__content__user-list {
         float: none;
         margin-top: 15px;
+    }
+}
+
+.govuk-link-16 {
+    font-size: 16px;
+}
+
+@media print {
+    .govuk-link-16 {
+        font-size: 14px;
     }
 }

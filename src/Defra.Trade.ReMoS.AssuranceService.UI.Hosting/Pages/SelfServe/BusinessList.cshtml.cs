@@ -20,8 +20,9 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     #region model properties
     public List<Organisation> Businesses { get; set; } = default!;
     
-    public Guid TraderId { get; set; }
-    
+    public Guid TradePartyId { get; set; }
+    public Guid OrgId { get; set; }
+
     public List<SelectListItem> BusinessSelectList { get; set; } = new()!;
     #endregion
     
@@ -38,14 +39,11 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
         return Page();
     }
 
-    public async Task<IActionResult> OnGetNavigateToBusinessDashboard(Guid orgId)
+    public IActionResult OnGetNavigateToBusinessDashboard(Guid orgId)
     {
-        var business = await _traderService.GetDefraOrgBusinessSignupStatus(orgId);
-        TraderId = (business.tradeParty != null) ? business.tradeParty.Id : Guid.Empty;
-
         return RedirectToPage(
             Routes.Pages.Path.SelfServeDashboardPath,
-            new { id = TraderId });
+            new { id = orgId });
     }
 
     public async Task<IActionResult> OnGetNavigateToSignup(Guid orgId)
@@ -77,7 +75,7 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
         }
 
         var business = await _traderService.GetDefraOrgBusinessSignupStatus(orgId);
-        TraderId = (business.tradeParty != null) ? business.tradeParty.Id : Guid.Empty;
+        TradePartyId = (business.tradeParty != null) ? business.tradeParty.Id : Guid.Empty;
 
         switch (business.signupStatus)
         {
@@ -85,32 +83,32 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
                 await SaveSelectedBusinessToApi(orgId);
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                    new { id = TraderId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgressEligibilityCountry:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessCountryPath,
-                    new { id = TraderId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgressEligibilityFboNumber:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessFboNumberPath,
-                    new { id = TraderId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgressEligibilityRegulations:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-                    new { id = TraderId });
+                    new { id = orgId });
             case TradePartySignupStatus.InProgress:
                 return RedirectToPage(
                     Routes.Pages.Path.RegistrationTaskListPath,
-                    new { id = TraderId });
+                    new { id = orgId });
             case TradePartySignupStatus.Complete:
                 return RedirectToPage(
                     Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,
-                    new { id = TraderId });
+                    new { id = orgId });
         }
 
         return RedirectToPage(
             Routes.Pages.Path.RegisteredBusinessRegulationsPath,
-            new { id = TraderId });
+            new { id = orgId });
     }
 
     public async Task<IActionResult> OnGetRefreshBusinesses()
@@ -131,7 +129,7 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     }
     private async Task SaveSelectedBusinessToApi(Guid orgId)
     {
-        if (TraderId != Guid.Empty)
+        if (TradePartyId != Guid.Empty)
             return;
 
         await GetDefraOrgsForUserWithApprovalStatus();
@@ -143,6 +141,6 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
             ApprovalStatus = TradePartyApprovalStatus.SignupStarted,
         };
 
-        TraderId = await _traderService.CreateTradePartyAsync(partyDto);
+        TradePartyId = await _traderService.CreateTradePartyAsync(partyDto);
     }
 }
