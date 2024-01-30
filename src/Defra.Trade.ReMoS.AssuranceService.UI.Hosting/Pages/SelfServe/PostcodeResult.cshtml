@@ -1,0 +1,111 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.PostcodeResultModel
+@{
+    ViewData["Title"] = "Postcode search result";
+}
+
+@section Back{
+    <a class="govuk-back-link"
+       asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath"
+       asp-route-id="@Model.OrgId"
+       asp-route-country="@Model.Country">
+        Back
+    </a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form class="form" method="post">
+            @if (!ModelState.IsValid)
+            {
+                if (ModelState.Any(x => x.Key == nameof(Model.EstablishmentsList)))
+                {
+                    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="error-summary">
+                        <h2 class="govuk-error-summary__title" id="error-summary-title">
+                            There is a problem
+                        </h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                @foreach (var modelError in ModelState.Where(x => x.Key == nameof(Model.EstablishmentsList)))
+                                {
+                                    <li>
+                                        No addresses found for this postcode. Try searching for
+                                        <a asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath"
+                                           asp-route-id="@Model.OrgId"
+                                           asp-route-NI_GBFlag="@Model.Country">
+                                            a different postcode
+                                        </a>
+                                        or
+                                        <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
+                                           asp-route-id="@Model.OrgId"
+                                           asp-route-NI_GBFlag="@Model.Country">
+                                            enter an address manually.
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <partial name="_ErrorSummary" model="ModelState" />
+                }
+            }
+
+
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="Country" />
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                @Model.ContentHeading
+            </h1>
+
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-visually-hidden">Warning</span>
+                    You do not need to add an establishment that @Model.BusinessName does not operate.
+                </strong>
+            </div>
+
+            <div class="govuk-form-group">
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
+                <p>
+                    <span>@Model.Postcode</span>
+                    <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath
+                       asp-route-id="@Model.OrgId"
+                       asp-route-country="@Model.Country">
+                        Change
+                    </a>
+                </p>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-!-font-weight-bold" for="places-of-dispatch-address-select">Select an address</label>
+                    <select class="govuk-select" id="places-of-dispatch-address-select" asp-for="@Model.SelectedEstablishment" asp-items="@Model.EstablishmentsList"></select>
+                </div>
+            </div>
+
+            <button class="govuk-button" disabled="@Model.IsSubmitDisabled" asp-page-handler="submit">Select address</button>
+
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Cannot find establishment
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    You can <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath
+                               asp-route-id="@Model.OrgId"
+                               asp-route-country="@Model.Country">
+                        enter the full establishment address
+                    </a>
+                </div>
+            </details>
+
+        </form>
+
+    </div>
+</div>

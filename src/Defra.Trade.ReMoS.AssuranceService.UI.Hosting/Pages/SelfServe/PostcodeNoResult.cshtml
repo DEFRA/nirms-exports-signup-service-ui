@@ -1,0 +1,59 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.PostcodeNoResultModel
+@{
+    ViewData["Title"] = "Postcode search result";
+}
+
+@section Back{
+    @{
+        <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath" asp-route-country="@Model.Country" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a >
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form class="form" action="points-of-departure-add" method="post">
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                @Model.ContentHeading
+            </h1>
+            @*<p class="govuk-hint" id="points-of-departure-address-select">@Model.ContentText</p>*@
+
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-visually-hidden">Warning</span>
+                    You do not need to add an establishment that @Model.BusinessName does not operate.
+                </strong>
+            </div>
+
+            <p class="govuk-!-margin-top-8">0 results for <span class="govuk-!-font-weight-bold">@Model.Postcode</span> in <span class="govuk-!-font-weight-bold">@Model.ContentCountry</span></p>
+
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+            <p class="govuk-body">If you cannot find the address for the postcode you entered, try:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>
+                    making sure you've <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath
+                                          asp-route-id="@Model.OrgId"
+                                          asp-route-country="@Model.Country">
+                        entered the postcode correctly
+                    </a>
+                </li>
+                <li>
+                    <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath
+                       asp-route-id="@Model.OrgId"
+                       asp-route-country="@Model.Country">
+                        enter the full establishment address
+                    </a>
+                </li>
+            </ul>
+
+
+        </form>
+
+    </div>
+</div>

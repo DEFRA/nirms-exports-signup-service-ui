@@ -1,0 +1,185 @@
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+
+[TestFixture]
+public class PostcodeSearchTests : PageModelTestsBase
+{
+    private PostcodeSearchModel? _systemUnderTest;
+    protected Mock<ILogger<PostcodeSearchModel>> _mockLogger = new();
+    protected Mock<ITraderService> _mockTraderService = new();
+
+    [SetUp]
+    public void TestCaseSetup()
+    {
+        _systemUnderTest = new PostcodeSearchModel(_mockLogger.Object, _mockTraderService.Object);
+        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+        _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
+    }
+
+    [Test]
+    public async Task OnGet_NoEmailPresentIfNoSavedData()
+    {
+        //Arrange
+        var orgId = Guid.NewGuid();
+
+        //Act
+        await _systemUnderTest!.OnGetAsync(orgId, It.IsAny<string>());
+
+        //Assert
+        _systemUnderTest.Postcode.Should().Be("");
+    }
+
+    [Test]
+    public async Task OnPostSearch_SearchValidPostcode()
+    {
+        //Arrange
+        _systemUnderTest!.Postcode = "AB120AB";
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInValidPostcodeNotPresent()
+    {
+        //Arrange
+        _systemUnderTest!.Postcode = "";
+        var expectedResult = "Enter a postcode.";
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSearch_SearchValidPostcode_ModelIsInvalid()
+    {
+        //Arrange
+        _systemUnderTest!.Postcode = "AB120AB";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(0);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInValidPostcodeNotPresent_ModelIsInvalid()
+    {
+        //Arrange
+        _systemUnderTest!.Postcode = "";
+        var expectedResult = "Enter a postcode.";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnPostSubmit_SubmitInValidPostcode_ModelIsInvalid()
+    {
+        //Arrange
+        _systemUnderTest!.Postcode = "TEST";
+        var expectedResult = "Enter a real postcode";
+        _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
+
+        //Act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        //Assert
+        validation.Count.Should().Be(1);
+        expectedResult.Should().Be(validation[0].ErrorMessage);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), It.IsAny<string>());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+    }
+
+    [Test]
+    public async Task OnGet_HeadingSetToParameter_Successfully()
+    {
+        //Arrange
+        var expectedHint = "If your place of destination belongs to a different business";
+        var expectedHeading = "Add a place of destination";
+        var expectedContentText = "where consignments will go after the port of entry under the scheme";
+        //Act
+        await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
+
+        //Assert
+        _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
+        _systemUnderTest.ContentText.Should().Be(expectedContentText);
+        _systemUnderTest.ContextHint.Should().Be(expectedHint);
+    }
+
+    [TestCase("bt1 4tg", "NI", 0, null)]
+    [TestCase("sw9 9tf", "NI", 1, "Enter a postcode in Northern Ireland")]
+    [TestCase("bt1 5tg", "England", 1, "Enter a postcode in England, Scotland or Wales")]
+    [TestCase("sw9 6th", "England", 0, null)]
+    public async Task OnPostSubmitAsync_PostcodeError(string postcode, string country, int errorCount, string? errorMessage)
+    {
+        // arrange
+        _systemUnderTest!.Postcode = postcode;
+        _systemUnderTest.Country = country;
+
+        // act
+        await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
+
+        // assert
+        _systemUnderTest.ModelState.ErrorCount.Should().Be(errorCount);
+        if (errorCount != 0) _systemUnderTest.ModelState.Values.First().Errors.First().ErrorMessage.Should().Be(errorMessage);
+        else _systemUnderTest.ModelState.Values.Should().BeEmpty();
+    }
+
+    [Test]
+    public async Task OnPostcodeGet_ReturnBusinessName()
+    {
+        //arrange
+        _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
+        TradePartyDto dto = new()
+        {
+            OrgId = Guid.NewGuid(),
+            PracticeName = "Test"
+        };
+
+        _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(dto);
+
+        //act
+        await _systemUnderTest!.OnGetAsync(dto.OrgId, It.IsAny<string>());
+
+        //assert
+        _systemUnderTest.BusinessName.Should().Be(dto.PracticeName);
+    }
+}

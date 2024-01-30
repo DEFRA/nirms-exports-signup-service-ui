@@ -43,6 +43,10 @@ public static class Routes
     public const string SelfServeUpdateAuthRep = "/update-authorised-representative";
     public const string SelfServeEstablishmentHolding = "/add-establishment-holding";
     public const string SelfServeAddBusiness = "/add-business";
+    public const string SelfServeEstablishmentPostcodeSearch = "/self-serve-establishment-postcode-search";
+    public const string SelfServeEstablishmentPostcodeResult = "/self-serve-establishment-postcode-result";
+    public const string SelfServeEstablishmentPostcodeNoResult = "/self-serve-establishment-postcode-no-result";
+    public const string SelfServeEstablishmentNameAndAddress = "/self-serve-establishment-name-address";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -86,7 +90,11 @@ public static class Routes
         (Pages.Path.SelfServeUpdateContactPath, SelfServeUpdateContact),
         (Pages.Path.SelfServeEstablishmentHoldingPath, SelfServeEstablishmentHolding),
         (Pages.Path.SelfServeUpdateAuthRepPath, SelfServeUpdateAuthRep),
-        (Pages.Path.SelfServeAddBusinessPath, SelfServeAddBusiness)
+        (Pages.Path.SelfServeAddBusinessPath, SelfServeAddBusiness),
+        (Pages.Path.SelfServeEstablishmentPostcodeSearchPath, SelfServeEstablishmentPostcodeSearch),
+        (Pages.Path.SelfServeEstablishmentPostcodeResultPath, SelfServeEstablishmentPostcodeResult),
+        (Pages.Path.SelfServeEstablishmentPostcodeNoResultPath, SelfServeEstablishmentPostcodeNoResult),
+        (Pages.Path.SelfServeEstablishmentNameAndAddressPath, SelfServeEstablishmentNameAndAddress),
     };
 
     public static class Pages
@@ -134,6 +142,10 @@ public static class Routes
             public const string SelfServeUpdateAuthRepDetailsName = "UpdateAuthRep";
             public const string SelfServeEstablishmentHoldingName = "AddEstablishmentHolding";
             public const string SelfServeAddBusinessName = "AddBusiness";
+            public const string SelfServeEstablishmentPostcodeSearchName = "PostcodeSearch";
+            public const string SelfServeEstablishmentPostcodeResultName = "PostcodeResult";
+            public const string SelfServeEstablishmentPostcodeNoResultName = "PostcodeNoResult";
+            public const string SelfServeEstablishmentNameAndAddressName = "EstablishmentNameAndAddress";
         }
 
         public static class Path
@@ -179,6 +191,10 @@ public static class Routes
             public const string SelfServeUpdateAuthRepPath = $"/SelfServe/{Names.SelfServeUpdateAuthRepDetailsName}";
             public const string SelfServeEstablishmentHoldingPath = $"/SelfServe/{Names.SelfServeEstablishmentHoldingName}";
             public const string SelfServeAddBusinessPath = $"/SelfServe/{Names.SelfServeAddBusinessName}";
+            public const string SelfServeEstablishmentPostcodeSearchPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeSearchName}";
+            public const string SelfServeEstablishmentPostcodeResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeResultName}";
+            public const string SelfServeEstablishmentPostcodeNoResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeNoResultName}";
+            public const string SelfServeEstablishmentNameAndAddressPath = $"/SelfServe/{Names.SelfServeEstablishmentNameAndAddressName}";
         }
     }
 }

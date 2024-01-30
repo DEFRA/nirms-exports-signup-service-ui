@@ -1,14 +1,16 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.FeatureManagement.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
+[FeatureGate(FeatureFlags.SelfServe)]
 public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 {
     #region UI Models
@@ -26,10 +28,11 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
     public string? ContextHint { get; set; } = string.Empty;
 
     [BindProperty]
-    public string? NI_GBFlag { get; set; } = string.Empty;
+    public string Country { get; set; } = default!;
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+    
     [BindProperty]
     public Guid OrgId { get; set; }
 
@@ -37,13 +40,13 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
 
     public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService) : base(logger, traderService)
-    {}
+    { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, string country)
     {
-        _logger.LogTrace("Establishment postcode search on get");
+        _logger.LogTrace("Self serve Establishment postcode search on get");
         OrgId = id;
-        this.NI_GBFlag = NI_GBFlag;
+        Country = country;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -54,22 +57,18 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
-        {
-            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
-        }
 
-        if (NI_GBFlag == "NI")
+        if (Country == "NI")
         {
             ContextHint = "If your place of destination belongs to a different business";
             ContentHeading = "Add a place of destination";
-            ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
+            ContentText = "where consignments will go after the port of entry under the scheme";
         }
         else
         {
             ContextHint = "If your place of dispatch belongs to a different business";
             ContentHeading = "Add a place of dispatch";
-            ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
+            ContentText = "from which consignments to Northern Ireland will depart under the scheme";
         }
 
         return Page();
@@ -81,25 +80,34 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(OrgId, NI_GBFlag!);
+            return await OnGetAsync(OrgId, Country!);
         }
 
-        if (Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
+        if (Postcode!.ToUpper().StartsWith("BT") && CountryInGb(Country))
         {
             var baseError = "Enter a postcode in England, Scotland or Wales";
             ModelState.AddModelError(nameof(Postcode), baseError);
-            return await OnGetAsync(OrgId, NI_GBFlag);
+            return await OnGetAsync(OrgId, Country);
         }
-        if (!Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
+        if (!Postcode!.ToUpper().StartsWith("BT") && (Country == "NI"))
         {
             var baseError = "Enter a postcode in Northern Ireland";
             ModelState.AddModelError(nameof(Postcode), baseError);
-            return await OnGetAsync(OrgId, NI_GBFlag);
+            return await OnGetAsync(OrgId, Country);
         }
 
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentPostcodeResultPath,
-            new { id = OrgId, postcode = Postcode, NI_GBFlag });
+            Routes.Pages.Path.SelfServeEstablishmentPostcodeResultPath,
+            new { id = OrgId, postcode = Postcode, Country });
+    }
+
+    private static bool CountryInGb(string country)
+    {
+        if (country.ToUpper() == "ENGLAND" || country.ToUpper() == "WALES" || country.ToUpper() == "SCOTLAND")
+        {
+            return true;
+        }
+        return false;
     }
 
     private async Task GetBusinessNameAsync()

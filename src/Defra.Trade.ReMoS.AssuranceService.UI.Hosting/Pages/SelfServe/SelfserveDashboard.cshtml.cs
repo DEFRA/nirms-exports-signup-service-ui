@@ -118,8 +118,8 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public IActionResult OnGetAddEstablishment(Guid orgId, string countryChosen)
     {
         return RedirectToPage(
-            Routes.Pages.Path.SelfServeEstablishmentHoldingPath,
-            new { id = orgId, country = countryChosen });
+           Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath,
+           new { id = orgId, country = countryChosen });
     }
 
 }
