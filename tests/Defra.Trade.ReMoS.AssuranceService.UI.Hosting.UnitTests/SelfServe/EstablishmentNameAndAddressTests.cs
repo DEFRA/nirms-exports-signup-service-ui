@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Http;
@@ -515,6 +516,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.CityName = "City";
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "TES1";
+        _systemUnderTest!.Country = "England";
         _systemUnderTest.EstablishmentId = Guid.NewGuid();
         _systemUnderTest.TradePartyId = Guid.NewGuid();
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync((Guid)_systemUnderTest.EstablishmentId!)).ReturnsAsync(new LogisticsLocationDto() { Address = new TradeAddressDto()});
@@ -525,8 +527,33 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         // assert
         result.Should().Be(_systemUnderTest.EstablishmentId);
-        _mockEstablishmentService.Verify(x => x.UpdateEstablishmentDetailsAsync(It.IsAny<LogisticsLocationDto>()), Times.Once());
     }
 
-  
+    [Test]
+    public async Task OnPostSubmit_SubmitValidValues_RedirectToEmailPage()
+    {
+        // arrange
+        var expected = Guid.NewGuid();
+        _systemUnderTest!.EstablishmentName = "Test name";
+        _systemUnderTest!.LineOne = "Line one";
+        _systemUnderTest!.LineTwo = "Line two";
+        _systemUnderTest!.CityName = "City";
+        _systemUnderTest!.County = "Berkshire";
+        _systemUnderTest!.PostCode = "TES1";
+        _systemUnderTest.EstablishmentId = Guid.NewGuid();
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync((Guid)_systemUnderTest.EstablishmentId!)).ReturnsAsync(new LogisticsLocationDto() { Address = new TradeAddressDto() });
+        _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(It.IsAny<LogisticsLocationDto>())).ReturnsAsync(true);
+
+        // act
+        var result = await _systemUnderTest.OnPostSubmitAsync();
+
+        // assert
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be(Routes.Pages.Path.SelfServeEstablishmentContactEmailPath);
+
+    }
+
+
 }

@@ -47,6 +47,7 @@ public static class Routes
     public const string SelfServeEstablishmentPostcodeResult = "/self-serve-establishment-postcode-result";
     public const string SelfServeEstablishmentPostcodeNoResult = "/self-serve-establishment-postcode-no-result";
     public const string SelfServeEstablishmentNameAndAddress = "/self-serve-establishment-name-address";
+    public const string SelfServeEstablishmentContactEmail = "/self-serve-establishment-contact-email";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -95,6 +96,7 @@ public static class Routes
         (Pages.Path.SelfServeEstablishmentPostcodeResultPath, SelfServeEstablishmentPostcodeResult),
         (Pages.Path.SelfServeEstablishmentPostcodeNoResultPath, SelfServeEstablishmentPostcodeNoResult),
         (Pages.Path.SelfServeEstablishmentNameAndAddressPath, SelfServeEstablishmentNameAndAddress),
+        (Pages.Path.SelfServeEstablishmentContactEmailPath, SelfServeEstablishmentContactEmail),
     };
 
     public static class Pages
@@ -146,6 +148,8 @@ public static class Routes
             public const string SelfServeEstablishmentPostcodeResultName = "PostcodeResult";
             public const string SelfServeEstablishmentPostcodeNoResultName = "PostcodeNoResult";
             public const string SelfServeEstablishmentNameAndAddressName = "EstablishmentNameAndAddress";
+            public const string SelfServeEstablishmentContactEmailName = "ContactEmail";
+            
         }
 
         public static class Path
@@ -195,6 +199,8 @@ public static class Routes
             public const string SelfServeEstablishmentPostcodeResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeResultName}";
             public const string SelfServeEstablishmentPostcodeNoResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeNoResultName}";
             public const string SelfServeEstablishmentNameAndAddressPath = $"/SelfServe/{Names.SelfServeEstablishmentNameAndAddressName}";
+            public const string SelfServeEstablishmentContactEmailPath = $"/SelfServe/{Names.SelfServeEstablishmentContactEmailName}";
+            
         }
     }
 }

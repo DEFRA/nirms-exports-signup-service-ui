@@ -1,0 +1,85 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.ContactEmailModel
+@{
+    ViewData["Title"] = "Enter Establishment contact email";
+}
+
+@section Back{
+    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
+           asp-route-id="@Model.OrgId"
+           class="govuk-back-link">Back</a>
+    }
+    else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.AdditionalEstablishmentAddress))
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
+           asp-route-id="@Model.OrgId"
+           asp-route-NI_GBFlag="@Model.Country"
+           class="govuk-back-link">Back to dashboard</a>
+    }
+    else
+    {
+        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
+            asp-route-id="@Model.OrgId"
+            asp-route-establishmentId="@Model.EstablishmentId"
+            asp-route-NI_GBFlag="@Model.Country"
+           class="govuk-back-link">Back to dashboard</a>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+        <form method="POST" novalidate>
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="EstablishmentId" />
+            <input type="hidden" asp-for="Country" />
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            <span class="govuk-caption-l">WORK IN PROGRESS - Establishments</span>
+                            @Model.ContentHeading
+                        </h1>
+                    </legend>
+
+                    <p class="govuk-hint" id="search-places-of-dispatch">
+                        @Model.ContentText
+                        </p>
+
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
+                    <p class="govuk-body">
+                        <span>
+                            @(Model.Location?.Name != null ? $"{Model.Location.Name}," : string.Empty)
+                            @(Model.Location?.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
+                            @(Model.Location?.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
+                            @(Model.Location?.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
+                            @(Model.Location?.Address?.County != null ? $"{Model.Location.Address?.County}," : string.Empty)
+                            @(Model.Location?.Address?.PostCode != null ? $"{Model.Location.Address?.PostCode} " : string.Empty)
+                        </span>
+                        <a class="govuk-link"
+                           asp-page-handler="ChangeEstablishmentAddress"
+                           asp-route-orgid="@Model.OrgId"
+                           asp-route-establishmentId="@Model.EstablishmentId"
+                           asp-route-NI_GBFlag="@Model.Country">
+                            Change<span class="govuk-visually-hidden"> address</span>
+                        </a>
+                    </p>
+
+                    <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="establishment-email">Establishment email address (optional)</label>
+                        <p id="email-hint" class="govuk-hint">We will use this email to contact the establishment in case of an incident.</p>
+                        <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
+                        <input class="govuk-input" id="establishment-email" asp-for="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email">
+                      </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit">Continue</button>
+        </form>
+
+    </div>
+</div>

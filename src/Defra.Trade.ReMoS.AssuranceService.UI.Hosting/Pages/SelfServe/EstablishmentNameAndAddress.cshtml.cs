@@ -129,7 +129,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         }
 
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath,
+            Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
             new { id = OrgId, locationId = establishmentId, Country });
     }
 
