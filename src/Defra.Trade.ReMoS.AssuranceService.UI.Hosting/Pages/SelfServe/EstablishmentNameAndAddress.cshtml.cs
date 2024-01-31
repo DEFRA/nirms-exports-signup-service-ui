@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
-[FeatureGate(FeatureFlags.SelfServe)]
+[FeatureGate(FeatureFlags.SelfServeMvpPlus)]
 public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameAndAddressModel>
 {
     #region ui model variables

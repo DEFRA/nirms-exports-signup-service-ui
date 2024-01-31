@@ -4,7 +4,9 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
@@ -35,13 +37,18 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public int ApprovalStatus { get; set; }
     #endregion
 
+    private readonly IFeatureManager _featureManager;
     public SelfServeDashboardModel(
            ILogger<SelfServeDashboardModel> logger,
            ITraderService traderService,
            IEstablishmentService establishmentService,
-           ICheckAnswersService checkAnswersService)
+           ICheckAnswersService checkAnswersService,
+           IFeatureManager featureManager)
            : base(logger, traderService, establishmentService, checkAnswersService)
-    { }
+    {
+        _featureManager = featureManager;
+    }
+
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
         _logger.LogInformation("OnGet Self serve dashboard");
@@ -105,7 +112,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeUpdateContactPath,
-            new { id = orgId});
+            new { id = orgId });
     }
 
     public IActionResult OnGetChangeAuthRepresentativeDetails(Guid orgId)
@@ -115,11 +122,19 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId });
     }
 
-    public IActionResult OnGetAddEstablishment(Guid orgId, string countryChosen)
+    [ExcludeFromCodeCoverage]
+    public async Task<IActionResult> OnGetAddEstablishment(Guid orgId, string countryChosen)
     {
+        if (await _featureManager.IsEnabledAsync(FeatureFlags.SelfServeMvpPlus))
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath,
+                new { id = orgId, country = countryChosen });
+        }
+
         return RedirectToPage(
-           Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath,
-           new { id = orgId, country = countryChosen });
+            Routes.Pages.Path.SelfServeEstablishmentHoldingPath,
+            new { id = orgId, country = countryChosen });
     }
 
 }

@@ -8,7 +8,7 @@ using Microsoft.FeatureManagement.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
-[FeatureGate(FeatureFlags.SelfServe)]
+[FeatureGate(FeatureFlags.SelfServeMvpPlus)]
 public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
 {
     #region UI models
