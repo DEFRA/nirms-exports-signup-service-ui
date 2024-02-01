@@ -10,7 +10,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
-[ExcludeFromCodeCoverage]
 [FeatureGate(FeatureFlags.SelfServeMvpPlus)]
 [BindProperties]
 public class ContactEmailModel : BasePageModel<ContactEmailModel>
@@ -25,8 +24,9 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     public string Country { get; set; } = default!;
+    public string? BusinessName { get; set; }
     #endregion
-       
+
     public ContactEmailModel(
         ILogger<ContactEmailModel> logger,
         IEstablishmentService establishmentService,
@@ -41,7 +41,12 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         Country = country;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
-        TradePartyId = tradeParty!.Id;
+
+        if (tradeParty != null)
+        {
+            TradePartyId = tradeParty.Id;
+            BusinessName = tradeParty.PracticeName;
+        }
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -51,12 +56,10 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         if (country == "NI")
         {
             ContentHeading = "Add a place of destination";
-            ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
         else
         {
             ContentHeading = "Add a place of dispatch";
-            ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
@@ -80,15 +83,15 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         await SaveEmailToApi();
 
         return RedirectToPage(
-            Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
-            new { id = OrgId, Country});
+            Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, 
+            new { id = OrgId, locationId = EstablishmentId,  Country});
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
+    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string country)
     {
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = orgId, establishmentId, NI_GBFlag });
+            Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
+            new { id = orgId, establishmentId, country });
     }
 
     private async Task SaveEmailToApi()

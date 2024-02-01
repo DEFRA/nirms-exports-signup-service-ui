@@ -48,6 +48,7 @@ public static class Routes
     public const string SelfServeEstablishmentPostcodeNoResult = "/self-serve-establishment-postcode-no-result";
     public const string SelfServeEstablishmentNameAndAddress = "/self-serve-establishment-name-address";
     public const string SelfServeEstablishmentContactEmail = "/self-serve-establishment-contact-email";
+    public const string SelfServeConfirmEstablishmentDetails = "/self-serve-confirm-establishment-details";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -97,6 +98,7 @@ public static class Routes
         (Pages.Path.SelfServeEstablishmentPostcodeNoResultPath, SelfServeEstablishmentPostcodeNoResult),
         (Pages.Path.SelfServeEstablishmentNameAndAddressPath, SelfServeEstablishmentNameAndAddress),
         (Pages.Path.SelfServeEstablishmentContactEmailPath, SelfServeEstablishmentContactEmail),
+        (Pages.Path.SelfServeConfirmEstablishmentDetailsPath, SelfServeConfirmEstablishmentDetails),
     };
 
     public static class Pages
@@ -149,7 +151,9 @@ public static class Routes
             public const string SelfServeEstablishmentPostcodeNoResultName = "PostcodeNoResult";
             public const string SelfServeEstablishmentNameAndAddressName = "EstablishmentNameAndAddress";
             public const string SelfServeEstablishmentContactEmailName = "ContactEmail";
+            public const string SelfServeConfirmEstablishmentDetailsName = "ConfirmEstablishmentDetails";
             
+
         }
 
         public static class Path
@@ -200,7 +204,9 @@ public static class Routes
             public const string SelfServeEstablishmentPostcodeNoResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeNoResultName}";
             public const string SelfServeEstablishmentNameAndAddressPath = $"/SelfServe/{Names.SelfServeEstablishmentNameAndAddressName}";
             public const string SelfServeEstablishmentContactEmailPath = $"/SelfServe/{Names.SelfServeEstablishmentContactEmailName}";
+            public const string SelfServeConfirmEstablishmentDetailsPath = $"/SelfServe/{Names.SelfServeConfirmEstablishmentDetailsName}";
             
+
         }
     }
 }

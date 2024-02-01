@@ -1,0 +1,79 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.ConfirmEstablishmentDetailsModel
+@{
+    ViewData["Title"] = "Confirm establishment details";
+}
+
+@section Back{
+    
+        <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath" 
+            asp-route-id="@Model.OrgId"
+            asp-route-establishmentId="@Model.EstablishmentId"
+            asp-route-country="@Model.Country"
+           class="govuk-back-link">Back</a>
+    
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form class="form" action="place-of-dispatch-terms" method="post">
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                Add a place of dispatch
+            </h1>
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-visually-hidden">Warning</span>
+                    You do not need to add an establishment that  ACME Ltd does not operate.
+                </strong>
+            </div>
+
+            <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">Warehouse B</h2>
+                    <a class="govuk-link govuk-body govuk-!-margin-bottom-0" href="dashboard-send">
+                        Remove<span class="govuk-visually-hidden"> warehouse B</span>
+                    </a>
+                </div>
+                <div class="govuk-summary-card__content">
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                8 Teal Business Park, Dodwells Road, Hinckley, LE10 3BZ
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="place-of-dispatch-add">
+                                    Change<span class="govuk-visually-hidden"> address</span>
+                                </a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Email address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                k.maycock@acme.com
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="place-of-dispatch-email">
+                                    Change<span class="govuk-visually-hidden"> email address</span>
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+
+            <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+        </form>
+
+    </div>
+</div>
