@@ -6,9 +6,12 @@
 }
 
 @section Back{
-    @{
-        <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath" asp-route-country="@Model.Country" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a >
-    }
+    <a class="govuk-back-link"
+       asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath"
+       asp-route-country="@Model.Country"
+       asp-route-id="@Model.OrgId">
+        Back
+    </a>
 }
 
 <div class="govuk-grid-row">

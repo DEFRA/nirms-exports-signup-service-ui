@@ -4,7 +4,25 @@
 
 @section Back
 {
-    <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath" asp-route-id="@Model.OrgId" asp-route-country="@Model.Country" class="govuk-back-link">Back</a>
+    @if (!string.IsNullOrEmpty(Model.PostCode))
+    {
+        <a class="govuk-back-link"
+           asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeResultPath"
+           asp-route-id="@Model.OrgId"
+           asp-route-postcode="@Model.PostCode"
+           asp-route-country="@Model.Country">
+            Back
+        </a>
+    }
+    else
+    {
+        <a class="govuk-back-link"
+           asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath"
+           asp-route-id="@Model.OrgId"
+           asp-route-country="@Model.Country">
+            Back
+        </a>
+    }
 }
 
 <div class="govuk-grid-row">
