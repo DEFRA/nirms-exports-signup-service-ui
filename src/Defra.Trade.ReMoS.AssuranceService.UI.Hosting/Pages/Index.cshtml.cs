@@ -47,24 +47,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        //Test Feature Flag
-        if (await _featureManager.IsEnabledAsync(FeatureFlags.SelfServe))
-        {
-            // Run the following code
-            if (User.Identity == null || !User.Identity.IsAuthenticated)
-            {
-                var correlationId = Guid.NewGuid().ToString();
-                var redirect = _ehcoIntegrationSettings.Value.ValidIssuer + "/b2c/remos_signup/login-or-refresh?correlationId=" + correlationId;
-                Response.Redirect(redirect);
-                return Page();
-            }
-            else
-            {
-                return RedirectToPage(Routes.Pages.Path.BusinessListPath);
-            }
-        }
-
-        if (_configuration.GetValue<bool>("ReMoS:MagicWordEnabled"))
+        if (_configuration.GetValue<bool>("ReMoS:PasswordPage"))
         {
             UseMagicWord = true;
         }
@@ -79,6 +62,9 @@ public class IndexModel : PageModel
             }
             else
             {
+                if (await _featureManager.IsEnabledAsync(FeatureFlags.SelfServe))
+                    return RedirectToPage(Routes.Pages.Path.BusinessListPath);
+
                 return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath);
             }
         }
@@ -88,7 +74,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        if (_configuration.GetValue<bool>("ReMoS:MagicWordEnabled"))
+        if (_configuration.GetValue<bool>("ReMoS:PasswordPage"))
         {
             if (Password == _configuration.GetValue<string>("ReMoS:MagicWord"))
             {
@@ -103,6 +89,9 @@ public class IndexModel : PageModel
                 }
                 else
                 {
+                    if (await _featureManager.IsEnabledAsync(FeatureFlags.SelfServe))
+                        return RedirectToPage(Routes.Pages.Path.BusinessListPath);
+
                     return RedirectToPage(Routes.Pages.Path.RegisteredBusinessBusinessPickerPath);
                 }
             }
