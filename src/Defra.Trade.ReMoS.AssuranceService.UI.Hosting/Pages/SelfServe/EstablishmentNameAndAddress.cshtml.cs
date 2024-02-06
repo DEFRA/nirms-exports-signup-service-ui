@@ -59,7 +59,6 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     public string? ContentHeading { get; set; } = string.Empty;
 
-    public string? ContentText { get; set; } = string.Empty;
     public string? ContextHint { get; set; } = string.Empty;
 
     [BindProperty]
@@ -92,12 +91,10 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         if (Country == "NI")
         {
-            ContextHint = "If your place of destination belongs to a different business";
             ContentHeading = "Add a place of destination";
         }
         else
         {
-            ContextHint = "If your place of dispatch belongs to a different business";
             ContentHeading = "Add a place of dispatch";
         }
 
@@ -214,7 +211,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     private bool IsPostCodeValid()
     {
-        if (PostCode!.ToUpper().StartsWith("BT") && (Country == "GB"))
+        if (PostCode!.ToUpper().StartsWith("BT") && (Country != "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 
         if (!PostCode!.ToUpper().StartsWith("BT") && (Country == "NI"))
