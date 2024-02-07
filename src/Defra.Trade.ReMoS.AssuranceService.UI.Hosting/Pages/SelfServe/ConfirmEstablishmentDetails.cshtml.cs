@@ -58,12 +58,12 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
 
         if (Country == "NI")
         {
-            ContentHeading = "Places of destination";
+            ContentHeading = "Add a place of destination"; ;
             ContentText = "destination";
         }
         else
         {
-            ContentHeading = "Places of dispatch";
+            ContentHeading = "Add a place of dispatch";
             ContentText = "dispatch";
         }
 
