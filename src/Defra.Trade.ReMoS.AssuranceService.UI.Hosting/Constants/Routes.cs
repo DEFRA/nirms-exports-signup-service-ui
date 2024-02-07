@@ -36,7 +36,7 @@ public static class Routes
     public const string Cookies = "/cookies";
     public const string PostcodeNoResult = "/establishment-postcode-no-result";
     public const string RegisterBusinessForExporterService = "/register-business-error-admin";
-    public const string RegisterBusinessForExporterServiceNonAdmin = "register-business-error-non-admin";
+    public const string RegisterBusinessForExporterServiceNonAdmin = "/register-business-error-non-admin";
     public const string SelfServeDashboard = "/self-serve-dashboard";
     public const string BusinessList = "/business-list";
     public const string SelfServeUpdateContact = "/update-contact-details";

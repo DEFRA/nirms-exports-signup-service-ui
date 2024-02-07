@@ -19,7 +19,12 @@
 
         <p>You are signing up <span class="govuk-!-font-weight-bold">@Model.SelectedBusinessName</span> for the Northern Ireland Retail Movement Scheme.</p>
 
-        <p>To sign up a different business, <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">start a new sign up request</a>.</p>
+        <feature name="Nirms-SuS-SelfServe">
+            <p>To sign up a different business, <a asp-page="@Routes.Pages.Path.BusinessListPath">start a new sign up request</a>.</p>
+        </feature>
+        <feature name="Nirms-SuS-SelfServe" negate="true">
+            <p>To sign up a different business, <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">start a new sign up request</a>.</p>
+        </feature>
 
     </div>
 </div>
