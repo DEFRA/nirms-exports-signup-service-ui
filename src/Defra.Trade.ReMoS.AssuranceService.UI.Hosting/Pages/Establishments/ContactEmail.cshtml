@@ -37,8 +37,8 @@
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />
             <input type="hidden" asp-for="NI_GBFlag" />
-            <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
+            <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Email") ? "Email": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
                             <span class="govuk-caption-l">Establishments</span>
@@ -70,10 +70,10 @@
                     </p>
 
                     <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="establishment-email">Establishment email address (optional)</label>
+                        <label class="govuk-label govuk-!-font-weight-bold" for="Email">Establishment email address (optional)</label>
                         <p id="email-hint" class="govuk-hint">We will use this email to contact the establishment in case of an incident.</p>
                         <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
-                        <input class="govuk-input" id="establishment-email" asp-for="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email">
+                        <input class="govuk-input" id="Email" asp-for="Email" type="email" spellcheck="false" aria-describedby="email-hint" autocomplete="email">
                       </div>
                 </fieldset>
             </div>
