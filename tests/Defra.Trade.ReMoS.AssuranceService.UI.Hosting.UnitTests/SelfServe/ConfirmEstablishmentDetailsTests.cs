@@ -185,7 +185,7 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
     public async Task OnGet_HeadingSetToParameter_Successfully_ForNI()
     {
         //Arrange
-        var expectedHeading = "Places of destination";
+        var expectedHeading = "Add a place of destination";
         var expectedContentText = "destination";
 
         //Act
@@ -200,7 +200,7 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
     public async Task OnGet_HeadingSetToParameter_Successfully_ForGB()
     {
         //Arrange
-        var expectedHeading = "Places of dispatch";
+        var expectedHeading = "Add a place of dispatch";
         var expectedContentText = "dispatch";
 
         //Act
