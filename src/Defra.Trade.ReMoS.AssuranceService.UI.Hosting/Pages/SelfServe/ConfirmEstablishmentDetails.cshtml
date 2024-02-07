@@ -9,7 +9,7 @@
     
         <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentContactEmailPath" 
             asp-route-id="@Model.OrgId"
-            asp-route-establishmentId="@Model.EstablishmentId"
+            asp-route-locationId="@Model.EstablishmentId"
             asp-route-country="@Model.Country"
            class="govuk-back-link">Back</a>
 }
@@ -30,7 +30,7 @@
                 <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
                 <strong class="govuk-warning-text__text">
                     <span class="govuk-visually-hidden">Warning</span>
-                    You do not need to add an establishment that  ACME Ltd does not operate.
+                    You do not need to add an establishment that @Model.BusinessName does not operate.
                 </strong>
             </div>
 
