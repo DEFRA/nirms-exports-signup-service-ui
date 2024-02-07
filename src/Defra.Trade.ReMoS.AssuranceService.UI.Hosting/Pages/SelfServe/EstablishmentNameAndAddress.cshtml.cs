@@ -63,6 +63,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     [BindProperty]
     public string Country { get; set; } = default!;
+    public string? BusinessName { get; set; }
     #endregion
 
     public EstablishmentNameAndAddressModel(
@@ -87,6 +88,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
+        BusinessName = tradeParty!.PracticeName;
         await RetrieveEstablishmentDetails();
 
         if (Country == "NI")
