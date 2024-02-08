@@ -1,0 +1,68 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.PostcodeSearchModel
+@{
+    ViewData["Title"] = "Enter Establishment postcode";
+}
+
+@section Back{
+    <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_ErrorSummary" model="ModelState" />
+
+        <form class="form" method="POST" novalidate>
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="Country" />
+            <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
+                <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Postcode") ? "Postcode": null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            <span class="govuk-caption-l">Establishments</span>
+                            @Model.ContentHeading
+                        </h1>
+                    </legend>
+
+                    <p>These are the establishments:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>your business operates</li>
+                        <li>@Model.ContentText</li>
+                    </ul>
+                    <p>You need to provide the details of all the establishments your business operates so they can be used when applying for General Certificates.</p>
+                    <p>If your haulier operates the establishments your business uses, the haulier needs to sign up to NIRMS and add their establishments so that you can use them when applying for General Certificates</p>
+
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            You do not need to add an establishment that @Model.BusinessName does not operate.
+                        </strong>
+                    </div>
+               
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" asp-for="Postcode">Establishment postcode</label>
+                        <p id="Postcode_Error" class="govuk-error-message" gds-validation-for="Postcode"></p>
+                        <input class="govuk-input" asp-for="Postcode" type="search">
+                    </div>
+                </fieldset>
+            </div>
+
+            <button class="govuk-button" asp-page-handler="submit">Find establishment</button>
+
+@*            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        @Model.ContextHint
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    You can enter the details of your business' main address – for example, the head office.
+                </div>
+            </details>*@
+        </form>
+
+    </div>
+</div>

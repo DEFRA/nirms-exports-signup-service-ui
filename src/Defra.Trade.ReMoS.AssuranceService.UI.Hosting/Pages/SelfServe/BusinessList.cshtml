@@ -3,6 +3,9 @@
 @using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.BusinessListModel
 @{
+    ViewData["Title"] = "Business list";
+}
+@{
     string GetStatusColour(string approvalStatus)
     {
         switch (approvalStatus)

@@ -1,12 +1,15 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
+[FeatureGate(FeatureFlags.SelfServeMvpPlus)]
 public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameAndAddressModel>
 {
     #region ui model variables
@@ -56,24 +59,24 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     public string? ContentHeading { get; set; } = string.Empty;
 
-    public string? ContentText { get; set; } = string.Empty;
     public string? ContextHint { get; set; } = string.Empty;
 
     [BindProperty]
-    public string? NI_GBFlag { get; set; } = string.Empty;
+    public string Country { get; set; } = default!;
+    public string? BusinessName { get; set; }
     #endregion
-        
+
     public EstablishmentNameAndAddressModel(
         ILogger<EstablishmentNameAndAddressModel> logger,
         IEstablishmentService establishmentService,
         ITraderService traderService) : base(logger, traderService, establishmentService)
-    {}
+    { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string country)
     {
         _logger.LogInformation("Establishment manual address OnGet");
         OrgId = id;
-        this.NI_GBFlag = NI_GBFlag;
+        Country = country;
         EstablishmentId = establishmentId;
         Uprn = uprn;
 
@@ -84,21 +87,16 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
-        {
-            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
-        }
 
+        BusinessName = tradeParty!.PracticeName;
         await RetrieveEstablishmentDetails();
 
-        if (NI_GBFlag == "NI")
+        if (Country == "NI")
         {
-            ContextHint = "If your place of destination belongs to a different business";
             ContentHeading = "Add a place of destination";
         }
         else
         {
-            ContextHint = "If your place of dispatch belongs to a different business";
             ContentHeading = "Add a place of dispatch";
         }
 
@@ -113,9 +111,9 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         Guid? establishmentId = Guid.Empty;
 
-        if(!IsInputValid() || !IsPostCodeValid())
+        if (!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, Country ?? string.Empty);
         }
 
         try
@@ -125,12 +123,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, Country ?? string.Empty);
         }
 
         return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+            Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
+            new { id = OrgId, locationId = establishmentId, Country });
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()
@@ -148,7 +146,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         establishmentDto.Address.County = County;
         establishmentDto.Address.CityName = CityName;
         establishmentDto.Address.PostCode = PostCode;
-        establishmentDto.NI_GBFlag = NI_GBFlag;
+        establishmentDto.NI_GBFlag = Country;
 
         if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null)
         {
@@ -215,10 +213,10 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     private bool IsPostCodeValid()
     {
-        if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
+        if (PostCode!.ToUpper().StartsWith("BT") && (Country != "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 
-        if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
+        if (!PostCode!.ToUpper().StartsWith("BT") && (Country == "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
 
         if (ModelState.ErrorCount > 0)
@@ -230,7 +228,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     private string GenerateDuplicateError()
     {
         string place;
-        if (NI_GBFlag == "NI")
+        if (Country == "NI")
         {
             place = "destination";
         }
@@ -241,5 +239,4 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         return $"This address has already been added as a place of {place} - enter a different address";
     }
-
 }

@@ -1,28 +1,19 @@
 ﻿@page
 @using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.EligibilityRegulationsModel
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.EligibilityRegulationsModel
 @{
     ViewData["Title"] = "Requirements – Move goods under NI Retail Movement Scheme";
 }
 
 @section Back{
-    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegisteredBusinessFboPhrGuidance))
-    {
-        <a asp-page="@Routes.Pages.Path.RegisteredBusinessFboPhrGuidancePath" asp-route-id="@Model.OrgId" class="govuk-back-link">Back</a>
-    }
-    else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.BusinessList))
-    {
-        <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
-    }
-    else
-    {
-        <feature name="Nirms-SuS-SelfServe">
-            <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
-        </feature>
-        <feature name="Nirms-SuS-SelfServe" negate="true">
-            <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
-        </feature>
-    }
+
+    <a asp-page="@Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath" class="govuk-back-link"
+       asp-route-id="@Model.OrgId"
+       asp-route-locationId="@Model.EstablishmentId"
+       asp-route-country="@Model.Country">
+        Back
+    </a>
+
 }
 
 <div class="govuk-grid-row">
@@ -70,24 +61,9 @@
         <h2 class="govuk-heading-m">HMRC customs requirements</h2>
         <p>The usual customs requirements will still apply to all consignments moved under the scheme.</p>
 
-        <h2 class="govuk-heading-m">Privacy notice</h2>
-        @*<p>To learn more about the personal data that we collect, you can read the privacy notice in the <a href="https://www.gov.uk/government/collections/the-windsor-framework-further-detail-and-publications" target="_blank" rel="noopener noreferrer">guidance for the Windsor Framework</a>.</p>*@
-        <p>To learn more about the personal data that we collect, you can read the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">privacy notice</a>.</p>
+        <div class="govuk-button-group">
+            <a href="place-of-dispatch-confirm" class="govuk-button">Add place of dispatch</a>
+        </div>
 
-        <form method="POST" novalidate>
-            <div class="govuk-form-group @(ModelState.HasError("Confirmed") ? "govuk-form-group--error" : null)">
-                <p id="RegulationConfirmed_Error" class="govuk-error-message" gds-validation-for="Confirmed"></p>
-                <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
-                    <input class="govuk-checkboxes__input" id="Confirmed" type="checkbox" asp-for="Confirmed" value="true">
-                    <label class="govuk-label govuk-checkboxes__label govuk-!-font-weight-bold" for="Confirmed">
-                        I confirm that I have read and understood the guidance and regulations for moving goods under this scheme
-                    </label>
-                </div>
-            </div>
-
-            <button class="govuk-button" asp-page-handler="submit" id="button-elig_regulations_Submit data-module="govuk-button">Continue</button>
-            <input type="hidden" asp-for="TradePartyId" />
-            <input type="hidden" asp-for="OrgId" />
-        </form>
     </div>
 </div>

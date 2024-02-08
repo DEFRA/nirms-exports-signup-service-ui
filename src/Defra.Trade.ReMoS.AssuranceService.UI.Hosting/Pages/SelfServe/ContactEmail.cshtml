@@ -1,32 +1,18 @@
 ﻿@page
 @using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments.ContactEmailModel
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.ContactEmailModel
 @{
     ViewData["Title"] = "Enter Establishment contact email";
 }
 
 @section Back{
-    @if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.RegistrationCheckYourAnswers))
-    {
-        <a asp-page="@Routes.Pages.Path.RegistrationCheckYourAnswersPath"
-           asp-route-id="@Model.OrgId"
-           class="govuk-back-link">Back</a>
-    }
-    else if (ViewContext.HttpContext.Request.Headers["Referer"].ToString().Contains(Routes.AdditionalEstablishmentAddress))
-    {
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath"
-           asp-route-id="@Model.OrgId"
-           asp-route-NI_GBFlag="@Model.NI_GBFlag"
-           class="govuk-back-link">Back to dashboard</a>
-    }
-    else
-    {
-        <a asp-page="@Routes.Pages.Path.RegistrationTaskListPath" 
+    
+        <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath" 
             asp-route-id="@Model.OrgId"
             asp-route-establishmentId="@Model.EstablishmentId"
-            asp-route-NI_GBFlag="@Model.NI_GBFlag"
-           class="govuk-back-link">Back to dashboard</a>
-    }
+            asp-route-country="@Model.Country"
+           class="govuk-back-link">Back</a>
+    
 }
 
 <div class="govuk-grid-row">
@@ -36,7 +22,7 @@
             <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />
-            <input type="hidden" asp-for="NI_GBFlag" />
+            <input type="hidden" asp-for="Country" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Email") ? "Email": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -46,9 +32,17 @@
                         </h1>
                     </legend>
 
-                    <p class="govuk-hint" id="search-places-of-dispatch">
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            You do not need to add an establishment that @Model.BusinessName does not operate.
+                        </strong>
+                    </div>
+
+@*                    <p class="govuk-hint" id="search-places-of-dispatch">
                         @Model.ContentText
-                        </p>
+                        </p>*@
 
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment address</h2>
                     <p class="govuk-body">
@@ -64,7 +58,7 @@
                            asp-page-handler="ChangeEstablishmentAddress"
                            asp-route-orgid="@Model.OrgId"
                            asp-route-establishmentId="@Model.EstablishmentId"
-                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                           asp-route-country="@Model.Country">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     </p>
@@ -78,7 +72,7 @@
                 </fieldset>
             </div>
 
-            <button class="govuk-button" asp-page-handler="submit">Continue</button>
+            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
         </form>
 
     </div>

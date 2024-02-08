@@ -5,7 +5,12 @@
 }
 
 @section Back{
-    <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
+    <feature name="Nirms-SuS-SelfServe">
+        <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
+    </feature>
+    <feature name="Nirms-SuS-SelfServe" negate="true">
+        <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
+    </feature>
 }
 
 <div class="govuk-grid-row">

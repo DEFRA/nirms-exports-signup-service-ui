@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
@@ -18,6 +19,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
     private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();
     private readonly ICheckAnswersService _checkAnswersService = new CheckAnswersService();
     protected Mock<ILogger<SelfServeDashboardModel>> _mockLogger = new();
+    private readonly Mock<IFeatureManager> _mockFeatureManager = new();
 
     [SetUp]
     public void TestCaseSetup()
@@ -26,7 +28,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
             _mockLogger.Object, 
             _mockTraderService.Object, 
             _mockEstablishmentService.Object, 
-            _checkAnswersService)
+            _checkAnswersService,
+            _mockFeatureManager.Object)
         {
             PageContext = PageModelMockingUtils.MockPageContext()
         };

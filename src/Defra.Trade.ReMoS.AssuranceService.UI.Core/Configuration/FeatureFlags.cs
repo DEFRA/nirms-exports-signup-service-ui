@@ -7,4 +7,5 @@ public static class FeatureFlags
 {
     public const string SignUpApplication = "Nirms-SuS-SusToIdcomsSync";
     public const string SelfServe = "Nirms-SuS-SelfServe";
+    public const string SelfServeMvpPlus = "Nirms-SuS-SelfServeMvpPlus";
 }

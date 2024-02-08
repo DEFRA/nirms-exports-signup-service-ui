@@ -1,7 +1,9 @@
 ﻿@page
 @using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.SelfServeDashboardModel
+
 @{
+    ViewData["Title"] = "Self serve dashboard";
 }
 
 @section Back{
@@ -22,14 +24,14 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <dl class="govuk-summary-list">
-            
+
                 <!-- Status -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
                         Status
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @if(Model.ApprovalStatus == 1)
+                        @if (Model.ApprovalStatus == 1)
                         {
                             <div class="govuk-tag govuk-tag--green">
                                 Approved for NIRMS
@@ -40,7 +42,7 @@
                         <span class="govuk-visually-hidden">Blank cell</span>
                     </dd>
                 </div>
-            
+
                 <!-- RMS Number -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
@@ -53,7 +55,7 @@
                         <span class="govuk-visually-hidden">Blank cell</span>
                     </dd>
                 </div>
-            
+
                 <!-- Contact person -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
@@ -64,7 +66,7 @@
                         @Model.ContactPosition<br>
                         @Model.ContactEmail<br>
                         @Model.ContactPhoneNumber
-                    
+
                         @if (Model.ContactLastModifiedDate > Model.ContactSubmittedDate)
                         {
                             <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Updated @Model.ContactLastModifiedDate.ToString("dd MMM yyyy")</div>
@@ -78,7 +80,8 @@
                     <dd class="govuk-summary-list__actions">
                         <a asp-page-handler="ChangeContactDetails"
                            asp-route-orgid="@Model.OrgId">
-                           Change <span class="govuk-visually-hidden">contact person</span></a>
+                            Change <span class="govuk-visually-hidden">contact person</span>
+                        </a>
                     </dd>
                 </div>
 
@@ -105,7 +108,8 @@
                     <dd class="govuk-summary-list__actions">
                         <a asp-page-handler="ChangeAuthRepresentativeDetails"
                            asp-route-orgid="@Model.OrgId">
-                           Change <span class="govuk-visually-hidden">authorised representative</span></a>
+                            Change <span class="govuk-visually-hidden">authorised representative</span>
+                        </a>
                     </dd>
                 </div>
             </dl>
@@ -113,8 +117,10 @@
     </div>
 
     <div class="govuk-button-group">
-        <a class="govuk-button  govuk-button--secondary" asp-page-handler="AddEstablishment"
-           asp-route-orgid="@Model.OrgId" asp-route-countrychosen="@Model.Country">
+        <a class="govuk-button"
+           asp-page-handler="AddEstablishment"
+           asp-route-orgid="@Model.OrgId"
+           asp-route-countrychosen="@Model.Country">
             @Model.EstablishmentButtonText
         </a>
     </div>

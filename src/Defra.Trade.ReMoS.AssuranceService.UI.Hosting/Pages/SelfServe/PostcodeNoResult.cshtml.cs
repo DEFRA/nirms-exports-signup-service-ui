@@ -1,9 +1,14 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.FeatureManagement.Mvc;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
+[FeatureGate(FeatureFlags.SelfServeMvpPlus)]
 public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
 {
     #region UI models
@@ -14,30 +19,28 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     [BindProperty]
     public string Postcode { get; set; } = string.Empty;
     [BindProperty]
-    public string NI_GBFlag { get; set; } = string.Empty;
+    public string Country { get; set; } = default!;
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     public string? ContentCountry { get; set; } = string.Empty;
+    public string? BusinessName { get; set; }
     #endregion
 
     public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
-    {}
+    { }
 
-    public async Task<IActionResult> OnGet(Guid id, string NI_GBFlag, string postcode)
+    public async Task<IActionResult> OnGet(Guid id, string country, string postcode)
     {
         OrgId = id;
-        this.NI_GBFlag = NI_GBFlag;
+        Country = country;
         Postcode = postcode;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
 
-        if (_traderService.IsTradePartySignedUp(tradeParty))
-        {
-            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
-        }
+        await GetBusinessNameAsync();
 
-        if (NI_GBFlag == "NI")
+        if (Country == "NI")
         {
             ContentCountry = "Northern Ireland";
             ContentHeading = "Add a place of destination";
@@ -56,5 +59,14 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
         }
 
         return Page();
+    }
+
+    private async Task GetBusinessNameAsync()
+    {
+        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+        if (tradeParty != null)
+        {
+            BusinessName = tradeParty.PracticeName;
+        }
     }
 }

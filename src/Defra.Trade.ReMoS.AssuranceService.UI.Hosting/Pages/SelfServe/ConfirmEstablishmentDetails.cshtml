@@ -1,0 +1,99 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.ConfirmEstablishmentDetailsModel
+@{
+    ViewData["Title"] = "Confirm establishment details";
+}
+
+@section Back{
+    
+        <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentContactEmailPath" 
+            asp-route-id="@Model.OrgId"
+            asp-route-locationId="@Model.EstablishmentId"
+            asp-route-country="@Model.Country"
+           class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form method="POST" novalidate>
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="EstablishmentId" />
+            <input type="hidden" asp-for="Country" />
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">Establishments</span>
+                @Model.ContentHeading
+            </h1>
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-visually-hidden">Warning</span>
+                    You do not need to add an establishment that @Model.BusinessName does not operate.
+                </strong>
+            </div>
+
+            <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@Model.Location.Name</h2>
+                    <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
+                       asp-page-handler="RemoveEstablishment"
+                       asp-route-orgid="@Model.OrgId"
+                       asp-route-tradepartyid="@Model.TradePartyId"
+                       asp-route-establishmentId="@Model.Location.Id"
+                       asp-route-NI_GBFlag="@Model.Country">
+                        Remove<span class="govuk-visually-hidden"> warehouse B</span>
+                    </a>
+                </div>
+                <div class="govuk-summary-card__content">
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @(Model.Location.Address?.LineOne != null ? $"{Model.Location.Address?.LineOne}," : string.Empty)
+                                @(Model.Location.Address?.LineTwo != null ? $"{Model.Location.Address?.LineTwo}," : string.Empty)
+                                @(Model.Location.Address?.CityName != null ? $"{Model.Location.Address?.CityName}," : string.Empty)
+                                @(Model.Location.Address?.County != null ? $"{Model.Location.Address?.County}," : string.Empty)
+                                @(Model.Location.Address?.PostCode != null ? $"{Model.Location.Address?.PostCode}" : string.Empty)
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link"
+                                   asp-page-handler="ChangeEstablishmentAddress"
+                                   asp-route-orgid="@Model.OrgId"
+                                   asp-route-establishmentId="@Model.Location.Id"
+                                   asp-route-country="@Model.Country">
+                                    Change<span class="govuk-visually-hidden"> address</span>
+                                </a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Email address
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.Location.Email
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link"
+                                   asp-page-handler="ChangeEmail"
+                                   asp-route-orgid="@Model.OrgId"
+                                   asp-route-establishmentId="@Model.Location.Id"
+                                   asp-route-country="@Model.Country">
+                                    Change<span class="govuk-visually-hidden"> email address</span>
+                                </a>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+
+            <button class="govuk-button" asp-page-handler="submit">Continue</button>
+
+        </form>
+
+    </div>
+</div>
