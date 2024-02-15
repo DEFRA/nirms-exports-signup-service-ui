@@ -85,9 +85,11 @@
                             }
                             else
                             {
-                                <a asp-page=@Routes.Pages.Path.AuthorisedSignatoryDetailsPath asp-route-id="@Model.OrgId" aria-describedby="authorised-signatory-details">
-                                    Authorised representative
-                                </a>
+                                 <span class="app-task-list__task-name">
+                                    <a asp-page=@Routes.Pages.Path.AuthorisedSignatoryDetailsPath asp-route-id="@Model.OrgId" aria-describedby="authorised-signatory-details">
+                                        Authorised representative
+                                    </a>
+                                </span>
                             }
                             <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.AuthorisedSignatoryDetails)" id="authorised-signatory-details">@Model.AuthorisedSignatoryDetails</strong>
                         </span>
@@ -196,9 +198,11 @@
                             }
                             else
                             {
-                                <a asp-page=@Routes.Pages.Path.RegistrationCheckYourAnswersPath asp-route-id="@Model.OrgId" aria-describedby="complete_submit">
-                                    Check answers and submit sign up
-                                </a>
+                                <span class="app-task-list__task-name">
+                                    <a asp-page=@Routes.Pages.Path.RegistrationCheckYourAnswersPath asp-route-id="@Model.OrgId" aria-describedby="complete_submit">
+                                        Check answers and submit sign up
+                                    </a>
+                                </span>
                             }     
                             <strong class="govuk-tag app-task-list__tag govuk-tag--@GetStatusColour(Model.ReviewAnswers)" id="complete_submit">@Model.ReviewAnswers</strong>
                         </span>
