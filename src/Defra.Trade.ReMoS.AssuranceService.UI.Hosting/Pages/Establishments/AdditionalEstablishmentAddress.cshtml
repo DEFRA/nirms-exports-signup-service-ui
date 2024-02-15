@@ -83,7 +83,7 @@
 
 
             <div class="govuk-form-group @(ModelState.HasError("AddAddressesComplete") ? "govuk-form-group--error" : null)">
-                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AddAddressesComplete") ? "AdditionalAddress_Error": null)">
+                <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-describedby="@(ModelState.HasError("AddAddressesComplete") ? "AddAddressesComplete_Error": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-6">
                         <h3 class="govuk-fieldset__heading">
                             Have you added all @(Model.PracticeName)'s places of @Model.ContentText?
@@ -91,7 +91,7 @@
                     </legend>
                     <p class="govuk-hint">You have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
 
-                    <p id="AdditionalAddress_Error" class="govuk-error-message" gds-validation-for="AddAddressesComplete"></p>
+                    <p id="AddAddressesComplete_Error" class="govuk-error-message" gds-validation-for="AddAddressesComplete"></p>
 
                     <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios" id="AdditionalAddress">
                         <div class="govuk-radios__item">
