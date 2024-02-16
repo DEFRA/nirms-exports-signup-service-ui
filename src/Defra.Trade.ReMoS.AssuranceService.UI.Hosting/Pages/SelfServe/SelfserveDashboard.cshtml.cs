@@ -33,7 +33,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     [BindProperty]
     public string Country { get; set; } = default!;
-    public string EstablishmentButtonText { get; set; } = "Add a place of dispatch";
+    public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
     #endregion
 
@@ -65,7 +65,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         if (Country == "NI")
         {
-            EstablishmentButtonText = "Add a place of destination";
+            EstablishmentButtonText = "destination";
         }
 
         return Page();
