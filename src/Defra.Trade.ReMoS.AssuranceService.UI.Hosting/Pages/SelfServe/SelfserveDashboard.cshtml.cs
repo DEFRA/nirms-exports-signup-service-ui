@@ -35,6 +35,8 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public string Country { get; set; } = default!;
     public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
+    public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
+    public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
     private readonly IFeatureManager _featureManager;
@@ -68,6 +70,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             EstablishmentButtonText = "destination";
         }
 
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
+            .Where(x => x.NI_GBFlag == NI_GBFlag)
+            .OrderBy(x => x.CreatedDate)
+            .ToList();
+
         return Page();
     }
 
@@ -84,6 +91,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         RmsNumber = tradeParty?.RemosBusinessSchemeNumber ?? string.Empty;
         Country = tradeParty?.Address!.TradeCountry!;
         ApprovalStatus = (int)(tradeParty?.ApprovalStatus!);
+        NI_GBFlag = tradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
 
         if (tradeParty?.Contact != null)
         {
