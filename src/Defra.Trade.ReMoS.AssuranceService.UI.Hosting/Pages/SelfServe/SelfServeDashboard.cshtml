@@ -140,11 +140,11 @@
     </div>
 
     <div class="govuk-button-group">
-        <a class="govuk-button govuk-button--secondary"
+        <a class="govuk-button"
            asp-page-handler="AddEstablishment"
            asp-route-orgid="@Model.OrgId"
            asp-route-NI_GBFlag="@Model.NI_GBFlag">
-            @Model.EstablishmentButtonText
+            Add a place of @Model.EstablishmentButtonText
         </a>
     </div>
 
@@ -172,7 +172,7 @@
                     @foreach (var location in Model.LogisticsLocations!)
                     {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@location.Name</td>
+                            <td class="govuk-table__cell"><a class="govuk-link" href="" id="EstablishmentName">@location.Name</a></td>
                             <td class="govuk-table__cell">@location.Address!.PostCode</td>
                             <td class="govuk-table__cell">@if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
                                 {

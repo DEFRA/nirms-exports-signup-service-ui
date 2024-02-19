@@ -32,7 +32,6 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     [BindProperty]
-    public string? NI_GBFlag { get; set; } = default!;
     public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
     public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
@@ -70,7 +69,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             EstablishmentButtonText = "destination";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
             .Where(x => x.NI_GBFlag == NI_GBFlag)
             .OrderBy(x => x.CreatedDate)
             .ToList();
@@ -91,7 +90,6 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         RmsNumber = tradeParty?.RemosBusinessSchemeNumber ?? string.Empty;
         NI_GBFlag = tradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
         ApprovalStatus = (int)(tradeParty?.ApprovalStatus!);
-        NI_GBFlag = tradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
 
         if (tradeParty?.Contact != null)
         {
@@ -143,5 +141,4 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             Routes.Pages.Path.SelfServeEstablishmentHoldingPath,
             new { id = orgId, NI_GBFlag });
     }
-
 }

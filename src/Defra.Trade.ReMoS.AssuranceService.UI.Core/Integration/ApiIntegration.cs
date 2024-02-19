@@ -380,10 +380,10 @@ public class ApiIntegration : IApiIntegration
     /// </summary>
     /// <param name="tradePartyId"></param>
     /// <returns>List of establishments</returns>
-    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected)
     {
         var httpClient = CreateHttpClient();
-        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}");
+        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}?isRejected={isRejected}");
 
         if (response.IsSuccessStatusCode)
         {

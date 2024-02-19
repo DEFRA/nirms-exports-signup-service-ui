@@ -29,9 +29,9 @@ public class EstablishmentService : IEstablishmentService
         return establishmentId;
     }
 
-    public async Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected)
     {
-        return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId);
+        return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId, isRejected);
     }
 
     public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id)

@@ -127,7 +127,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -231,7 +231,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -289,7 +289,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid)).Returns(Task.FromResult(list.AsEnumerable())!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false)).Returns(Task.FromResult(list.AsEnumerable())!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());

@@ -78,7 +78,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 countryFlag = "NI";
             }
 
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
 
             if ( establishments != null && establishments.Any())
             {
