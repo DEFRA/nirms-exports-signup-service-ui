@@ -157,7 +157,7 @@ public static class Routes
             public const string SelfServeEstablishmentContactEmailName = "ContactEmail";
             public const string SelfServeConfirmEstablishmentDetailsName = "ConfirmEstablishmentDetails";
             public const string SelfServeRegulationsName = "EligibilityRegulations";
-            public const string SelfServeEstablishmentAddedName = "EstablishmentAdded";
+            public const string SelfServeEstablishmentAddedName = "EstablishmentSuccessful";
             
 
         }
@@ -212,7 +212,7 @@ public static class Routes
             public const string SelfServeEstablishmentContactEmailPath = $"/SelfServe/{Names.SelfServeEstablishmentContactEmailName}";
             public const string SelfServeConfirmEstablishmentDetailsPath = $"/SelfServe/{Names.SelfServeConfirmEstablishmentDetailsName}";
             public const string SelfServeRegulationsPath = $"/SelfServe/{Names.SelfServeRegulationsName}";
-            public const string SelfServeEstablishmentAddedPath = $"/SelfServe/{Names.SelfServeEstablishmentAddedName}";
+            public const string SelfServeEstablishmentAddedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentAddedName}";
         }
     }
 }
