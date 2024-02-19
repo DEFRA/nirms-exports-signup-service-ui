@@ -8,7 +8,7 @@
 @section Back{
     <a class="govuk-back-link"
        asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath"
-       asp-route-country="@Model.Country"
+       asp-route-NI_GBFlag="@Model.NI_GBFlag"
        asp-route-id="@Model.OrgId">
         Back
     </a>
@@ -42,14 +42,14 @@
                 <li>
                     making sure you've <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath
                                           asp-route-id="@Model.OrgId"
-                                          asp-route-country="@Model.Country">
+                                          asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         entered the postcode correctly
                     </a>
                 </li>
                 <li>
                     <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath
                        asp-route-id="@Model.OrgId"
-                       asp-route-country="@Model.Country">
+                       asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         enter the full establishment address
                     </a>
                 </li>

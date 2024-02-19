@@ -63,4 +63,9 @@ public class EstablishmentService : IEstablishmentService
     {
         return await _api.GetLogisticsLocationByUprnAsync(uprn);
     }
+
+    public async Task<bool> UpdateEstablishmentDetailsSelfServeAsync(LogisticsLocationDto establishmentDto)
+    {
+        return await _api.UpdateEstablishmentSelfServeAsync(establishmentDto);
+    }
 }

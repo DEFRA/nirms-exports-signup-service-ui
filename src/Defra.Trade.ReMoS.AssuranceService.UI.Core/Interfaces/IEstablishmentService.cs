@@ -20,4 +20,5 @@ public interface IEstablishmentService
     Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto);
     Task<List<AddressDto>> GetTradeAddressApiByPostcodeAsync(string postcode);
     Task<LogisticsLocationDto> GetLogisticsLocationByUprnAsync(string uprn);
+    Task<bool> UpdateEstablishmentDetailsSelfServeAsync(LogisticsLocationDto establishmentDto);
 }

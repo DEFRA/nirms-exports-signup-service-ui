@@ -187,6 +187,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(dto);
+            _mockTraderService.Setup(x => x.GetBusinessNameAsync(It.IsAny<Guid>())).ReturnsAsync(dto.PracticeName);
 
             //act
             await _systemUnderTest!.OnGetAsync(dto.OrgId);

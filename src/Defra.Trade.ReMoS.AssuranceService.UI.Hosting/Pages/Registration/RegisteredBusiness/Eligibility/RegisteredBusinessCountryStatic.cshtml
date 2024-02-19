@@ -38,12 +38,12 @@
             <p>Your business is based in @Model.Country.</p>
         }
 
-        <p>To sign up a business with a different purpose,         
+        <p>To sign up a business with a different purpose, 
             <feature name="Nirms-SuS-SelfServe">
-                <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
+                <a asp-page="@Routes.Pages.Path.BusinessListPath">start a new sign up request</a>
             </feature>
             <feature name="Nirms-SuS-SelfServe" negate="true">
-                <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath" class="govuk-back-link">Back</a>
+                <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">start a new sign up request</a>
             </feature>.</p>
 
         <p>If you need to change your answer, call us.</p>

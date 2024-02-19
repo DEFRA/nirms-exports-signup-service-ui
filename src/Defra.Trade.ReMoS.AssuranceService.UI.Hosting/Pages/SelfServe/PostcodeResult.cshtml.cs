@@ -36,7 +36,7 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
     public string? ContentText { get; set; } = string.Empty;
 
     [BindProperty]
-    public string Country { get; set; } = default!;
+    public string? NI_GBFlag { get; set; } = string.Empty;
 
     [BindProperty]
     public bool IsSubmitDisabled { get; set; } = false;
@@ -48,24 +48,24 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
       ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string country)
+    public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Postcode result OnGetAsync");
         Postcode = postcode;
         OrgId = id;
-        Country = country;
+        this.NI_GBFlag = NI_GBFlag;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
 
-        await GetBusinessNameAsync();
+        BusinessName = BusinessName = await _traderService.GetBusinessNameAsync(TradePartyId);
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
-        if (Country == "NI")
+        if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
             ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
@@ -95,7 +95,7 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
-            return RedirectToPage(Routes.Pages.Path.SelfServeEstablishmentPostcodeNoResultPath, new { id = OrgId, Country, postcode = Postcode });
+            return RedirectToPage(Routes.Pages.Path.SelfServeEstablishmentPostcodeNoResultPath, new { id = OrgId, NI_GBFlag, postcode = Postcode });
         }
 
         return Page();
@@ -107,23 +107,13 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(OrgId, Postcode!, Country);
+            return await OnGetAsync(OrgId, Postcode!, NI_GBFlag!);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
-            new { id = OrgId, uprn = SelectedEstablishment, Country });
+            new { id = OrgId, uprn = SelectedEstablishment, NI_GBFlag });
 
 
     }
-
-    private async Task GetBusinessNameAsync()
-    {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null)
-        {
-            BusinessName = tradeParty.PracticeName;
-        }
-    }
-
 }

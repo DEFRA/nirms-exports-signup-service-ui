@@ -91,7 +91,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BT1";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -121,7 +121,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BT1";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -150,7 +150,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BT1";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -179,7 +179,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BT1";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -208,7 +208,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BT1";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -237,7 +237,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BTES1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -266,7 +266,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
         _systemUnderTest!.PostCode = "BT1";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -296,7 +296,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "E15 1YL";
 
-        _systemUnderTest.Country = "NI";
+        _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -326,7 +326,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "BT1 1YL";
 
-        _systemUnderTest.Country = "GB";
+        _systemUnderTest.NI_GBFlag = "GB";
 
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -516,7 +516,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.CityName = "City";
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "TES1";
-        _systemUnderTest!.Country = "England";
+        _systemUnderTest!.NI_GBFlag = "GB";
         _systemUnderTest.EstablishmentId = Guid.NewGuid();
         _systemUnderTest.TradePartyId = Guid.NewGuid();
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync((Guid)_systemUnderTest.EstablishmentId!)).ReturnsAsync(new LogisticsLocationDto() { Address = new TradeAddressDto()});
