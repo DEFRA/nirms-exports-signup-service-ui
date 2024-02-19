@@ -23,7 +23,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
-    public string Country { get; set; } = default!;
+    public string NI_GBFlag { get; set; } = default!;
     public string? BusinessName { get; set; }
     #endregion
 
@@ -33,12 +33,12 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         ITraderService traderService) : base(logger, traderService, establishmentService)
     {}
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string country)
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment dispatch destination OnGetAsync");
         OrgId = id;
         EstablishmentId = locationId;
-        Country = country;
+        this.NI_GBFlag = NI_GBFlag;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
 
@@ -53,7 +53,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
-        if (country == "NI")
+        if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
         }
@@ -77,14 +77,14 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
         if (!IsInputValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Country ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         await SaveEmailToApi();
 
         return RedirectToPage(
             Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, 
-            new { id = OrgId, locationId = EstablishmentId,  Country});
+            new { id = OrgId, locationId = EstablishmentId,  NI_GBFlag});
     }
 
     public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string country)

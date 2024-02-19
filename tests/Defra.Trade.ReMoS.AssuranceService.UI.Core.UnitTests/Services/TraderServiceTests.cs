@@ -644,5 +644,27 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             Assert.AreEqual(tradePartyDTO, result);
         }
 
+        [Test]
+        public async Task GetBusinessNameAsync_Returns_BusinessName()
+        {
+            // Arrange
+            _traderService = new TraderService(_mockApiIntegration.Object);
+            var expected = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                PracticeName = "TestName",
+            };
+            _mockApiIntegration
+                .Setup(x => x.GetTradePartyByIdAsync(expected.Id))
+                .ReturnsAsync(expected);
+
+            // Act
+            var result = await _traderService.GetBusinessNameAsync(expected.Id);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().Be(expected.PracticeName);
+        }
+
     }
 }

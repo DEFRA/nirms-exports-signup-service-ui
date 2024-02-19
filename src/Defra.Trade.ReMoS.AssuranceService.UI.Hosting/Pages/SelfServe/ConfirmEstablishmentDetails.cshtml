@@ -10,7 +10,7 @@
         <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentContactEmailPath" 
             asp-route-id="@Model.OrgId"
             asp-route-locationId="@Model.EstablishmentId"
-            asp-route-country="@Model.Country"
+            asp-route-NI_GBFlag="@Model.NI_GBFlag"
            class="govuk-back-link">Back</a>
 }
 
@@ -21,7 +21,7 @@
             <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />
-            <input type="hidden" asp-for="Country" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">Establishments</span>
                 @Model.ContentHeading
@@ -36,13 +36,13 @@
 
             <div class="govuk-summary-card">
                 <div class="govuk-summary-card__title-wrapper">
-                    <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@Model.Location.Name</h2>
+                    <h2 class="govuk-summary-card__title govuk-!-margin-bottom-0">@Model.Location!.Name</h2>
                     <a class="govuk-link govuk-body govuk-!-margin-bottom-0"
                        asp-page-handler="RemoveEstablishment"
                        asp-route-orgid="@Model.OrgId"
                        asp-route-tradepartyid="@Model.TradePartyId"
                        asp-route-establishmentId="@Model.Location.Id"
-                       asp-route-NI_GBFlag="@Model.Country">
+                       asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         Remove<span class="govuk-visually-hidden"> warehouse B</span>
                     </a>
                 </div>
@@ -64,7 +64,7 @@
                                    asp-page-handler="ChangeEstablishmentAddress"
                                    asp-route-orgid="@Model.OrgId"
                                    asp-route-establishmentId="@Model.Location.Id"
-                                   asp-route-country="@Model.Country">
+                                   asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                     Change<span class="govuk-visually-hidden"> address</span>
                                 </a>
                             </dd>
@@ -81,7 +81,7 @@
                                    asp-page-handler="ChangeEmail"
                                    asp-route-orgid="@Model.OrgId"
                                    asp-route-establishmentId="@Model.Location.Id"
-                                   asp-route-country="@Model.Country">
+                                   asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                     Change<span class="govuk-visually-hidden"> email address</span>
                                 </a>
                             </dd>

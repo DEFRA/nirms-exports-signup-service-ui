@@ -12,6 +12,7 @@
 
 <form method="post">
     <input type="hidden" asp-for="OrgId" />
+    <input type="hidden" asp-for="NI_GBFlag" />
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
@@ -120,7 +121,7 @@
         <a class="govuk-button govuk-button--secondary"
            asp-page-handler="AddEstablishment"
            asp-route-orgid="@Model.OrgId"
-           asp-route-countrychosen="@Model.Country">
+           asp-route-NI_GBFlag="@Model.NI_GBFlag">
             @Model.EstablishmentButtonText
         </a>
     </div>

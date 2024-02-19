@@ -148,5 +148,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 
             return tradeParty.ApprovalStatus;
         }
+
+        public async Task<string> GetBusinessNameAsync(Guid tradePartyId)
+        {
+            TradePartyDto? tradeParty = await _apiIntegration.GetTradePartyByIdAsync(tradePartyId);
+            if (tradeParty != null)
+            {
+                return tradeParty.PracticeName!;
+            }
+            else return string.Empty;
+        }
     }
 }

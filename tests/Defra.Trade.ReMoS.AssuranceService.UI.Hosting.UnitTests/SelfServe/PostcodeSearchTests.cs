@@ -145,13 +145,13 @@ public class PostcodeSearchTests : PageModelTestsBase
 
     [TestCase("bt1 4tg", "NI", 0, null)]
     [TestCase("sw9 9tf", "NI", 1, "Enter a postcode in Northern Ireland")]
-    [TestCase("bt1 5tg", "England", 1, "Enter a postcode in England, Scotland or Wales")]
-    [TestCase("sw9 6th", "England", 0, null)]
+    [TestCase("bt1 5tg", "GB", 1, "Enter a postcode in England, Scotland or Wales")]
+    [TestCase("sw9 6th", "GB", 0, null)]
     public async Task OnPostSubmitAsync_PostcodeError(string postcode, string country, int errorCount, string? errorMessage)
     {
         // arrange
         _systemUnderTest!.Postcode = postcode;
-        _systemUnderTest.Country = country;
+        _systemUnderTest.NI_GBFlag = country;
 
         // act
         await _systemUnderTest.OnPostSubmitAsync();
@@ -175,6 +175,7 @@ public class PostcodeSearchTests : PageModelTestsBase
         };
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(dto);
+        _mockTraderService.Setup(x => x.GetBusinessNameAsync(It.IsAny<Guid>())).ReturnsAsync(dto.PracticeName);
 
         //act
         await _systemUnderTest!.OnGetAsync(dto.OrgId, It.IsAny<string>());

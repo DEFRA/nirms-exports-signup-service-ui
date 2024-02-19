@@ -19,7 +19,7 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     [BindProperty]
     public string Postcode { get; set; } = string.Empty;
     [BindProperty]
-    public string Country { get; set; } = default!;
+    public string NI_GBFlag { get; set; } = default!;
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     public string? ContentCountry { get; set; } = string.Empty;
@@ -29,18 +29,18 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
     { }
 
-    public async Task<IActionResult> OnGet(Guid id, string country, string postcode)
+    public async Task<IActionResult> OnGet(Guid id, string NI_GBFlag, string postcode)
     {
         OrgId = id;
-        Country = country;
+        this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
 
-        await GetBusinessNameAsync();
+        BusinessName = BusinessName = await _traderService.GetBusinessNameAsync(TradePartyId);
 
-        if (Country == "NI")
+        if (this.NI_GBFlag == "NI")
         {
             ContentCountry = "Northern Ireland";
             ContentHeading = "Add a place of destination";
@@ -59,14 +59,5 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
         }
 
         return Page();
-    }
-
-    private async Task GetBusinessNameAsync()
-    {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null)
-        {
-            BusinessName = tradeParty.PracticeName;
-        }
     }
 }

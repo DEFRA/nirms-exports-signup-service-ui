@@ -14,7 +14,7 @@
            asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeResultPath"
            asp-route-id="@Model.OrgId"
            asp-route-postcode="@Model.PostCode"
-           asp-route-country="@Model.Country">
+           asp-route-NI_GBFlag="@Model.NI_GBFlag">
             Back
         </a>
     }
@@ -23,7 +23,7 @@
         <a class="govuk-back-link"
            asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath"
            asp-route-id="@Model.OrgId"
-           asp-route-country="@Model.Country">
+   asp-route-NI_GBFlag="@Model.NI_GBFlag">
             Back
         </a>
     }
@@ -36,7 +36,7 @@
         <form method="POST" novalidate>
             <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
-            <input type="hidden" asp-for="Country" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <input type="hidden" asp-for="EstablishmentId" />
             <input type="hidden" asp-for="Uprn" />
 

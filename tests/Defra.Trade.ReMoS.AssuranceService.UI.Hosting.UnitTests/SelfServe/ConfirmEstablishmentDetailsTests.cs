@@ -166,13 +166,13 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
     {
         var orgId = Guid.NewGuid();
         var establishmentId = Guid.NewGuid();
-        string country = "England";
+        string NI_GBFlag = "England";
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
-            new { id = orgId, locationId = establishmentId, country });
+            new { id = orgId, locationId = establishmentId, NI_GBFlag });
 
         // Act
-        var result = _systemUnderTest?.OnGetChangeEmail(orgId, establishmentId, country);
+        var result = _systemUnderTest?.OnGetChangeEmail(orgId, establishmentId, NI_GBFlag);
 
         // Assert
         result.Should().NotBeNull();

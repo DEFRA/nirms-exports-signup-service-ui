@@ -26,7 +26,7 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
     [BindProperty]
-    public string Country { get; set; } = default!;
+    public string? NI_GBFlag { get; set; } = default!;
     public string? BusinessName { get; set; }
     #endregion
 
@@ -36,12 +36,12 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
         ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string country)
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment dispatch destination OnGetAsync");
         OrgId = id;
         EstablishmentId = locationId;
-        Country = country;
+        this.NI_GBFlag = NI_GBFlag;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
 
@@ -56,7 +56,7 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
-        if (Country == "NI")
+        if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination"; ;
             ContentText = "destination";
@@ -82,10 +82,10 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
 
         return RedirectToPage(
             Routes.Pages.Path.SelfServeRegulationsPath,
-            new { id = OrgId, locationId = EstablishmentId, country = Country });
+            new { id = OrgId, locationId = EstablishmentId, NI_GBFlag });
     }
 
-    public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid tradePartyId, Guid establishmentId, string country)
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid tradePartyId, Guid establishmentId, string NI_GBFlag)
     {
         var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
         logisticsLocation!.IsRemoved = true;
@@ -93,17 +93,17 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
         return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = orgId});
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string country)
+    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag)
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
-            new { id = orgId, establishmentId, country });
+            new { id = orgId, establishmentId, NI_GBFlag });
     }
 
-    public IActionResult OnGetChangeEmail(Guid orgId, Guid establishmentId, string country)
+    public IActionResult OnGetChangeEmail(Guid orgId, Guid establishmentId, string NI_GBFlag)
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
-            new { id = orgId, locationId = establishmentId, country });
+            new { id = orgId, locationId = establishmentId, NI_GBFlag });
     }
 }

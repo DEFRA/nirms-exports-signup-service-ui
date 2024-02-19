@@ -1,6 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
     public string? ContextHint { get; set; } = string.Empty;
 
     [BindProperty]
-    public string Country { get; set; } = default!;
+    public string? NI_GBFlag { get; set; } = string.Empty;
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
@@ -41,23 +42,23 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
     public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService) : base(logger, traderService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, string country)
+    public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
         _logger.LogTrace("Self serve Establishment postcode search on get");
         OrgId = id;
-        Country = country;
+        this.NI_GBFlag = NI_GBFlag;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
 
-        await GetBusinessNameAsync();
+        BusinessName = await _traderService.GetBusinessNameAsync(TradePartyId);
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
-        if (Country == "NI")
+        if (NI_GBFlag == "NI")
         {
             ContextHint = "If your place of destination belongs to a different business";
             ContentHeading = "Add a place of destination";
@@ -79,42 +80,24 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
         if (!ModelState.IsValid)
         {
-            return await OnGetAsync(OrgId, Country!);
+            return await OnGetAsync(OrgId, NI_GBFlag!);
         }
 
-        if (Postcode!.ToUpper().StartsWith("BT") && CountryInGb(Country))
+        if (Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
         {
             var baseError = "Enter a postcode in England, Scotland or Wales";
             ModelState.AddModelError(nameof(Postcode), baseError);
-            return await OnGetAsync(OrgId, Country);
+            return await OnGetAsync(OrgId, NI_GBFlag);
         }
-        if (!Postcode!.ToUpper().StartsWith("BT") && (Country == "NI"))
+        if (!Postcode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
         {
             var baseError = "Enter a postcode in Northern Ireland";
             ModelState.AddModelError(nameof(Postcode), baseError);
-            return await OnGetAsync(OrgId, Country);
+            return await OnGetAsync(OrgId, NI_GBFlag);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentPostcodeResultPath,
-            new { id = OrgId, postcode = Postcode, Country });
-    }
-
-    private static bool CountryInGb(string country)
-    {
-        if (country.ToUpper() == "ENGLAND" || country.ToUpper() == "WALES" || country.ToUpper() == "SCOTLAND")
-        {
-            return true;
-        }
-        return false;
-    }
-
-    private async Task GetBusinessNameAsync()
-    {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null)
-        {
-            BusinessName = tradeParty.PracticeName;
-        }
+            new { id = OrgId, postcode = Postcode, NI_GBFlag });
     }
 }
