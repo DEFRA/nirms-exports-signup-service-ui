@@ -140,12 +140,22 @@
     </div>
 
     <div class="govuk-button-group">
+    <feature name="Nirms-Sus-SelfServeMvpPlus">
         <a class="govuk-button"
-           asp-page-handler="AddEstablishment"
-           asp-route-orgid="@Model.OrgId"
-           asp-route-NI_GBFlag="@Model.NI_GBFlag">
+            asp-page-handler="AddEstablishment"
+            asp-route-orgid="@Model.OrgId"
+            asp-route-NI_GBFlag="@Model.NI_GBFlag">
             Add a place of @Model.EstablishmentButtonText
         </a>
+    </feature>
+        <feature name="Nirms-Sus-SelfServeMvpPlus" negate="true">   
+            <a class="govuk-button govuk-button--secondary"
+                asp-page-handler="AddEstablishment"
+                asp-route-orgid="@Model.OrgId"
+                asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                Add a place of @Model.EstablishmentButtonText
+            </a>
+        </feature>
     </div>
 
     <feature name="Nirms-Sus-SelfServeMvpPlus">
