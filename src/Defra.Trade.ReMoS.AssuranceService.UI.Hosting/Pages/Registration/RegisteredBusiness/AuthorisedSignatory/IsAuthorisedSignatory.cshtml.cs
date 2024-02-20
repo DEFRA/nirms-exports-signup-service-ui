@@ -185,6 +185,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                 return new TradePartyDto()
                 {
                     Id = TradePartyId,
+                    ApprovalStatus = tradeParty.ApprovalStatus,
                     Contact = tradeContactDto,
                     AuthorisedSignatory = authorisedSignatoryStub
                 };
@@ -198,6 +199,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                     return new TradePartyDto()
                     {
                         Id = TradePartyId,
+                        ApprovalStatus = tradeParty.ApprovalStatus,
                         Contact = tradeContactDto,
                         AuthorisedSignatory = authorisedSignatoryStub
                     };
@@ -207,6 +209,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                     return new TradePartyDto()
                     {
                         Id = TradePartyId,
+                        ApprovalStatus = tradeParty.ApprovalStatus,
                         Contact = tradeContactDto,
                         AuthorisedSignatory = authorisedSignatory
                     };

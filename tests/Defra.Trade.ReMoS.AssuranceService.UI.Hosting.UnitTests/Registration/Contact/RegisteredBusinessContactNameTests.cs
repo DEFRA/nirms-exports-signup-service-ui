@@ -96,6 +96,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
     {
         // arrange
         _systemUnderTest.Name = "*";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // act
         await _systemUnderTest.OnPostSaveAsync();
@@ -222,6 +223,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         // arrange
         _systemUnderTest.Name = "John Doe";
         _systemUnderTest.PracticeName = "ACME Ltd";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var tradeParty = new TradePartyDto
         {
             Contact = new TradeContactDto
@@ -255,6 +257,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         // arrange
         _systemUnderTest.Name = "John Doe";
         _systemUnderTest.PracticeName = "ACME Ltd";
+        //_systemUnderTest.TradePartyId = Guid.NewGuid();
         var tradeParty = new TradePartyDto
         {
             Contact = new TradeContactDto
@@ -287,6 +290,7 @@ public class RegisteredBusinessContactNameTests : PageModelTestsBase
         // arrange
         _systemUnderTest.Name = "John Doe";
         _systemUnderTest.PracticeName = "ACME Ltd";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var tradeParty = new TradePartyDto
         {
             Contact = new TradeContactDto

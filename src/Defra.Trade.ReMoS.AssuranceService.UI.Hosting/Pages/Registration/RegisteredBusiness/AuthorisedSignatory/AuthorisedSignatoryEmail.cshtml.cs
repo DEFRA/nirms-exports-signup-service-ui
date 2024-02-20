@@ -133,6 +133,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return new TradePartyDto()
             {
                 Id = TradePartyId,
+                ApprovalStatus = tradeParty!.ApprovalStatus,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,

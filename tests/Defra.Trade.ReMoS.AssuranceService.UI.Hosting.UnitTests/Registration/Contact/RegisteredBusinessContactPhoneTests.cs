@@ -22,6 +22,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
             _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8") });
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+            _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8") });
         }
 
         [Test]
@@ -46,6 +47,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.PhoneNumber = phoneNumber;
+            _systemUnderTest!.TradePartyId = Guid.NewGuid();
 
             //Act
             await _systemUnderTest.OnPostSubmitAsync();

@@ -112,6 +112,7 @@ public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignator
         return new TradePartyDto()
         {
             Id = TradePartyId,
+            ApprovalStatus = tradeParty!.ApprovalStatus,
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Id = SignatoryId,
