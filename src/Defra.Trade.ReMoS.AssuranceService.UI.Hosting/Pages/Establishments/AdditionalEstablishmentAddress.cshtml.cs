@@ -64,7 +64,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
             ContentText = "dispatch";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId))?
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false))?
             .Where(x => x.NI_GBFlag == this.NI_GBFlag)
             .OrderBy(x => x.CreatedDate)
             .ToList();
@@ -137,7 +137,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
         logisticsLocation!.IsRemoved = true;
         await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId))?.ToList();
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false))?.ToList();
 
         if (LogisticsLocations?.Count > 0)
             return await OnGetAsync(orgId, NI_GBFlag);

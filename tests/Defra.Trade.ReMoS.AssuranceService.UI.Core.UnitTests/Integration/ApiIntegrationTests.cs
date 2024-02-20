@@ -1052,7 +1052,7 @@ internal class ApiIntegrationTests
         _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
 
         // Act
-        var returnedValue = await _apiIntegration.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>());
+        var returnedValue = await _apiIntegration.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>());
 
         // Assert
         _mockHttpClientFactory.Verify();

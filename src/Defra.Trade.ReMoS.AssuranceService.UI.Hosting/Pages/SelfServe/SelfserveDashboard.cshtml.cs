@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -32,9 +33,10 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     [BindProperty]
-    public string? NI_GBFlag { get; set; } = default!;
-    public string EstablishmentButtonText { get; set; } = "Add a place of dispatch";
+    public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
+    public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
+    public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
     private readonly IFeatureManager _featureManager;
@@ -65,8 +67,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         if (NI_GBFlag == "NI")
         {
-            EstablishmentButtonText = "Add a place of destination";
+            EstablishmentButtonText = "destination";
         }
+
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
+            .Where(x => x.NI_GBFlag == NI_GBFlag)
+            .OrderBy(x => x.CreatedDate)
+            .ToList();
 
         return Page();
     }
@@ -136,4 +143,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
+    public IActionResult OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
+    {
+        if (status == LogisticsLocationApprovalStatus.Draft)
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, new { id = orgId, locationId, NI_GBFlag });
+        }
+        else return Page();
+    }
 }

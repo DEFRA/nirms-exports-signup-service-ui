@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -69,9 +70,24 @@ public class SelfServeDashboardTests : PageModelTestsBase
                 SubmittedDate = DateTime.Now,
             }
         };
+        var logisticsLocations = new List<LogisticsLocationDto>()
+        { new LogisticsLocationDto()
+            {
+                Id = Guid.NewGuid(),
+                NI_GBFlag = "GB",
+                TradePartyId = guid,
+                TradeAddressId = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cc"),
+                Address = new TradeAddressDto()
+                {
+                    Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cc")
+                }
+            }
+        };
+
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), true).Result).Returns(logisticsLocations);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -94,6 +110,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         _systemUnderTest.AuthSignatoryEmail.Should().Be("auth@sd.com");
         _systemUnderTest.AuthSignatoryLastModifiedDate.Should().Be(tradePartyDto.AuthorisedSignatory.LastModifiedDate);
         _systemUnderTest.AuthSignatorySubmittedDate.Should().Be(tradePartyDto.AuthorisedSignatory.SubmittedDate);
+
+        _systemUnderTest.LogisticsLocations!.FirstOrDefault()!.TradePartyId.Should().Be(guid);
     }
 
     [Test]
@@ -159,6 +177,38 @@ public class SelfServeDashboardTests : PageModelTestsBase
         var result = _systemUnderTest?.OnGetChangeAuthRepresentativeDetails(orgId);
 
         // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+    }
+
+    [Test]
+    public async Task OnGetAsync_InvalidOrgId()
+    {
+        _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
+
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var redirectResult = result as RedirectToPageResult;
+
+        redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
+    }
+
+
+    [Test]
+    public void OnGetViewEstablishment_RedirectsDraft_Successfully()
+    {
+        // arrage
+        var orgId = Guid.NewGuid();
+        var locationId = Guid.NewGuid();
+        var NI_GBFlag = "GB";
+        var status = LogisticsLocationApprovalStatus.Draft;
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, new { id = orgId, locationId, NI_GBFlag });
+
+        // act
+        var result = _systemUnderTest!.OnGetViewEstablishment(orgId, locationId, NI_GBFlag, status);
+
+        // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
         Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);

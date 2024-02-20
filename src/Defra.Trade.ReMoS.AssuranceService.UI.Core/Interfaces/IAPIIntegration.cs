@@ -12,7 +12,7 @@ public interface IApiIntegration
     public Task<Guid> UpdateTradePartyAddressAsync(TradePartyDto tradePartyToUpdate);
     public Task<Guid> UpdateTradePartyContactAsync(TradePartyDto tradePartyToUpdate);
     public Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid id);
-    Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId);
+    Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected);
     Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDto logisticsLocationDTO);
     public Task<List<LogisticsLocationDto>?> GetEstablishmentsByPostcodeAsync(string postcode);
     Task RemoveEstablishmentAsync(Guid locationId);
