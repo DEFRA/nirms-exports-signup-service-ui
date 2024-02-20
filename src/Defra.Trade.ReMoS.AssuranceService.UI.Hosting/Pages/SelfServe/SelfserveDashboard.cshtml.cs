@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -140,5 +141,15 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentHoldingPath,
             new { id = orgId, NI_GBFlag });
+    }
+
+    public IActionResult OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
+    {
+        if (status == LogisticsLocationApprovalStatus.Draft)
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, new { id = orgId, locationId, NI_GBFlag });
+        }
+        else return Page();
     }
 }
