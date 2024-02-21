@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
@@ -23,6 +24,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
     [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
+    //[StringLengthMaximum(50, ErrorMessage = "Name must be 50 characters or less")]  -- TO COME BACK TO THIS AS A FUTURE BUG FIX
     [Required(ErrorMessage = "Enter a name")]
     public string Name { get; set; } = string.Empty;
 
