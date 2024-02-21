@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -149,6 +150,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         establishmentDto.Address.CityName = CityName;
         establishmentDto.Address.PostCode = PostCode;
         establishmentDto.NI_GBFlag = NI_GBFlag;
+        establishmentDto.ApprovalStatus = LogisticsLocationApprovalStatus.Draft;
 
         if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null)
         {

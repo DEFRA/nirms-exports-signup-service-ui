@@ -103,7 +103,7 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
     private async Task SubmitName()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
-        TradePartyDto = GenerateDTO();
+        TradePartyDto = await GenerateDTOAsync();
         await _traderService.UpdateTradePartyContactAsync(TradePartyDto);
     }
 
@@ -131,11 +131,14 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
         }
     }
 
-    private TradePartyDto GenerateDTO()
+    private async Task<TradePartyDto> GenerateDTOAsync()
     {
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+
         var tradePartyDto = new TradePartyDto()
         {
             Id = TradePartyId,
+            ApprovalStatus = tradeParty!.ApprovalStatus,
             Contact = new TradeContactDto()
             {
                 Id = ContactId,

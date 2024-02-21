@@ -5,6 +5,28 @@
 @{
     ViewData["Title"] = "Self serve dashboard";
 }
+@{
+    string GetStatusColour(string approvalStatus)
+    {
+        switch (approvalStatus)
+        {
+            case "None":
+                return "grey";
+            case "Active":
+                return "green";
+            case "Rejected":
+                return "red";
+            case "Draft":
+                return "blue";
+            case "Pending approval":
+                return "grey";
+            case "Suspended":
+                return "orange";
+            default:
+                return "grey";
+        }
+    }
+}
 
 @section Back{
     <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
@@ -12,6 +34,7 @@
 
 <form method="post">
     <input type="hidden" asp-for="OrgId" />
+    <input type="hidden" asp-for="NI_GBFlag" />
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
@@ -117,11 +140,67 @@
     </div>
 
     <div class="govuk-button-group">
+    <feature name="Nirms-Sus-SelfServeMvpPlus">
         <a class="govuk-button"
-           asp-page-handler="AddEstablishment"
-           asp-route-orgid="@Model.OrgId"
-           asp-route-countrychosen="@Model.Country">
-            @Model.EstablishmentButtonText
+            asp-page-handler="AddEstablishment"
+            asp-route-orgid="@Model.OrgId"
+            asp-route-NI_GBFlag="@Model.NI_GBFlag">
+            Add a place of @Model.EstablishmentButtonText
         </a>
+    </feature>
+        <feature name="Nirms-Sus-SelfServeMvpPlus" negate="true">   
+            <a class="govuk-button govuk-button--secondary"
+                asp-page-handler="AddEstablishment"
+                asp-route-orgid="@Model.OrgId"
+                asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                Add a place of @Model.EstablishmentButtonText
+            </a>
+        </feature>
     </div>
+
+    <feature name="Nirms-Sus-SelfServeMvpPlus">
+        <div class="govuk-grid-row govuk-!-margin-top-7">
+            <div class="govuk-grid-column-full">
+                <h2 class="govuk-heading-m" id="establishments">
+                    Places of @Model.EstablishmentButtonText that are operated by your business
+                </h2>
+            </div>
+
+            <table class="govuk-table" data-module="moj-sortable-table">
+                <caption class="govuk-table__caption  govuk-visually-hidden">
+                    Places of @Model.EstablishmentButtonText that are operated by your business
+                </caption>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Establishment name</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Postcode</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">RMS number</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="ascending">Updated</th>
+                    </tr>
+                </thead>
+
+                <tbody class="govuk-table__body">
+                    @foreach (var location in Model.LogisticsLocations!)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell"><a class="govuk-link" asp-page-handler="ViewEstablishment" asp-route-orgid="@Model.OrgId" asp-route-locationid="@location.Id" asp-route-status="@location.ApprovalStatus" asp-route-NI_GBFlag="@Model.NI_GBFlag" id="EstablishmentName">@location.Name</a></td>
+                            <td class="govuk-table__cell">@location.Address!.PostCode</td>
+                            <td class="govuk-table__cell">@if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
+                                {
+                                    @location.RemosEstablishmentSchemeNumber
+                                }
+                            </td>
+                            <td class="govuk-table__cell">
+                                <div class="govuk-tag govuk-tag--@GetStatusColour(@location.ApprovalStatus.GetDescription())">
+                                    @location.ApprovalStatus.GetDescription()
+                                </div>
+                            </td>
+                            <td class="govuk-table__cell">@location.LastModifiedDate.ToString("d MMM yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </feature>
 </form>

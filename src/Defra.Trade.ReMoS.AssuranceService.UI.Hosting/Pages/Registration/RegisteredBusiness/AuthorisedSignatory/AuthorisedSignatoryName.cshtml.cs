@@ -1,4 +1,5 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -107,30 +108,18 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
         await _traderService.UpdateAuthorisedSignatoryAsync(tradeParty);
     }
 
-    private async Task <TradePartyDto?> GetSignatoryNameFromApiAsync()
-    {
-        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null && tradeParty.AuthorisedSignatory!= null)
-        {
-            SignatoryId = tradeParty.AuthorisedSignatory.Id;
-            Name = string.IsNullOrEmpty(Name) ? tradeParty.AuthorisedSignatory.Name ?? "" : Name;
-
-            return tradeParty;
-        }
-
-        return null;
-    }
-
     private async Task<TradePartyDto> GenerateDTO()
     {
-        var tradeParty = await GetSignatoryNameFromApiAsync();
+        var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
+
         return new TradePartyDto()
         {
             Id = TradePartyId,
+            ApprovalStatus = (tradeParty != null) ? tradeParty.ApprovalStatus : TradePartyApprovalStatus.SignupStarted,
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
-                Id = SignatoryId,
-                Name = Name,
+                Id = tradeParty?.AuthorisedSignatory?.Id ?? Guid.Empty,
+                Name = string.IsNullOrEmpty(Name) ? tradeParty?.AuthorisedSignatory?.Name ?? string.Empty : Name,
                 Position = tradeParty?.AuthorisedSignatory?.Position,
                 EmailAddress = tradeParty?.AuthorisedSignatory?.EmailAddress
             }

@@ -10,7 +10,7 @@
     <a asp-page="@Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath" class="govuk-back-link"
        asp-route-id="@Model.OrgId"
        asp-route-locationId="@Model.EstablishmentId"
-       asp-route-country="@Model.Country">
+       asp-route-NI_GBFlag="@Model.NI_GBFlag">
         Back
     </a>
 
@@ -19,51 +19,59 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_ErrorSummary" model="ModelState" />
+        
+        <form method="POST" novalidate>
+            
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="EstablishmentId" />
+            <input type="hidden" asp-for="NI_GBFlag" />
+            
+            <h1 class="govuk-heading-l">
+                Requirements of the Northern Ireland Retail Movement Scheme
+            </h1>
 
-        <h1 class="govuk-heading-l">
-            Requirements of the Northern Ireland Retail Movement Scheme
-        </h1>
+            <h2 class="govuk-heading-m">Signing up for the scheme</h2>
 
-        <h2 class="govuk-heading-m">Signing up for the scheme</h2>
+            <p>Your sign-up request must be approved before your business can move goods under the scheme.</p>
+            <p>To sign up, your business must have:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>an address in the United Kingdom</li>
+                <li>an authorised representative who can agree to the terms and conditions of the scheme</li>
+            </ul>
+            <p>If your business has a Food Business Operator (FBO) number or Plant Health Registration (PHR) number, you will need to provide it.</p>
+            <p>You must inform us if there are any changes to the information that you provide when you're signing up for the scheme.</p>
+            <p>The places of dispatch and places of destination for all consignments must be registered for the scheme.</p>
 
-        <p>Your sign-up request must be approved before your business can move goods under the scheme.</p>
-        <p>To sign up, your business must have:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>an address in the United Kingdom</li>
-            <li>an authorised representative who can agree to the terms and conditions of the scheme</li>
-        </ul>
-        <p>If your business has a Food Business Operator (FBO) number or Plant Health Registration (PHR) number, you will need to provide it.</p>
-        <p>You must inform us if there are any changes to the information that you provide when you're signing up for the scheme.</p>
-        <p>The places of dispatch and places of destination for all consignments must be registered for the scheme.</p>
+            <h2 class="govuk-heading-m">Goods that you can move under the scheme</h2>
+            <p>This service is only for retail goods that will be sold in Northern Ireland to the final consumer.</p>
+            <p>All goods moved under the scheme must (one of the following):</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>originate in Great Britain </li>
+                <li>be processed in Great Britain</li>
+                <li>originate in the EU</li>
+                <li>be on the list of <a href="https://www.gov.uk/government/publications/retail-movement-scheme-how-the-scheme-will-work/retail-movement-scheme-how-the-scheme-will-work#product-eligibility" rel="noopener noreferrer" target="_blank">Rest of World Goods</a></li>
+            </ul>
+            <p>The goods must also follow any relevant <a href="https://www.gov.uk/guidance/labelling-requirements-for-certain-products-moving-from-great-britain-to-retail-premises-in-northern-ireland-under-the-retail-movement-scheme" rel="noopener noreferrer" target="_blank">labelling requirements</a> in accordance with the scheme.</p>
+            <p>Goods moved under the scheme must not enter the EU after arriving in Northern Ireland.</p>
 
-        <h2 class="govuk-heading-m">Goods that you can move under the scheme</h2>
-        <p>This service is only for retail goods that will be sold in Northern Ireland to the final consumer.</p>
-        <p>All goods moved under the scheme must (one of the following):</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>originate in Great Britain </li>
-            <li>be processed in Great Britain</li>
-            <li>originate in the EU</li>
-            <li>be on the list of <a href="https://www.gov.uk/government/publications/retail-movement-scheme-how-the-scheme-will-work/retail-movement-scheme-how-the-scheme-will-work#product-eligibility" rel="noopener noreferrer" target="_blank">Rest of World Goods</a></li>
-        </ul>
-        <p>The goods must also follow any relevant <a href="https://www.gov.uk/guidance/labelling-requirements-for-certain-products-moving-from-great-britain-to-retail-premises-in-northern-ireland-under-the-retail-movement-scheme" rel="noopener noreferrer" target="_blank">labelling requirements</a> in accordance with the scheme.</p>
-        <p>Goods moved under the scheme must not enter the EU after arriving in Northern Ireland.</p>
+            <h2 class="govuk-heading-m">Sending consignments under the scheme</h2>
+            <p>To move consignments under the scheme, you must submit a packing list with your General Certificate. You will also need:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>an approved General Certificate</li>
+                <li>a commercial seal with a unique identifier and associated number</li>
+            </ul>
+            <p>All businesses moving, handling or receiving consignments under the scheme must comply with the requirements of the scheme. Competent authorities may conduct checks on any consignments.</p>
 
-        <h2 class="govuk-heading-m">Sending consignments under the scheme</h2>
-        <p>To move consignments under the scheme, you must submit a packing list with your General Certificate. You will also need:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>an approved General Certificate</li>
-            <li>a commercial seal with a unique identifier and associated number</li>
-        </ul>
-        <p>All businesses moving, handling or receiving consignments under the scheme must comply with the requirements of the scheme. Competent authorities may conduct checks on any consignments.</p>
+            <p>For a period of 5 years from the date of dispatch, you must keep records of all consignments moved under the scheme.</p>
 
-        <p>For a period of 5 years from the date of dispatch, you must keep records of all consignments moved under the scheme.</p>
+            <h2 class="govuk-heading-m">HMRC customs requirements</h2>
+            <p>The usual customs requirements will still apply to all consignments moved under the scheme.</p>
 
-        <h2 class="govuk-heading-m">HMRC customs requirements</h2>
-        <p>The usual customs requirements will still apply to all consignments moved under the scheme.</p>
-
-        <div class="govuk-button-group">
-            <a href="place-of-dispatch-confirm" class="govuk-button">Add place of dispatch</a>
-        </div>
+            <div class="govuk-button-group">
+                <button class="govuk-button" asp-page-handler="submit">@Model.ButtonText</button>
+            </div>
+        </form>
 
     </div>
 </div>

@@ -98,7 +98,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         private async Task EstablishmentsStatuses()
         {
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
             var gbEstablishments = establishments?.Where(x => x.NI_GBFlag == "GB");
             var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
 

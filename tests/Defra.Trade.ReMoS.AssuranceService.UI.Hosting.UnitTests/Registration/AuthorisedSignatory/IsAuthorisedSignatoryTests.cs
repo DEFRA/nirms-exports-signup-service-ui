@@ -297,7 +297,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 });
 
             _mockEstablishmentService
-                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>()).Result)
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>()).Result)
                 .Returns(new List<LogisticsLocationDto>()
                 {
                     new LogisticsLocationDto()

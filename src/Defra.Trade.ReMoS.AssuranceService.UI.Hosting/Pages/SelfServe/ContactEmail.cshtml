@@ -10,7 +10,7 @@
         <a asp-page="@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath" 
             asp-route-id="@Model.OrgId"
             asp-route-establishmentId="@Model.EstablishmentId"
-            asp-route-country="@Model.Country"
+            asp-route-NI_GBFlag="@Model.NI_GBFlag"
            class="govuk-back-link">Back</a>
     
 }
@@ -22,7 +22,7 @@
             <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="EstablishmentId" />
-            <input type="hidden" asp-for="Country" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Email") ? "Email": null)">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -58,7 +58,7 @@
                            asp-page-handler="ChangeEstablishmentAddress"
                            asp-route-orgid="@Model.OrgId"
                            asp-route-establishmentId="@Model.EstablishmentId"
-                           asp-route-country="@Model.Country">
+                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
                             Change<span class="govuk-visually-hidden"> address</span>
                         </a>
                     </p>

@@ -112,7 +112,7 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         };
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
         _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
 
         //Act
         await _systemUnderTest!.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid(), It.IsAny<string>());
@@ -166,13 +166,13 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
     {
         var orgId = Guid.NewGuid();
         var establishmentId = Guid.NewGuid();
-        string country = "England";
+        string NI_GBFlag = "England";
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
-            new { id = orgId, locationId = establishmentId, country });
+            new { id = orgId, locationId = establishmentId, NI_GBFlag });
 
         // Act
-        var result = _systemUnderTest?.OnGetChangeEmail(orgId, establishmentId, country);
+        var result = _systemUnderTest?.OnGetChangeEmail(orgId, establishmentId, NI_GBFlag);
 
         // Assert
         result.Should().NotBeNull();

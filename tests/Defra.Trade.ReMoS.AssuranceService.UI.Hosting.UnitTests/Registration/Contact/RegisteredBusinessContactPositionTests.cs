@@ -86,6 +86,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         // arrange
         _systemUnderTest.Position = "*";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
 
         // act
         await _systemUnderTest.OnPostSaveAsync();
@@ -237,6 +238,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         // arrange
         _systemUnderTest.Position = "John Doe";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var tradeParty = new TradePartyDto
         {
             Contact = new TradeContactDto
@@ -269,6 +271,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         // arrange
         _systemUnderTest.Position = "John Doe";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var tradeParty = new TradePartyDto
         {
             Contact = new TradeContactDto
@@ -300,6 +303,7 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         // arrange
         _systemUnderTest.Position = "John Doe";
+        _systemUnderTest.TradePartyId = Guid.NewGuid();
         var tradeParty = new TradePartyDto
         {
             Contact = new TradeContactDto

@@ -20,5 +20,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
         public bool IsTradePartySignedUp(TradePartyDto? tradeParty);
         Task<Guid> UpdateTradePartyContactSelfServeAsync(TradePartyDto tradePartyDTO);
         Task<Guid> UpdateAuthRepSelfServeAsync(TradePartyDto tradePartyDTO);
+        public Task<string> GetBusinessNameAsync(Guid tradePartyId);
     }
 }

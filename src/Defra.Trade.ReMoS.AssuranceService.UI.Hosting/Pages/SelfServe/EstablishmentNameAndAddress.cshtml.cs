@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -62,7 +63,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public string? ContextHint { get; set; } = string.Empty;
 
     [BindProperty]
-    public string Country { get; set; } = default!;
+    public string? NI_GBFlag { get; set; } = default!;
     public string? BusinessName { get; set; }
     #endregion
 
@@ -72,11 +73,11 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string country)
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string NI_GBFlag)
     {
         _logger.LogInformation("Establishment manual address OnGet");
         OrgId = id;
-        Country = country;
+        this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId;
         Uprn = uprn;
 
@@ -91,7 +92,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         BusinessName = tradeParty!.PracticeName;
         await RetrieveEstablishmentDetails();
 
-        if (Country == "NI")
+        if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
         }
@@ -113,7 +114,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         if (!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, Country ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         try
@@ -123,12 +124,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, Country ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
-            new { id = OrgId, locationId = establishmentId, Country });
+            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task<Guid?> SaveEstablishmentDetails()
@@ -146,7 +147,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         establishmentDto.Address.County = County;
         establishmentDto.Address.CityName = CityName;
         establishmentDto.Address.PostCode = PostCode;
-        establishmentDto.NI_GBFlag = Country;
+        establishmentDto.NI_GBFlag = NI_GBFlag;
+        establishmentDto.ApprovalStatus = LogisticsLocationApprovalStatus.Draft;
 
         if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null)
         {
@@ -213,10 +215,10 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     private bool IsPostCodeValid()
     {
-        if (PostCode!.ToUpper().StartsWith("BT") && (Country != "NI"))
+        if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag != "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 
-        if (!PostCode!.ToUpper().StartsWith("BT") && (Country == "NI"))
+        if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
 
         if (ModelState.ErrorCount > 0)
@@ -228,7 +230,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     private string GenerateDuplicateError()
     {
         string place;
-        if (Country == "NI")
+        if (NI_GBFlag == "NI")
         {
             place = "destination";
         }

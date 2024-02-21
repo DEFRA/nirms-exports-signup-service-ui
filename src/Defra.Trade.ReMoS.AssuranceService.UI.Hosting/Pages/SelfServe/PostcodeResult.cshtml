@@ -9,7 +9,7 @@
     <a class="govuk-back-link"
        asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath"
        asp-route-id="@Model.OrgId"
-       asp-route-country="@Model.Country">
+   asp-route-NI_GBFlag="@Model.NI_GBFlag">
         Back
     </a>
 }
@@ -33,13 +33,13 @@
                                         No addresses found for this postcode. Try searching for
                                         <a asp-page="@Routes.Pages.Path.EstablishmentPostcodeSearchPath"
                                            asp-route-id="@Model.OrgId"
-                                           asp-route-NI_GBFlag="@Model.Country">
+                                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                             a different postcode
                                         </a>
                                         or
                                         <a asp-page=@Routes.Pages.Path.EstablishmentNameAndAddressPath
                                            asp-route-id="@Model.OrgId"
-                                           asp-route-NI_GBFlag="@Model.Country">
+                                           asp-route-NI_GBFlag="@Model.NI_GBFlag">
                                             enter an address manually.
                                         </a>
                                     </li>
@@ -57,7 +57,7 @@
 
             <input type="hidden" asp-for="OrgId" />
             <input type="hidden" asp-for="TradePartyId" />
-            <input type="hidden" asp-for="Country" />
+            <input type="hidden" asp-for="NI_GBFlag" />
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">Establishments</span>
                 @Model.ContentHeading
@@ -77,7 +77,7 @@
                     <span>@Model.Postcode</span>
                     <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath
                        asp-route-id="@Model.OrgId"
-                       asp-route-country="@Model.Country">
+                       asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         Change
                     </a>
                 </p>
@@ -99,7 +99,7 @@
                 <div class="govuk-details__text">
                     You can <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath
                                asp-route-id="@Model.OrgId"
-                               asp-route-country="@Model.Country">
+                               asp-route-NI_GBFlag="@Model.NI_GBFlag">
                         enter the full establishment address
                     </a>
                 </div>

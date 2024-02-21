@@ -380,10 +380,10 @@ public class ApiIntegration : IApiIntegration
     /// </summary>
     /// <param name="tradePartyId"></param>
     /// <returns>List of establishments</returns>
-    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId)
+    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected)
     {
         var httpClient = CreateHttpClient();
-        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}");
+        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}?isRejected={isRejected}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -533,5 +533,27 @@ public class ApiIntegration : IApiIntegration
         return await JsonSerializer.DeserializeAsync<LogisticsLocationDto>(
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new LogisticsLocationDto();
+    }
+
+    /// <summary>
+    /// Updates establishment
+    /// </summary>
+    /// <param name="establishmentDto"></param>
+    /// <returns><c>true</c> if establishment updated</returns>
+    /// <exception cref="BadHttpRequestException"></exception>
+    public async Task<bool> UpdateEstablishmentSelfServeAsync(LogisticsLocationDto establishmentDto)
+    {
+        var requestBody = new StringContent(
+            JsonSerializer.Serialize(establishmentDto),
+            Encoding.UTF8,
+            Application.Json);
+
+        var httpClient = CreateHttpClient();
+        var response = await httpClient.PutAsync($"Establishments/SelfServe/{establishmentDto.Id}", requestBody);
+
+        if (response.IsSuccessStatusCode)
+            return true;
+
+        throw new BadHttpRequestException("null return from API");
     }
 }

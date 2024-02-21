@@ -78,7 +78,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
                 countryFlag = "NI";
             }
 
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId);
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
 
             if ( establishments != null && establishments.Any())
             {
@@ -133,6 +133,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
             return new TradePartyDto()
             {
                 Id = TradePartyId,
+                ApprovalStatus = tradeParty!.ApprovalStatus,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Id = SignatoryId,

@@ -48,7 +48,7 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
 
-        await GetBusinessNameAsync();
+        BusinessName = await _traderService.GetBusinessNameAsync(TradePartyId);
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -100,14 +100,5 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentPostcodeResultPath,
             new { id = OrgId, postcode = Postcode, NI_GBFlag });
-    }
-
-    private async Task GetBusinessNameAsync()
-    {
-        TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-        if (tradeParty != null)
-        {
-            BusinessName = tradeParty.PracticeName;
-        }
     }
 }
