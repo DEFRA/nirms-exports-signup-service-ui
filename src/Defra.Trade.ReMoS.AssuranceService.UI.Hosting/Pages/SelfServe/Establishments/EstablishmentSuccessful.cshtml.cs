@@ -21,7 +21,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establis
         public Guid EstablishmentId { get; set; }
 
         public LogisticsLocationDto? Establishment { get; set; }
-        public string Heading { get; set; }
+        public string Heading { get; set; } = default!;
+        public string DispatchOrDestination { get; set; } = default!;
         #endregion
 
         public EstablishmentSuccessfulModel(
@@ -48,10 +49,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establis
             if (NI_GBFlag == "NI")
             {
                 Heading = "Place of destination successfully added";
+                DispatchOrDestination = "destination";
             }
             else
             {
                 Heading = "Place of dispatch successfully added";
+                DispatchOrDestination = "dispatch";
             }
 
             return Page();
