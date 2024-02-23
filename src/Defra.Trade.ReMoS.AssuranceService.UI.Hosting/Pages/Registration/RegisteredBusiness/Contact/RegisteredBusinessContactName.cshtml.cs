@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
@@ -15,7 +16,7 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
     #region ui model variables
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
-    [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
+    [StringLengthMaximum(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter a name")]
     public string Name { get; set; } = string.Empty;
 
