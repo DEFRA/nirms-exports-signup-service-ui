@@ -73,7 +73,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         _logger.LogInformation("FBO OnPostSubmit");
         ValidateFboPhr();
 
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid && OptionSelected != "none")
         {
             return await OnGetAsync(OrgId);
         }
