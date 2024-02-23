@@ -1,0 +1,118 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments.ViewEstablishmentModel
+@{
+    ViewData["Title"] = "View establishment";
+}
+
+@section Back{
+   <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath"
+   asp-route-id="@Model.OrgId"
+   class="govuk-back-link">Back</a>
+}
+
+@{
+    string GetStatusColour(string approvalStatus)
+    {
+        switch (approvalStatus)
+        {
+            case "None":
+                return "grey";
+            case "Active":
+                return "green";
+            case "Rejected":
+                return "red";
+            case "Draft":
+                return "blue";
+            case "Pending approval":
+                return "grey";
+            case "Suspended":
+                return "orange";
+            default:
+                return "grey";
+        }
+    }
+}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
+      <span class="govuk-caption-l">@Model.BusinessName</span>
+      @Model.LogisticsLocation!.Name
+    </h1>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Status
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <div class="govuk-tag govuk-tag--@GetStatusColour(Model.LogisticsLocation.ApprovalStatus.GetDescription()) govuk-!-margin-bottom-2">
+                        @Model.LogisticsLocation.ApprovalStatus.GetDescription()
+                    </div>
+                    @if (Model.LogisticsLocation.ApprovalStatus == Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Removed)
+                    {
+                        <p class="govuk-hint">This establishment cannot be added as a place of @Model.ContentText on a General Certificate.</p>
+                    }
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Updated
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.LogisticsLocation.LastModifiedDate.ToString("d MMM yyyy")
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Added
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.LogisticsLocation.CreatedDate.ToString("d MMM yyyy")
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Establishment RMS number
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.LogisticsLocation.RemosEstablishmentSchemeNumber
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @if (Model.LogisticsLocation.Address?.LineOne != null) { @(Model.LogisticsLocation.Address?.LineOne) }
+                    @if (Model.LogisticsLocation.Address?.LineTwo != null) { <br /> @Model.LogisticsLocation.Address?.LineTwo }
+                    @if (Model.LogisticsLocation.Address?.CityName != null) {<br /> @Model.LogisticsLocation.Address?.CityName }
+                    @if (Model.LogisticsLocation.Address?.PostCode != null) {<br /> @Model.LogisticsLocation.Address?.PostCode }
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.LogisticsLocation.Email
+                </dd>
+            </div>
+        </dl>
+
+        @if (Model.LogisticsLocation.ApprovalStatus == Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Approved)
+        {
+            <div class="govuk-button-group govuk-!-margin-bottom-5">
+                <a class="govuk-button govuk-button--warning" data-module="govuk-button" href="">
+                    Remove establishment
+                </a>
+            </div>
+        }
+
+    </div>
+</div>

@@ -51,6 +51,7 @@ public static class Routes
     public const string SelfServeConfirmEstablishmentDetails = "/self-serve-confirm-establishment-details";
     public const string SelfServeRegulations = "/self-serve-regulations";
     public const string SelfServeEstablishmentAdded = "/self-serve-establishment-added";
+    public const string SelfServeViewEstablishment = "/self-serve-view-establishment";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -103,6 +104,7 @@ public static class Routes
         (Pages.Path.SelfServeConfirmEstablishmentDetailsPath, SelfServeConfirmEstablishmentDetails),
         (Pages.Path.SelfServeRegulationsPath, SelfServeRegulations),
         (Pages.Path.SelfServeEstablishmentAddedPath, SelfServeEstablishmentAdded),
+        (Pages.Path.SelfServeViewEstablishmentPath, SelfServeViewEstablishment),
     };
 
     public static class Pages
@@ -158,7 +160,7 @@ public static class Routes
             public const string SelfServeConfirmEstablishmentDetailsName = "ConfirmEstablishmentDetails";
             public const string SelfServeRegulationsName = "EligibilityRegulations";
             public const string SelfServeEstablishmentAddedName = "EstablishmentSuccessful";
-            
+            public const string SelfServeViewEstablishmentName = "ViewEstablishment";
 
         }
 
@@ -213,6 +215,7 @@ public static class Routes
             public const string SelfServeConfirmEstablishmentDetailsPath = $"/SelfServe/{Names.SelfServeConfirmEstablishmentDetailsName}";
             public const string SelfServeRegulationsPath = $"/SelfServe/{Names.SelfServeRegulationsName}";
             public const string SelfServeEstablishmentAddedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentAddedName}";
+            public const string SelfServeViewEstablishmentPath = $"/SelfServe/Establishments/{Names.SelfServeViewEstablishmentName}";
         }
     }
 }
