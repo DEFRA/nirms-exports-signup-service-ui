@@ -51,7 +51,9 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
     {
         _logger.LogInformation("Establishment eligibility regulations OnPostSubmit");
         await UpdateEstablishmentStatus();
-        return RedirectToPage(Routes.Pages.Path.SelfServeEstablishmentAddedPath);
+        return RedirectToPage(
+            Routes.Pages.Path.SelfServeEstablishmentAddedPath,
+            new { id = OrgId, locationId = EstablishmentId, NI_GBFlag});
     }
 
     private async Task UpdateEstablishmentStatus()

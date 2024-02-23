@@ -1,0 +1,37 @@
+﻿@page
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments.EstablishmentSuccessfulModel
+@{
+    ViewData["Title"] = "Establishment successfully added";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">Establishments</span>
+            @Model.Heading
+        </h1>
+
+        <p class="govuk-!-font-weight-bold">
+            @(Model.Establishment?.Name != null ? $"{Model.Establishment.Name}," : string.Empty)
+            @(Model.Establishment?.Address?.LineOne != null ? $"{Model.Establishment.Address?.LineOne}," : string.Empty)
+            @(Model.Establishment?.Address?.LineTwo != null ? $"{Model.Establishment.Address?.LineTwo}," : string.Empty)
+            @(Model.Establishment?.Address?.CityName != null ? $"{Model.Establishment.Address?.CityName}," : string.Empty)
+            @(Model.Establishment?.Address?.County != null ? $"{Model.Establishment.Address?.County}," : string.Empty)
+            @(Model.Establishment?.Address?.PostCode != null ? $"{Model.Establishment.Address?.PostCode} " : string.Empty)
+        </p>
+
+        <p class="govuk-!-font-weight-bold">@Model.Establishment.RemosEstablishmentSchemeNumber</p>
+
+        <p>This establishment will be available to add as a place of @(Model.DispatchOrDestination) on a General Certificate.</p>
+
+        <form method="post">
+            <input type="hidden" asp-for="TradePartyId" />
+            <input type="hidden" asp-for="OrgId" />
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbGuidanceSubmit">Back to dashboard</button>
+            </div>
+        </form>
+
+    </div>
+</div>

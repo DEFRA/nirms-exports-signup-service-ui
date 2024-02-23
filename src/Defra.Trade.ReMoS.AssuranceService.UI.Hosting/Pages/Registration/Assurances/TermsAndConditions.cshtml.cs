@@ -86,7 +86,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                         new { id = OrgId });
             }
 
-            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id);
+            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id, false);
 
             if (!_checkAnswersService.IsLogisticsLocationsDataPresent(dto, logisticsLocations!) || !_checkAnswersService.ReadyForCheckAnswers(dto))
             {

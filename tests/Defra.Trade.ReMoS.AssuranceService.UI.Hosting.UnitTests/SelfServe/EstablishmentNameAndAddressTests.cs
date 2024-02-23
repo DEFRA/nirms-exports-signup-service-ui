@@ -50,7 +50,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         //Arrange
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -79,7 +79,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -109,7 +109,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -138,7 +138,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -167,7 +167,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -196,7 +196,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -225,7 +225,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -254,7 +254,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -284,7 +284,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -314,7 +314,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid()).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
