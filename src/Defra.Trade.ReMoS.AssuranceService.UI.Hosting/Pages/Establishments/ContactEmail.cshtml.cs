@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 {
     #region UI Models
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [StringLengthMaximum(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
@@ -75,7 +77,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     {
         _logger.LogInformation("Establishment contact email OnPostSubmit");
 
-        if (!IsInputValid())
+        if (!ModelState.IsValid)
         {
             return await OnGetAsync(OrgId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
@@ -103,16 +105,5 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             Location.Email = Email;
             await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
-    }
-
-    private bool IsInputValid()
-    {
-        if (Email != null && Email.Length > 100)
-            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
-
-        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
-            return false;
-
-        return true;
     }
 }

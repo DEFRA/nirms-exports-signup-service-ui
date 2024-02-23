@@ -23,20 +23,19 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z\s-']*$", ErrorMessage = "Enter a name using only letters, hyphens or apostrophes")]
-    [StringLength(50, ErrorMessage = "Name must be 50 characters or less")]
-    //[StringLengthMaximum(50, ErrorMessage = "Name must be 50 characters or less")]  -- TO COME BACK TO THIS AS A FUTURE BUG FIX
+    [StringLengthMaximum(50, ErrorMessage = "Name must be 50 characters or less")]
     [Required(ErrorMessage = "Enter a name")]
     public string Name { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-_.,/()&]*$", ErrorMessage = "Enter a position using only letters, numbers, brackets, full stops, commas, hyphens, underscores, forward slashes or ampersands")]
-    [StringLength(50, ErrorMessage = "Position must be 50 characters or less")]
+    [StringLengthMaximum(50, ErrorMessage = "Position must be 50 characters or less")]
     [Required(ErrorMessage = "Enter a position")]
     public string Position { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
-    [StringLength(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
+    [StringLengthMaximum(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
     [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
 

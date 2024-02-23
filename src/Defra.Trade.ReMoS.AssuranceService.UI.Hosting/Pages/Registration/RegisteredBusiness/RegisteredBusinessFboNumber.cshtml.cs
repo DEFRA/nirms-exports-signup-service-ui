@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -23,12 +24,12 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9-]*$", ErrorMessage = "Enter an FBO number using only letters, numbers or hyphens")]
-    [MaxLength(25, ErrorMessage = "FBO number must be 25 characters or less")]
+    [StringLengthMaximum(25, ErrorMessage = "FBO number must be 25 characters or less")]
     public string? FboNumber { get; set; } = string.Empty;
 
     [BindProperty]
     [RegularExpression(@"^[a-zA-Z0-9\s-]*$", ErrorMessage = "Enter a PHR number using only letters, numbers, spaces or hyphens")]
-    [MaxLength(25, ErrorMessage = "PHR number must be 25 characters or less")]
+    [StringLengthMaximum(25, ErrorMessage = "PHR number must be 25 characters or less")]
     public string? PhrNumber { get; set; } = string.Empty;
 
     [BindProperty]

@@ -5,6 +5,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact
 {
@@ -13,7 +15,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     {
         private RegisteredBusinessContactEmailModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactEmailModel>> _mockLogger = new();
-        protected Mock<ITraderService> _mockTraderService = new();        
+        protected Mock<ITraderService> _mockTraderService = new();       
+        private StringLengthMaximumAttribute? stringLengthMaximumAttribute { get; set; }
 
         [SetUp]
         public void TestCaseSetup()
@@ -22,6 +25,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
             _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8") });
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
+            stringLengthMaximumAttribute = new StringLengthMaximumAttribute(100);
         }
 
         [Test]
@@ -130,31 +134,17 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidLength()
+        public void OnValidate_SubmitInvalidLength()
         {
             //Arrange
-            _systemUnderTest!.Email = $"{new string('a', 100)}@email.com";
+            _systemUnderTest!.Email = $"ryan.testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest@email.com@email.com";
+            
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
-            var validation = ValidateModel(_systemUnderTest);
+            var validation = stringLengthMaximumAttribute!.IsValid(_systemUnderTest!.Email);
 
             //Assert            
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
-        }
-
-        [Test]
-        public async Task OnPostSave_SubmitInvalidLength()
-        {
-            //Arrange
-            _systemUnderTest!.Email = $"{new string('a', 100)}@email.com";
-
-            //Act
-            await _systemUnderTest.OnPostSaveAsync();
-            var validation = ValidateModel(_systemUnderTest);
-
-            //Assert            
-            _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
+            validation.Should().Be(false);
         }
 
         [Test]
