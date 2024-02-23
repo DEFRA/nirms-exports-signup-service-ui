@@ -23,11 +23,11 @@
 
                 @if(Model.LastModifiedOn > Model.SubmittedDate)
                 {
-                    <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Last Updated @Model.LastModifiedOn.ToString("d MMM yyyy")</div>
+                    <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Updated @Model.LastModifiedOn.ToString("d MMM yyyy")</div>
                 }
                 else
                 {
-                    <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Submitted on @Model.SubmittedDate.ToString("d MMM yyyy")</div>
+                    <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Added @Model.SubmittedDate.ToString("d MMM yyyy")</div>
                 }
 
                 <p class="govuk-hint">This is the person who we will contact with information relating to the scheme.</p>
