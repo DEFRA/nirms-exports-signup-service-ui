@@ -22,7 +22,7 @@
   <ItemGroup>
     <PackageReference Include="Defra.Trade.Common" Version="2.0.2" />
     <PackageReference Include="Defra.Trade.Common.Security" Version="2.0.5" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.16" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />

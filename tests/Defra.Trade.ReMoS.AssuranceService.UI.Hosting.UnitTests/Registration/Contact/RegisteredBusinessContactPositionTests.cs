@@ -20,8 +20,10 @@ public class RegisteredBusinessContactPositionTests : PageModelTestsBase
     {
         _systemUnderTest = new RegisteredBusinessContactPositionModel(
             _mockLogger.Object,
-            _mockTraderService.Object);
-        _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _mockTraderService.Object)
+        {
+            PageContext = PageModelMockingUtils.MockPageContext()
+        };
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
     }
