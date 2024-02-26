@@ -2,6 +2,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +13,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     #region UI Model
     [BindProperty]
     [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
+    [StringLengthMaximum(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
     [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
     [BindProperty]
@@ -62,7 +64,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     {            
         _logger.LogInformation("Email OnPostSubmit");
 
-        if (!IsInputValid())
+        if (!ModelState.IsValid)
         {
             return await OnGetAsync(OrgId);
         }
@@ -77,7 +79,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     {
         _logger.LogInformation("Email OnPostSave");
 
-        if (!IsInputValid())
+        if (!ModelState.IsValid)
         {
             return await OnGetAsync(OrgId);
         }
@@ -149,17 +151,6 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
         }
 
         return tradePartyDto;
-    }
-
-    private bool IsInputValid()
-    {
-        if (Email != null && Email.Length > 100)
-            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
-
-        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
-            return false;
-
-        return true;
     }
     #endregion
 }
