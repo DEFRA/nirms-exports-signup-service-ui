@@ -110,12 +110,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     {
         _logger.LogInformation("Establishment manual address OnPostSubmit");
 
-        Guid? establishmentId = Guid.Empty;
-
         if (!IsInputValid() || !IsPostCodeValid())
         {
             return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
+
+        Guid? establishmentId;
 
         try
         {

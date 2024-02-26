@@ -166,10 +166,10 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         var tradeContactDto = new TradeContactDto
         {
             Id = ContactId,
-            PersonName = (tradeParty != null) ? tradeParty.Contact?.PersonName : null,
-            Email = (tradeParty != null) ? tradeParty.Contact?.Email : null,
-            Position = (tradeParty != null) ? tradeParty.Contact?.Position : null,
-            TelephoneNumber = (tradeParty != null) ? tradeParty.Contact?.TelephoneNumber : null,
+            PersonName = tradeParty?.Contact?.PersonName,
+            Email = tradeParty?.Contact?.Email,
+            Position = tradeParty?.Contact?.Position,
+            TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
             IsAuthorisedSignatory = isSignatory
         };
 
