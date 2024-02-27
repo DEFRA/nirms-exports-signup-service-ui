@@ -1213,13 +1213,11 @@ MOJFrontend.SortableTable.prototype.getCellValue = function (cell) {
     }
     else var val = cell.attr('data-sort-value') || cell.html();
 
-    var dateVal = Date.parse(val);
-    var floatVal = parseFloat(val);
-    if (!isNaN(dateVal)) return dateVal
-    else if (!isNaN(floatVal)) return floatVal
-    else return val
+    var floatVal = parseFloat(val)
+    return isNaN(floatVal) ? val : floatVal
 
-};
+    };
+
 
 return MOJFrontend;
 }));
