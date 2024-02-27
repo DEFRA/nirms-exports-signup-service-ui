@@ -120,7 +120,18 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         try
         {
-            establishmentId = await SaveEstablishmentDetails();
+            establishmentId = await _establishmentService.SaveEstablishmentDetails(
+                EstablishmentId,
+                TradePartyId,
+                new LogisticsLocationDto
+                {
+                    Name = EstablishmentName,
+                    ApprovalStatus = LogisticsLocationApprovalStatus.Draft,
+                    Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode }
+                },
+                NI_GBFlag ?? string.Empty,
+                Uprn
+            );
         }
         catch (BadHttpRequestException)
         {
@@ -131,35 +142,6 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
             new { id = OrgId, locationId = establishmentId, NI_GBFlag });
-    }
-
-    public async Task<Guid?> SaveEstablishmentDetails()
-    {
-        var establishmentDto = new LogisticsLocationDto() { Address = new TradeAddressDto() };
-
-        if (EstablishmentId != Guid.Empty && EstablishmentId != null)
-        {
-            establishmentDto = await _establishmentService.GetEstablishmentByIdAsync((Guid)EstablishmentId);
-        }
-
-        establishmentDto!.Name = EstablishmentName;
-        establishmentDto.Address!.LineOne = LineOne;
-        establishmentDto.Address.LineTwo = LineTwo;
-        establishmentDto.Address.County = County;
-        establishmentDto.Address.CityName = CityName;
-        establishmentDto.Address.PostCode = PostCode;
-        establishmentDto.NI_GBFlag = NI_GBFlag;
-        establishmentDto.ApprovalStatus = LogisticsLocationApprovalStatus.Draft;
-
-        if (EstablishmentId == Guid.Empty || Uprn != null || EstablishmentId == null)
-        {
-            return await _establishmentService.CreateEstablishmentForTradePartyAsync(TradePartyId, establishmentDto);
-        }
-        else
-        {
-            await _establishmentService.UpdateEstablishmentDetailsAsync(establishmentDto);
-            return EstablishmentId;
-        }
     }
 
     public async Task RetrieveEstablishmentDetails()

@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Defra.Trade.Address.V1.ApiClient.Api;
 using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 
@@ -67,5 +69,32 @@ public class EstablishmentService : IEstablishmentService
     public async Task<bool> UpdateEstablishmentDetailsSelfServeAsync(LogisticsLocationDto establishmentDto)
     {
         return await _api.UpdateEstablishmentSelfServeAsync(establishmentDto);
+    }
+
+    public async Task<Guid?> SaveEstablishmentDetails(Guid? establishmentid, Guid tradePartyId, LogisticsLocationDto establishmentDto, string NI_GBFlag, string? uprn)
+    {        
+        var establishmentFromApi = (establishmentid != Guid.Empty && establishmentid != null) ? 
+            await GetEstablishmentByIdAsync((Guid)establishmentid) : 
+            new LogisticsLocationDto() { Address = new TradeAddressDto() };
+
+
+        establishmentFromApi!.Name = establishmentDto.Name;
+        establishmentFromApi.Address!.LineOne = establishmentDto.Address?.LineOne;
+        establishmentFromApi.Address.LineTwo = establishmentDto.Address?.LineTwo;
+        establishmentFromApi.Address.County = establishmentDto.Address?.County;
+        establishmentFromApi.Address.CityName = establishmentDto.Address?.CityName;
+        establishmentFromApi.Address.PostCode = establishmentDto.Address?.PostCode;
+        establishmentFromApi.NI_GBFlag = NI_GBFlag;
+        establishmentFromApi.ApprovalStatus = establishmentDto.ApprovalStatus;
+
+        if (establishmentid == Guid.Empty || uprn != null || establishmentid == null)
+        {
+            return await CreateEstablishmentForTradePartyAsync(tradePartyId, establishmentFromApi);
+        }
+        else
+        {
+            await UpdateEstablishmentDetailsAsync(establishmentFromApi);
+            return establishmentid;
+        }
     }
 }

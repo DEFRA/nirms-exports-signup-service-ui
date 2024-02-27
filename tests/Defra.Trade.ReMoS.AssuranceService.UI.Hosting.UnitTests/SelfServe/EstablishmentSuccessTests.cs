@@ -41,7 +41,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), It.IsAny<string>());
 
             //Assert
-            _systemUnderTest.Establishment.RemosEstablishmentSchemeNumber.Should().Be(null);
+            _systemUnderTest.Establishment?.RemosEstablishmentSchemeNumber.Should().Be(null);
         }
 
         [Test]
@@ -62,13 +62,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe
                 .ReturnsAsync(location);
 
             //Act
-            _systemUnderTest.OrgId = orgId;
+            _systemUnderTest!.OrgId = orgId;
             _systemUnderTest.EstablishmentId = establishmentId;
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), NI_GBFlag);
 
             //Assert
             _systemUnderTest.Establishment.Should().NotBe(null);
-            _systemUnderTest.Establishment.RemosEstablishmentSchemeNumber.Should().Be("RMS-GB-000001-001");
+            _systemUnderTest.Establishment?.RemosEstablishmentSchemeNumber.Should().Be("RMS-GB-000001-001");
             _systemUnderTest.Heading.Should().Be("Place of dispatch successfully added");
         }
 
@@ -90,13 +90,13 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe
                 .ReturnsAsync(location);
 
             //Act
-            _systemUnderTest.OrgId = orgId;
+            _systemUnderTest!.OrgId = orgId;
             _systemUnderTest.EstablishmentId = establishmentId;
             await _systemUnderTest!.OnGetAsync(orgId, establishmentId, NI_GBFlag);
 
             //Assert
             _systemUnderTest.Establishment.Should().NotBe(null);
-            _systemUnderTest.Establishment.RemosEstablishmentSchemeNumber.Should().Be("RMS-GB-000001-001");
+            _systemUnderTest.Establishment?.RemosEstablishmentSchemeNumber.Should().Be("RMS-GB-000001-001");
             _systemUnderTest.Heading.Should().Be("Place of destination successfully added");
         }
     }

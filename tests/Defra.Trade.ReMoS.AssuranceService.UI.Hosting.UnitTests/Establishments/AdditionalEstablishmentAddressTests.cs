@@ -1,19 +1,13 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Routing;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {
@@ -28,9 +22,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
         [SetUp]
         public void TestCaseSetup()
-        {                      
-            _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object);
-            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+        {
+            _systemUnderTest = new AdditionalEstablishmentAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object, _mockCheckAnswersService.Object)
+            {
+                PageContext = PageModelMockingUtils.MockPageContext()
+            };
             _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto(){ Id = Guid.NewGuid() });
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         }
