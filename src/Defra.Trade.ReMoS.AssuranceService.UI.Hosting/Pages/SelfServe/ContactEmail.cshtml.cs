@@ -101,6 +101,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         if (Location != null)
         {
             Location.Email = Email;
+            Location.LastModifiedDate = DateTime.UtcNow;
             await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
     }
