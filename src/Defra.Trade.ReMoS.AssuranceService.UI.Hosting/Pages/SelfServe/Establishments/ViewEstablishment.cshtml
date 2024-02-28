@@ -108,8 +108,12 @@
         @if (Model.LogisticsLocation.ApprovalStatus == Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Approved)
         {
             <div class="govuk-button-group govuk-!-margin-bottom-5">
-                <a class="govuk-button govuk-button--warning" data-module="govuk-button" href="">
-                    Remove establishment
+                <a class="govuk-button govuk-button--warning" data-module="govuk-button"
+                    asp-page="@Routes.Pages.Path.SelfServeConfirmRemoveEstablishmentPath" 
+                    asp-route-id="@Model.OrgId"
+                    asp-route-locationId="@Model.LogisticsLocation.Id"
+                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                        Remove establishment
                 </a>
             </div>
         }

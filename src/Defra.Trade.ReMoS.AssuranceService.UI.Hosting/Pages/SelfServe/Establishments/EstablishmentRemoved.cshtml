@@ -1,0 +1,26 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments.EstablishmentRemovedModel
+@{
+    ViewData["Title"] = "Establishment successfully removed";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">
+            @Model.EstablishmentName removed
+        </h1>
+
+        <p>This establishment will not be available to add as a place of @Model.DispatchOrDestination on a General Certificate.</p>
+
+        <p>
+            <a class="govuk-button"
+               asp-page="@Routes.Pages.Path.SelfServeDashboardPath"
+               asp-route-id="@Model.OrgId">
+               Back to dashboard
+            </a>
+        </p>
+
+    </div>
+</div>

@@ -52,6 +52,8 @@ public static class Routes
     public const string SelfServeRegulations = "/self-serve-regulations";
     public const string SelfServeEstablishmentAdded = "/self-serve-establishment-added";
     public const string SelfServeViewEstablishment = "/self-serve-view-establishment";
+    public const string SelfServeConfirmRemoveEstablishment = "/self-serve-confirm-remove-establishment";
+    public const string SelfServeEstablishmentRemoved = "/self-serve-establishment-removed";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -105,6 +107,8 @@ public static class Routes
         (Pages.Path.SelfServeRegulationsPath, SelfServeRegulations),
         (Pages.Path.SelfServeEstablishmentAddedPath, SelfServeEstablishmentAdded),
         (Pages.Path.SelfServeViewEstablishmentPath, SelfServeViewEstablishment),
+        (Pages.Path.SelfServeConfirmRemoveEstablishmentPath, SelfServeConfirmRemoveEstablishment),
+        (Pages.Path.SelfServeEstablishmentRemovedPath, SelfServeEstablishmentRemoved),
     };
 
     public static class Pages
@@ -161,6 +165,8 @@ public static class Routes
             public const string SelfServeRegulationsName = "EligibilityRegulations";
             public const string SelfServeEstablishmentAddedName = "EstablishmentSuccessful";
             public const string SelfServeViewEstablishmentName = "ViewEstablishment";
+            public const string SelfServeConfirmRemoveEstablishmentName = "ConfirmRemoveEstablishment";
+            public const string SelfServeEstablishmentRemovedName = "EstablishmentRemoved";
 
         }
 
@@ -216,6 +222,9 @@ public static class Routes
             public const string SelfServeRegulationsPath = $"/SelfServe/{Names.SelfServeRegulationsName}";
             public const string SelfServeEstablishmentAddedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentAddedName}";
             public const string SelfServeViewEstablishmentPath = $"/SelfServe/Establishments/{Names.SelfServeViewEstablishmentName}";
+            public const string SelfServeConfirmRemoveEstablishmentPath = $"/SelfServe/Establishments/{Names.SelfServeConfirmRemoveEstablishmentName}";
+            public const string SelfServeEstablishmentRemovedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentRemovedName}";
+
         }
     }
 }
