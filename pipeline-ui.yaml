@@ -77,8 +77,9 @@ extends:
     appName: $(APIName)
     appProject: GC
     appInstanceNumber: $(nc-region-id)01
-    buildProjects: 'src\$(APIName)\$(APIName).csproj'
-    publishProject: 'src\$(APIName)\$(APIName).csproj'
+    provider: '$(Build.Repository.Provider)'
+    buildProjects: '**/*UI.Hosting.csproj'
+    publishProject: '**/*UI.Hosting.csproj'
     publishArguments: '--configuration Release'
     runHealthCheck: false
     setupSlotKeyVaultAccess: true
