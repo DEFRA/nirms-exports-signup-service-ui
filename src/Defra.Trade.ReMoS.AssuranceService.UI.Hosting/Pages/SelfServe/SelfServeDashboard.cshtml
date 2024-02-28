@@ -184,7 +184,7 @@
                     @foreach (var location in Model.LogisticsLocations!)
                     {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell"><a class="govuk-link" asp-page-handler="ViewEstablishment" asp-route-orgid="@Model.OrgId" asp-route-locationid="@location.Id" asp-route-status="@location.ApprovalStatus" asp-route-NI_GBFlag="@Model.NI_GBFlag" id="EstablishmentName">@location.Name</a></td>
+                            <td class="govuk-table__header"><a class="govuk-link" asp-page-handler="ViewEstablishment" asp-route-orgid="@Model.OrgId" asp-route-locationid="@location.Id" asp-route-status="@location.ApprovalStatus" asp-route-NI_GBFlag="@Model.NI_GBFlag" id="EstablishmentName">@location.Name</a></td>
                             <td class="govuk-table__cell">@location.Address!.PostCode</td>
                             <td class="govuk-table__cell">@if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
                                 {
@@ -196,7 +196,7 @@
                                     @location.ApprovalStatus.GetDescription()
                                 </div>
                             </td>
-                            <td class="govuk-table__cell">@location.LastModifiedDate.ToString("d MMM yyyy")</td>
+                            <td class="govuk-table__cell" data-sort-value="@location.LastModifiedDate.Ticks">@location.LastModifiedDate.ToString("d MMM yyyy")</td>
                         </tr>
                     }
                 </tbody>

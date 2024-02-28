@@ -19,13 +19,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         private EstablishmentNameAndAddressModel? _systemUnderTest;
         protected Mock<ILogger<EstablishmentNameAndAddressModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-        protected Mock<ITraderService> _mockTraderService = new();        
+        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
         public void TestCaseSetup()
         {
-            _systemUnderTest = new EstablishmentNameAndAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
-            _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
+            _systemUnderTest = new EstablishmentNameAndAddressModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object)
+            {
+                PageContext = PageModelMockingUtils.MockPageContext()
+            };
             _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         }
@@ -74,17 +76,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
             _mockEstablishmentService
-                .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
-                .Throws(new BadHttpRequestException("error message"));
-                
-
+                .Setup(action => action.SaveEstablishmentDetails(It.IsAny<Guid?>(), It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>(), It.IsAny<string>(), It.IsAny<string?>()))
+                .ThrowsAsync(new BadHttpRequestException("error message"));
             _systemUnderTest!.EstablishmentName = "Test name";
             _systemUnderTest!.LineOne = "Line one";
             _systemUnderTest!.LineTwo = "Line two";
             _systemUnderTest!.CityName = "City";
             _systemUnderTest!.County = "Berkshire";
             _systemUnderTest!.PostCode = "TES1";
-            
+
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
 
@@ -103,8 +103,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
                 Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
             _mockEstablishmentService
-                .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
-                .Throws(new BadHttpRequestException("error message"));
+                .Setup(action => action.SaveEstablishmentDetails(It.IsAny<Guid?>(), It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>(), It.IsAny<string>(), It.IsAny<string?>()))
+                .ThrowsAsync(new BadHttpRequestException("error message"));
 
             _systemUnderTest!.EstablishmentName = "Test name";
             _systemUnderTest!.LineOne = "Line one";
@@ -426,7 +426,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             // arrange
             _systemUnderTest!.Uprn = null;
             _systemUnderTest.EstablishmentId = guid;
-            
+
             // act
             await _systemUnderTest.RetrieveEstablishmentDetails();
 
@@ -500,58 +500,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.PostCode.Should().Be(establishment.Address.PostCode);
             _systemUnderTest.County.Should().Be(establishment.Address.County);
         }
-
-        [TestCase("123", "00000000-0000-0000-0000-000000000000")]
-        [TestCase(null, "00000000-0000-0000-0000-000000000000")]
-        [TestCase(null, null)]
-        public async Task SaveEstablishmentDetails_Create(string uprn, Guid guid)
-        {
-            // arrange
-            var expected = Guid.NewGuid();
-            _systemUnderTest!.EstablishmentName = "Test name";
-            _systemUnderTest!.LineOne = "Line one";
-            _systemUnderTest!.LineTwo = "Line two";
-            _systemUnderTest!.CityName = "City";
-            _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
-            _systemUnderTest!.Uprn = uprn;
-            _systemUnderTest.EstablishmentId = guid;
-            _systemUnderTest.TradePartyId = Guid.NewGuid();
-            _mockEstablishmentService.Setup(x => x.CreateEstablishmentForTradePartyAsync(_systemUnderTest.TradePartyId, It.IsAny<LogisticsLocationDto>())).ReturnsAsync(expected);
-
-            // act
-            var result = await _systemUnderTest.SaveEstablishmentDetails();
-
-            // assert
-            result.Should().Be(expected);
-            _mockEstablishmentService.Verify(x => x.CreateEstablishmentForTradePartyAsync(_systemUnderTest.TradePartyId, It.IsAny<LogisticsLocationDto>()), Times.Once());
-        }
-
-        [Test]
-        public async Task SaveEstablishmentDetails_Update()
-        {
-            // arrange
-            var expected = Guid.NewGuid();
-            _systemUnderTest!.EstablishmentName = "Test name";
-            _systemUnderTest!.LineOne = "Line one";
-            _systemUnderTest!.LineTwo = "Line two";
-            _systemUnderTest!.CityName = "City";
-            _systemUnderTest!.County = "Berkshire";
-            _systemUnderTest!.PostCode = "TES1";
-            _systemUnderTest.EstablishmentId = Guid.NewGuid();
-            _systemUnderTest.TradePartyId = Guid.NewGuid();
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync((Guid)_systemUnderTest.EstablishmentId!)).ReturnsAsync(new LogisticsLocationDto() { Address = new TradeAddressDto()});
-            _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(It.IsAny<LogisticsLocationDto>())).ReturnsAsync(true);
-
-            // act
-            var result = await _systemUnderTest.SaveEstablishmentDetails();
-
-            // assert
-            result.Should().Be(_systemUnderTest.EstablishmentId);
-            _mockEstablishmentService.Verify(x => x.UpdateEstablishmentDetailsAsync(It.IsAny<LogisticsLocationDto>()), Times.Once());
-        }
-
-      
 
         [Test]
         public async Task OnGetAsync_RedirectRegisteredBusiness()

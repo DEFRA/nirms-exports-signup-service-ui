@@ -23,6 +23,7 @@ public class RoutesTests
     [TestCase(Routes.RegistrationTermsAndConditions, Routes.Pages.Path.RegistrationTermsAndConditionsPath)]
     [TestCase(Routes.ContactDetails, Routes.Pages.Path.ContactDetailsPath)]
     [TestCase(Routes.AccessibilityStatement, Routes.Pages.Path.AccessibilityStatementPath)]
+    [TestCase(Routes.SelfServeViewEstablishment, Routes.Pages.Path.SelfServeViewEstablishmentPath)]
     [TestCase(Routes.PrivacyPolicy, Routes.Pages.Path.PrivacyPolicyPath)]
     [TestCase(Routes.Cookies, Routes.Pages.Path.CookiesPath)]
     public void TestRoutesMatchPaths(string routeName, string routePath)
@@ -57,6 +58,7 @@ public class RoutesTests
     [TestCase(Routes.Pages.Names.AccessibilityStatementName, Routes.Pages.Path.AccessibilityStatementPath)]
     [TestCase(Routes.Pages.Names.PrivacyPolicyName, Routes.Pages.Path.PrivacyPolicyPath)]
     [TestCase(Routes.Pages.Names.CookiesName, Routes.Pages.Path.CookiesPath)]
+    [TestCase(Routes.Pages.Names.SelfServeViewEstablishmentName, Routes.Pages.Path.SelfServeViewEstablishmentPath)]
     public void TestPathsContainPageNames(string pageName, string path)
     {
         //assert

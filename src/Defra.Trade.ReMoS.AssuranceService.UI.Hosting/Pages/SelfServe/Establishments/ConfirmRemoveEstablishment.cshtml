@@ -1,0 +1,47 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments.ConfirmRemoveEstablishmentModel
+@{
+    ViewData["Title"] = "Confirm establishment removal";
+}
+
+@section Back{
+    <a class="govuk-back-link"
+        asp-page="@Routes.Pages.Path.SelfServeViewEstablishmentPath" 
+        asp-route-id="@Model.OrgId"
+        asp-route-locationId="@Model.Establishment?.Id"
+        asp-route-NI_GBFlag="@Model.NI_GBFlag" class="govuk-back-link">
+        Back
+    </a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-form-group">
+            <form class="form" method="post">
+                <input type="hidden" asp-for="OrgId" />
+                <input type="hidden" asp-for="EstablishmentId" />
+                <input type="hidden" asp-for="NI_GBFlag" />
+                <h1 class="govuk-heading-l">
+                    Are you sure you want to remove @Model.Establishment?.Name ?
+                </h1>
+                <p class="govuk-hint">This cannot be undone.</p>
+                <p class="govuk-hint">A removed establishment will not be available to add as a place of @(Model?.DispatchOrDestination) on a General Certificate. </p>
+                <div class="govuk-button-group govuk-!-margin-top-7">
+                    <button class="govuk-button govuk-button--warning"
+                            asp-page-handler="submit">
+                        Remove place of @(Model?.DispatchOrDestination)
+                    </button>
+                    <a class="govuk-button govuk-button--secondary"
+                       asp-page="@Routes.Pages.Path.SelfServeViewEstablishmentPath"
+                       asp-route-id="@Model?.OrgId"
+                       asp-route-locationId="@Model?.EstablishmentId"
+                       asp-route-NI_GBFlag="@Model?.NI_GBFlag">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

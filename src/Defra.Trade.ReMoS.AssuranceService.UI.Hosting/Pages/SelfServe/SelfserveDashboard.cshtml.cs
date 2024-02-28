@@ -143,13 +143,18 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
-    public IActionResult OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
+    public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
     {
         if (status == LogisticsLocationApprovalStatus.Draft)
         {
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, new { id = orgId, locationId, NI_GBFlag });
         }
-        else return Page();
+        else if ((status == LogisticsLocationApprovalStatus.Approved) || (status == LogisticsLocationApprovalStatus.Suspended) || (status == LogisticsLocationApprovalStatus.Removed))
+        {
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
+        }
+        else return await OnGetAsync(orgId);
     }
 }

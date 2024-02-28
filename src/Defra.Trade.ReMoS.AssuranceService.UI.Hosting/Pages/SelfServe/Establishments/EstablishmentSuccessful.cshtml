@@ -21,9 +21,9 @@
             @(Model.Establishment?.Address?.PostCode != null ? $"{Model.Establishment.Address?.PostCode} " : string.Empty)
         </p>
 
-        <p class="govuk-!-font-weight-bold">@Model.Establishment.RemosEstablishmentSchemeNumber</p>
+        <p class="govuk-!-font-weight-bold">@Model?.Establishment?.RemosEstablishmentSchemeNumber</p>
 
-        <p>This establishment will be available to add as a place of dispatch on a General Certificate.</p>
+        <p>This establishment will be available to add as a place of @(Model?.DispatchOrDestination) on a General Certificate.</p>
 
         <form method="post">
             <input type="hidden" asp-for="TradePartyId" />

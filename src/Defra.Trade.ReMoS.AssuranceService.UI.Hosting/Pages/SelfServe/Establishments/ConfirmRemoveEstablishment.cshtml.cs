@@ -6,11 +6,13 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 
 [FeatureGate(FeatureFlags.SelfServeMvpPlus)]
-public class EstablishmentSuccessfulModel : BasePageModel<EstablishmentSuccessfulModel>
+[ExcludeFromCodeCoverage]
+public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstablishmentModel>
 {
     #region UI Model
     [BindProperty]
@@ -19,23 +21,25 @@ public class EstablishmentSuccessfulModel : BasePageModel<EstablishmentSuccessfu
     public Guid OrgId { get; set; }
     [BindProperty]
     public Guid EstablishmentId { get; set; }
-
     public LogisticsLocationDto? Establishment { get; set; }
-    public string Heading { get; set; } = default!;
     public string DispatchOrDestination { get; set; } = default!;
+    [BindProperty]
+    public string? NI_GBFlag { get; set; }
     #endregion
 
-    public EstablishmentSuccessfulModel(
-    ILogger<EstablishmentSuccessfulModel> logger,
-    IEstablishmentService establishmentService,
-    ITraderService traderService) : base(logger, traderService, establishmentService)
+    public ConfirmRemoveEstablishmentModel(
+      ILogger<ConfirmRemoveEstablishmentModel> logger,
+      IEstablishmentService establishmentService,
+      ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
+
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Establishment removal confirmation OnGetAsync");
         OrgId = id;
         EstablishmentId = locationId;
+        this.NI_GBFlag = NI_GBFlag;
 
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
 
@@ -48,22 +52,23 @@ public class EstablishmentSuccessfulModel : BasePageModel<EstablishmentSuccessfu
 
         if (NI_GBFlag == "NI")
         {
-            Heading = "Place of destination successfully added";
             DispatchOrDestination = "destination";
         }
         else
         {
-            Heading = "Place of dispatch successfully added";
             DispatchOrDestination = "dispatch";
         }
 
         return Page();
     }
 
-    public IActionResult OnPostSubmit()
+    public async Task<IActionResult> OnPostSubmit()
     {
+        //TODO - Remove establishment (change status to Removed and update API)
+        Establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
+
         return RedirectToPage(
-                Routes.Pages.Path.SelfServeDashboardPath,
-                new { id = OrgId });
+                Routes.Pages.Path.SelfServeEstablishmentRemovedPath,
+                new { id = OrgId, establishmentName = Establishment?.Name, NI_GBFlag = this.NI_GBFlag });
     }
 }

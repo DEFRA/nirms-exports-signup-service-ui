@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Moq;
@@ -194,25 +195,44 @@ public class SelfServeDashboardTests : PageModelTestsBase
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
-
-    [Test]
-    public void OnGetViewEstablishment_RedirectsDraft_Successfully()
+    [TestCase(LogisticsLocationApprovalStatus.Approved, "/SelfServe/Establishments/ViewEstablishment")]
+    [TestCase(LogisticsLocationApprovalStatus.Suspended, "/SelfServe/Establishments/ViewEstablishment")]
+    [TestCase(LogisticsLocationApprovalStatus.Removed, "/SelfServe/Establishments/ViewEstablishment")]
+    [TestCase(LogisticsLocationApprovalStatus.Draft, "/SelfServe/ConfirmEstablishmentDetails")]
+    public async Task OnGetViewEstablishment_Redirects_Successfully(LogisticsLocationApprovalStatus status, string path)
     {
         // arrage
         var orgId = Guid.NewGuid();
         var locationId = Guid.NewGuid();
         var NI_GBFlag = "GB";
-        var status = LogisticsLocationApprovalStatus.Draft;
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, new { id = orgId, locationId, NI_GBFlag });
+        var expected = new RedirectToPageResult(path, new { id = orgId, locationId, NI_GBFlag });
 
         // act
-        var result = _systemUnderTest!.OnGetViewEstablishment(orgId, locationId, NI_GBFlag, status);
+        var result = await _systemUnderTest!.OnGetViewEstablishment(orgId, locationId, NI_GBFlag, status);
 
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
         Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
         Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+    }
+
+
+    [TestCase(LogisticsLocationApprovalStatus.None)]
+    [TestCase(LogisticsLocationApprovalStatus.Rejected)]
+    public async Task OnGetViewEstablishment_Returns_Successfully(LogisticsLocationApprovalStatus status)
+    {
+        // arrage
+        var orgId = Guid.NewGuid();
+        var locationId = Guid.NewGuid();
+        var NI_GBFlag = "GB";
+
+        // act
+        var result = await _systemUnderTest!.OnGetViewEstablishment(orgId, locationId, NI_GBFlag, status);
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<PageResult>();
     }
 
 }

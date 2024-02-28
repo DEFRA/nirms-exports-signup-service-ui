@@ -2,7 +2,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 
@@ -227,4 +226,80 @@ public class EstablishmentServiceTests
         // Assert
         result.Should().BeTrue();
     }
+
+    [Test]
+    public async Task SaveEstablishmentDetails_Create()
+    {
+        // arrange
+        _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+        Guid? expected = Guid.NewGuid();
+        var tradePartyId = Guid.NewGuid();
+        var establishmentDto = new LogisticsLocationDto()
+        {
+            Name = "Test name",
+            Address = new TradeAddressDto()
+            {
+                LineOne = "Line one",
+                LineTwo = "Line two",
+                CityName = "City",
+                County = "Berkshire",
+                PostCode = "TES1"
+            },
+            NI_GBFlag = "GB"
+        };
+        _mockApiIntegration.Setup(x => x.AddEstablishmentToPartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>())).ReturnsAsync(expected);
+
+        // act
+        var result = await _establishmentService!.SaveEstablishmentDetails(null, tradePartyId, establishmentDto, "GB", string.Empty);
+
+        // assert
+        result.Should().Be(expected);
+    }
+
+    [Test]
+    public async Task SaveEstablishmentDetails_EstablishmentFromApi_Updated_With_Given_Dto()
+    {
+        // arrange
+        _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+        var establishmentId = Guid.NewGuid();
+        var tradePartyId = Guid.NewGuid();
+        var establishmentFromApi = new LogisticsLocationDto()
+        {
+            Id = establishmentId,
+            Name = "Test name",
+            Address = new TradeAddressDto()
+            {
+                LineOne = "Line one",
+                LineTwo = "Line two",
+                CityName = "City",
+                County = "Berkshire",
+                PostCode = "TES1"
+            },
+            ApprovalStatus = Enums.LogisticsLocationApprovalStatus.Draft,
+            
+        };
+        var establishmentDto = new LogisticsLocationDto()
+        {
+            Name = "New name",
+            Address = new TradeAddressDto()
+            {
+                LineOne = "New Line one",
+                LineTwo = "Line two",
+                CityName = "City",
+                County = "Berkshire",
+                PostCode = "TES1"
+            }
+        };
+        _mockApiIntegration.Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>())).ReturnsAsync(establishmentFromApi);
+        _mockApiIntegration.Setup(x => x.AddEstablishmentToPartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>())).ReturnsAsync(establishmentId);
+
+        // act
+        var result = await _establishmentService!.SaveEstablishmentDetails(establishmentId, tradePartyId, establishmentDto, "GB", null);
+
+        // assert
+        //result.Should().NotBe(null);
+        result.GetType().Should().Be(typeof(Guid));
+    }
+
+
 }

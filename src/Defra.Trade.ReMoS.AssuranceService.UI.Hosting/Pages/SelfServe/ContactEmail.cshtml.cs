@@ -87,11 +87,11 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             new { id = OrgId, locationId = EstablishmentId,  NI_GBFlag});
     }
 
-    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string country)
+    public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag)
     {
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
-            new { id = orgId, establishmentId, country });
+            new { id = orgId, establishmentId, NI_GBFlag });
     }
 
     private async Task SaveEmailToApi()
@@ -101,6 +101,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         if (Location != null)
         {
             Location.Email = Email;
+            Location.LastModifiedDate = DateTime.UtcNow;
             await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
     }
