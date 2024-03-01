@@ -20,6 +20,8 @@
                 return "blue";
             case "Sign-up rejected":
                 return "red";
+            case "Suspended":
+                return "orange";
             default:
                 return "grey";
         }
@@ -69,6 +71,11 @@
                                 case TradePartyApprovalStatus.SignupStarted:
                                     <a class="govuk-link" asp-page-handler="NavigateToSignup" asp-route-orgId="@business.OrganisationId">
                                         Continue<span class="govuk-visually-hidden"> @business.PracticeName</span>
+                                    </a>
+                                    break;
+                                case TradePartyApprovalStatus.Suspended:
+                                    <a class="govuk-link" asp-page-handler="NavigateToBusinessDashboard" asp-route-orgId="@business.OrganisationId">
+                                        View<span class="govuk-visually-hidden"> @business.PracticeName</span>
                                     </a>
                                     break;
                                 case TradePartyApprovalStatus.PendingApproval:

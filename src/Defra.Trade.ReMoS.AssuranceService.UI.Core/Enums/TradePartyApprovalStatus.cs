@@ -17,5 +17,8 @@ public enum TradePartyApprovalStatus
     SignupStarted,
 
     [Description("Pending approval")] 
-    PendingApproval
+    PendingApproval,
+
+    [Description("Suspended")]
+    Suspended
 }
