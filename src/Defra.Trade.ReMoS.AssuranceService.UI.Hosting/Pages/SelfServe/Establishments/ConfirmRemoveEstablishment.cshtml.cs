@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -64,8 +65,14 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
 
     public async Task<IActionResult> OnPostSubmit()
     {
-        //TODO - Remove establishment (change status to Removed and update API)
         Establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
+
+        if (Establishment is not null)
+        {
+            Establishment.ApprovalStatus = LogisticsLocationApprovalStatus.Removed;
+            Establishment.LastModifiedDate = DateTime.UtcNow;
+            await _establishmentService.UpdateEstablishmentDetailsSelfServeAsync(Establishment);
+        }
 
         return RedirectToPage(
                 Routes.Pages.Path.SelfServeEstablishmentRemovedPath,
