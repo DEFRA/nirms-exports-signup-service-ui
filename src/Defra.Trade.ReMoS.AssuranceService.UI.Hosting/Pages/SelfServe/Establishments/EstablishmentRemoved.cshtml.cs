@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 
-[ExcludeFromCodeCoverage]
 public class EstablishmentRemovedModel : PageModel
 {
     [BindProperty]

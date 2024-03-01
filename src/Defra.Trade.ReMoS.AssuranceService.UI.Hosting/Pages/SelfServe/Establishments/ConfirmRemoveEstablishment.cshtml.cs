@@ -5,14 +5,11 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 
 [FeatureGate(FeatureFlags.SelfServeMvpPlus)]
-[ExcludeFromCodeCoverage]
 public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstablishmentModel>
 {
     #region UI Model
@@ -63,7 +60,7 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
         return Page();
     }
 
-    public async Task<IActionResult> OnPostSubmit()
+    public async Task<IActionResult> OnPostSubmitAsync()
     {
         Establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
 
