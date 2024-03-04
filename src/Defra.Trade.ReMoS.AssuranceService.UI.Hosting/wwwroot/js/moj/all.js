@@ -1208,15 +1208,14 @@ MOJFrontend.SortableTable.prototype.sort = function(rows, columnNumber, sortDire
 };
 
 MOJFrontend.SortableTable.prototype.getCellValue = function (cell) {
-    if (cell[0].childElementCount > 0) {
-        var val = cell[0].firstElementChild.innerText;
+    var val = cell.attr('data-sort-value');
+    val = val || cell.html();
+    if ($.isNumeric(val)) {
+        val = parseInt(val, 10);
     }
-    else var val = cell.attr('data-sort-value') || cell.html();
+    return val;
 
-    var floatVal = parseFloat(val)
-    return isNaN(floatVal) ? val : floatVal
-
-    };
+};
 
 
 return MOJFrontend;
