@@ -214,7 +214,7 @@
                     @foreach (var location in Model.LogisticsLocations!)
                     {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__header">
+                            <td class="govuk-table__header" data-sort-value="@location.Name">
                                 @if (Model.ApprovalStatus == 1)
                                 {
                                     <a class="govuk-link" asp-page-handler="ViewEstablishment" asp-route-orgid="@Model.OrgId" asp-route-locationid="@location.Id" asp-route-status="@location.ApprovalStatus" asp-route-NI_GBFlag="@Model.NI_GBFlag" id="EstablishmentName">@location.Name</a>
@@ -224,13 +224,14 @@
                                     @location.Name
                                 }
                             </td>
-                            <td class="govuk-table__cell">@location.Address!.PostCode</td>
-                            <td class="govuk-table__cell">@if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
+                            <td class="govuk-table__cell" data-sort-value="@location.Address!.PostCode">@location.Address!.PostCode</td>
+                            <td class="govuk-table__cell" data-sort-value="@location.RemosEstablishmentSchemeNumber">
+                                @if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
                                 {
                                     @location.RemosEstablishmentSchemeNumber
                                 }
                             </td>
-                            <td class="govuk-table__cell">
+                            <td class="govuk-table__cell" data-sort-value="@location.ApprovalStatus.GetDescription()">
                                 <div class="govuk-tag govuk-tag--@GetStatusColour(@location.ApprovalStatus.GetDescription(), Model.ApprovalStatus)">
                                     @location.ApprovalStatus.GetDescription()
                                 </div>
