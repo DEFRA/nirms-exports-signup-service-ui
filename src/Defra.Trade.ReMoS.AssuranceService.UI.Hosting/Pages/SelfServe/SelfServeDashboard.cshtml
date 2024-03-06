@@ -6,24 +6,31 @@
     ViewData["Title"] = "Self serve dashboard";
 }
 @{
-    string GetStatusColour(string approvalStatus)
+    string GetStatusColour(string approvalStatus, int traderStatus)
     {
-        switch (approvalStatus)
+        if (traderStatus == 5)
         {
-            case "None":
-                return "grey";
-            case "Active":
-                return "green";
-            case "Rejected":
-                return "red";
-            case "Draft":
-                return "blue";
-            case "Pending approval":
-                return "grey";
-            case "Suspended":
-                return "orange";
-            default:
-                return "grey";
+            return "grey";
+        }
+        else
+        {
+            switch (approvalStatus)
+            {
+                case "None":
+                    return "grey";
+                case "Active":
+                    return "green";
+                case "Rejected":
+                    return "red";
+                case "Draft":
+                    return "blue";
+                case "Pending approval":
+                    return "grey";
+                case "Suspended":
+                    return "orange";
+                default:
+                    return "grey";
+            }
         }
     }
 }
@@ -59,6 +66,20 @@
                             <div class="govuk-tag govuk-tag--green">
                                 Approved for NIRMS
                             </div>
+                        }
+                        @if (Model.ApprovalStatus == 5)
+                        {
+                            <div class="govuk-tag govuk-tag--orange govuk-!-margin-bottom-2">
+                                Suspended from NIRMS
+                            </div>
+                            @if (Model.NI_GBFlag == "GB")
+                            {
+                                <p class="govuk-body-s" style="color:#505a5f;">@Model.BusinessName cannot apply for General Certificates.</p>
+                            }
+                            else
+                            {
+                                <p class="govuk-body-s" style="color:#505a5f;">@Model.BusinessName cannot be selected as a consignee when applying for General Certificates.</p>
+                            }
                         }
                     </dd>
                     <dd class="govuk-summary-list__actions">
@@ -101,10 +122,13 @@
 
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a asp-page-handler="ChangeContactDetails"
-                           asp-route-orgid="@Model.OrgId">
-                            Change <span class="govuk-visually-hidden">contact person</span>
-                        </a>
+                        @if (Model.ApprovalStatus == 1)
+                        {
+                            <a asp-page-handler="ChangeContactDetails"
+                                asp-route-orgid="@Model.OrgId">
+                                Change <span class="govuk-visually-hidden">contact person</span>
+                            </a>
+                        }
                     </dd>
                 </div>
 
@@ -129,34 +153,40 @@
 
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a asp-page-handler="ChangeAuthRepresentativeDetails"
-                           asp-route-orgid="@Model.OrgId">
-                            Change <span class="govuk-visually-hidden">authorised representative</span>
-                        </a>
+                        @if (Model.ApprovalStatus == 1)
+                        {
+                            <a asp-page-handler="ChangeAuthRepresentativeDetails"
+                               asp-route-orgid="@Model.OrgId">
+                                Change <span class="govuk-visually-hidden">authorised representative</span>
+                            </a>
+                        }
                     </dd>
                 </div>
             </dl>
         </div>
     </div>
 
-    <div class="govuk-button-group">
-    <feature name="Nirms-Sus-SelfServeMvpPlus">
-        <a class="govuk-button"
-            asp-page-handler="AddEstablishment"
-            asp-route-orgid="@Model.OrgId"
-            asp-route-NI_GBFlag="@Model.NI_GBFlag">
-            Add a place of @Model.EstablishmentButtonText
-        </a>
-    </feature>
-        <feature name="Nirms-Sus-SelfServeMvpPlus" negate="true">   
-            <a class="govuk-button govuk-button--secondary"
-                asp-page-handler="AddEstablishment"
-                asp-route-orgid="@Model.OrgId"
-                asp-route-NI_GBFlag="@Model.NI_GBFlag">
-                Add a place of @Model.EstablishmentButtonText
-            </a>
-        </feature>
-    </div>
+    @if (Model.ApprovalStatus == 1)
+    {
+        <div class="govuk-button-group">
+            <feature name="Nirms-Sus-SelfServeMvpPlus">
+                <a class="govuk-button"
+                    asp-page-handler="AddEstablishment"
+                    asp-route-orgid="@Model.OrgId"
+                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                    Add a place of @Model.EstablishmentButtonText
+                </a>
+            </feature>
+                <feature name="Nirms-Sus-SelfServeMvpPlus" negate="true">   
+                    <a class="govuk-button govuk-button--secondary"
+                        asp-page-handler="AddEstablishment"
+                        asp-route-orgid="@Model.OrgId"
+                        asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                        Add a place of @Model.EstablishmentButtonText
+                    </a>
+            </feature>
+        </div>
+    }
 
     <feature name="Nirms-Sus-SelfServeMvpPlus">
         <div class="govuk-grid-row govuk-!-margin-top-7">
@@ -184,15 +214,25 @@
                     @foreach (var location in Model.LogisticsLocations!)
                     {
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__header"><a class="govuk-link" asp-page-handler="ViewEstablishment" asp-route-orgid="@Model.OrgId" asp-route-locationid="@location.Id" asp-route-status="@location.ApprovalStatus" asp-route-NI_GBFlag="@Model.NI_GBFlag" id="EstablishmentName">@location.Name</a></td>
-                            <td class="govuk-table__cell">@location.Address!.PostCode</td>
-                            <td class="govuk-table__cell">@if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
+                            <td class="govuk-table__header" data-sort-value="@location.Name">
+                                @if (Model.ApprovalStatus == 1)
+                                {
+                                    <a class="govuk-link" asp-page-handler="ViewEstablishment" asp-route-orgid="@Model.OrgId" asp-route-locationid="@location.Id" asp-route-status="@location.ApprovalStatus" asp-route-NI_GBFlag="@Model.NI_GBFlag" id="EstablishmentName">@location.Name</a>
+                                }
+                                else
+                                {
+                                    @location.Name
+                                }
+                            </td>
+                            <td class="govuk-table__cell" data-sort-value="@location.Address!.PostCode">@location.Address!.PostCode</td>
+                            <td class="govuk-table__cell">
+                                @if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
                                 {
                                     @location.RemosEstablishmentSchemeNumber
                                 }
                             </td>
-                            <td class="govuk-table__cell">
-                                <div class="govuk-tag govuk-tag--@GetStatusColour(@location.ApprovalStatus.GetDescription())">
+                            <td class="govuk-table__cell" data-sort-value="@location.ApprovalStatus.GetDescription()">
+                                <div class="govuk-tag govuk-tag--@GetStatusColour(@location.ApprovalStatus.GetDescription(), Model.ApprovalStatus)">
                                     @location.ApprovalStatus.GetDescription()
                                 </div>
                             </td>

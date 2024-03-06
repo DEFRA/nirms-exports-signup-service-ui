@@ -1,17 +1,15 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 
 [FeatureGate(FeatureFlags.SelfServeMvpPlus)]
-[ExcludeFromCodeCoverage]
 public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstablishmentModel>
 {
     #region UI Model
@@ -62,10 +60,16 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
         return Page();
     }
 
-    public async Task<IActionResult> OnPostSubmit()
+    public async Task<IActionResult> OnPostSubmitAsync()
     {
-        //TODO - Remove establishment (change status to Removed and update API)
         Establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
+
+        if (Establishment is not null)
+        {
+            Establishment.ApprovalStatus = LogisticsLocationApprovalStatus.Removed;
+            Establishment.LastModifiedDate = DateTime.UtcNow;
+            await _establishmentService.UpdateEstablishmentDetailsSelfServeAsync(Establishment);
+        }
 
         return RedirectToPage(
                 Routes.Pages.Path.SelfServeEstablishmentRemovedPath,
