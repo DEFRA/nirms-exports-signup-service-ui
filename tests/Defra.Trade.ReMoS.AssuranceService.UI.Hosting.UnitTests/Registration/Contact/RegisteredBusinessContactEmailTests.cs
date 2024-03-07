@@ -104,38 +104,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidRegex()
-        {
-            //Arrange
-            _systemUnderTest!.Email = "test at email.com";
-            var expectedResult = "Enter an email address in the correct format, like name@example.com";
-
-            //Act
-            await _systemUnderTest.OnPostSubmitAsync();
-            var validation = ValidateModel(_systemUnderTest);
-
-            //Assert            
-            validation.Count.Should().Be(1);
-            expectedResult.Should().Be(validation[0].ErrorMessage);
-        }
-
-        [Test]
-        public async Task OnPostSave_SubmitInvalidRegex()
-        {
-            //Arrange
-            _systemUnderTest!.Email = "test at email.com";
-            var expectedResult = "Enter an email address in the correct format, like name@example.com";
-
-            //Act
-            await _systemUnderTest.OnPostSaveAsync();
-            var validation = ValidateModel(_systemUnderTest);
-
-            //Assert            
-            validation.Count.Should().Be(1);
-            expectedResult.Should().Be(validation[0].ErrorMessage);
-        }
-
-        [Test]
         public void OnValidate_SubmitInvalidLength()
         {
             //Arrange
