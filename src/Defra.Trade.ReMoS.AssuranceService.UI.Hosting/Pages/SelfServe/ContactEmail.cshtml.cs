@@ -15,7 +15,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 public class ContactEmailModel : BasePageModel<ContactEmailModel>
 {
     #region UI Models
-    [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
     public Guid TradePartyId { get; set; }
