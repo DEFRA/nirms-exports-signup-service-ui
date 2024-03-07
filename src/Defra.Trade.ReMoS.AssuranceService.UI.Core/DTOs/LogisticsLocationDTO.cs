@@ -12,7 +12,6 @@ public class LogisticsLocationDto
     public DateTime CreatedDate { get; set; }
     public DateTime LastModifiedDate { get; set; }
     public string? NI_GBFlag { get; set; }
-
     public TradePartyDto? Party { get; set; }
     public TradeAddressDto? Address { get; set; }
     public LogisticsLocationApprovalStatus ApprovalStatus { get; set; }
