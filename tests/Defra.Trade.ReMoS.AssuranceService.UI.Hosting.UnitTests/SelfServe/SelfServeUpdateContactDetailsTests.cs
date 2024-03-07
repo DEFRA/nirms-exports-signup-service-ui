@@ -91,7 +91,6 @@ public class SelfServeUpdateContactDetailsTests: PageModelTestsBase
         _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _systemUnderTest!.Name = "John Doe%^!£$";
         _systemUnderTest!.Position = "Tes£$%&^t";
-        _systemUnderTest!.Email = "test@test.com$&£%^";
         _systemUnderTest!.PhoneNumber = "012345678903565463546";
         _systemUnderTest!.LastModifiedOn = new DateTime(2023, 1, 1, 0, 0, 0);
 

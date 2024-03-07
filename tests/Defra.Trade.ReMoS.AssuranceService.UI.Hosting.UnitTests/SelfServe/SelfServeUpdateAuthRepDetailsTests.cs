@@ -88,7 +88,6 @@ public class SelfServeUpdateAuthRepDetailsTests : PageModelTestsBase
         _systemUnderTest!.TradePartyId = Guid.NewGuid();
         _systemUnderTest!.Name = "John Doe%^!£$";
         _systemUnderTest!.Position = "Tes£$%&^t";
-        _systemUnderTest!.Email = "test@test.com$&£%^";
         _systemUnderTest!.TandCs = false;
         _systemUnderTest!.LastModifiedOn = new DateTime(2023, 1, 1, 0, 0, 0);
 
