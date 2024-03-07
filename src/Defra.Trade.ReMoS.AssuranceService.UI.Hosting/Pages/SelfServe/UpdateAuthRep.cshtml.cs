@@ -24,9 +24,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
         public string Name { get; set; } = string.Empty;
 
         [BindProperty]
-        [RegularExpression(
-            @"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$",
-            ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [StringLengthMaximum(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
         [Required(ErrorMessage = "Enter an email address")]
         public string? Email { get; set; }
