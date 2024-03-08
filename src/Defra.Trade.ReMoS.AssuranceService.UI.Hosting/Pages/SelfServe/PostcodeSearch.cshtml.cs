@@ -63,13 +63,13 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
         {
             ContextHint = "If your place of destination belongs to a different business";
             ContentHeading = "Add a place of destination";
-            ContentText = "where consignments will go after the port of entry under the scheme";
+            ContentText = "These are the establishments that consignments will go to in Northern Ireland after the port of entry under the scheme.";
         }
         else
         {
             ContextHint = "If your place of dispatch belongs to a different business";
             ContentHeading = "Add a place of dispatch";
-            ContentText = "from which consignments to Northern Ireland will depart under the scheme";
+            ContentText = "These are the establishments that consignments to Northern Ireland will depart from under the scheme.";
         }
 
         return Page();
