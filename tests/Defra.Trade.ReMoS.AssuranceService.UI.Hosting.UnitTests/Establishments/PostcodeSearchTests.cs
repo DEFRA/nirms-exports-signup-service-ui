@@ -134,7 +134,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             //Arrange
             var expectedHint = "If your place of destination belongs to a different business";
             var expectedHeading = "Add a place of destination";
-            var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
+            var expectedContentText = "These are the establishments that consignments will go to in Northern Ireland after the port of entry under the scheme.";
             //Act
             await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
 
