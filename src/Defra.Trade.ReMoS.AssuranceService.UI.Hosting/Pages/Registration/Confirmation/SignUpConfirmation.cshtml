@@ -16,11 +16,11 @@
         <p class="govuk-body">We will review your sign-up request and email you with the outcome within 5 working days.</p>
         @if(Model.NI_GBFlag == "NI")
         {
-            <p class="govuk-body">Your consignor will also need to sign up for the scheme. If their sign-up request is approved, they will be able to <a href=@Model.StartNowPage>apply for General Certificates</a> to send goods to Northern Ireland.</p>
+            <p class="govuk-body">Your consignor will also need to sign up for the scheme. If their sign-up request is approved, they will be able to <a href=@Model.StartNowPage target="_blank" rel="noopener noreferrer">apply for General Certificates (opens in a new tab)</a> to send goods to Northern Ireland.</p>
         }
         @if(Model.NI_GBFlag == "GB")
         {
-            <p class="govuk-body">If your sign-up request is approved, you will be able to <a href=@Model.StartNowPage>apply for General Certificates</a> to move goods to Northern Ireland.</p>
+            <p class="govuk-body">If your sign-up request is approved, you will be able to <a href=@Model.StartNowPage target="_blank" rel="noopener noreferrer">apply for General Certificates (opens in a new tab)</a> to move goods to Northern Ireland.</p>
             <p class="govuk-body">
                 Your consignee will also need to sign up for the scheme. If their sign-up request is approved, you will be able to apply for General Certificates to send goods to them in Northern Ireland.
             </p>
