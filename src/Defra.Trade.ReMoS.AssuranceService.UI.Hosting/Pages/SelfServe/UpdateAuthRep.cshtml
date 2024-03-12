@@ -32,25 +32,30 @@
                 }
 
                 <p class="govuk-hint">The authorised representative is the person who is authorised to sign legal documents on behalf of @Model.BusinessName. This is the person who will accept the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" target="_blank" rel="noopener noreferrer">terms and conditions of the scheme</a>.</p>
-                <div class="govuk-form-group" @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)>
+                <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
                     <label class="govuk-label" for="Name">
                         Name
                     </label>
+                    <p id="Name_Error" class="govuk-error-message" gds-validation-for="Name"></p>
                     <input class="govuk-input" id="Name" asp-for="Name" type="text">
                 </div>
-                <div class="govuk-form-group" @(ModelState.HasError("Position") ? "govuk-form-group--error" : null)>
+                <div class="govuk-form-group @(ModelState.HasError("Position") ? "govuk-form-group--error" : null)">
                     <label class="govuk-label" for="Position">
                         Position
                     </label>
+                    <p id="Position_Error" class="govuk-error-message" gds-validation-for="Position"></p>
                     <input class="govuk-input" id="Position" asp-for="Position" type="text">
                 </div>
-                <div class="govuk-form-group" @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)>
+                <div class="govuk-form-group @(ModelState.HasError("Email") ? "govuk-form-group--error" : null)">
                     <label class="govuk-label" for="Email">
                         Email address
                     </label>
+                    <p id="Email_Error" class="govuk-error-message" gds-validation-for="Email"></p>
                     <input class="govuk-input govuk-!-width-full" id="Email" asp-for="Email" type="email">
                 </div>
-                <div class="govuk-checkboxes">
+
+                <div class="govuk-form-group @(ModelState.HasError("TandCs") ? "govuk-form-group--error" : null)">
+                    <p id="TandCs_Error" class="govuk-error-message" gds-validation-for="TandCs"></p>
                     <div class="govuk-checkboxes__item govuk-!-margin-bottom-6">
                         <input class="govuk-checkboxes__input" id="TandCs" asp-for="TandCs" type="checkbox" value="true">
                         <label class="govuk-label govuk-checkboxes__label" for="TandCs">
@@ -63,7 +68,7 @@
             </fieldset>
 
             <div class="govuk-button-group">
-                <button asp-page-handler="submit" class="govuk-button" id="buttonSelfServeUpdateAuthRepSubmit">Save Authorised Representative details</button>
+                <button asp-page-handler="submit" class="govuk-button" id="buttonSelfServeUpdateAuthRepSubmit">Save authorised representative details</button>
                 <a asp-page="@Routes.Pages.Path.SelfServeDashboardPath" asp-route-id="@Model.OrgId" class="govuk-link">Cancel</a>
             </div>
         </form>
