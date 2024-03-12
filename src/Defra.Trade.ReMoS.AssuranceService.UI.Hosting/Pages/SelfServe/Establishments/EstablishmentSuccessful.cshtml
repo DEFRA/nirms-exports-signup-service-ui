@@ -25,6 +25,12 @@
 
         <p>This establishment will be available to add as a place of @(Model?.DispatchOrDestination) on a General Certificate.</p>
 
+        @if(Model!.Establishment!.NI_GBFlag == "NI")
+        {
+            <p>The business that creates the CHED needs to add this establishment to TRACES.</p>
+        }
+        
+
         <form method="post">
             <input type="hidden" asp-for="TradePartyId" />
             <input type="hidden" asp-for="OrgId" />
