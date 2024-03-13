@@ -577,8 +577,8 @@
 }
 @media (min-width: 40.0625em) {
   .govuk-body, .govuk-body-m {
-    /*font-size: 1.1875rem;*/
-    /*line-height: 1.3157894737;*/
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
   }
 }
 @media print {
@@ -7651,4 +7651,8 @@
   .govuk-link-16 {
     font-size: 14px;
   }
+}
+.banner-override {
+  font-size: 1rem;
+  line-height: 1.1428571429;
 }
