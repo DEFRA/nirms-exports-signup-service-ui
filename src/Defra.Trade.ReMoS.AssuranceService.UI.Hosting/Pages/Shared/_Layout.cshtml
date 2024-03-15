@@ -70,7 +70,8 @@
     </header>
 
     <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script> <!-- NEW 5.0 -->
-    <div class="govuk-width-container govuk-body">
+    <div class="govuk-width-container">
+        @*govuk-body*@
         <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
         @await RenderSectionAsync("Signout", false)
         @if (!IsSectionDefined("Signout"))

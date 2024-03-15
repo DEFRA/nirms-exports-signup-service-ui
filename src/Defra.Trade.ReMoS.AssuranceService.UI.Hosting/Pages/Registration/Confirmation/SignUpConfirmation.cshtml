@@ -33,19 +33,19 @@
                 </span>
             </summary>
             <div class="govuk-details__text">
-                <p>A General Certificate is a document that allows you to move goods to Northern Ireland under the Northern Ireland Retail Movement Scheme.</p>
+                <p class="govuk-body">A General Certificate is a document that allows you to move goods to Northern Ireland under the Northern Ireland Retail Movement Scheme.</p>
                 @if (Model.NI_GBFlag == "GB")
                 {
-                    <p>You must apply for a General Certificate for every consignment you want to send to Northern Ireland. If your sign-up request is approved, your confirmation email will contain information about how to apply for a General Certificate.</p>
+                    <p class="govuk-body">You must apply for a General Certificate for every consignment you want to send to Northern Ireland. If your sign-up request is approved, your confirmation email will contain information about how to apply for a General Certificate.</p>
                 }
                 else
                 {
-                    <p>Your consignor must apply for a General Certificate for every consignment they want to send to you. If their sign-up request is approved, the confirmation email will contain information about how to apply for a General Certificate.</p>
+                    <p class="govuk-body">Your consignor must apply for a General Certificate for every consignment they want to send to you. If their sign-up request is approved, the confirmation email will contain information about how to apply for a General Certificate.</p>
                 }
             </div>
         </details>
 
-        <p><a asp-page="@Routes.Pages.Path.BusinessListPath">Return to your businesses</a> to manage or sign up another business.</p>
+        <p class="govuk-body"><a asp-page="@Routes.Pages.Path.BusinessListPath">Return to your businesses</a> to manage or sign up another business.</p>
 
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 

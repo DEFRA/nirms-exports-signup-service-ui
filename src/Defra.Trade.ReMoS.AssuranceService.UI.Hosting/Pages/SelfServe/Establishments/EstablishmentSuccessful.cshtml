@@ -23,11 +23,11 @@
 
         <p class="govuk-!-font-weight-bold">@Model?.Establishment?.RemosEstablishmentSchemeNumber</p>
 
-        <p>This establishment will be available to add as a place of @(Model?.DispatchOrDestination) on a General Certificate.</p>
+        <p class="govuk-body">This establishment will be available to add as a place of @(Model?.DispatchOrDestination) on a General Certificate.</p>
 
         @if(Model!.Establishment!.NI_GBFlag == "NI")
         {
-            <p>The business that creates the CHED needs to add this establishment to TRACES.</p>
+            <p class="govuk-body">The business that creates the CHED needs to add this establishment to TRACES.</p>
         }
         
 
