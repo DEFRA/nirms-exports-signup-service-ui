@@ -77,7 +77,7 @@ extends:
     appName: $(APIName)
     appProject: GC
     appInstanceNumber: $(nc-region-id)01
-    src: GH
+    scr: GH
     buildProjects: '**/*UI.Hosting.csproj'
     publishProject: '**/*UI.Hosting.csproj'
     publishArguments: '--configuration Release'
