@@ -7652,3 +7652,7 @@
     font-size: 14px;
   }
 }
+.banner-override {
+  font-size: 1rem;
+  line-height: 1.1428571429;
+}

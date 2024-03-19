@@ -5,9 +5,11 @@
     ViewData["Title"] = "What will your business do under the Northern Ireland Retail Movement Scheme?";
 }
 
-<a asp-page="@Routes.Pages.Path.RegisteredBusinessRegulationsPath"
-    asp-route-id="@Model.OrgId" 
-    class="govuk-back-link">Back</a>
+@section Back{
+    <a asp-page="@Routes.Pages.Path.RegisteredBusinessRegulationsPath"
+       asp-route-id="@Model.OrgId"
+       class="govuk-back-link">Back</a>
+}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

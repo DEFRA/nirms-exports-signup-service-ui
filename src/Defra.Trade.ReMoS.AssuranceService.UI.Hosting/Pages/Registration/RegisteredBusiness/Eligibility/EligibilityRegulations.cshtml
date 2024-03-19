@@ -35,44 +35,44 @@
 
         <h2 class="govuk-heading-m">Signing up for the scheme</h2>
 
-        <p>Your sign-up request must be approved before your business can move goods under the scheme.</p>
-        <p>To sign up, your business must have:</p>
+        <p class="govuk-body">Your sign-up request must be approved before your business can move goods under the scheme.</p>
+        <p class="govuk-body">To sign up, your business must have an:</p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>an address in the United Kingdom</li>
-            <li>an authorised representative who can agree to the terms and conditions of the scheme</li>
+            <li>address in the United Kingdom</li>
+            <li>authorised representative who can agree to the terms and conditions of the scheme</li>
         </ul>
-        <p>If your business has a Food Business Operator (FBO) number or Plant Health Registration (PHR) number, you will need to provide it.</p>
-        <p>You must inform us if there are any changes to the information that you provide when you're signing up for the scheme.</p>
-        <p>The places of dispatch and places of destination for all consignments must be registered for the scheme.</p>
+        <p class="govuk-body">If your business has a Food Business Operator (FBO) number or Plant Health Registration (PHR) number, you will need to provide it.</p>
+        <p class="govuk-body">You must inform us if there are any changes to the information that you provide when you're signing up for the scheme.</p>
+        <p class="govuk-body">The places of dispatch and places of destination for all consignments must be registered for the scheme.</p>
 
         <h2 class="govuk-heading-m">Goods that you can move under the scheme</h2>
-        <p>This service is only for retail goods that will be sold in Northern Ireland to the final consumer.</p>
-        <p>All goods moved under the scheme must (one of the following):</p>
+        <p class="govuk-body">This service is only for retail food goods that will be sold in Northern Ireland to the final consumer.</p>
+        <p class="govuk-body">All goods moved under the scheme must (one of the following):</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>originate in Great Britain </li>
             <li>be processed in Great Britain</li>
             <li>originate in the EU</li>
             <li>be on the list of <a href="https://www.gov.uk/government/publications/retail-movement-scheme-how-the-scheme-will-work/retail-movement-scheme-how-the-scheme-will-work#product-eligibility" rel="noopener noreferrer" target="_blank">Rest of World Goods (opens in a new tab)</a></li>
         </ul>
-        <p>The goods must also follow any relevant <a href="https://www.gov.uk/guidance/labelling-requirements-for-certain-products-moving-from-great-britain-to-retail-premises-in-northern-ireland-under-the-retail-movement-scheme" rel="noopener noreferrer" target="_blank">labelling requirements (opens in a new tab)</a> in accordance with the scheme.</p>
-        <p>Goods moved under the scheme must not enter the EU after arriving in Northern Ireland.</p>
+        <p class="govuk-body">The goods must also follow any relevant <a href="https://www.gov.uk/guidance/labelling-requirements-for-certain-products-moving-from-great-britain-to-retail-premises-in-northern-ireland-under-the-retail-movement-scheme" rel="noopener noreferrer" target="_blank">labelling requirements (opens in a new tab)</a> in accordance with the scheme.</p>
+        <p class="govuk-body">Goods moved under the scheme must not enter the EU after arriving in Northern Ireland.</p>
 
         <h2 class="govuk-heading-m">Sending consignments under the scheme</h2>
-        <p>To move consignments under the scheme, you must submit a packing list with your General Certificate. You will also need:</p>
+        <p class="govuk-body">To move consignments under the scheme, you must submit a packing list with your General Certificate. You will also need:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>an approved General Certificate</li>
             <li>a commercial seal with a unique identifier and associated number</li>
         </ul>
-        <p>All businesses moving, handling or receiving consignments under the scheme must comply with the requirements of the scheme. Competent authorities may conduct checks on any consignments.</p>
+        <p class="govuk-body">All businesses moving, handling or receiving consignments under the scheme must comply with the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" rel="noopener noreferrer" target="_blank">terms and conditions (opens in a new tab)</a> of the scheme. Competent authorities may conduct checks on any consignments.</p>
 
-        <p>For a period of 5 years from the date of dispatch, you must keep records of all consignments moved under the scheme.</p>
+        <p class="govuk-body">For a period of 5 years from the date of dispatch, you must keep records of all consignments moved under the scheme.</p>
 
         <h2 class="govuk-heading-m">HMRC customs requirements</h2>
-        <p>The usual customs requirements will still apply to all consignments moved under the scheme.</p>
+        <p class="govuk-body">The usual customs requirements will still apply to all consignments moved under the scheme.</p>
 
         <h2 class="govuk-heading-m">Privacy notice</h2>
-        @*<p>To learn more about the personal data that we collect, you can read the privacy notice in the <a href="https://www.gov.uk/government/collections/the-windsor-framework-further-detail-and-publications" target="_blank" rel="noopener noreferrer">guidance for the Windsor Framework</a>.</p>*@
-        <p>To learn more about the personal data that we collect, you can read the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">privacy notice</a>.</p>
+        @*<p class="govuk-body">To learn more about the personal data that we collect, you can read the privacy notice in the <a href="https://www.gov.uk/government/collections/the-windsor-framework-further-detail-and-publications" target="_blank" rel="noopener noreferrer">guidance for the Windsor Framework</a>.</p>*@
+        <p class="govuk-body">To learn more about the personal data that we collect, you can read the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">privacy notice (opens in a new tab)</a>.</p>
 
         <form method="POST" novalidate>
             <div class="govuk-form-group @(ModelState.HasError("Confirmed") ? "govuk-form-group--error" : null)">

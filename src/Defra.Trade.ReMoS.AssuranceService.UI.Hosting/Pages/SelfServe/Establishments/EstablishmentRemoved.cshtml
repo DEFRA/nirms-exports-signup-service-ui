@@ -12,9 +12,9 @@
             @Model.EstablishmentName removed
         </h1>
 
-        <p>This establishment will not be available to add as a place of @Model.DispatchOrDestination on a General Certificate.</p>
+        <p class="govuk-body">This establishment will not be available to add as a place of @Model.DispatchOrDestination on a General Certificate.</p>
 
-        <p>
+        <p class="govuk-body">
             <a class="govuk-button"
                asp-page="@Routes.Pages.Path.SelfServeDashboardPath"
                asp-route-id="@Model.OrgId">

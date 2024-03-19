@@ -1,7 +1,7 @@
 ﻿@inject IConfiguration _config
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="govuk-template">
 <head>
     <!-- Google Tag Manager -->
     <script>
@@ -70,7 +70,7 @@
     </header>
 
     <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script> <!-- NEW 5.0 -->
-    <div class="govuk-width-container govuk-body">
+    <div class="govuk-width-container">
         <a href="#MainContent" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
         @await RenderSectionAsync("Signout", false)
         @if (!IsSectionDefined("Signout"))
@@ -84,9 +84,10 @@
                         This is a new service – your <a class="govuk-link" href="https://defragroup.eu.qualtrics.com/jfe/form/SV_6naiJFARv8EzpSS" target="_blank" rel="noopener noreferrer">feedback</a> will help us to improve it.
                     </span>
                 </span>
-                <ul class="govuk-phase-banner__content__user-list">
-                    <li class="govuk-phase-banner__content__user-list__list-item"><a href="@_config["ExternalLinks:ManageAccountPage"]" target="_blank" rel="noopener noreferrer" class="govuk-link login-nav__link govuk-link--no-visited-state govuk-link-16" id="Link-ManageAccount">Manage Account</a></li>
-                    <li class="govuk-phase-banner__content__user-list__list-item"> | <a href="/Signout" class="govuk-link govuk-link--no-visited-state govuk-link-16" id="Link-SignOut">Sign out</a></li>
+                <ul class="govuk-phase-banner__content__user-list banner-override">
+                    <li class="govuk-phase-banner__content__user-list__list-item"><a href="@_config["ExternalLinks:ManageAccountPage"]" target="_blank" rel="noopener noreferrer" class="govuk-link login-nav__link govuk-link--no-visited-state" id="Link-ManageAccount">Manage Account</a></li>
+                    <li class="govuk-phase-banner__content__user-list__list-item">|</li>
+                    <li class="govuk-phase-banner__content__user-list__list-item"><a href="/Signout" class="govuk-link govuk-link--no-visited-state" id="Link-SignOut">Sign out</a></li>
                 </ul>
                 </div>
         }

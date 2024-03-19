@@ -63,17 +63,23 @@
                 @Model.ContentHeading
             </h1>
 
-            <div class="govuk-warning-text">
-                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                <strong class="govuk-warning-text__text">
-                    <span class="govuk-visually-hidden">Warning</span>
-                    You do not need to add an establishment that @Model.BusinessName does not operate.
-                </strong>
-            </div>
+            @if (Model.NI_GBFlag == "GB")
+            {
+                <p class="govuk-hint">These are the establishments that consignments to Northern Ireland will depart from under the scheme.</p>
+                <p class="govuk-hint">You need to provide details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
+            }
+            else
+            {
+                <p class="govuk-hint">These are the establishments that consignments will go to in Northern Ireland after the port of entry under the scheme.</p>
+                <p class="govuk-hint">You need to provide the details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
+            }
+
+            <div class="govuk-inset-text">All businesses moving, handling or receiving consignments under the scheme must comply with the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" rel="noopener noreferrer" target="_blank">terms and conditions (opens in a new tab)</a> of the scheme. Competent authorities may conduct checks on any consignments.</div>
+
 
             <div class="govuk-form-group">
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
-                <p>
+                <p class="govuk-body">
                     <span>@Model.Postcode</span>
                     <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath
                        asp-route-id="@Model.OrgId"
