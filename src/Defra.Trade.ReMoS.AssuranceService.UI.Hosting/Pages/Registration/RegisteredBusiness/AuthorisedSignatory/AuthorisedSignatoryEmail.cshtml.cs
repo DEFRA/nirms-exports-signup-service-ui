@@ -132,8 +132,8 @@ public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEm
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Id = SignatoryId,
-                Name = tradeParty?.AuthorisedSignatory?.Name,
-                Position = tradeParty?.AuthorisedSignatory?.Position,
+                Name = tradeParty.AuthorisedSignatory?.Name,
+                Position = tradeParty.AuthorisedSignatory?.Position,
                 EmailAddress = Email
             }
         };

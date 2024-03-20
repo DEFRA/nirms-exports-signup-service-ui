@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Defra.Trade.Address.V1.ApiClient.Model;
 using System.Text.Json.Serialization;
 using static Microsoft.Azure.KeyVault.WebKey.JsonWebKeyVerifier;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 
@@ -92,7 +93,7 @@ public class ApiIntegration : IApiIntegration
         }
         else
         {
-            throw new BadHttpRequestException("null return from API");
+            throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
         }
     }
 
@@ -126,7 +127,7 @@ public class ApiIntegration : IApiIntegration
         {
             return results;
         }
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -158,7 +159,7 @@ public class ApiIntegration : IApiIntegration
         {
             return results;
         }
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -190,7 +191,7 @@ public class ApiIntegration : IApiIntegration
         {
             return results;
         }
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -225,7 +226,7 @@ public class ApiIntegration : IApiIntegration
             return results;
         }
 
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -257,7 +258,7 @@ public class ApiIntegration : IApiIntegration
         {
             return results;
         }
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     public async Task<Guid> UpdateTradePartyContactSelfServeAsync(TradePartyDto tradePartyToUpdate)
@@ -283,7 +284,7 @@ public class ApiIntegration : IApiIntegration
         {
             return results;
         }
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
 
@@ -310,7 +311,7 @@ public class ApiIntegration : IApiIntegration
         {
             return results;
         }
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -355,7 +356,7 @@ public class ApiIntegration : IApiIntegration
                 break;
         }
 
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -454,7 +455,7 @@ public class ApiIntegration : IApiIntegration
         if (response.IsSuccessStatusCode)
             return true;
 
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -480,7 +481,7 @@ public class ApiIntegration : IApiIntegration
             await response.Content.ReadAsStreamAsync(),
             options: _jsonSerializerOptions) ?? new TradePartyDto();
 
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
     /// <summary>
@@ -554,6 +555,6 @@ public class ApiIntegration : IApiIntegration
         if (response.IsSuccessStatusCode)
             return true;
 
-        throw new BadHttpRequestException("null return from API");
+        throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 }
