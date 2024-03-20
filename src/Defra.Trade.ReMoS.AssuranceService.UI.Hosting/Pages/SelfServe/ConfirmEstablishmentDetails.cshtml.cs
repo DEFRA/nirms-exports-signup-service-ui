@@ -58,7 +58,7 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
 
         if (NI_GBFlag == "NI")
         {
-            ContentHeading = "Add a place of destination"; ;
+            ContentHeading = "Add a place of destination";
             ContentText = "destination";
         }
         else
