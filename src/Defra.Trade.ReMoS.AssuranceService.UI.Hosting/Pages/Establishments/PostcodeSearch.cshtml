@@ -49,7 +49,7 @@
 
                     <p class="govuk-body">You need to provide the details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
 
-                    <p class="govuk-body">
+                    <p class="govuk-body govuk-inset-text">
                         All businesses moving, handling or receiving consignments under the scheme must comply with the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" rel="noopener noreferrer" target="_blank">terms and conditions (opens in a new tab)</a> of the scheme.
                         Competent authorities may conduct checks on any consignments.
                     </p>
@@ -64,7 +64,7 @@
 
             <button class="govuk-button" asp-page-handler="submit">Find establishment</button>
 
-            <details class="govuk-details" data-module="govuk-details">
+            @*<details class="govuk-details" data-module="govuk-details">
                 <summary class="govuk-details__summary">
                     <span class="govuk-details__summary-text">
                         @Model.ContextHint
@@ -73,7 +73,7 @@
                 <div class="govuk-details__text">
                     You can enter the details of your business' main address – for example, the head office.
                 </div>
-            </details>
+            </details>*@
         </form>
 
     </div>
