@@ -31,7 +31,7 @@
                     <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Added @Model.SubmittedDate.ToString("d MMM yyyy")</div>
                 }
 
-                <p class="govuk-hint">The authorised representative is the person who is authorised to sign legal documents on behalf of @Model.BusinessName. This is the person who will accept the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" target="_blank" rel="noopener noreferrer">terms and conditions of the scheme</a>.</p>
+                <p class="govuk-hint">The authorised representative is the person who is authorised to sign legal documents on behalf of @Model.BusinessName.</p>
                 <div class="govuk-form-group @(ModelState.HasError("Name") ? "govuk-form-group--error" : null)">
                     <label class="govuk-label" for="Name">
                         Name
