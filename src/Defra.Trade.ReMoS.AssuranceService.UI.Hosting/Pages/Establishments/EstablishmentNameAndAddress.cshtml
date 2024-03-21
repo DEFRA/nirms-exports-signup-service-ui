@@ -45,24 +45,6 @@
                         </h1>
                     </legend>
 
-                    @if(Model.NI_GBFlag == "GB")
-                    {
-                        <p class="govuk-hint">The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
-                    }
-                    else
-                    {
-                        <p class="govuk-hint">The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.</p>
-                    }
-
-
-                    <div class="govuk-warning-text">
-                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                        <strong class="govuk-warning-text__text">
-                            <span class="govuk-visually-hidden">Warning</span>
-                            You do not need to enter establishments that do not belong to your business.
-                        </strong>
-                    </div>
-
                     <div class="govuk-form-group">                        
                         <label class="govuk-label" asp-for="EstablishmentName">
                             Establishment name
@@ -116,16 +98,6 @@
             </div>
             <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
 
-            <details class="govuk-details" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        @Model.ContextHint
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    You can enter the details of your business' main address – for example, the head office.
-                </div>
-            </details>
         </form>
     </div>
 </div>

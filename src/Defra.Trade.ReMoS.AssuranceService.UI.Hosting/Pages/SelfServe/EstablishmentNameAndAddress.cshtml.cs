@@ -61,8 +61,6 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     public string? ContentHeading { get; set; } = string.Empty;
 
-    public string? ContextHint { get; set; } = string.Empty;
-
     [BindProperty]
     public string? NI_GBFlag { get; set; } = default!;
     public string? BusinessName { get; set; }

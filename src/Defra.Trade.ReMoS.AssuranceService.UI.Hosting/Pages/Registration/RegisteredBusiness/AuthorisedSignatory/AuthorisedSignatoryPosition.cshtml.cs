@@ -117,9 +117,9 @@ public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignator
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Id = SignatoryId,
-                Name = tradeParty?.AuthorisedSignatory?.Name,
+                Name = tradeParty.AuthorisedSignatory?.Name,
                 Position = Position,
-                EmailAddress = tradeParty?.AuthorisedSignatory?.EmailAddress
+                EmailAddress = tradeParty.AuthorisedSignatory?.EmailAddress
             }
         };
     }

@@ -24,7 +24,7 @@ public class ErrorModel : PageModel
     public void OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-        _logger.LogError("Error page encountered fpr request: " + RequestId);
+        _logger.LogError($"Error page encountered fpr request: {RequestId}");
     }
 }
 

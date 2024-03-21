@@ -57,13 +57,20 @@
                 <span class="govuk-caption-l">Establishments</span>
                 @Model.ContentHeading
             </h1>
-            <p class="govuk-hint" id="search-places-of-dispatch">
-                @Model.ContentText
+            
+            <p class="govuk-body">@Model.ContentText</p>
+
+            <p class="govuk-body">You need to provide the details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
+
+            <p class="govuk-body govuk-inset-text">
+                All businesses moving, handling or receiving consignments under the scheme must comply with the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" rel="noopener noreferrer" target="_blank">terms and conditions (opens in a new tab)</a> of the scheme.
+                Competent authorities may conduct checks on any consignments.
             </p>
 
             <div class="govuk-form-group">
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Establishment postcode</h2>
-                <p><span>@Model.Postcode</span> 
+                <p class="govuk-body">
+                    <span>@Model.Postcode</span>
                     <a  asp-page=@Routes.Pages.Path.EstablishmentPostcodeSearchPath 
                         asp-route-id="@Model.OrgId"
                        asp-route-NI_GBFlag="@Model.NI_GBFlag">

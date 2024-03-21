@@ -1,6 +1,8 @@
 ﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confirmation.SignUpConfirmationModel
 @{
+    ViewData["Title"] = "Sign up confirmed";
 }
 
 <div class="govuk-grid-row">
@@ -15,13 +17,13 @@
         <p class="govuk-body">We will review your sign-up request and email you with the outcome within 5 working days.</p>
         @if(Model.NI_GBFlag == "NI")
         {
-            <p class="govuk-body">Your consignor – and any business that owns the places of dispatch for your consignments – will also need to sign up for the scheme. If their sign-up request is approved, they will be able to apply for General Certificates to send goods to Northern Ireland.</p>
+            <p class="govuk-body">Your consignor will also need to sign up for the scheme. If their sign-up request is approved, they will be able to <a href=@Model.StartNowPage target="_blank" rel="noopener noreferrer">apply for General Certificates (opens in a new tab)</a> to send goods to Northern Ireland.</p>
         }
         @if(Model.NI_GBFlag == "GB")
         {
-            <p class="govuk-body">If your sign-up request is approved, you will be able to apply for General Certificates to move goods to Northern Ireland.</p>
+            <p class="govuk-body">If your sign-up request is approved, you will be able to <a href=@Model.StartNowPage target="_blank" rel="noopener noreferrer">apply for General Certificates (opens in a new tab)</a> to move goods to Northern Ireland.</p>
             <p class="govuk-body">
-                Your consignee - and any business that owns the places of destination for your consignment - will also need to sign up for the scheme. If their sign-up request is approved, you will be able to apply for General Certificates to send goods to them in Northern Ireland.
+                Your consignee will also need to sign up for the scheme. If their sign-up request is approved, you will be able to apply for General Certificates to send goods to them in Northern Ireland.
             </p>
         }        
 
@@ -32,21 +34,19 @@
                 </span>
             </summary>
             <div class="govuk-details__text">
-                <p>A General Certificate is a document that allows you to move goods to Northern Ireland Retail Movement Scheme.</p>
-                <p>You must apply for a General Certificate for every consignment you want to send to Northern Ireland. If your sign-up request is approved, your confirmation email will contain information about how to apply for a General Certificate.</p>
+                <p class="govuk-body">A General Certificate is a document that allows you to move goods to Northern Ireland under the Northern Ireland Retail Movement Scheme.</p>
+                @if (Model.NI_GBFlag == "GB")
+                {
+                    <p class="govuk-body">You must apply for a General Certificate for every consignment you want to send to Northern Ireland. If your sign-up request is approved, your confirmation email will contain information about how to apply for a General Certificate.</p>
+                }
+                else
+                {
+                    <p class="govuk-body">Your consignor must apply for a General Certificate for every consignment they want to send to you. If their sign-up request is approved, the confirmation email will contain information about how to apply for a General Certificate.</p>
+                }
             </div>
         </details>
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    Sign up another business for the Northern Ireland Retail Movement Scheme
-                </span>
-            </summary>
-            <div class="govuk-details__text">
-                You will need to <a href=@Model.StartNowPage>return to the start of this service</a> to submit a new sign-up request.
-            </div>
-        </details>
+        <p class="govuk-body"><a asp-page="@Routes.Pages.Path.BusinessListPath">Return to your businesses</a> to manage or sign up another business.</p>
 
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 

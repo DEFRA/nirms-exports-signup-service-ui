@@ -12,9 +12,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEmailModel>
 {
     #region ui model
-    [RegularExpression(
-        @"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", 
-        ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     [StringLengthMaximum(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
     [BindProperty]
     [Required(ErrorMessage = "Enter an email address")]
@@ -135,8 +132,8 @@ public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEm
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Id = SignatoryId,
-                Name = tradeParty?.AuthorisedSignatory?.Name,
-                Position = tradeParty?.AuthorisedSignatory?.Position,
+                Name = tradeParty.AuthorisedSignatory?.Name,
+                Position = tradeParty.AuthorisedSignatory?.Position,
                 EmailAddress = Email
             }
         };

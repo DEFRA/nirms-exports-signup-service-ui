@@ -32,13 +32,13 @@
         </h1>
 
 
-        <p>Your business will be @Model.ContentText consignments from Great Britain to Northern Ireland under the NI Retail Movement Scheme. </p>
+        <p class="govuk-body">Your business will be @Model.ContentText consignments from Great Britain to Northern Ireland under the NI Retail Movement Scheme. </p>
         @if (@Model.Country != "Northern Ireland" && @Model.Country != "NI")
         {
-            <p>Your business is based in @Model.Country.</p>
+            <p class="govuk-body">Your business is based in @Model.Country.</p>
         }
 
-        <p>To sign up a business with a different purpose, 
+        <p class="govuk-body">To sign up a business with a different purpose, 
             <feature name="Nirms-SuS-SelfServe">
                 <a asp-page="@Routes.Pages.Path.BusinessListPath">start a new sign up request</a>
             </feature>
@@ -46,7 +46,7 @@
                 <a asp-page="@Routes.Pages.Path.RegisteredBusinessBusinessPickerPath">start a new sign up request</a>
             </feature>.</p>
 
-        <p>If you need to change your answer, call us.</p>
+        <p class="govuk-body">If you need to change your answer, call us.</p>
 
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 

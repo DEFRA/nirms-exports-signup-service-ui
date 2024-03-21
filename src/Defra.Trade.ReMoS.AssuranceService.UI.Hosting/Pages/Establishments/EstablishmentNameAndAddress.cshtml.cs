@@ -59,7 +59,6 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public string? ContentHeading { get; set; } = string.Empty;
 
     public string? ContentText { get; set; } = string.Empty;
-    public string? ContextHint { get; set; } = string.Empty;
 
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
@@ -95,12 +94,10 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         if (NI_GBFlag == "NI")
         {
-            ContextHint = "If your place of destination belongs to a different business";
             ContentHeading = "Add a place of destination";
         }
         else
         {
-            ContextHint = "If your place of dispatch belongs to a different business";
             ContentHeading = "Add a place of dispatch";
         }
 
