@@ -1,0 +1,26 @@
+﻿@page
+@using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+@model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Errors.EstablishmentErrorModel
+@{
+    ViewData["Title"] = "Establishment Error";
+}
+
+@{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">
+            You cannot access this page or perform this action
+            </h1>
+
+            <p>Establishment details cannot be edited.</p>
+
+            <p>To change an establishment, you need to remove the establishment and then add the establishment again with the correct information.</p>
+
+            <p><a asp-page=@Routes.Pages.Path.SelfServeDashboardPath asp-route-id="@Model.OrgId">Return to dashboard</a></p>
+
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+            <partial name="_ContactDetailsPartial" />
+        </div>
+    </div>
+}
