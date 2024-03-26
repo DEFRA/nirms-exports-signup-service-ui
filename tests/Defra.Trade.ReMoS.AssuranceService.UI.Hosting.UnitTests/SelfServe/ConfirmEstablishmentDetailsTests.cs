@@ -42,6 +42,7 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         };
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
         _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         var result = await _systemUnderTest!.OnGetAsync(new Guid(), logisticsLocation.Id, It.IsAny<string>());
@@ -187,6 +188,7 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         //Arrange
         var expectedHeading = "Add a place of destination";
         var expectedContentText = "destination";
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
@@ -202,6 +204,7 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         //Arrange
         var expectedHeading = "Add a place of dispatch";
         var expectedContentText = "dispatch";
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "England");
@@ -222,6 +225,20 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
-   
+
+    [Test]
+    public async Task OnGetAsync_RedirectsToEstablishmentErrorPage()
+    {
+        //Arrange
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(false);
+
+        //Act
+        var result = await _systemUnderTest!.OnGetAsync(new Guid(), Guid.NewGuid(), It.IsAny<string>());
+
+        // assert
+        result.Should().NotBeNull();
+        result.GetType().Should().Be(typeof(RedirectToPageResult));
+        ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
+    }
 
 }

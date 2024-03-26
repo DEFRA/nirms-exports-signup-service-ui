@@ -51,7 +51,8 @@ public class ConfirmRemoveEstablishmentTests : PageModelTestsBase
                 LineTwo = "lines 2",
                 PostCode = "postcode",
                 CityName = "city"
-            }
+            },
+            ApprovalStatus = Core.Enums.LogisticsLocationApprovalStatus.Approved
         };
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(locationId)).ReturnsAsync(logisticsLocation);
 
@@ -88,6 +89,39 @@ public class ConfirmRemoveEstablishmentTests : PageModelTestsBase
         result.Should().NotBeNull();
         result.GetType().Should().Be(typeof(RedirectToPageResult));
         ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.SelfServeEstablishmentRemovedPath);
+    }
+
+    [Test]
+    public async Task OnGetAsync_RedirectToEstablishmentErrorPage()
+    {
+        // arrange
+        var orgId = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cc");
+        var locationId = Guid.NewGuid();
+        var logisticsLocation = new LogisticsLocationDto()
+        {
+            Id = Guid.NewGuid(),
+            TradePartyId = Guid.NewGuid(),
+            Name = "test name",
+            RemosEstablishmentSchemeNumber = "remos",
+            Email = "test email",
+            Address = new TradeAddressDto()
+            {
+                LineOne = "line 1",
+                LineTwo = "lines 2",
+                PostCode = "postcode",
+                CityName = "city"
+            },
+            ApprovalStatus = Core.Enums.LogisticsLocationApprovalStatus.Removed
+        };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(locationId)).ReturnsAsync(logisticsLocation);
+
+        // act
+        var result = await _systemUnderTest!.OnGetAsync(orgId, locationId, "GB");
+
+        // assert
+        result.Should().NotBeNull();
+        result.GetType().Should().Be(typeof(RedirectToPageResult));
+        ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
     }
 
 }

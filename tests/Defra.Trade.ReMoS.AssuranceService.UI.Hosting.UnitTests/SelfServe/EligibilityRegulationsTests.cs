@@ -39,16 +39,20 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         //Act
         _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), "NI");
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Assert
         _systemUnderTest.ButtonText.Should().Be("Add place of destination");
     }
 
     [Test]
-    public void OnGet_SetButtonText_ToDispatch()
+    public async Task OnGet_SetButtonText_ToDispatch()
     {
+        // arrange
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
+
         //Act
-        _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), "GB");
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), "GB");
 
         //Assert
         _systemUnderTest.ButtonText.Should().Be("Add place of dispatch");
@@ -70,6 +74,21 @@ public class EligibilityRegulationsTests : PageModelTestsBase
         // Assert
         result?.GetType().Should().Be(typeof(RedirectToPageResult));
         (result as RedirectToPageResult)?.PageName?.Equals(Routes.Pages.Path.SelfServeEstablishmentAddedPath);
+    }
+
+    [Test]
+    public async Task OnGetAsync_RedirectsToEstablishmentErrorPage()
+    {
+        //Arrange
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(false);
+
+        //Act
+        var result = await _systemUnderTest!.OnGetAsync(new Guid(), Guid.NewGuid(), It.IsAny<string>());
+
+        // assert
+        result.Should().NotBeNull();
+        result.GetType().Should().Be(typeof(RedirectToPageResult));
+        ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
     }
 
 }

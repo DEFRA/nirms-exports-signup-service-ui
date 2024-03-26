@@ -35,6 +35,7 @@ public class ContactEmailTests : PageModelTestsBase
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), It.IsAny<string>());
@@ -62,6 +63,7 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         var expectedHeading = "Add a place of destination";
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
@@ -105,11 +107,27 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         _systemUnderTest!.Email = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest@test.com";
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         //Assert
         result?.GetType().Should().Be(typeof(PageResult));
+    }
+
+    [Test]
+    public async Task OnGetAsync_RedirectsToEstablishmentErrorPage()
+    {
+        //Arrange
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(false);
+
+        //Act
+        var result = await _systemUnderTest!.OnGetAsync(new Guid(), Guid.NewGuid(), It.IsAny<string>());
+
+        // assert
+        result.Should().NotBeNull();
+        result.GetType().Should().Be(typeof(RedirectToPageResult));
+        ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
     }
 }

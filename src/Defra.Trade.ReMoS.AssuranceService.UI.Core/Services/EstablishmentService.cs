@@ -98,4 +98,16 @@ public class EstablishmentService : IEstablishmentService
             return establishmentid;
         }
     }
+
+    public async Task<bool> IsEstablishmentDraft(Guid? establishmentId)
+    {
+        var establishmentFromApi = (establishmentId != Guid.Empty && establishmentId != null) ?
+            await GetEstablishmentByIdAsync((Guid)establishmentId) :
+            new LogisticsLocationDto() { Address = new TradeAddressDto() };
+
+        if (establishmentFromApi!.ApprovalStatus == LogisticsLocationApprovalStatus.Draft)
+            return true;
+        else
+            return false;
+    }
 }

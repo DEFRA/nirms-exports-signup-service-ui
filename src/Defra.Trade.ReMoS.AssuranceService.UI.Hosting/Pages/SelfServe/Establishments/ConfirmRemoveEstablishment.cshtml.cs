@@ -48,6 +48,11 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
 
         Establishment = await _establishmentService.GetEstablishmentByIdAsync(locationId);
 
+        if (Establishment!.ApprovalStatus != LogisticsLocationApprovalStatus.Approved)
+        {
+            return RedirectToPage(Routes.Pages.Path.EstablishmentErrorPath, new { id = OrgId });
+        }
+
         if (NI_GBFlag == "NI")
         {
             DispatchOrDestination = "destination";

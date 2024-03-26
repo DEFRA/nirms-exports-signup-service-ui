@@ -198,7 +198,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [TestCase(LogisticsLocationApprovalStatus.Approved, "/SelfServe/Establishments/ViewEstablishment")]
     [TestCase(LogisticsLocationApprovalStatus.Suspended, "/SelfServe/Establishments/ViewEstablishment")]
     [TestCase(LogisticsLocationApprovalStatus.Removed, "/SelfServe/Establishments/ViewEstablishment")]
-    [TestCase(LogisticsLocationApprovalStatus.Draft, "/SelfServe/ConfirmEstablishmentDetails")]
+    [TestCase(LogisticsLocationApprovalStatus.Draft, "/SelfServe/Establishments/ConfirmEstablishmentDetails")]
     public async Task OnGetViewEstablishment_Redirects_Successfully(LogisticsLocationApprovalStatus status, string path)
     {
         // arrage
@@ -206,6 +206,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
         var locationId = Guid.NewGuid();
         var NI_GBFlag = "GB";
         var expected = new RedirectToPageResult(path, new { id = orgId, locationId, NI_GBFlag });
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         // act
         var result = await _systemUnderTest!.OnGetViewEstablishment(orgId, locationId, NI_GBFlag, status);
