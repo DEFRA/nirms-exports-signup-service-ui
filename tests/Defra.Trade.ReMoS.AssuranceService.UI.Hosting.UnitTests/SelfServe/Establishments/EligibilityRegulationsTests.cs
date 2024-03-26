@@ -35,11 +35,11 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGet_SetButtonText_ToNI()
+    public async Task OnGet_SetButtonText_ToNI()
     {
         //Act
-        _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), "NI");
         _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), "NI");
 
         //Assert
         _systemUnderTest.ButtonText.Should().Be("Add place of destination");
