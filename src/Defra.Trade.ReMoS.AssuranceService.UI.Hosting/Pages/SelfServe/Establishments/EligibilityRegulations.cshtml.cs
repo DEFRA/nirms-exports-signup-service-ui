@@ -28,12 +28,18 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
         IEstablishmentService establishmentService) : base(logger, traderService, establishmentService)
     {}
 
-    public IActionResult OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment dispatch destination OnGetAsync");
         OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
+
+        
+        if (!await _establishmentService.IsEstablishmentDraft(EstablishmentId))
+        {
+            return RedirectToPage(Routes.Pages.Path.EstablishmentErrorPath, new { id = OrgId});
+        }
 
         if (NI_GBFlag == "NI")
         {

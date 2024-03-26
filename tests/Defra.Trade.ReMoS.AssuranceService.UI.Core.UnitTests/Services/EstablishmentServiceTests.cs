@@ -301,5 +301,36 @@ public class EstablishmentServiceTests
         result.GetType().Should().Be(typeof(Guid));
     }
 
+    [TestCase(Enums.LogisticsLocationApprovalStatus.Draft, true)]
+    [TestCase(Enums.LogisticsLocationApprovalStatus.Approved, false)]
+    public async Task IsEstablishmentDraft_Returns(Enums.LogisticsLocationApprovalStatus approvalStatus, bool isEstablishment)
+    {
+        // arrange
+        _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
+        var establishmentId = Guid.NewGuid();
+        var establishmentFromApi = new LogisticsLocationDto()
+        {
+            Id = establishmentId,
+            Name = "Test name",
+            Address = new TradeAddressDto()
+            {
+                LineOne = "Line one",
+                LineTwo = "Line two",
+                CityName = "City",
+                County = "Berkshire",
+                PostCode = "TES1"
+            },
+            ApprovalStatus = approvalStatus,
+
+        };
+        _mockApiIntegration.Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>())).ReturnsAsync(establishmentFromApi);
+
+        // act
+        var result = await _establishmentService.IsEstablishmentDraft(establishmentId);
+
+        // assert
+        result.Should().Be(isEstablishment);
+    }
+
 
 }

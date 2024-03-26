@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
 
 [TestFixture]
 public class PostcodeResultsTests : PageModelTestsBase
@@ -15,7 +15,7 @@ public class PostcodeResultsTests : PageModelTestsBase
     private PostcodeResultModel? _systemUnderTest;
     protected Mock<ILogger<PostcodeResultModel>> _mockLogger = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-    protected Mock<ITraderService> _mockTraderService = new();        
+    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
@@ -51,7 +51,7 @@ public class PostcodeResultsTests : PageModelTestsBase
         _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
         _systemUnderTest.EstablishmentsList![0].Text.Should().Be("Test 2, line 1, city, TES1");
         _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Uprn);
-        }
+    }
 
     [Test]
     public async Task OnPostSubmitAsync_ShouldBeValid()

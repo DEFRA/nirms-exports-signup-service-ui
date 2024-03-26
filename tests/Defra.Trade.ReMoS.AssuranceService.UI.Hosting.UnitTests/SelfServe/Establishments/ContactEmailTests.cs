@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
 
 [TestFixture]
 public class ContactEmailTests : PageModelTestsBase
@@ -17,11 +17,11 @@ public class ContactEmailTests : PageModelTestsBase
     private ContactEmailModel? _systemUnderTest;
     protected Mock<ILogger<ContactEmailModel>> _mockLogger = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-    protected Mock<ITraderService> _mockTraderService = new();    
+    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
-    {        
+    {
         _systemUnderTest = new ContactEmailModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
@@ -34,7 +34,8 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
+            .ReturnsAsync(new LogisticsLocationDto());
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), It.IsAny<string>());
@@ -62,6 +63,7 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         var expectedHeading = "Add a place of destination";
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
@@ -98,18 +100,34 @@ public class ContactEmailTests : PageModelTestsBase
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
-    
+
 
     [Test]
     public async Task OnPostSubmit_IfInputNotValid_ReloadPage()
     {
         //Arrange
         _systemUnderTest!.Email = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest@test.com";
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
         var result = await _systemUnderTest.OnPostSubmitAsync();
 
         //Assert
         result?.GetType().Should().Be(typeof(PageResult));
+    }
+
+    [Test]
+    public async Task OnGetAsync_RedirectsToEstablishmentErrorPage()
+    {
+        //Arrange
+        _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(false);
+
+        //Act
+        var result = await _systemUnderTest!.OnGetAsync(new Guid(), Guid.NewGuid(), It.IsAny<string>());
+
+        // assert
+        result.Should().NotBeNull();
+        result.GetType().Should().Be(typeof(RedirectToPageResult));
+        ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
     }
 }
