@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
 
 [TestFixture]
 public class ContactEmailTests : PageModelTestsBase
@@ -17,11 +17,11 @@ public class ContactEmailTests : PageModelTestsBase
     private ContactEmailModel? _systemUnderTest;
     protected Mock<ILogger<ContactEmailModel>> _mockLogger = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-    protected Mock<ITraderService> _mockTraderService = new();    
+    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
-    {        
+    {
         _systemUnderTest = new ContactEmailModel(_mockLogger.Object, _mockEstablishmentService.Object, _mockTraderService.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
@@ -34,7 +34,7 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
+            .ReturnsAsync(new LogisticsLocationDto());
         _mockEstablishmentService.Setup(x => x.IsEstablishmentDraft(It.IsAny<Guid>())).ReturnsAsync(true);
 
         //Act
@@ -100,7 +100,7 @@ public class ContactEmailTests : PageModelTestsBase
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
-    
+
 
     [Test]
     public async Task OnPostSubmit_IfInputNotValid_ReloadPage()

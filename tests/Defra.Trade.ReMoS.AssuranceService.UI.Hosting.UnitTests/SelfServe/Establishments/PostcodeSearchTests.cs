@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
 
 [TestFixture]
 public class PostcodeSearchTests : PageModelTestsBase

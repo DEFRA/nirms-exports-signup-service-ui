@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System.ComponentModel.DataAnnotations;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
 
 [TestFixture]
 public class EstablishmentNameAndAddressTests : PageModelTestsBase
@@ -18,7 +18,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     private EstablishmentNameAndAddressModel? _systemUnderTest;
     protected Mock<ILogger<EstablishmentNameAndAddressModel>> _mockLogger = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-    protected Mock<ITraderService> _mockTraderService = new();        
+    protected Mock<ITraderService> _mockTraderService = new();
 
     [SetUp]
     public void TestCaseSetup()
@@ -64,7 +64,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.CityName = "City";
         _systemUnderTest!.County = "Berkshire";
         _systemUnderTest!.PostCode = "TES1";
-        
+
         //Act
         await _systemUnderTest.OnPostSubmitAsync();
 
@@ -406,7 +406,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         // arrange
         _systemUnderTest!.Uprn = null;
         _systemUnderTest.EstablishmentId = guid;
-        
+
         // act
         await _systemUnderTest.RetrieveEstablishmentDetails();
 
