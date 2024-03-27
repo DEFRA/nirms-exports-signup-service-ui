@@ -56,12 +56,9 @@ public class PostcodeSearchModelBase : BasePageModel<PostcodeSearchModelBase>
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (!GetType().FullName!.Contains("SelfServe"))
+        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
         {
-            if (_traderService.IsTradePartySignedUp(tradeParty))
-            {
-                return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
-            }
+            return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
         if (NI_GBFlag == "NI")
