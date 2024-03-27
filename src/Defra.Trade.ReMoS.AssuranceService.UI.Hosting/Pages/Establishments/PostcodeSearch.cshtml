@@ -38,21 +38,7 @@
             <input type="hidden" asp-for="NI_GBFlag" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Postcode") ? "Postcode": null)">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-fieldset__heading">
-                            <span class="govuk-caption-l">Establishments</span>
-                            @Model.ContentHeading
-                        </h1>
-                    </legend>
-
-                    <p class="govuk-body govuk-hint">@Model.ContentText</p>
-
-                    <p class="govuk-body govuk-hint">You need to provide the details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
-
-                    <p class="govuk-body govuk-inset-text">
-                        All businesses moving, handling or receiving consignments under the scheme must comply with the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" rel="noopener noreferrer" target="_blank">terms and conditions (opens in a new tab)</a> of the scheme.
-                        Competent authorities may conduct checks on any consignments.
-                    </p>
+                    <partial name="Shared/Establishments/PostcodeSearchPartial" />
                
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" asp-for="Postcode">Establishment postcode</label>
@@ -64,16 +50,6 @@
 
             <button class="govuk-button" asp-page-handler="submit">Find establishment</button>
 
-            @*<details class="govuk-details" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        @Model.ContextHint
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    You can enter the details of your business' main address – for example, the head office.
-                </div>
-            </details>*@
         </form>
 
     </div>

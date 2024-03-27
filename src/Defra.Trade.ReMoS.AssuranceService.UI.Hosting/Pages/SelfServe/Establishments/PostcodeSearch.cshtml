@@ -19,26 +19,8 @@
             <input type="hidden" asp-for="NI_GBFlag" />
             <div class="govuk-form-group @(ModelState.ErrorCount > 0 ? "govuk-form-group--error" : null)">
                 <fieldset class="govuk-fieldset" aria-describedby="@(ModelState.HasError("Postcode") ? "Postcode": null)">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h1 class="govuk-fieldset__heading">
-                            <span class="govuk-caption-l">Establishments</span>
-                            @Model.ContentHeading
-                        </h1>
-                    </legend>
+                    <partial name="Shared/Establishments/PostcodeSearchPartial"/>
 
-                    @if(Model.NI_GBFlag == "GB")
-                    {
-                        <p class="govuk-hint">These are the establishments that consignments to Northern Ireland will depart from under the scheme.</p>
-                        <p class="govuk-hint">You need to provide details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
-                    }
-                    else
-                    {
-                        <p class="govuk-hint">These are the establishments that consignments will go to in Northern Ireland after the port of entry under the scheme.</p>
-                        <p class="govuk-hint">You need to provide the details of all the establishments your business uses so they can be added when applying for General Certificates.</p>
-                    }
-
-                    <div class="govuk-inset-text">All businesses moving, handling or receiving consignments under the scheme must comply with the <a asp-page="@Routes.Pages.Path.TermsAndConditionsPath" rel="noopener noreferrer" target="_blank">terms and conditions (opens in a new tab)</a> of the scheme. Competent authorities may conduct checks on any consignments.</div>
-               
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" asp-for="Postcode">Establishment postcode</label>
                         <p id="Postcode_Error" class="govuk-error-message" gds-validation-for="Postcode"></p>
