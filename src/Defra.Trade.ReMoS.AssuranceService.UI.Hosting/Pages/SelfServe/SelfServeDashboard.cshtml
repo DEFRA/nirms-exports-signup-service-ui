@@ -113,11 +113,11 @@
 
                         @if (Model.ContactLastModifiedDate > Model.ContactSubmittedDate)
                         {
-                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Updated @Model.ContactLastModifiedDate.ToString("dd MMM yyyy")</div>
+                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Updated @Model.ContactLastModifiedDate.ToString("d MMM yyyy")</div>
                         }
                         else
                         {
-                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Added @Model.ContactSubmittedDate.ToString("dd MMM yyyy")</div>
+                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Added @Model.ContactSubmittedDate.ToString("d MMM yyyy")</div>
                         }
 
                     </dd>
@@ -144,11 +144,11 @@
 
                         @if (Model.AuthSignatoryLastModifiedDate > Model.AuthSignatorySubmittedDate)
                         {
-                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Updated @Model.AuthSignatoryLastModifiedDate.ToString("dd MMM yyyy")</div>
+                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Updated @Model.AuthSignatoryLastModifiedDate.ToString("d MMM yyyy")</div>
                         }
                         else
                         {
-                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Added @Model.AuthSignatorySubmittedDate.ToString("dd MMM yyyy")</div>
+                            <div class="govuk-body-s govuk-!-margin-top-2" style="color:#505a5f;">Added @Model.AuthSignatorySubmittedDate.ToString("d MMM yyyy")</div>
                         }
 
                     </dd>
