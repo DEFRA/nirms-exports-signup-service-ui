@@ -85,7 +85,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
+        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -109,7 +109,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public async Task<IActionResult> OnPostSubmitAsync()
     {
         _logger.LogInformation("Establishment manual address OnPostSubmit");
-        if (!ModelState.IsValid || !IsPostCodeValid())
+        if (!IsInputValid() || !IsPostCodeValid())
         {
             return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
@@ -137,9 +137,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
             return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
         }
 
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+        if (GetType().FullName!.Contains("SelfServe"))
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
+                new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentContactEmailPath,
+                new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task RetrieveEstablishmentDetails()
@@ -163,6 +168,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
 
+    }
+
+    public virtual bool IsInputValid()
+    {
+        if (!ModelState.IsValid)
+            return false;
+
+        return true;
     }
 
     private bool IsPostCodeValid()
