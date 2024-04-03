@@ -5,7 +5,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe;
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
 
 [TestFixture]
 public class PostcodeNoResultTests : PageModelTestsBase
@@ -63,5 +63,5 @@ public class PostcodeNoResultTests : PageModelTestsBase
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
 
-  
+
 }

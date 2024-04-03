@@ -11,26 +11,30 @@ using System.Diagnostics.CodeAnalysis;
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
 [FeatureGate(FeatureFlags.SelfServeMvpPlus)]
-[BindProperties]
-public class ContactEmailModel : BasePageModel<ContactEmailModel>
+public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishmentDetailsModel>
 {
     #region UI Models
+    [RegularExpression(@"^\w+([-.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
     public string? Email { get; set; } = string.Empty;
     public LogisticsLocationDto? Location { get; set; } = new LogisticsLocationDto();
+    [BindProperty]
     public Guid TradePartyId { get; set; }
+    [BindProperty]
     public Guid OrgId { get; set; }
+    [BindProperty]
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
     public string? ContentText { get; set; } = string.Empty;
-    public string NI_GBFlag { get; set; } = default!;
+    [BindProperty]
+    public string? NI_GBFlag { get; set; } = default!;
     public string? BusinessName { get; set; }
     #endregion
 
-    public ContactEmailModel(
-        ILogger<ContactEmailModel> logger,
+    public ConfirmEstablishmentDetailsModel(
+        ILogger<ConfirmEstablishmentDetailsModel> logger,
         IEstablishmentService establishmentService,
         ITraderService traderService) : base(logger, traderService, establishmentService)
-    {}
+    { }
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
@@ -52,13 +56,20 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
+        if (!await _establishmentService.IsEstablishmentDraft(EstablishmentId))
+        {
+            return RedirectToPage(Routes.Pages.Path.EstablishmentErrorPath, new { id = OrgId });
+        }
+
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
+            ContentText = "destination";
         }
         else
         {
             ContentHeading = "Add a place of dispatch";
+            ContentText = "dispatch";
         }
 
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
@@ -70,20 +81,21 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         return Page();
     }
 
-    public async Task<IActionResult> OnPostSubmitAsync()
+    public IActionResult OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment contact email OnPostSubmit");
-
-        if (!IsInputValid())
-        {
-            return await OnGetAsync(OrgId, EstablishmentId, NI_GBFlag ?? string.Empty);
-        }
-
-        await SaveEmailToApi();
+        _logger.LogInformation("Self serve confirm establishment OnPostSubmit");
 
         return RedirectToPage(
-            Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath, 
-            new { id = OrgId, locationId = EstablishmentId,  NI_GBFlag});
+            Routes.Pages.Path.SelfServeRegulationsPath,
+            new { id = OrgId, locationId = EstablishmentId, NI_GBFlag });
+    }
+
+    public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid tradePartyId, Guid establishmentId, string NI_GBFlag)
+    {
+        var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
+        logisticsLocation!.IsRemoved = true;
+        await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = orgId});
     }
 
     public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag)
@@ -93,26 +105,10 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             new { id = orgId, establishmentId, NI_GBFlag });
     }
 
-    private async Task SaveEmailToApi()
+    public IActionResult OnGetChangeEmail(Guid orgId, Guid establishmentId, string NI_GBFlag)
     {
-        Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
-
-        if (Location != null)
-        {
-            Location.Email = Email;
-            Location.LastModifiedDate = DateTime.UtcNow;
-            await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
-        }
-    }
-
-    private bool IsInputValid()
-    {
-        if (Email != null && Email.Length > 100)
-            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
-
-        if (!ModelState.IsValid || ModelState.ErrorCount > 0)
-            return false;
-
-        return true;
+        return RedirectToPage(
+            Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
+            new { id = orgId, locationId = establishmentId, NI_GBFlag });
     }
 }

@@ -54,6 +54,7 @@ public static class Routes
     public const string SelfServeViewEstablishment = "/self-serve-view-establishment";
     public const string SelfServeConfirmRemoveEstablishment = "/self-serve-confirm-remove-establishment";
     public const string SelfServeEstablishmentRemoved = "/self-serve-establishment-removed";
+    public const string EstablishmentError = "/establishment-error";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -109,6 +110,7 @@ public static class Routes
         (Pages.Path.SelfServeViewEstablishmentPath, SelfServeViewEstablishment),
         (Pages.Path.SelfServeConfirmRemoveEstablishmentPath, SelfServeConfirmRemoveEstablishment),
         (Pages.Path.SelfServeEstablishmentRemovedPath, SelfServeEstablishmentRemoved),
+        (Pages.Path.EstablishmentErrorPath, EstablishmentError),
     };
 
     public static class Pages
@@ -167,6 +169,7 @@ public static class Routes
             public const string SelfServeViewEstablishmentName = "ViewEstablishment";
             public const string SelfServeConfirmRemoveEstablishmentName = "ConfirmRemoveEstablishment";
             public const string SelfServeEstablishmentRemovedName = "EstablishmentRemoved";
+            public const string EstablishmentErrorName = "EstablishmentError";
 
         }
 
@@ -213,17 +216,18 @@ public static class Routes
             public const string SelfServeUpdateAuthRepPath = $"/SelfServe/{Names.SelfServeUpdateAuthRepDetailsName}";
             public const string SelfServeEstablishmentHoldingPath = $"/SelfServe/{Names.SelfServeEstablishmentHoldingName}";
             public const string SelfServeAddBusinessPath = $"/SelfServe/{Names.SelfServeAddBusinessName}";
-            public const string SelfServeEstablishmentPostcodeSearchPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeSearchName}";
-            public const string SelfServeEstablishmentPostcodeResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeResultName}";
-            public const string SelfServeEstablishmentPostcodeNoResultPath = $"/SelfServe/{Names.SelfServeEstablishmentPostcodeNoResultName}";
-            public const string SelfServeEstablishmentNameAndAddressPath = $"/SelfServe/{Names.SelfServeEstablishmentNameAndAddressName}";
-            public const string SelfServeEstablishmentContactEmailPath = $"/SelfServe/{Names.SelfServeEstablishmentContactEmailName}";
-            public const string SelfServeConfirmEstablishmentDetailsPath = $"/SelfServe/{Names.SelfServeConfirmEstablishmentDetailsName}";
-            public const string SelfServeRegulationsPath = $"/SelfServe/{Names.SelfServeRegulationsName}";
+            public const string SelfServeEstablishmentPostcodeSearchPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentPostcodeSearchName}";
+            public const string SelfServeEstablishmentPostcodeResultPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentPostcodeResultName}";
+            public const string SelfServeEstablishmentPostcodeNoResultPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentPostcodeNoResultName}";
+            public const string SelfServeEstablishmentNameAndAddressPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentNameAndAddressName}";
+            public const string SelfServeEstablishmentContactEmailPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentContactEmailName}";
+            public const string SelfServeConfirmEstablishmentDetailsPath = $"/SelfServe/Establishments/{Names.SelfServeConfirmEstablishmentDetailsName}";
+            public const string SelfServeRegulationsPath = $"/SelfServe/Establishments/{Names.SelfServeRegulationsName}";
             public const string SelfServeEstablishmentAddedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentAddedName}";
             public const string SelfServeViewEstablishmentPath = $"/SelfServe/Establishments/{Names.SelfServeViewEstablishmentName}";
             public const string SelfServeConfirmRemoveEstablishmentPath = $"/SelfServe/Establishments/{Names.SelfServeConfirmRemoveEstablishmentName}";
             public const string SelfServeEstablishmentRemovedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentRemovedName}";
+            public const string EstablishmentErrorPath = $"/Errors/{Names.EstablishmentErrorName}";
 
         }
     }
