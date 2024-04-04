@@ -105,7 +105,8 @@
                 <div class="govuk-details__text">
                     You can <a asp-page=@Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath
                                asp-route-id="@Model.OrgId"
-                               asp-route-NI_GBFlag="@Model.NI_GBFlag">
+                               asp-route-NI_GBFlag="@Model.NI_GBFlag"
+                               asp-route-postcode="@Model.Postcode">
                         enter the full establishment address
                     </a>
                 </div>
