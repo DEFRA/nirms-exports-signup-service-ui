@@ -62,6 +62,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
+    [BindProperty]
+    public string? BackPostcode { get; set; }
     #endregion
 
     public EstablishmentNameAndAddressModel(
@@ -70,7 +72,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? backPostcode, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         OrgId = id;
@@ -85,7 +87,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
+        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -102,6 +104,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         }
 
         ViewData["Title"] = ContentHeading;
+        BackPostcode = PostCode != string.Empty ? PostCode : backPostcode;
 
         return Page();
     }
@@ -109,9 +112,9 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     public async Task<IActionResult> OnPostSubmitAsync()
     {
         _logger.LogInformation("Establishment manual address OnPostSubmit");
-        if (!ModelState.IsValid || !IsPostCodeValid())
+        if (!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
         }
 
         Guid? establishmentId;
@@ -134,12 +137,17 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
         }
 
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+        if (GetType().FullName!.Contains("SelfServe"))
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
+                new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentContactEmailPath,
+                new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task RetrieveEstablishmentDetails()
@@ -163,6 +171,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         County = establishment?.Address?.County ?? string.Empty;
         PostCode = establishment?.Address?.PostCode ?? string.Empty;
 
+    }
+
+    public virtual bool IsInputValid()
+    {
+        if (!ModelState.IsValid)
+            return false;
+
+        return true;
     }
 
     private bool IsPostCodeValid()

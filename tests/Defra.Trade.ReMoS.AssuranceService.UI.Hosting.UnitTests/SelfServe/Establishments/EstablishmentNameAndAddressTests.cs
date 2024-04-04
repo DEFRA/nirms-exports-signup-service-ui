@@ -382,7 +382,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var expectedHeading = "Add a place of destination";
 
         //Act
-        await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), null, "NI", null);
+        await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), null, null, "NI");
 
         //Assert
         _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
@@ -556,7 +556,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _mockEstablishmentService.Setup(x => x.GetLogisticsLocationByUprnAsync(It.IsAny<string>())).ReturnsAsync(logisticsLocation);
 
         // act
-        await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), null, "123", "NI", "BT1 9TY");
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), null, "123", "BT1 9TY", "NI");
 
         // assert
         _systemUnderTest.BackPostcode.Should().Be("BT1 9TY");
