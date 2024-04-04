@@ -92,7 +92,7 @@ public class PostcodeResultsTests : PageModelTestsBase
     {
         //Arrange
         var expectedHeading = "Add a place of destination";
-        var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
+        var expectedContentText = "These are the establishments that consignments will go to in Northern Ireland after the port of entry under the scheme.";
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByPostcodeAsync(It.IsAny<string>()))
             .Returns(Task.FromResult<List<LogisticsLocationDto>?>(new List<LogisticsLocationDto>() { new LogisticsLocationDto() }));
