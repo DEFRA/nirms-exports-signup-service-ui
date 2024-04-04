@@ -56,7 +56,8 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("Self Serve Update Contact OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateContactModel), nameof(OnGetAsync));
+
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
@@ -71,7 +72,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("SelfServe Update Contact OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateContactModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {

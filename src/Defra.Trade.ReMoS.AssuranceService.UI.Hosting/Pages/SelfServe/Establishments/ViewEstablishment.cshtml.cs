@@ -35,6 +35,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establis
 
         public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
         {
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(ViewEstablishmentModel), nameof(OnGetAsync));
+
             OrgId = id;
             this.NI_GBFlag = NI_GBFlag;
 

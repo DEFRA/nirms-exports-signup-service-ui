@@ -25,7 +25,8 @@ public class RegisteredBusinessCountryStaticModel : BasePageModel<RegisteredBusi
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("Country Static OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessCountryStaticModel), nameof(OnGetAsync));
+
         OrgId = Id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;

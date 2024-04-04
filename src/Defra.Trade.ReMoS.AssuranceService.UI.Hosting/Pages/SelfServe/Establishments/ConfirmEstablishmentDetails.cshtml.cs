@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -38,7 +39,8 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ConfirmEstablishmentDetailsModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
@@ -83,7 +85,7 @@ public class ConfirmEstablishmentDetailsModel : BasePageModel<ConfirmEstablishme
 
     public IActionResult OnPostSubmitAsync()
     {
-        _logger.LogInformation("Self serve confirm establishment OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ConfirmEstablishmentDetailsModel), nameof(OnPostSubmitAsync));
 
         return RedirectToPage(
             Routes.Pages.Path.SelfServeRegulationsPath,

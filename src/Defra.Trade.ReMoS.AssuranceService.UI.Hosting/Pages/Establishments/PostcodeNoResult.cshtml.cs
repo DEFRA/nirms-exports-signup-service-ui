@@ -20,11 +20,13 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     public string? ContentCountry { get; set; } = string.Empty;
     #endregion
 
-    public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
+    public PostcodeNoResultModel(ITraderService traderService, ILogger<PostcodeNoResultModel> logger) : base(traderService, logger)
     {}
 
     public async Task<IActionResult> OnGet(Guid id, string NI_GBFlag, string postcode)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeNoResultModel), nameof(OnGet));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;

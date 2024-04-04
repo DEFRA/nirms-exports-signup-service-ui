@@ -1,8 +1,10 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Castle.Core.Logging;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;
@@ -12,11 +14,12 @@ public class PostcodeNoResultTests : PageModelTestsBase
 {
     private PostcodeNoResultModel? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
+    protected Mock<ILogger<PostcodeNoResultModel>> _mockLogger = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new PostcodeNoResultModel(_mockTraderService.Object);
+        _systemUnderTest = new PostcodeNoResultModel(_mockTraderService.Object, _mockLogger.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });

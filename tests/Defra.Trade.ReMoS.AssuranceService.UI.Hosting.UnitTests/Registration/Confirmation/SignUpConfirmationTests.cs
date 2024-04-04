@@ -21,7 +21,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         protected Mock<ITraderService> _mockTraderService = new();
         protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
         private SignUpConfirmationModel? _systemUnderTest;
-        private Mock<IConfiguration> _mockConfiguration = new();        
+        private Mock<IConfiguration> _mockConfiguration = new();
+        private Mock<ILogger<SignUpConfirmationModel>> _mockLogger = new();
 
         [SetUp]
         public void TestCaseSetup()
@@ -29,7 +30,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var _mockConfigSection = new Mock<IConfigurationSection>();
             _mockConfigSection.Setup(x => x.Value).Returns("testurl");
             _mockConfiguration.Setup(x => x.GetSection("ExternalLinks:StartNowPage")).Returns(_mockConfigSection.Object);
-            _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockCheckAnswersService.Object, _mockConfiguration.Object);
+            _systemUnderTest = new SignUpConfirmationModel(_mockTraderService.Object, _mockCheckAnswersService.Object, _mockConfiguration.Object, _mockLogger.Object);
             _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
             _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("8d455cbf-7d1f-403e-a6d3-a1275bb3ecf8") });
             _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);

@@ -35,7 +35,8 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ContactEmailModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
@@ -77,7 +78,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment contact email OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ContactEmailModel), nameof(OnPostSubmitAsync));
 
         if (!IsInputValid())
         {

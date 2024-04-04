@@ -4,6 +4,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement.Mvc;
 #pragma warning disable CS1998
@@ -30,7 +31,8 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EligibilityRegulationsModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
@@ -55,7 +57,8 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment eligibility regulations OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EligibilityRegulationsModel), nameof(OnPostSubmitAsync));
+
         await UpdateEstablishmentStatus();
         return RedirectToPage(
             Routes.Pages.Path.SelfServeEstablishmentAddedPath,

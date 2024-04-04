@@ -5,6 +5,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Management.ContainerInstance.Fluent.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Build.Framework;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -20,11 +22,13 @@ public class PostcodeNoResultTests : PageModelTestsBase
 {
     private PostcodeNoResultModel? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
+    protected Mock<ILogger<PostcodeNoResultModel>> _mockLogger = new();
+
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new PostcodeNoResultModel(_mockTraderService.Object);
+        _systemUnderTest = new PostcodeNoResultModel(_mockTraderService.Object, _mockLogger.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });

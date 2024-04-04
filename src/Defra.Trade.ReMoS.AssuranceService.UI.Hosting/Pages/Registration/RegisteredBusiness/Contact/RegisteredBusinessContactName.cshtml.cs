@@ -7,6 +7,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 
@@ -46,6 +47,8 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactNameModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -70,7 +73,7 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Contact Name OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactNameModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -86,7 +89,7 @@ public class RegisteredBusinessContactNameModel : BasePageModel<RegisteredBusine
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("Contact Name OnPostSave");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactNameModel), nameof(OnPostSaveAsync));
 
         if (!ModelState.IsValid)
         {

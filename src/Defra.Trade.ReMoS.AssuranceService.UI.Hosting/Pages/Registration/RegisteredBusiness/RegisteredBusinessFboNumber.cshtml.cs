@@ -49,7 +49,8 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("FBO Number OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessFboNumberModel), nameof(OnGetAsync));
+
         OrgId = Id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -70,7 +71,8 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("FBO OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessFboNumberModel), nameof(OnPostSubmitAsync));
+
         ValidateFboPhr();
 
         if (!ModelState.IsValid && OptionSelected != "none")
@@ -97,7 +99,8 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("FBO OnPostSave");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessFboNumberModel), nameof(OnPostSaveAsync));
+
         ValidateFboPhr();
 
         if (!ModelState.IsValid)
