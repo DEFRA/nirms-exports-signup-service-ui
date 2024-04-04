@@ -62,6 +62,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
+    [BindProperty]
+    public string? BackPostcode { get; set; }
     #endregion
 
     public EstablishmentNameAndAddressModel(
@@ -70,7 +72,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? backPostcode, string? NI_GBFlag = "GB")
     {
         _logger.LogInformation("Establishment manual address OnGet");
         OrgId = id;
@@ -102,6 +104,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         }
 
         ViewData["Title"] = ContentHeading;
+        BackPostcode = PostCode != string.Empty ? PostCode : backPostcode;
 
         return Page();
     }
@@ -111,7 +114,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         _logger.LogInformation("Establishment manual address OnPostSubmit");
         if (!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
         }
 
         Guid? establishmentId;
@@ -134,7 +137,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
         }
 
         if (GetType().FullName!.Contains("SelfServe"))
