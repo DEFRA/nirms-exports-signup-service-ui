@@ -25,7 +25,8 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     public string? ContentHeading { get; set; } = string.Empty;
     public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
-       
+
+    public bool IsSelfServe => GetType().FullName!.Contains("SelfServe");
     public ContactEmailModel(
         ILogger<ContactEmailModel> logger,
         IEstablishmentService establishmentService,
@@ -46,12 +47,12 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
+        if (!IsSelfServe && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
-        if (GetType().FullName!.Contains("SelfServe") && !await _establishmentService.IsEstablishmentDraft(EstablishmentId))
+        if (IsSelfServe && !await _establishmentService.IsEstablishmentDraft(EstablishmentId))
         {
             return RedirectToPage(Routes.Pages.Path.EstablishmentErrorPath, new { id = OrgId });
         }
@@ -85,7 +86,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
         await SaveEmailToApi();
 
-        if (GetType().FullName!.Contains("SelfServe"))
+        if (IsSelfServe)
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath,
                 new { id = OrgId, locationId = EstablishmentId, NI_GBFlag });
@@ -97,7 +98,7 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
     public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
-        if (GetType().FullName!.Contains("SelfServe"))
+        if (IsSelfServe)
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
                 new { id = orgId, establishmentId, NI_GBFlag });
