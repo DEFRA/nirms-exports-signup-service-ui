@@ -51,6 +51,11 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
 
+        if (GetType().FullName!.Contains("SelfServe") && !await _establishmentService.IsEstablishmentDraft(EstablishmentId))
+        {
+            return RedirectToPage(Routes.Pages.Path.EstablishmentErrorPath, new { id = OrgId });
+        }
+
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
