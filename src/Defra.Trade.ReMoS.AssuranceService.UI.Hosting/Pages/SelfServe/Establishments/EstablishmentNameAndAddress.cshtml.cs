@@ -64,6 +64,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     [BindProperty]
     public string? NI_GBFlag { get; set; } = default!;
     public string? BusinessName { get; set; }
+    [BindProperty]
+    public string? BackPostcode { get; set; }
     #endregion
 
     public EstablishmentNameAndAddressModel(
@@ -72,7 +74,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string NI_GBFlag)
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string NI_GBFlag, string? postcode)
     {
         _logger.LogInformation("Establishment manual address OnGet");
         OrgId = id;
@@ -101,6 +103,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         }
 
         ViewData["Title"] = ContentHeading;
+        BackPostcode = PostCode != string.Empty ? PostCode : postcode;
 
         return Page();
     }
@@ -111,7 +114,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
         if (!IsInputValid() || !IsPostCodeValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty, BackPostcode);
         }
 
         Guid? establishmentId;
@@ -135,7 +138,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty, BackPostcode);
         }
 
         return RedirectToPage(

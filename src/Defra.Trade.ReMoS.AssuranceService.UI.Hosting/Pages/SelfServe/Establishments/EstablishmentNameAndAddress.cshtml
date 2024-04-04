@@ -8,12 +8,12 @@
 
 @section Back
 {
-    @if (!string.IsNullOrEmpty(Model.PostCode))
+    @if (!string.IsNullOrEmpty(Model.BackPostcode))
     {
         <a class="govuk-back-link"
            asp-page="@Routes.Pages.Path.SelfServeEstablishmentPostcodeResultPath"
            asp-route-id="@Model.OrgId"
-           asp-route-postcode="@Model.PostCode"
+   asp-route-postcode="@Model.BackPostcode"
            asp-route-NI_GBFlag="@Model.NI_GBFlag">
             Back
         </a>
