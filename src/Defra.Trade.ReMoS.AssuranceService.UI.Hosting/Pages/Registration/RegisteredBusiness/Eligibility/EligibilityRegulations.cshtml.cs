@@ -21,6 +21,8 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EligibilityRegulationsModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         if (tradeParty != null)
@@ -46,8 +48,8 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Eligibility Regulations On Post Submit");
-        
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EligibilityRegulationsModel), nameof(OnPostSubmitAsync));
+
         if (!Confirmed)
         {            
             ModelState.AddModelError(nameof(Confirmed), "Confirm that you have understood the guidance and regulations");

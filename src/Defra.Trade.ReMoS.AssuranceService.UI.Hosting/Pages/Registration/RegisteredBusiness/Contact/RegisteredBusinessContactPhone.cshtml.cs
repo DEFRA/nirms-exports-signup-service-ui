@@ -39,6 +39,8 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactPhoneModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -60,7 +62,7 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("PhoneNumber OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactPhoneModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -75,7 +77,7 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("PhoneNumber OnPostSave");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactPhoneModel), nameof(OnPostSaveAsync));
 
         if (!ModelState.IsValid)
         {

@@ -33,7 +33,8 @@ public class EstablishmentSuccessfulModel : BasePageModel<EstablishmentSuccessfu
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentSuccessfulModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
 

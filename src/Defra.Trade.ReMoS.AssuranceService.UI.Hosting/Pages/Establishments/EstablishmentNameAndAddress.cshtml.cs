@@ -74,7 +74,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? backPostcode, string? NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment manual address OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnGetAsync));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId;
@@ -111,7 +112,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment manual address OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmitAsync));
+
         if (!IsInputValid() || !IsPostCodeValid())
         {
             return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);

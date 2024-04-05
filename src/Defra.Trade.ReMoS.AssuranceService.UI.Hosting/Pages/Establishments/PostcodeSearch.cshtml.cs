@@ -40,7 +40,8 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
-        _logger.LogTrace("Establishment postcode search on get");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeSearchModel), nameof(OnGetAsync));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
 
@@ -76,7 +77,7 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment manual address OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeSearchModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {

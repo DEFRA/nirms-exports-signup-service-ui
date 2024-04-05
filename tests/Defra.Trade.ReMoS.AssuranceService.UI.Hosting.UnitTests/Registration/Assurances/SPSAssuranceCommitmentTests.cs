@@ -22,11 +22,12 @@ public class SPSAssuranceCommitmentTests : PageModelTestsBase
     protected Mock<IUserService> _mockUserService = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
     protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
+    protected Mock<ILogger<TermsAndConditions>> _mockLogger = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
+        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object, _mockLogger.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);

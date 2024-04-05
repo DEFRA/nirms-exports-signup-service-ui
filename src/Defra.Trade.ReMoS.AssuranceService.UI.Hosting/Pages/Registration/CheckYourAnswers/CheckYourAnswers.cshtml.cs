@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -39,7 +40,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {
-            _logger.LogInformation("OnGet");
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(CheckYourAnswersModel), nameof(OnGetAsync));
 
             OrgId = Id;
             var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
@@ -117,6 +118,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
         public async Task<IActionResult> OnPostSubmitAsync(Guid OrgId)
         {
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(CheckYourAnswersModel), nameof(OnPostSubmitAsync));
+
             TradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);

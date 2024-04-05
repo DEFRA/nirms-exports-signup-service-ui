@@ -27,6 +27,8 @@ public class AddEstablishmentHoldingModel : BasePageModel<AddEstablishmentHoldin
 
     public async Task<IActionResult> OnGet(Guid id, string country)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AddEstablishmentHoldingModel), nameof(OnGet));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         RegistrationId = tradeParty!.Id;

@@ -36,6 +36,8 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
     {}
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AuthorisedSignatoryNameModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -58,7 +60,7 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Signatory Name OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AuthorisedSignatoryNameModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -73,7 +75,7 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("Signatory Name OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AuthorisedSignatoryNameModel), nameof(OnPostSaveAsync));
 
         if (!ModelState.IsValid)
         {

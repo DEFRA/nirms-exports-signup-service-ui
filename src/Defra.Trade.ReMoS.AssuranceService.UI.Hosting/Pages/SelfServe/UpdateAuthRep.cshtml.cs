@@ -48,7 +48,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
         { }
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {
-            _logger.LogInformation("Self Serve Update Auth rep OnGet");
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateAuthRepModel), nameof(OnGetAsync));
+
             OrgId = Id;
             TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
@@ -63,7 +64,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
-            _logger.LogInformation("SelfServe Update Auth Rep OnPostSubmit");
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateAuthRepModel), nameof(OnPostSubmitAsync));
 
             if (!TandCs)
             {

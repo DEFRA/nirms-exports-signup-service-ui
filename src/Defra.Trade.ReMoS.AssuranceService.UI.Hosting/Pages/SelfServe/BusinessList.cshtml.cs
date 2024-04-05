@@ -33,8 +33,9 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     { }
 
     public async Task<IActionResult> OnGetAsync()
-    {        
-        _logger.LogInformation("Business list OnGet");
+    {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(BusinessListModel), nameof(OnGetAsync));
+
         await GetDefraOrgsForUserWithApprovalStatus();           
         return Page();
     }
@@ -48,7 +49,7 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
 
     public async Task<IActionResult> OnGetNavigateToSignup(Guid orgId)
     {
-        _logger.LogInformation("Business list OnGetNavigateToSignup");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(BusinessListModel), nameof(OnGetNavigateToSignup));
 
         var orgDetails = _userService.GetOrgDetailsById(User, orgId);
         if (orgDetails == null)

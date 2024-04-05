@@ -53,7 +53,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("OnGet Self serve dashboard");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;

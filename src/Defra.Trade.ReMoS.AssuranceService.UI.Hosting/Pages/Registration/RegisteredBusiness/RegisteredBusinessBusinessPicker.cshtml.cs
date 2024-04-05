@@ -36,7 +36,8 @@ public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBus
 
     public IActionResult OnGet()
     {
-        _logger.LogInformation("Business picker OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessBusinessPickerModel), nameof(OnGet));
+
         Businesses = _userService.GetDefraOrgsForUser(User);
 
         if (Businesses?.Count > 7)
@@ -49,7 +50,7 @@ public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBus
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Business picker OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessBusinessPickerModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {

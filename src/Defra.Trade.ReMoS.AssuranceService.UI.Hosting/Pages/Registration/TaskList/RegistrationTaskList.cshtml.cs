@@ -3,6 +3,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -48,7 +49,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {
-            _logger.LogInformation("OnGet");
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(RegistrationTaskListModel), nameof(OnGetAsync));
 
             OrgId = Id;
             var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);

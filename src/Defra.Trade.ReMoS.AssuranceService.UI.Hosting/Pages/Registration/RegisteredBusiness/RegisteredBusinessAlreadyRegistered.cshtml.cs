@@ -1,5 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Eligibility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,7 +15,8 @@ public class RegisteredBusinessAlreadyRegisteredModel : BasePageModel<Registered
     {}
     public IActionResult OnGetAsync(Guid id)
     {
-        _logger.LogInformation("Already registered OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessAlreadyRegisteredModel), nameof(OnGetAsync));
+
         OrgId = id;
 
         return Page();
