@@ -2,6 +2,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -103,6 +104,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
                 Id = TradePartyId,
                 ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
                 SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
+                TermsAndConditionsSignedDate = DateTime.Now,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Name = Name,
