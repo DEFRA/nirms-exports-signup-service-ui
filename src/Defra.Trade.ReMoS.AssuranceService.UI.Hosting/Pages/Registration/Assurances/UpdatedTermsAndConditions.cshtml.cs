@@ -25,7 +25,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         [BindProperty]
         public string? PracticeName { get; set; } = string.Empty;
         [BindProperty]
-        public string UpdatedTermsAndConditionsDate { get; set; } = string.Empty;
+        public string? UpdatedTermsAndConditionsDate { get; set; } = string.Empty;
 
         #endregion UI Model
         public UpdatedTermsAndConditions(
