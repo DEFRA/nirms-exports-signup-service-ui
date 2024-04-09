@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.Parse("09/04/2004"),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("09/04/2004", "dd/mm/yyyy", CultureInfo.InvariantCulture),
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Name = "name"
@@ -122,7 +123,7 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.Parse("01/01/2002"),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2002", "dd/mm/yyyy", CultureInfo.InvariantCulture),
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
@@ -146,7 +147,7 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.Parse("01/01/2002"),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2002", "dd/mm/yyyy", CultureInfo.InvariantCulture),
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
@@ -172,7 +173,7 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.Parse("01/01/2032"),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2032", "dd/mm/yyyy", CultureInfo.InvariantCulture),
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
