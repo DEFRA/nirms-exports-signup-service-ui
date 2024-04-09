@@ -48,7 +48,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             {
                 return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = OrgId });
             }
-            else UpdatedTermsAndConditionsDate = DateTime.Parse(updatedDate).ToString("d MMMM yyyy");
+            else UpdatedTermsAndConditionsDate = DateTime.Parse(updatedDate, "dd/mm/yyyy", CultureInfo.InvariantCulture).ToString("d MMMM yyyy");
 
             if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
