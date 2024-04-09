@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Assurances;
 
-public class SPSAssuranceCommitmentTests : PageModelTestsBase
+public class TermsAndConditionsTests : PageModelTestsBase
 {
     private TermsAndConditions? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();

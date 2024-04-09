@@ -43,7 +43,7 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     public IActionResult OnGetNavigateToBusinessDashboard(Guid orgId)
     {
         return RedirectToPage(
-            Routes.Pages.Path.SelfServeDashboardPath,
+            Routes.Pages.Path.UpdatedTermsAndConditionsPath,
             new { id = orgId });
     }
 
