@@ -28,26 +28,26 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
     [SetUp]
     public void TestCaseSetup()
     {
-        var _mockConfigSection = new Mock<IConfigurationSection>();
-        _mockConfigSection.Setup(x => x.Value).Returns("01/02/2023");
         _systemUnderTest = new UpdatedTermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockConfig.Object, _mockLogger.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.Parse("0f552d9a-6415-4c2a-af04-09a9075ec995") });
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);
-        _mockConfig.Setup(x => x.GetSection("UpdatedTermsAndConditionsDate")).Returns(_mockConfigSection.Object);
     }
 
     [Test]
     public async Task OnGetAsync_ModelPopulated()
     {
         // arrange
+        var _mockConfigSection = new Mock<IConfigurationSection>();
+        _mockConfigSection.Setup(x => x.Value).Returns("01/02/2023");
+        _mockConfig.Setup(x => x.GetSection("UpdatedTermsAndConditionsDate")).Returns(_mockConfigSection.Object);
         var orgId = Guid.NewGuid();
         var tradePartyId = Guid.Parse("0f552d9a-6415-4c2a-af04-09a9075ec995");
         TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.ParseExact("09/04/2004", "dd/mm/yyyy", CultureInfo.InvariantCulture),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("09/04/2004", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             AuthorisedSignatory = new AuthorisedSignatoryDto()
             {
                 Name = "name"
@@ -117,13 +117,16 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
     public async Task OnGetAsync_InvalidOrgId()
     {
         // arrange
+        var _mockConfigSection = new Mock<IConfigurationSection>();
+        _mockConfigSection.Setup(x => x.Value).Returns("01/02/2023");
+        _mockConfig.Setup(x => x.GetSection("UpdatedTermsAndConditionsDate")).Returns(_mockConfigSection.Object);
         var orgId = Guid.NewGuid();
         var tradePartyId = Guid.NewGuid();
         TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2002", "dd/mm/yyyy", CultureInfo.InvariantCulture),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("01/02/2002", "dd/MM/yyyy", CultureInfo.InvariantCulture),
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
@@ -147,7 +150,7 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2002", "dd/mm/yyyy", CultureInfo.InvariantCulture),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("01/02/2002", "dd/MM/yyyy", CultureInfo.InvariantCulture),
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
@@ -167,13 +170,16 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
     public async Task OnGetAsync_RedirectToDashboardWhenUpdated()
     {
         // arrange
+        var _mockConfigSection = new Mock<IConfigurationSection>();
+        _mockConfigSection.Setup(x => x.Value).Returns("01/02/2023");
+        _mockConfig.Setup(x => x.GetSection("UpdatedTermsAndConditionsDate")).Returns(_mockConfigSection.Object);
         var orgId = Guid.NewGuid();
         var tradePartyId = Guid.NewGuid();
         TradePartyDto tradeParty = new()
         {
             Id = tradePartyId,
             PartyName = "Test",
-            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2032", "dd/mm/yyyy", CultureInfo.InvariantCulture),
+            TermsAndConditionsSignedDate = DateTime.ParseExact("01/01/2032", "dd/MM/yyyy", CultureInfo.InvariantCulture),
         };
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);

@@ -44,11 +44,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             var updatedDate = _config.GetValue<string>("UpdatedTermsAndConditionsDate");
-            if ((updatedDate == null) || (dto!.TermsAndConditionsSignedDate >= DateTime.ParseExact(updatedDate, "dd/mm/yyyy", CultureInfo.InvariantCulture)))
+            if ((updatedDate == null) || (dto!.TermsAndConditionsSignedDate >= DateTime.ParseExact(updatedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture)))
             {
                 return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = OrgId });
             }
-            else UpdatedTermsAndConditionsDate = DateTime.ParseExact(updatedDate, "dd/mm/yyyy", CultureInfo.InvariantCulture).ToString("d MMMM yyyy");
+            else UpdatedTermsAndConditionsDate = DateTime.ParseExact(updatedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("d MMMM yyyy");
 
             if (!_traderService.ValidateOrgId(User.Claims, OrgId))
             {
