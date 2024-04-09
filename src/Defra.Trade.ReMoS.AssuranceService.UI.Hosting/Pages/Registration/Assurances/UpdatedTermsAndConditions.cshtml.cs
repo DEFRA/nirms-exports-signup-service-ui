@@ -55,11 +55,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 return RedirectToPage("/Errors/AuthorizationError");
             }
 
-            if (dto != null)
-            {
-                AuthorisedSignatoryName = dto.AuthorisedSignatory?.Name ?? string.Empty;
-                PracticeName = dto.PracticeName ?? string.Empty;
-            }
+            AuthorisedSignatoryName = dto.AuthorisedSignatory?.Name ?? string.Empty;
+            PracticeName = dto.PracticeName ?? string.Empty;
 
             return Page();
         }

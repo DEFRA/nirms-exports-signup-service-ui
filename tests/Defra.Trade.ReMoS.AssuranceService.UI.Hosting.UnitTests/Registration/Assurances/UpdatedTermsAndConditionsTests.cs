@@ -155,7 +155,9 @@ public class UpdatedTermsAndConditionsTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradeParty);
         var _mockConfigSection = new Mock<IConfigurationSection>();
+#pragma warning disable CS8603 // Possible null reference return.
         _mockConfigSection.Setup(x => x.Value).Returns(() => null);
+#pragma warning restore CS8603 // Possible null reference return.
         _mockConfig.Setup(x => x.GetSection("UpdatedTermsAndConditionsDate")).Returns(_mockConfigSection.Object);
 
         // act
