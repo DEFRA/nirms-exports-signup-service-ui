@@ -101,7 +101,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
         return new TradePartyDto()
         {
             Id = TradePartyId,
-            ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
+            ApprovalStatus = TradePartyApprovalStatus.Approved,
             SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
             Contact = new TradeContactDto()
             {

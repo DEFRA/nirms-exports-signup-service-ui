@@ -99,7 +99,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
             return new TradePartyDto()
             {
                 Id = TradePartyId,
-                ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
+                ApprovalStatus = TradePartyApprovalStatus.Approved,
                 SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
                 TermsAndConditionsSignedDate = DateTime.Now,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()

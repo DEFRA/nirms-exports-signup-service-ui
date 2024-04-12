@@ -711,7 +711,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 TradeCountry = "England"
             };
 
-            TradeContactDto TradeContactDTO = new TradeContactDto();
+            TradeContactDto TradeContactDTO = new();
 
             var AuthorisedSignatoryDTO = new AuthorisedSignatoryDto
             {

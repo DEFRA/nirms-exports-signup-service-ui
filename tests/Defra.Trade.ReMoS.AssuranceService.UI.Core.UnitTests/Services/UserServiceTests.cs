@@ -90,7 +90,7 @@ public class UserServiceTests
         // Arrange
         var user = GenerateUser();
         var orgId = Guid.Parse("05f7570d-ebb9-e911-a970-000d3a29be4a");
-        var expectedOrg = new Organisation { OrganisationId = orgId, PracticeName = "Kaka", Enrolled = false, UserRole = string.Empty, ApprovalStatus = Enums.TradePartyApprovalStatus.NotSignedUp };
+        var expectedOrg = new Organisation { OrganisationId = orgId, PracticeName = "Kaka", Enrolled = false, UserRole = string.Empty, ApprovalStatus = TradePartyApprovalStatus.NotSignedUp };
         _userService = new UserService();
 
         // Act
