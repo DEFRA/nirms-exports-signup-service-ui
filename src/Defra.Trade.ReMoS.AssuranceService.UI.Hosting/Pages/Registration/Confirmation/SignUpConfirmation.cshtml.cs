@@ -1,11 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.RegularExpressions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confirmation;

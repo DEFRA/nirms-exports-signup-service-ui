@@ -1,16 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
+﻿using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
-using Defra.Trade.Address.V1.ApiClient.Api;
-using Defra.Trade.Address.V1.ApiClient.Model;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
-using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 

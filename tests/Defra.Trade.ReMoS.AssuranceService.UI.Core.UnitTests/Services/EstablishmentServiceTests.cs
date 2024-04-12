@@ -1,5 +1,4 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Moq;
@@ -275,7 +274,7 @@ public class EstablishmentServiceTests
                 County = "Berkshire",
                 PostCode = "TES1"
             },
-            ApprovalStatus = Enums.LogisticsLocationApprovalStatus.Draft,
+            ApprovalStatus = LogisticsLocationApprovalStatus.Draft,
             
         };
         var establishmentDto = new LogisticsLocationDto()
@@ -301,9 +300,9 @@ public class EstablishmentServiceTests
         result.GetType().Should().Be(typeof(Guid));
     }
 
-    [TestCase(Enums.LogisticsLocationApprovalStatus.Draft, true)]
-    [TestCase(Enums.LogisticsLocationApprovalStatus.Approved, false)]
-    public async Task IsEstablishmentDraft_Returns(Enums.LogisticsLocationApprovalStatus approvalStatus, bool isEstablishment)
+    [TestCase(LogisticsLocationApprovalStatus.Draft, true)]
+    [TestCase(LogisticsLocationApprovalStatus.Approved, false)]
+    public async Task IsEstablishmentDraft_Returns(LogisticsLocationApprovalStatus approvalStatus, bool isEstablishment)
     {
         // arrange
         _establishmentService = new EstablishmentService(_mockApiIntegration.Object);

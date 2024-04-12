@@ -1,13 +1,7 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services;
 

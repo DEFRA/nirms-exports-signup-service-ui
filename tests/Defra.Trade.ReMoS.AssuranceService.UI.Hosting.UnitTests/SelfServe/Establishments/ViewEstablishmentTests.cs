@@ -1,14 +1,8 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Microsoft.FeatureManagement;
 using Moq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Establishments;

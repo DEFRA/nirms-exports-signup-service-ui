@@ -1,13 +1,5 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement.Mvc;
-using System.ComponentModel.DataAnnotations;
 using SignUp = Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;

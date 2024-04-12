@@ -3,8 +3,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
 using Defra.Trade.Address.V1.ApiClient.Model;
 

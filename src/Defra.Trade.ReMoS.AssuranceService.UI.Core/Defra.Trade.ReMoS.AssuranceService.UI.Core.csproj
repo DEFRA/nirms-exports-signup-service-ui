@@ -20,6 +20,7 @@
     <PackageReference Include="Defra.Trade.Address.V1.ApiClient" Version="1.0.3" />
     <PackageReference Include="Defra.Trade.Common.Api" Version="2.0.5" />
     <PackageReference Include="Defra.Trade.Common.Security" Version="2.0.5" />
+    <PackageReference Include="Defra.Trade.ReMoS.AssuranceService.Shared" Version="2.2.20-pre-a" />
     <PackageReference Include="GraphQL.Client" Version="6.0.0" />
     <PackageReference Include="GraphQL.Client.Abstractions" Version="6.0.0" />
     <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="6.0.0" />

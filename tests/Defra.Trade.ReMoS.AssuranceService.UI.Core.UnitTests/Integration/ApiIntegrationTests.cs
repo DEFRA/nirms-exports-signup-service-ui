@@ -1,10 +1,8 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,15 +11,8 @@ using Moq.Protected;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Integration;

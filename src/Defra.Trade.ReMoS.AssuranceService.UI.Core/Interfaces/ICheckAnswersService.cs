@@ -1,6 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-
-namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
+﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
 {
     public interface ICheckAnswersService
     {

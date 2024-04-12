@@ -1,17 +1,14 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
+﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.Common.Security.Authentication.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
-using static System.Net.Mime.MediaTypeNames;
-using Defra.Trade.Common.Security.Authentication.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Microsoft.AspNetCore.Mvc;
-using Defra.Trade.Address.V1.ApiClient.Model;
 using System.Text.Json.Serialization;
-using static Microsoft.Azure.KeyVault.WebKey.JsonWebKeyVerifier;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 

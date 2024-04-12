@@ -1,11 +1,7 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #pragma warning disable CS1998
 

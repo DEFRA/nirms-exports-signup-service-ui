@@ -1,5 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.FeatureManagement.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 

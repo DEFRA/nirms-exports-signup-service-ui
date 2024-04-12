@@ -1,8 +1,6 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;

@@ -1,5 +1,4 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
