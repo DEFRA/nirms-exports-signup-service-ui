@@ -68,6 +68,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
             .Where(x => x.NI_GBFlag == NI_GBFlag)
+            .Where(x => x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected)
             .OrderBy(x => x.CreatedDate)
             .ToList();
 
