@@ -1,11 +1,8 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -34,7 +31,7 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
+            .ReturnsAsync(new LogisticsLocationDto());
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());

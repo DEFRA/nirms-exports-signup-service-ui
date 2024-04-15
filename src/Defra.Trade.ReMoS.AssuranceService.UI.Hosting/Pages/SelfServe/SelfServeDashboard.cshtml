@@ -228,7 +228,7 @@
                                 </td>
                                 <td class="govuk-table__cell" data-sort-value="@location.Address!.PostCode">@location.Address!.PostCode</td>
                                 <td class="govuk-table__cell">
-                                    @if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
+                                    @if (location.ApprovalStatus != LogisticsLocationApprovalStatus.Draft)
                                     {
                                         @location.RemosEstablishmentSchemeNumber
                                     }

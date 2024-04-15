@@ -1,14 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
 

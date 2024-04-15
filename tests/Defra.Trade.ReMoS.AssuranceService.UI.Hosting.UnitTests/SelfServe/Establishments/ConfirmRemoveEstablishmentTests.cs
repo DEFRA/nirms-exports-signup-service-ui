@@ -1,5 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
@@ -52,7 +51,7 @@ public class ConfirmRemoveEstablishmentTests : PageModelTestsBase
                 PostCode = "postcode",
                 CityName = "city"
             },
-            ApprovalStatus = Core.Enums.LogisticsLocationApprovalStatus.Approved
+            ApprovalStatus = LogisticsLocationApprovalStatus.Approved
         };
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(locationId)).ReturnsAsync(logisticsLocation);
 
@@ -72,7 +71,7 @@ public class ConfirmRemoveEstablishmentTests : PageModelTestsBase
     public async Task OnPostSubmitAsync_RedirectToEstablishmentRemovedPage()
     {
         // arrange
-        var location = new LogisticsLocationDto() { Id = Guid.NewGuid(), ApprovalStatus = Core.Enums.LogisticsLocationApprovalStatus.Approved };
+        var location = new LogisticsLocationDto() { Id = Guid.NewGuid(), ApprovalStatus = LogisticsLocationApprovalStatus.Approved };
         
         _mockEstablishmentService
             .Setup(action => action.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
@@ -111,7 +110,7 @@ public class ConfirmRemoveEstablishmentTests : PageModelTestsBase
                 PostCode = "postcode",
                 CityName = "city"
             },
-            ApprovalStatus = Core.Enums.LogisticsLocationApprovalStatus.Removed
+            ApprovalStatus = LogisticsLocationApprovalStatus.Removed
         };
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(locationId)).ReturnsAsync(logisticsLocation);
 

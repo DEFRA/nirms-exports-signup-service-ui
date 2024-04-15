@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 #pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 

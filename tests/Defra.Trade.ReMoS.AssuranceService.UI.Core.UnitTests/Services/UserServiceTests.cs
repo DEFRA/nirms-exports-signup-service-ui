@@ -1,13 +1,7 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services;
 
@@ -96,7 +90,7 @@ public class UserServiceTests
         // Arrange
         var user = GenerateUser();
         var orgId = Guid.Parse("05f7570d-ebb9-e911-a970-000d3a29be4a");
-        var expectedOrg = new Organisation { OrganisationId = orgId, PracticeName = "Kaka", Enrolled = false, UserRole = string.Empty, ApprovalStatus = Enums.TradePartyApprovalStatus.NotSignedUp };
+        var expectedOrg = new Organisation { OrganisationId = orgId, PracticeName = "Kaka", Enrolled = false, UserRole = string.Empty, ApprovalStatus = TradePartyApprovalStatus.NotSignedUp };
         _userService = new UserService();
 
         // Act

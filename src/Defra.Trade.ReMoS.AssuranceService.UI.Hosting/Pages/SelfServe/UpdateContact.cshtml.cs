@@ -1,5 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -103,7 +101,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
         return new TradePartyDto()
         {
             Id = TradePartyId,
-            ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
+            ApprovalStatus = TradePartyApprovalStatus.Approved,
             SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
             Contact = new TradeContactDto()
             {

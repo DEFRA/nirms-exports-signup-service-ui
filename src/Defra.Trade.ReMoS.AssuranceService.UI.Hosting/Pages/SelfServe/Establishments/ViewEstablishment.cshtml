@@ -54,14 +54,14 @@
                     <div class="govuk-tag govuk-tag--@GetStatusColour(Model.LogisticsLocation.ApprovalStatus.GetDescription()) govuk-!-margin-bottom-2">
                         @Model.LogisticsLocation.ApprovalStatus.GetDescription()
                     </div>
-                    @if (Model.LogisticsLocation.ApprovalStatus == Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Removed)
+                    @if (Model.LogisticsLocation.ApprovalStatus == LogisticsLocationApprovalStatus.Removed)
                     {
                         <p class="govuk-hint">This establishment cannot be added as a place of @Model.ContentText on a General Certificate.</p>
                     }
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
-                @if (Model.LogisticsLocation.ApprovalStatus == Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Removed)
+                @if (Model.LogisticsLocation.ApprovalStatus == LogisticsLocationApprovalStatus.Removed)
                 {
                     <dt class="govuk-summary-list__key">
                         Removed
@@ -114,7 +114,7 @@
             </div>
         </dl>
 
-        @if (Model.LogisticsLocation.ApprovalStatus == Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Approved)
+        @if (Model.LogisticsLocation.ApprovalStatus == LogisticsLocationApprovalStatus.Approved)
         {
             <div class="govuk-button-group govuk-!-margin-bottom-5">
                 <a class="govuk-button govuk-button--warning" data-module="govuk-button"
