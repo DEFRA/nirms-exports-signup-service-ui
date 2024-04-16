@@ -7,7 +7,7 @@
 
 @if (showBanner)
 {
-    <div class="govuk-cookie-banner " data-nosnippet="" role="region" aria-label="Cookies on NI Retail Movement Scheme">
+    <div class="govuk-cookie-banner" data-nosnippet="" role="region" aria-label="Cookies on NI Retail Movement Scheme" id="cookie_banner">
         <div id="cookieConsent" class="govuk-cookie-banner__message govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
@@ -44,6 +44,7 @@
                         var buttonRef = document.getElementById("hide-message");
                         buttonRef.addEventListener("click", function (event) {
                             document.getElementById("hide-message").style.display = 'none';
+                            document.getElementById("cookie_banner").style.display = 'none';
                         }, false)
                     })();
                 </script>
