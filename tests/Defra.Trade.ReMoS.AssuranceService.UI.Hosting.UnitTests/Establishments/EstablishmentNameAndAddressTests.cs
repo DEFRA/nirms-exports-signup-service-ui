@@ -47,7 +47,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitValidAddress()
+        public void OnPostSubmit_SubmitValidAddress()
         {
             //Arrange
             _systemUnderTest!.EstablishmentName = "Test name";
@@ -58,7 +58,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.PostCode = "EC1N 2PB";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -66,7 +66,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitValidAddress_DuplicateSpotted()
+        public void OnPostSubmit_SubmitValidAddress_DuplicateSpotted()
         {
             //Arrange
             var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
@@ -83,7 +83,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.PostCode = "TES1";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -92,7 +92,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitValidAddress_DuplicateSpotted_FlagsChecked()
+        public void OnPostSubmit_SubmitValidAddress_DuplicateSpotted_FlagsChecked()
         {
             //Arrange
 
@@ -113,7 +113,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -122,7 +122,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidEstablishmentName_LengthCheckFailed()
+        public void OnPostSubmit_SubmitInvalidEstablishmentName_LengthCheckFailed()
         {
             //Arrange
 
@@ -143,7 +143,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             // Assert
@@ -151,7 +151,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidAddressLineOne_LengthCheckFailed()
+        public void OnPostSubmit_SubmitInvalidAddressLineOne_LengthCheckFailed()
         {
             //Arrange
 
@@ -172,7 +172,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             // Assert
@@ -180,7 +180,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidAddressLineTwo_LengthCheckFailed()
+        public void OnPostSubmit_SubmitInvalidAddressLineTwo_LengthCheckFailed()
         {
             //Arrange
 
@@ -201,7 +201,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             // Assert
@@ -209,7 +209,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidCityName_LengthCheckFailed()
+        public void OnPostSubmit_SubmitInvalidCityName_LengthCheckFailed()
         {
             //Arrange
 
@@ -230,7 +230,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             // Assert
@@ -238,7 +238,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidPostCode_LengthCheckFailed()
+        public void OnPostSubmit_SubmitInvalidPostCode_LengthCheckFailed()
         {
             //Arrange
 
@@ -259,7 +259,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             // Assert
@@ -267,7 +267,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidCounty_LengthCheckFailed()
+        public void OnPostSubmit_SubmitInvalidCounty_LengthCheckFailed()
         {
             //Arrange
 
@@ -288,7 +288,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             // Assert
@@ -297,7 +297,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidCounty_PostcodeNICheckFailed()
+        public void OnPostSubmit_SubmitInvalidCounty_PostcodeNICheckFailed()
         {
             //Arrange
 
@@ -318,7 +318,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "NI";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -327,7 +327,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInvalidCounty_PostcodeGBCheckFailed()
+        public void OnPostSubmit_SubmitInvalidCounty_PostcodeGBCheckFailed()
         {
             //Arrange
 
@@ -348,7 +348,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.NI_GBFlag = "GB";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
 
             //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -357,7 +357,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInValidRadio()
+        public void OnPostSubmit_SubmitInValidRadio()
         {
             //Arrange
             _systemUnderTest!.EstablishmentName = "";
@@ -366,7 +366,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest!.PostCode = "";
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert
@@ -374,7 +374,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         }
 
         [Test]
-        public async Task OnPostSubmit_SubmitInValidRadio_GetsTradePartyData()
+        public void OnPostSubmit_SubmitInValidRadio_GetsTradePartyData()
         {
             //Arrange
             _systemUnderTest!.EstablishmentName = "";
@@ -385,7 +385,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
             //Act
-            await _systemUnderTest.OnPostSubmitAsync();
+            _systemUnderTest.OnPostSubmit();
             var validation = ValidateModel(_systemUnderTest);
 
             //Assert

@@ -100,8 +100,19 @@
                 </fieldset>
                 <br>
             </div>
-            <button class="govuk-button" asp-page-handler="submit">Save and continue</button>
+            <button type="submit" class="govuk-button" asp-page-handler="submit">Save and continue</button>
 
         </form>
     </div>
 </div>
+
+<script type="text/javascript">
+    window.onbeforeunload = function () {
+        var inputs = document.getElementsByTagName("INPUT");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == "button" || inputs[i].type == "submit") {
+                inputs[i].disabled = true;
+            }
+        }
+    };
+</script>

@@ -108,21 +108,21 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         return Page();
     }
 
-    public async Task<IActionResult> OnPostSubmitAsync()
+    public IActionResult OnPostSubmit()
     {
-        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmitAsync));
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmit));
 
         IsPostCodeValid();
 
         if (!IsInputValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
+            return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
 
         Guid? establishmentId;
         try
         {
-            establishmentId = await _establishmentService.SaveEstablishmentDetails(
+            establishmentId = Task.Run(() => _establishmentService.SaveEstablishmentDetails(
                 EstablishmentId,
                 TradePartyId,
                 new LogisticsLocationDto
@@ -132,14 +132,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
                     Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode },
                     LastModifiedDate = DateTime.UtcNow
                 },
-                NI_GBFlag??string.Empty,
+                NI_GBFlag ?? string.Empty,
                 Uprn
-            );
+            )).GetAwaiter().GetResult();
         }
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
+            return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
 
         if (GetType().FullName!.Contains("SelfServe"))

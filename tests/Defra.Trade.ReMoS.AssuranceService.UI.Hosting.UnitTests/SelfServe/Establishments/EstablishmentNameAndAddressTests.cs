@@ -46,7 +46,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitValidAddress_DuplicateSpotted()
+    public void OnPostSubmit_SubmitValidAddress_DuplicateSpotted()
     {
         //Arrange
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
@@ -65,7 +65,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.PostCode = "TES1";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -74,7 +74,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitValidAddress_DuplicateSpotted_FlagsChecked()
+    public void OnPostSubmit_SubmitValidAddress_DuplicateSpotted_FlagsChecked()
     {
         //Arrange
 
@@ -95,7 +95,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -104,7 +104,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidEstablishmentName_LengthCheckFailed()
+    public void OnPostSubmit_SubmitInvalidEstablishmentName_LengthCheckFailed()
     {
         //Arrange
 
@@ -125,7 +125,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -133,7 +133,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidAddressLineOne_LengthCheckFailed()
+    public void OnPostSubmit_SubmitInvalidAddressLineOne_LengthCheckFailed()
     {
         //Arrange
 
@@ -154,7 +154,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -162,7 +162,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidAddressLineTwo_LengthCheckFailed()
+    public void OnPostSubmit_SubmitInvalidAddressLineTwo_LengthCheckFailed()
     {
         //Arrange
 
@@ -183,7 +183,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -191,7 +191,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidCityName_LengthCheckFailed()
+    public void OnPostSubmit_SubmitInvalidCityName_LengthCheckFailed()
     {
         //Arrange
 
@@ -212,7 +212,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -220,7 +220,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidPostCode_LengthCheckFailed()
+    public void OnPostSubmit_SubmitInvalidPostCode_LengthCheckFailed()
     {
         //Arrange
 
@@ -241,7 +241,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -249,7 +249,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidCounty_LengthCheckFailed()
+    public void OnPostSubmit_SubmitInvalidCounty_LengthCheckFailed()
     {
         //Arrange
 
@@ -270,7 +270,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -279,7 +279,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidCounty_PostcodeNICheckFailed()
+    public void OnPostSubmit_SubmitInvalidCounty_PostcodeNICheckFailed()
     {
         //Arrange
 
@@ -300,7 +300,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -309,7 +309,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInvalidCounty_PostcodeGBCheckFailed()
+    public void OnPostSubmit_SubmitInvalidCounty_PostcodeGBCheckFailed()
     {
         //Arrange
 
@@ -330,7 +330,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "GB";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -339,7 +339,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInValidRadio()
+    public void OnPostSubmit_SubmitInValidRadio()
     {
         //Arrange
         _systemUnderTest!.EstablishmentName = "";
@@ -348,7 +348,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.PostCode = "";
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -356,7 +356,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitInValidRadio_GetsTradePartyData()
+    public void OnPostSubmit_SubmitInValidRadio_GetsTradePartyData()
     {
         //Arrange
         _systemUnderTest!.EstablishmentName = "";
@@ -367,7 +367,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
         //Act
-        await _systemUnderTest.OnPostSubmitAsync();
+       _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -481,7 +481,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
     }
 
     [Test]
-    public async Task OnPostSubmit_SubmitValidValues_RedirectToEmailPage()
+    public void OnPostSubmit_SubmitValidValues_RedirectToEmailPage()
     {
         // arrange
         var expected = Guid.NewGuid();
@@ -501,7 +501,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
             .ReturnsAsync(It.IsAny<Guid?>());
 
         // act
-        var result = await _systemUnderTest.OnPostSubmitAsync();
+        var result =_systemUnderTest.OnPostSubmit();
 
         // assert
         var redirectResult = result as RedirectToPageResult;
