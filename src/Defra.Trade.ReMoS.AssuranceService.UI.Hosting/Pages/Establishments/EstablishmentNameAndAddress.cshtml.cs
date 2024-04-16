@@ -112,7 +112,9 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmitAsync));
 
-        if (!IsInputValid() || !IsPostCodeValid())
+        IsPostCodeValid();
+
+        if (!IsInputValid())
         {
             return await OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty);
         }
@@ -181,18 +183,13 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         return true;
     }
 
-    private bool IsPostCodeValid()
+    private void IsPostCodeValid()
     {
         if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 
         if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
-
-        if (ModelState.ErrorCount > 0)
-            return false;
-
-        return true;
     }
 
     private string GenerateDuplicateError()
