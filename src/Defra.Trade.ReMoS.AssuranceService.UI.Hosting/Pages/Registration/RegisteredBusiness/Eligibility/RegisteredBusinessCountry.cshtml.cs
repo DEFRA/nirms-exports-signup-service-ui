@@ -1,11 +1,7 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting;
 public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCountryModel>
@@ -37,7 +33,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("Country OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessCountryModel), nameof(OnGetAsync));
         OrgId = Id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         PracticeName = tradeParty?.PracticeName ?? string.Empty;
@@ -69,7 +65,7 @@ public class RegisteredBusinessCountryModel : BasePageModel<RegisteredBusinessCo
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Country OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessCountryModel), nameof(OnPostSubmitAsync));
 
         if (!CountrySaved)
         {

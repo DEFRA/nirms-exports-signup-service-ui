@@ -1,5 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -133,7 +132,7 @@ public class PostcodeSearchTests : PageModelTestsBase
         //Arrange
         var expectedHint = "If your place of destination belongs to a different business";
         var expectedHeading = "Add a place of destination";
-        var expectedContentText = "where consignments will go after the port of entry under the scheme";
+        var expectedContentText = "These are the establishments that consignments will go to in Northern Ireland after the port of entry under the scheme.";
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), "NI");
 

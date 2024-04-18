@@ -1,11 +1,7 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Management.AppService.Fluent.Models;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances
 {
@@ -31,11 +27,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             ITraderService traderService, 
             IUserService userService, 
             IEstablishmentService establishmentService, 
-            ICheckAnswersService checkAnswersService) : base(traderService, establishmentService, checkAnswersService, userService)
+            ICheckAnswersService checkAnswersService,
+            ILogger<TermsAndConditions> logger) : base(traderService, establishmentService, checkAnswersService, userService, logger)
         {}
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(TermsAndConditions), nameof(OnGetAsync));
+
             OrgId = id;
             TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
@@ -67,6 +66,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(TermsAndConditions), nameof(OnPostSubmitAsync));
+
             TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             if (!TandCs)

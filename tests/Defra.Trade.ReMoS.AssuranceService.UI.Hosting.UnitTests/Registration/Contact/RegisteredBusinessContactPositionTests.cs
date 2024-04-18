@@ -1,9 +1,7 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Moq;
 using Microsoft.Extensions.Logging;
-using FluentAssertions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 #pragma warning disable CS8602
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration;

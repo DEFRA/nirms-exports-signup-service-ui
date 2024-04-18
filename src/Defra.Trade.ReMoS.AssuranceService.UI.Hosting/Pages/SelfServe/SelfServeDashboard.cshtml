@@ -45,7 +45,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
-                <span class="govuk-caption-l">Northern Ireland Retail Movement Scheme</span>
+                <span class="govuk-caption-l">NI Retail Movement Scheme</span>
                 @Model.BusinessName
             </h1>
         </div>
@@ -228,7 +228,7 @@
                                 </td>
                                 <td class="govuk-table__cell" data-sort-value="@location.Address!.PostCode">@location.Address!.PostCode</td>
                                 <td class="govuk-table__cell">
-                                    @if (location.ApprovalStatus != Trade.ReMoS.AssuranceService.UI.Core.Enums.LogisticsLocationApprovalStatus.Draft)
+                                    @if (location.ApprovalStatus != LogisticsLocationApprovalStatus.Draft)
                                     {
                                         @location.RemosEstablishmentSchemeNumber
                                     }

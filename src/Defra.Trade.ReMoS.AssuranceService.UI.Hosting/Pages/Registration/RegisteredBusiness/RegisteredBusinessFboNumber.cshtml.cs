@@ -1,16 +1,9 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
@@ -49,7 +42,8 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("FBO Number OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessFboNumberModel), nameof(OnGetAsync));
+
         OrgId = Id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -70,7 +64,8 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("FBO OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessFboNumberModel), nameof(OnPostSubmitAsync));
+
         ValidateFboPhr();
 
         if (!ModelState.IsValid && OptionSelected != "none")
@@ -97,7 +92,8 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("FBO OnPostSave");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessFboNumberModel), nameof(OnPostSaveAsync));
+
         ValidateFboPhr();
 
         if (!ModelState.IsValid)

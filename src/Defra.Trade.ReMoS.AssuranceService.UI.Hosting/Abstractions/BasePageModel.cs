@@ -1,9 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.FeatureManagement;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 

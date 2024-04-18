@@ -1,32 +1,25 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.CheckYourAnswers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Assurances;
 
-public class SPSAssuranceCommitmentTests : PageModelTestsBase
+public class TermsAndConditionsTests : PageModelTestsBase
 {
     private TermsAndConditions? _systemUnderTest;
     protected Mock<ITraderService> _mockTraderService = new();
     protected Mock<IUserService> _mockUserService = new();
     protected Mock<IEstablishmentService> _mockEstablishmentService = new();
     protected Mock<ICheckAnswersService> _mockCheckAnswersService = new();
+    protected Mock<ILogger<TermsAndConditions>> _mockLogger = new();
 
     [SetUp]
     public void TestCaseSetup()
     {
-        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object);
+        _systemUnderTest = new TermsAndConditions(_mockTraderService.Object, _mockUserService.Object, _mockEstablishmentService.Object, _mockCheckAnswersService.Object, _mockLogger.Object);
         _systemUnderTest.PageContext = PageModelMockingUtils.MockPageContext();
         _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(new TradePartyDto() { Id = Guid.NewGuid() });
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(true);

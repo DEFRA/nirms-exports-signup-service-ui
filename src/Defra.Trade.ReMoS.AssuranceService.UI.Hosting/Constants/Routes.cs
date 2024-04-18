@@ -55,6 +55,7 @@ public static class Routes
     public const string SelfServeConfirmRemoveEstablishment = "/self-serve-confirm-remove-establishment";
     public const string SelfServeEstablishmentRemoved = "/self-serve-establishment-removed";
     public const string EstablishmentError = "/establishment-error";
+    public const string UpdatedTermsAndConditions = "/updated-terms-conditions";
 
     public static readonly IReadOnlyCollection<(string page, string route)> RouteList = new List<(string page, string route)>
     {
@@ -111,6 +112,7 @@ public static class Routes
         (Pages.Path.SelfServeConfirmRemoveEstablishmentPath, SelfServeConfirmRemoveEstablishment),
         (Pages.Path.SelfServeEstablishmentRemovedPath, SelfServeEstablishmentRemoved),
         (Pages.Path.EstablishmentErrorPath, EstablishmentError),
+        (Pages.Path.UpdatedTermsAndConditionsPath, UpdatedTermsAndConditions),
     };
 
     public static class Pages
@@ -170,6 +172,7 @@ public static class Routes
             public const string SelfServeConfirmRemoveEstablishmentName = "ConfirmRemoveEstablishment";
             public const string SelfServeEstablishmentRemovedName = "EstablishmentRemoved";
             public const string EstablishmentErrorName = "EstablishmentError";
+            public const string UpdatedTermsAndConditionsName = "UpdatedTermsAndConditions";
 
         }
 
@@ -228,6 +231,7 @@ public static class Routes
             public const string SelfServeConfirmRemoveEstablishmentPath = $"/SelfServe/Establishments/{Names.SelfServeConfirmRemoveEstablishmentName}";
             public const string SelfServeEstablishmentRemovedPath = $"/SelfServe/Establishments/{Names.SelfServeEstablishmentRemovedName}";
             public const string EstablishmentErrorPath = $"/Errors/{Names.EstablishmentErrorName}";
+            public const string UpdatedTermsAndConditionsPath = $"/Registration/Assurances/{Names.UpdatedTermsAndConditionsName}";
 
         }
     }

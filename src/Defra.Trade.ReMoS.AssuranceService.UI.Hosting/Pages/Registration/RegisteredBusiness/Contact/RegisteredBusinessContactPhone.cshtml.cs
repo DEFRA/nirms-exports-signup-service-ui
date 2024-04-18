@@ -1,11 +1,8 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.Contact;
 
@@ -39,6 +36,8 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactPhoneModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -60,7 +59,7 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("PhoneNumber OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactPhoneModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -75,7 +74,7 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("PhoneNumber OnPostSave");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessContactPhoneModel), nameof(OnPostSaveAsync));
 
         if (!ModelState.IsValid)
         {

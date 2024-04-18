@@ -1,10 +1,4 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 

@@ -1,19 +1,11 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Management.EventHub.Fluent.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList;
 

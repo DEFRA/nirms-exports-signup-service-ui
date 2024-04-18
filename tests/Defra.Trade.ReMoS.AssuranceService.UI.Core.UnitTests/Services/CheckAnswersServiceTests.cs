@@ -1,5 +1,4 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Microsoft.AspNetCore.Http;
@@ -712,7 +711,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 TradeCountry = "England"
             };
 
-            TradeContactDto TradeContactDTO = new TradeContactDto();
+            TradeContactDto TradeContactDTO = new();
 
             var AuthorisedSignatoryDTO = new AuthorisedSignatoryDto
             {

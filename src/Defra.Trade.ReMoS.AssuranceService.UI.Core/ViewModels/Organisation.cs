@@ -1,7 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography.Xml;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 

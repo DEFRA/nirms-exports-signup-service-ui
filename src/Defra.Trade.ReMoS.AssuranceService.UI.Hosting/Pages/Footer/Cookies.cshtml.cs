@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Microsoft.Extensions.Options;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Microsoft.AspNetCore.Http;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Footer;

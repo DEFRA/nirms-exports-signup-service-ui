@@ -1,7 +1,6 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness;
 
@@ -21,7 +20,8 @@ public class SelectedBusinessModel : BasePageModel<SelectedBusinessModel>
     {}
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        _logger.LogInformation("SelectedBusiness OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(SelectedBusinessModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         SelectedBusinessName = tradeParty?.PracticeName ?? string.Empty;

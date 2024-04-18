@@ -1,10 +1,8 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
@@ -48,7 +46,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
         { }
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {
-            _logger.LogInformation("Self Serve Update Auth rep OnGet");
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateAuthRepModel), nameof(OnGetAsync));
+
             OrgId = Id;
             TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
@@ -63,7 +62,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
 
         public async Task<IActionResult> OnPostSubmitAsync()
         {
-            _logger.LogInformation("SelfServe Update Auth Rep OnPostSubmit");
+            _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateAuthRepModel), nameof(OnPostSubmitAsync));
 
             if (!TandCs)
             {
@@ -100,8 +99,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
             return new TradePartyDto()
             {
                 Id = TradePartyId,
-                ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
+                ApprovalStatus = TradePartyApprovalStatus.Approved,
                 SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
+                TermsAndConditionsSignedDate = DateTime.Now,
                 AuthorisedSignatory = new AuthorisedSignatoryDto()
                 {
                     Name = Name,

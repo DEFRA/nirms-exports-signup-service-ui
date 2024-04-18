@@ -1,9 +1,6 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
@@ -26,11 +23,15 @@ public class PostcodeNoResultModel : BasePageModel<PostcodeNoResultModel>
     public string? BusinessName { get; set; }
     #endregion
 
-    public PostcodeNoResultModel(ITraderService traderService) : base(traderService)
+    public PostcodeNoResultModel(
+        ITraderService traderService,
+        ILogger<PostcodeNoResultModel> logger) : base(traderService, logger)
     { }
 
     public async Task<IActionResult> OnGet(Guid id, string NI_GBFlag, string postcode)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeNoResultModel), nameof(OnGet));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         Postcode = postcode;

@@ -1,14 +1,9 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Management.Compute.Fluent.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 
@@ -36,6 +31,8 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
     {}
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AuthorisedSignatoryNameModel), nameof(OnGetAsync));
+
         OrgId = id;
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
@@ -58,7 +55,7 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Signatory Name OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AuthorisedSignatoryNameModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -73,7 +70,7 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("Signatory Name OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AuthorisedSignatoryNameModel), nameof(OnPostSaveAsync));
 
         if (!ModelState.IsValid)
         {

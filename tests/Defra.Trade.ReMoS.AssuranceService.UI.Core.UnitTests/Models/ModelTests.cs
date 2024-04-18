@@ -1,5 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Models;
 

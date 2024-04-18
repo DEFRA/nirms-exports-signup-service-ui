@@ -1,5 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.FeatureManagement.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
@@ -33,8 +30,9 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     { }
 
     public async Task<IActionResult> OnGetAsync()
-    {        
-        _logger.LogInformation("Business list OnGet");
+    {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(BusinessListModel), nameof(OnGetAsync));
+
         await GetDefraOrgsForUserWithApprovalStatus();           
         return Page();
     }
@@ -42,13 +40,13 @@ public class BusinessListModel : BasePageModel<BusinessListModel>
     public IActionResult OnGetNavigateToBusinessDashboard(Guid orgId)
     {
         return RedirectToPage(
-            Routes.Pages.Path.SelfServeDashboardPath,
+            Routes.Pages.Path.UpdatedTermsAndConditionsPath,
             new { id = orgId });
     }
 
     public async Task<IActionResult> OnGetNavigateToSignup(Guid orgId)
     {
-        _logger.LogInformation("Business list OnGetNavigateToSignup");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(BusinessListModel), nameof(OnGetNavigateToSignup));
 
         var orgDetails = _userService.GetOrgDetailsById(User, orgId);
         if (orgDetails == null)

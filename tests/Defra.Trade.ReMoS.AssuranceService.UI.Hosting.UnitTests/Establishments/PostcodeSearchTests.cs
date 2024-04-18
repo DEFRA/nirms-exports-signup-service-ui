@@ -4,7 +4,6 @@ using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 {

@@ -1,14 +1,7 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Management.BatchAI.Fluent.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -37,7 +30,8 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Additional establishment manual address OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AdditionalEstablishmentAddressModel), nameof(OnGetAsync));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
 
@@ -76,7 +70,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Additional establishment manual address OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AdditionalEstablishmentAddressModel), nameof(OnPostSubmitAsync));
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
@@ -112,7 +106,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
     public async Task<IActionResult> OnPostSaveAsync()
     {
-        _logger.LogInformation("Additional establishment manual address OnPostSave");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AdditionalEstablishmentAddressModel), nameof(OnPostSaveAsync));
 
         if (String.IsNullOrWhiteSpace(AddAddressesComplete))
         {
@@ -133,6 +127,8 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
     public async Task<IActionResult> OnGetRemoveEstablishment(Guid orgId, Guid tradePartyId, Guid establishmentId, string NI_GBFlag = "GB")
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AdditionalEstablishmentAddressModel), nameof(OnGetRemoveEstablishment));
+
         var logisticsLocation = await _establishmentService.GetEstablishmentByIdAsync(establishmentId);
         logisticsLocation!.IsRemoved = true;
         await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
@@ -149,6 +145,8 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
     public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AdditionalEstablishmentAddressModel), nameof(OnGetChangeEstablishmentAddress));
+
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentNameAndAddressPath,
             new { id = orgId, establishmentId, NI_GBFlag });
@@ -156,6 +154,8 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
 
     public IActionResult OnGetChangeEmail(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(AdditionalEstablishmentAddressModel), nameof(OnGetChangeEmail));
+
         return RedirectToPage(
             Routes.Pages.Path.EstablishmentContactEmailPath,
             new { id = orgId, locationId = establishmentId, NI_GBFlag });

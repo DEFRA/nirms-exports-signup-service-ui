@@ -1,10 +1,7 @@
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
-using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.RegularExpressions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Confirmation;
@@ -23,11 +20,14 @@ public class SignUpConfirmationModel : BasePageModel<SignUpConfirmationModel>
     public SignUpConfirmationModel(
         ITraderService traderService, 
         ICheckAnswersService checkAnswersService, 
-        IConfiguration config) : base(traderService, checkAnswersService, config)
+        IConfiguration config,
+        ILogger<SignUpConfirmationModel> logger) : base(traderService, checkAnswersService, config, logger)
     {}
 
     public async Task<IActionResult> OnGet(Guid id)
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(SignUpConfirmationModel), nameof(OnGet));
+
         OrgId = id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
         StartNowPage = _config.GetValue<string>("ExternalLinks:StartNowPage");

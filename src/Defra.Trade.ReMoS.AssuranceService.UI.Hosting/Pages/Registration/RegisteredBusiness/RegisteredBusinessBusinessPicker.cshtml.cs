@@ -1,4 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
@@ -7,7 +6,6 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -36,7 +34,8 @@ public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBus
 
     public IActionResult OnGet()
     {
-        _logger.LogInformation("Business picker OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessBusinessPickerModel), nameof(OnGet));
+
         Businesses = _userService.GetDefraOrgsForUser(User);
 
         if (Businesses?.Count > 7)
@@ -49,7 +48,7 @@ public class RegisteredBusinessBusinessPickerModel : BasePageModel<RegisteredBus
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Business picker OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(RegisteredBusinessBusinessPickerModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {

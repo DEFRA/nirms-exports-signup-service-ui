@@ -1,5 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
@@ -56,7 +55,7 @@ public class BusinessListTests : PageModelTestsBase
     }
 
     [Test]
-    public void OnGetNavigateToBusinessDashboard_RedirectsToSelfServeDashboard()
+    public void OnGetNavigateToBusinessDashboard_RedirectsToUpdatedTermsAndConditions()
     {
         // Arrange
         var orgId = Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649");
@@ -71,7 +70,7 @@ public class BusinessListTests : PageModelTestsBase
             .Setup(x => x.GetDefraOrgsForUser(_systemUnderTest!.User))
             .Returns(userOrgs);
         var expected = new RedirectToPageResult(
-            Routes.Pages.Path.SelfServeDashboardPath,
+            Routes.Pages.Path.UpdatedTermsAndConditionsPath,
             new { id = tradePartyId });
 
         // Act

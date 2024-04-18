@@ -1,10 +1,7 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.FeatureManagement.Mvc;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe.Establishments;
@@ -33,7 +30,8 @@ public class EstablishmentSuccessfulModel : BasePageModel<EstablishmentSuccessfu
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentSuccessfulModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
 

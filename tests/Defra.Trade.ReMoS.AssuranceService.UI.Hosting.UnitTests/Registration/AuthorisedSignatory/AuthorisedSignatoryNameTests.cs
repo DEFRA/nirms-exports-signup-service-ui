@@ -1,15 +1,9 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.AuthorisedSignatory
 {
@@ -38,10 +32,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDto()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     Id = tradePartyId,
-                    AuthorisedSignatory = new Core.DTOs.AuthorisedSignatoryDto()
+                    AuthorisedSignatory = new AuthorisedSignatoryDto()
                     {
                         Id = Guid.NewGuid(),
                     }
@@ -64,7 +58,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDto()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });
@@ -87,7 +81,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Core.DTOs.TradePartyDto()
+                .ReturnsAsync(new TradePartyDto()
                 {
                     AuthorisedSignatory = new AuthorisedSignatoryDto { }
                 });

@@ -1,28 +1,9 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.TagHelpers;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
-using System.Runtime.Intrinsics.X86;
-using Microsoft.Azure.Management.ContainerInstance.Fluent.Models;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
 {

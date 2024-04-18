@@ -1,19 +1,9 @@
 using Defra.Trade.Address.V1.ApiClient.Model;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Azure.Management.AppService.Fluent.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -35,25 +25,26 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
     public string SelectedEstablishment { get; set; } = default!;
 
     public string? ContentHeading { get; set; } = string.Empty;
-    
+
     public string? ContentText { get; set; } = string.Empty;
-    
+
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
     [BindProperty]
     public bool IsSubmitDisabled { get; set; } = false;
     #endregion
-      
+
 
     public PostcodeResultModel(
         ILogger<PostcodeResultModel> logger,
         IEstablishmentService establishmentService,
         ITraderService traderService) : base(logger, traderService, establishmentService)
-    {}
+    { }
 
     public async Task<IActionResult> OnGetAsync(Guid id, string postcode, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Postcode result OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeResultModel), nameof(OnGetAsync));
+
         Postcode = postcode;
         OrgId = id;
 
@@ -66,7 +57,7 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
+        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -101,7 +92,10 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
         if (EstablishmentsList == null || EstablishmentsList.Count == 0)
         {
-            return RedirectToPage(Routes.Pages.Path.PostcodeNoResultPath, new { id = OrgId, NI_GBFlag, postcode = Postcode });
+            if (GetType().FullName!.Contains("SelfServe"))
+                return RedirectToPage(Routes.Pages.Path.SelfServeEstablishmentPostcodeNoResultPath, new { id = OrgId, NI_GBFlag, postcode = Postcode });
+            else
+                return RedirectToPage(Routes.Pages.Path.PostcodeNoResultPath, new { id = OrgId, NI_GBFlag, postcode = Postcode });
         }
 
         return Page();
@@ -109,17 +103,21 @@ public class PostcodeResultModel : BasePageModel<PostcodeResultModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("PostcodeResult OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeResultModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
             return await OnGetAsync(OrgId, Postcode!);
         }
 
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = OrgId, uprn = SelectedEstablishment, NI_GBFlag });
-        
+        if (GetType().FullName!.Contains("SelfServe"))
+            return RedirectToPage(Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
+                new { id = OrgId, uprn = SelectedEstablishment, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = OrgId, uprn = SelectedEstablishment, NI_GBFlag });
+
 
     }
 }

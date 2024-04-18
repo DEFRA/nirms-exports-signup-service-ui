@@ -1,5 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -56,7 +54,8 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("Self Serve Update Contact OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateContactModel), nameof(OnGetAsync));
+
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
 
@@ -71,7 +70,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("SelfServe Update Contact OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(UpdateContactModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -102,7 +101,7 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
         return new TradePartyDto()
         {
             Id = TradePartyId,
-            ApprovalStatus = Core.Enums.TradePartyApprovalStatus.Approved,
+            ApprovalStatus = TradePartyApprovalStatus.Approved,
             SignUpRequestSubmittedBy = _userService.GetUserContactId(User),
             Contact = new TradeContactDto()
             {

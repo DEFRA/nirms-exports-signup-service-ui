@@ -1,13 +1,9 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.Mvc;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
@@ -53,7 +49,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
     public async Task<IActionResult> OnGetAsync(Guid Id)
     {
-        _logger.LogInformation("OnGet Self serve dashboard");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
@@ -72,6 +68,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
         LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
             .Where(x => x.NI_GBFlag == NI_GBFlag)
+            .Where(x => x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected)
             .OrderBy(x => x.CreatedDate)
             .ToList();
 

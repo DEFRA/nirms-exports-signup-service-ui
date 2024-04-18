@@ -1,11 +1,8 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -34,7 +31,7 @@ public class ContactEmailTests : PageModelTestsBase
         //Arrange
         _mockEstablishmentService
             .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(new Core.DTOs.LogisticsLocationDto());
+            .ReturnsAsync(new LogisticsLocationDto());
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid());
@@ -62,14 +59,12 @@ public class ContactEmailTests : PageModelTestsBase
     {
         //Arrange
         var expectedHeading = "Add a place of destination";
-        var expectedContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
 
         //Act
         await _systemUnderTest!.OnGetAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), "NI");
 
         //Assert
         _systemUnderTest.ContentHeading.Should().Be(expectedHeading);
-        _systemUnderTest.ContentText.Should().Be(expectedContentText);
     }
 
     [Test]

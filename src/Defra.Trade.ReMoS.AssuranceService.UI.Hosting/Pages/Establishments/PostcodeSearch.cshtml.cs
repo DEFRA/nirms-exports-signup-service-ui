@@ -33,13 +33,15 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
     #endregion UI Models
 
+    public RedirectToPageResult? RedirectToPageResult { get; set; }
 
     public PostcodeSearchModel(ILogger<PostcodeSearchModel> logger, ITraderService traderService) : base(logger, traderService)
-    {}
+    { }
 
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
-        _logger.LogTrace("Establishment postcode search on get");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeSearchModel), nameof(OnGetAsync));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
 
@@ -52,7 +54,7 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
+        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -75,7 +77,7 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment manual address OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(PostcodeSearchModel), nameof(OnPostSubmitAsync));
 
         if (!ModelState.IsValid)
         {
@@ -95,8 +97,14 @@ public class PostcodeSearchModel : BasePageModel<PostcodeSearchModel>
             return await OnGetAsync(OrgId, NI_GBFlag);
         }
 
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentPostcodeResultPath,
-            new { id = OrgId, postcode = Postcode, NI_GBFlag });
+        if (GetType().FullName!.Contains("SelfServe"))
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeEstablishmentPostcodeResultPath,
+                new { id = OrgId, postcode = Postcode, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentPostcodeResultPath,
+                new { id = OrgId, postcode = Postcode, NI_GBFlag });
     }
+
 }

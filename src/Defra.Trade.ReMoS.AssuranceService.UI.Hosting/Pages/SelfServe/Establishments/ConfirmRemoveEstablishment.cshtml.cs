@@ -1,6 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -34,7 +31,8 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment removal confirmation OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ConfirmRemoveEstablishmentModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
@@ -67,6 +65,8 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ConfirmRemoveEstablishmentModel), nameof(OnPostSubmitAsync));
+
         Establishment = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
 
         if (Establishment is not null)

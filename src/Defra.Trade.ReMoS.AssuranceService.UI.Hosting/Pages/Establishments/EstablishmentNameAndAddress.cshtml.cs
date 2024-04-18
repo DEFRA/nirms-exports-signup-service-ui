@@ -1,5 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -62,6 +60,8 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     [BindProperty]
     public string? NI_GBFlag { get; set; } = string.Empty;
+    [BindProperty]
+    public string? BackPostcode { get; set; }
     #endregion
 
     public EstablishmentNameAndAddressModel(
@@ -70,9 +70,10 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         ITraderService traderService) : base(logger, traderService, establishmentService)
     { }
 
-    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? NI_GBFlag = "GB")
+    public async Task<IActionResult> OnGetAsync(Guid id, Guid? establishmentId, string? uprn, string? backPostcode, string? NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment manual address OnGet");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnGetAsync));
+
         OrgId = id;
         this.NI_GBFlag = NI_GBFlag;
         EstablishmentId = establishmentId;
@@ -85,7 +86,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
+        if (!GetType().FullName!.Contains("SelfServe") && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
         }
@@ -102,22 +103,26 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
         }
 
         ViewData["Title"] = ContentHeading;
+        BackPostcode = PostCode != string.Empty ? PostCode : backPostcode;
 
         return Page();
     }
 
-    public async Task<IActionResult> OnPostSubmitAsync()
+    public IActionResult OnPostSubmit()
     {
-        _logger.LogInformation("Establishment manual address OnPostSubmit");
-        if (!ModelState.IsValid || !IsPostCodeValid())
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmit));
+
+        IsPostCodeValid();
+
+        if (!IsInputValid())
         {
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
 
         Guid? establishmentId;
         try
         {
-            establishmentId = await _establishmentService.SaveEstablishmentDetails(
+            establishmentId = Task.Run(() => _establishmentService.SaveEstablishmentDetails(
                 EstablishmentId,
                 TradePartyId,
                 new LogisticsLocationDto
@@ -127,19 +132,24 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
                     Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode },
                     LastModifiedDate = DateTime.UtcNow
                 },
-                NI_GBFlag??string.Empty,
+                NI_GBFlag ?? string.Empty,
                 Uprn
-            );
+            )).GetAwaiter().GetResult();
         }
         catch (BadHttpRequestException)
         {
             ModelState.AddModelError(nameof(EstablishmentName), GenerateDuplicateError());
-            return await OnGetAsync(OrgId, EstablishmentId, Uprn, NI_GBFlag ?? string.Empty);
+            return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
 
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentContactEmailPath,
-            new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+        if (GetType().FullName!.Contains("SelfServe"))
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeEstablishmentContactEmailPath,
+                new { id = OrgId, locationId = establishmentId, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentContactEmailPath,
+                new { id = OrgId, locationId = establishmentId, NI_GBFlag });
     }
 
     public async Task RetrieveEstablishmentDetails()
@@ -165,18 +175,21 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     }
 
-    private bool IsPostCodeValid()
+    public virtual bool IsInputValid()
+    {
+        if (!ModelState.IsValid)
+            return false;
+
+        return true;
+    }
+
+    private void IsPostCodeValid()
     {
         if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 
         if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
             ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
-
-        if (ModelState.ErrorCount > 0)
-            return false;
-
-        return true;
     }
 
     private string GenerateDuplicateError()

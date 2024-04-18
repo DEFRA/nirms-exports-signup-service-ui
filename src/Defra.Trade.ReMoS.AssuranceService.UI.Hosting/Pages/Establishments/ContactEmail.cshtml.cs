@@ -1,14 +1,8 @@
-using Defra.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
 
@@ -23,10 +17,10 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
     public Guid OrgId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? ContentHeading { get; set; } = string.Empty;
-    public string? ContentText { get; set; } = string.Empty;
     public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
-       
+
+    public bool IsSelfServe => GetType().FullName!.Contains("SelfServe");
     public ContactEmailModel(
         ILogger<ContactEmailModel> logger,
         IEstablishmentService establishmentService,
@@ -35,7 +29,8 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
     public async Task<IActionResult> OnGetAsync(Guid id, Guid locationId, string NI_GBFlag = "GB")
     {
-        _logger.LogInformation("Establishment dispatch destination OnGetAsync");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ContactEmailModel), nameof(OnGetAsync));
+
         OrgId = id;
         EstablishmentId = locationId;
         this.NI_GBFlag = NI_GBFlag;
@@ -47,20 +42,23 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
-        if (_traderService.IsTradePartySignedUp(tradeParty))
+        if (!IsSelfServe && _traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
+
+        if (IsSelfServe && !await _establishmentService.IsEstablishmentDraft(EstablishmentId))
+        {
+            return RedirectToPage(Routes.Pages.Path.EstablishmentErrorPath, new { id = OrgId });
         }
 
         if (NI_GBFlag == "NI")
         {
             ContentHeading = "Add a place of destination";
-            ContentText = "The locations in Northern Ireland which are part of your business where consignments will go after the port of entry under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
         else
         {
             ContentHeading = "Add a place of dispatch";
-            ContentText = "The locations which are part of your business that consignments to Northern Ireland will depart from under the scheme. You will have to provide the details for all locations, so they can be used when applying for General Certificates.";
         }
 
         if (TradePartyId != Guid.Empty && EstablishmentId != Guid.Empty)
@@ -74,25 +72,35 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
 
     public async Task<IActionResult> OnPostSubmitAsync()
     {
-        _logger.LogInformation("Establishment contact email OnPostSubmit");
+        _logger.LogInformation("Entered {Class}.{Method}", nameof(ContactEmailModel), nameof(OnPostSubmitAsync));
 
-        if (!ModelState.IsValid)
+        if (!IsInputValid())
         {
             return await OnGetAsync(OrgId, EstablishmentId, NI_GBFlag ?? string.Empty);
         }
 
         await SaveEmailToApi();
 
-        return RedirectToPage(
-            Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
-            new { id = OrgId, NI_GBFlag});
+        if (IsSelfServe)
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeConfirmEstablishmentDetailsPath,
+                new { id = OrgId, locationId = EstablishmentId, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.AdditionalEstablishmentAddressPath, 
+                new { id = OrgId, NI_GBFlag});
     }
 
     public IActionResult OnGetChangeEstablishmentAddress(Guid orgId, Guid establishmentId, string NI_GBFlag = "GB")
     {
-        return RedirectToPage(
-            Routes.Pages.Path.EstablishmentNameAndAddressPath,
-            new { id = orgId, establishmentId, NI_GBFlag });
+        if (IsSelfServe)
+            return RedirectToPage(
+                Routes.Pages.Path.SelfServeEstablishmentNameAndAddressPath,
+                new { id = orgId, establishmentId, NI_GBFlag });
+        else
+            return RedirectToPage(
+                Routes.Pages.Path.EstablishmentNameAndAddressPath,
+                new { id = orgId, establishmentId, NI_GBFlag });
     }
 
     private async Task SaveEmailToApi()
@@ -104,5 +112,12 @@ public class ContactEmailModel : BasePageModel<ContactEmailModel>
             Location.Email = Email;
             await _establishmentService.UpdateEstablishmentDetailsAsync(Location);
         }
+    }
+    public virtual bool IsInputValid()
+    {
+        if (!ModelState.IsValid)
+            return false;
+
+        return true;
     }
 }

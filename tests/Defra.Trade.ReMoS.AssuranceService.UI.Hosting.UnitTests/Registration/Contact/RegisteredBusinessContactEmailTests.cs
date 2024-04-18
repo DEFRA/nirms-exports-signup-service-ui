@@ -3,9 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.ValidationExtensions;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.Contact
