@@ -1,5 +1,4 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces
 {
