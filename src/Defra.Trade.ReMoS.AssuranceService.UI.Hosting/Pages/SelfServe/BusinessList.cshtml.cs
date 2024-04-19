@@ -1,4 +1,3 @@
-using Defra.Trade.ReMoS.AssuranceService.UI.Core.Enums;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.ViewModels;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
