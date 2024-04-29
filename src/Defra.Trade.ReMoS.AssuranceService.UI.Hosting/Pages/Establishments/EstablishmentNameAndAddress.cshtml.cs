@@ -112,12 +112,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmit));
 
-        IsPostCodeValid();
-
         if (!IsInputValid())
         {
             return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
+
+        IsPostCodeValid();
 
         Guid? establishmentId;
         try
