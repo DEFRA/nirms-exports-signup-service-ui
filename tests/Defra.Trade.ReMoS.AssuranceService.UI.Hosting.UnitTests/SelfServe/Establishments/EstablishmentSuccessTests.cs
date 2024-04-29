@@ -44,6 +44,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Esta
             var orgId = new Guid();
             var establishmentId = new Guid();
             string NI_GBFlag = "GB";
+            var tradePartyId = Guid.NewGuid();
+            var tradeParty = new TradePartyDto()
+            {
+                Id = tradePartyId
+            };
             LogisticsLocationDto location = new()
             {
                 Id = Guid.NewGuid(),
@@ -54,6 +59,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Esta
             _mockEstablishmentService
                 .Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(location);
+            _mockTraderService.Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>())).ReturnsAsync(tradeParty);
 
             //Act
             _systemUnderTest!.OrgId = orgId;
@@ -61,6 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.SelfServe.Esta
             await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), Guid.NewGuid(), NI_GBFlag);
 
             //Assert
+            _systemUnderTest.TradePartyId.Should().Be(tradePartyId);
             _systemUnderTest.Establishment.Should().NotBe(null);
             _systemUnderTest.Establishment?.RemosEstablishmentSchemeNumber.Should().Be("RMS-GB-000001-001");
             _systemUnderTest.Heading.Should().Be("Place of dispatch successfully added");

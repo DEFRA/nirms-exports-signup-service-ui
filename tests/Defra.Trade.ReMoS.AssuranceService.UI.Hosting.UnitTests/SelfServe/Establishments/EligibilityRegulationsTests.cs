@@ -85,4 +85,21 @@ public class EligibilityRegulationsTests : PageModelTestsBase
         ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
     }
 
+    [Test]
+    public async Task UpdateEstablishmentStatus_Updates()
+    {
+        // arrange
+        var location = new LogisticsLocationDto()
+        {
+            Id = Guid.NewGuid()
+        };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>())).ReturnsAsync(location);
+        _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsSelfServeAsync(It.IsAny<LogisticsLocationDto>())).ReturnsAsync(true);
+
+        // act
+        await _systemUnderTest!.UpdateEstablishmentStatus();
+
+        // assert
+        _mockEstablishmentService.Verify(x => x.UpdateEstablishmentDetailsSelfServeAsync(It.IsAny<LogisticsLocationDto>()), Times.Once);
+    }
 }
