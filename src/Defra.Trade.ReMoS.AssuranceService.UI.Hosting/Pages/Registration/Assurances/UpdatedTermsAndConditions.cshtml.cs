@@ -66,7 +66,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
             if (!TandCs)
             {
-                ModelState.AddModelError(nameof(TandCs), $"Confirm that the authorised representative - {dto?.AuthorisedSignatory?.Name} has read and understood the terms and conditions, or click ‘Skip for now’");
+                ModelState.AddModelError(nameof(TandCs), $"Confirm that the authorised representative - {dto?.AuthorisedSignatory?.Name} has read and understood the updated terms and conditions, or click ‘Skip for now’");
             }
 
             if (!ModelState.IsValid)
