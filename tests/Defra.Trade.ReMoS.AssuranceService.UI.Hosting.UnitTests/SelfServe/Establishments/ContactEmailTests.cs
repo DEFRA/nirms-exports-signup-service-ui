@@ -109,9 +109,10 @@ public class ContactEmailTests : PageModelTestsBase
 
         //Act
         var result = await _systemUnderTest.OnPostSubmitAsync();
+        var validation = ValidateModel(_systemUnderTest);
 
         //Assert
-        result?.GetType().Should().Be(typeof(PageResult));
+        validation.Count.Should().Be(1);
     }
 
     [Test]
