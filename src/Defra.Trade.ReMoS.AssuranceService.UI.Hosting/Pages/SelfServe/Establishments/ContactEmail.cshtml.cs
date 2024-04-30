@@ -9,7 +9,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 [BindProperties]
 public class ContactEmailModel : SignUp.ContactEmailModel
 {
-
     public ContactEmailModel(
         ILogger<ContactEmailModel> logger,
         IEstablishmentService establishmentService,
@@ -17,9 +16,6 @@ public class ContactEmailModel : SignUp.ContactEmailModel
     {}
     public override bool IsInputValid()
     {
-        if (Email != null && Email.Length > 100)
-            ModelState.AddModelError(nameof(Email), "The email address cannot be longer than 100 characters");
-
         if (!ModelState.IsValid || ModelState.ErrorCount > 0)
             return false;
 
