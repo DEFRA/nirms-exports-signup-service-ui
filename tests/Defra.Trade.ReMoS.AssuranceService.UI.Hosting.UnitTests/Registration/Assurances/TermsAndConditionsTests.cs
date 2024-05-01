@@ -195,7 +195,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
             .ReturnsAsync(tradePartyId);
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+            .ReturnsAsync(((TradePartyDto)null!, TradePartySignupStatus.InProgress));
 
         await _systemUnderTest.OnGetAsync(tradePartyId);
 
@@ -220,7 +220,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
             .ReturnsAsync(tradePartyId);
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+            .ReturnsAsync(((TradePartyDto)null!, TradePartySignupStatus.InProgress));
 
         await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
@@ -245,7 +245,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
             .ReturnsAsync(tradePartyId);
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.InProgress));
+            .ReturnsAsync(((TradePartyDto)null!, TradePartySignupStatus.InProgress));
 
         await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 
@@ -277,7 +277,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
             .ReturnsAsync(tradeParty);
         _mockTraderService
             .Setup(x => x.GetDefraOrgBusinessSignupStatus(It.IsAny<Guid>()))
-            .ReturnsAsync(((TradePartyDto)null!, Core.Enums.TradePartySignupStatus.Complete));
+            .ReturnsAsync(((TradePartyDto)null!, TradePartySignupStatus.Complete));
 
         await _systemUnderTest.OnGetAsync(Guid.NewGuid());
 

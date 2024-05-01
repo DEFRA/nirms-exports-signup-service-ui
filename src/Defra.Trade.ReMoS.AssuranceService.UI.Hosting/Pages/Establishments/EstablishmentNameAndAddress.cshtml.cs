@@ -112,12 +112,12 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmit));
 
-        IsPostCodeValid();
-
         if (!IsInputValid())
         {
             return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
+
+        IsPostCodeValid();
 
         Guid? establishmentId;
         try
@@ -129,8 +129,7 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
                 {
                     Name = EstablishmentName,
                     ApprovalStatus = LogisticsLocationApprovalStatus.Draft,
-                    Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode },
-                    LastModifiedDate = DateTime.UtcNow
+                    Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode }
                 },
                 NI_GBFlag ?? string.Empty,
                 Uprn

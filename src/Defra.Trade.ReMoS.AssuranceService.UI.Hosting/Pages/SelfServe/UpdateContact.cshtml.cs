@@ -109,7 +109,6 @@ public class UpdateContactModel : BasePageModel<UpdateContactModel>
                 Position = Position,
                 Email = Email,
                 TelephoneNumber = PhoneNumber,
-                LastModifiedDate = DateTime.UtcNow,
                 ModifiedBy = _userService.GetUserContactId(User)
             }
         };

@@ -53,7 +53,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
 
                 PracticeName = dto.PracticeName ?? string.Empty;
                 
-                if (partyWithSignUpStatus.signupStatus == Core.Enums.TradePartySignupStatus.Complete)
+                if (partyWithSignUpStatus.signupStatus == TradePartySignupStatus.Complete)
                 {
                     return RedirectToPage(
                         Routes.Pages.Path.RegisteredBusinessAlreadyRegisteredPath,

@@ -107,7 +107,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe
                     Name = Name,
                     Position = Position,
                     EmailAddress = Email,
-                    LastModifiedDate = DateTime.UtcNow,
                     ModifiedBy = _userService.GetUserContactId(User)
                 }
             };

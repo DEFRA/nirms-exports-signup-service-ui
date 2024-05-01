@@ -11,7 +11,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 [BindProperties]
 public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsModel>
 {
-    public Guid TradePartyId { get; set; }
     public Guid OrgId { get; set; }
     public Guid EstablishmentId { get; set; }
     public string? NI_GBFlag { get; set; } = string.Empty;
@@ -61,14 +60,13 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
             new { id = OrgId, locationId = EstablishmentId, NI_GBFlag});
     }
 
-    private async Task UpdateEstablishmentStatus()
+    public async Task UpdateEstablishmentStatus()
     {
         Location = await _establishmentService.GetEstablishmentByIdAsync(EstablishmentId);
 
         if (Location != null)
         {
             Location.ApprovalStatus = LogisticsLocationApprovalStatus.Approved;
-            Location.LastModifiedDate = DateTime.Now;
             await _establishmentService.UpdateEstablishmentDetailsSelfServeAsync(Location);
         }
     }
