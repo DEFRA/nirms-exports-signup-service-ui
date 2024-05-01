@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.Shared.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
@@ -234,4 +235,20 @@ public class SelfServeDashboardTests : PageModelTestsBase
         result.Should().BeOfType<PageResult>();
     }
 
+    [TestCase(true, Routes.Pages.Path.SelfServeEstablishmentPostcodeSearchPath)]
+    [TestCase(false, Routes.Pages.Path.SelfServeEstablishmentHoldingPath)]
+    public async Task OnGetAddEstablishment_FeatureEnabled_Redirects(bool IsEnabled, string path)
+    {
+        // arrange
+        var orgId = Guid.NewGuid();
+        var NI_GBFlag = "GB";
+        _mockFeatureManager.Setup(m => m.IsEnabledAsync(FeatureFlags.SelfServeMvpPlus)).Returns(Task.FromResult(IsEnabled));
+
+        // act
+        var result = await _systemUnderTest!.OnGetAddEstablishment(orgId, NI_GBFlag);
+
+        // assert
+        var redirectResult = result as RedirectToPageResult;
+        redirectResult!.PageName.Should().Be(path);
+    }
 }
