@@ -119,8 +119,9 @@ public class AuthorisedSignatoryNameModel : BasePageModel<AuthorisedSignatoryNam
                 Id = tradeParty?.AuthorisedSignatory?.Id ?? Guid.Empty,
                 Name = string.IsNullOrEmpty(Name) ? tradeParty?.AuthorisedSignatory?.Name ?? string.Empty : Name,
                 Position = tradeParty?.AuthorisedSignatory?.Position,
-                EmailAddress = tradeParty?.AuthorisedSignatory?.EmailAddress
-            }
+                EmailAddress = tradeParty?.AuthorisedSignatory?.EmailAddress,
+				LastModifiedDate = DateTime.UtcNow
+			}
         };
     }
     #endregion

@@ -135,7 +135,8 @@ public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEm
                 Id = SignatoryId,
                 Name = tradeParty.AuthorisedSignatory?.Name,
                 Position = tradeParty.AuthorisedSignatory?.Position,
-                EmailAddress = Email
+                EmailAddress = Email,
+                LastModifiedDate = DateTime.UtcNow
             }
         };
     }

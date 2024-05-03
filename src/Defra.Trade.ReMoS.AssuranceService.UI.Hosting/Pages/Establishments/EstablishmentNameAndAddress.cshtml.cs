@@ -129,8 +129,10 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
                 {
                     Name = EstablishmentName,
                     ApprovalStatus = LogisticsLocationApprovalStatus.Draft,
-                    Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode }
-                },
+                    Address = new TradeAddressDto { LineOne = LineOne, LineTwo = LineTwo, County = County, CityName = CityName, PostCode = PostCode },
+                    LastModifiedDate = DateTime.Now
+
+				},
                 NI_GBFlag ?? string.Empty,
                 Uprn
             )).GetAwaiter().GetResult();
