@@ -186,7 +186,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                     Id = TradePartyId,
                     ApprovalStatus = tradeParty.ApprovalStatus,
                     Contact = tradeContactDto,
-                    AuthorisedSignatory = authorisedSignatoryStub,
+                    AuthorisedSignatory = authorisedSignatoryStub
                 };
             }
             else

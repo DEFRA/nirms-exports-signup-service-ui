@@ -136,7 +136,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
                 Id = ContactId,
                 Email = Email,
                 IsAuthorisedSignatory = IsAuthorisedSignatory,
-                LastModifiedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             }
         };
 
