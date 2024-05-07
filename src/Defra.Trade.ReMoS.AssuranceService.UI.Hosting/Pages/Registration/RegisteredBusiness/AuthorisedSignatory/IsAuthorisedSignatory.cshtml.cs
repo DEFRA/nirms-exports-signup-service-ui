@@ -179,13 +179,14 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                 authorisedSignatoryStub.EmailAddress = tradeParty.Contact?.Email;
                 authorisedSignatoryStub.Position = tradeParty.Contact?.Position;
                 authorisedSignatoryStub.TradePartyId = TradePartyId;
+                authorisedSignatoryStub.LastModifiedDate = DateTime.UtcNow;
 
                 return new TradePartyDto()
                 {
                     Id = TradePartyId,
                     ApprovalStatus = tradeParty.ApprovalStatus,
                     Contact = tradeContactDto,
-                    AuthorisedSignatory = authorisedSignatoryStub
+                    AuthorisedSignatory = authorisedSignatoryStub,
                 };
             }
             else
