@@ -167,7 +167,8 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
             Email = tradeParty?.Contact?.Email,
             Position = tradeParty?.Contact?.Position,
             TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
-            IsAuthorisedSignatory = isSignatory
+            IsAuthorisedSignatory = isSignatory,
+            LastModifiedDate = DateTime.UtcNow
         };
 
         if (tradeParty != null)
@@ -178,6 +179,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                 authorisedSignatoryStub.EmailAddress = tradeParty.Contact?.Email;
                 authorisedSignatoryStub.Position = tradeParty.Contact?.Position;
                 authorisedSignatoryStub.TradePartyId = TradePartyId;
+                authorisedSignatoryStub.LastModifiedDate = DateTime.UtcNow;
 
                 return new TradePartyDto()
                 {

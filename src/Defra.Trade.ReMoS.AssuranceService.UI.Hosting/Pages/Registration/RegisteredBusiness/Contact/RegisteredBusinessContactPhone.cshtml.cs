@@ -126,7 +126,8 @@ public class RegisteredBusinessContactPhoneModel : BasePageModel<RegisteredBusin
             Contact = new TradeContactDto()
             {
                 TelephoneNumber = PhoneNumber,
-                IsAuthorisedSignatory = IsAuthorisedSignatory
+                IsAuthorisedSignatory = IsAuthorisedSignatory,
+                LastModifiedDate = DateTime.UtcNow
             }
         };
     }

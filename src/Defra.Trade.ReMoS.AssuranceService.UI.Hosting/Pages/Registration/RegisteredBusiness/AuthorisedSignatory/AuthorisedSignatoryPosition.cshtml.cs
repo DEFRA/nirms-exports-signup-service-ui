@@ -117,8 +117,9 @@ public class AuthorisedSignatoryPositionModel : BasePageModel<AuthorisedSignator
                 Id = SignatoryId,
                 Name = tradeParty.AuthorisedSignatory?.Name,
                 Position = Position,
-                EmailAddress = tradeParty.AuthorisedSignatory?.EmailAddress
-            }
+                EmailAddress = tradeParty.AuthorisedSignatory?.EmailAddress,
+				LastModifiedDate = DateTime.UtcNow
+			}
         };
     }
     #endregion

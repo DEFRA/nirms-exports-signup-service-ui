@@ -72,6 +72,7 @@ public class ConfirmRemoveEstablishmentModel : BasePageModel<ConfirmRemoveEstabl
         if (Establishment is not null)
         {
             Establishment.ApprovalStatus = LogisticsLocationApprovalStatus.Removed;
+            Establishment.LastModifiedDate = DateTime.UtcNow;
             await _establishmentService.UpdateEstablishmentDetailsSelfServeAsync(Establishment);
         }
 

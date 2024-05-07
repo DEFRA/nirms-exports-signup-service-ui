@@ -75,6 +75,7 @@ public class EstablishmentService : IEstablishmentService
         establishmentFromApi.Address.PostCode = establishmentDto.Address?.PostCode;
         establishmentFromApi.NI_GBFlag = NI_GBFlag;
         establishmentFromApi.ApprovalStatus = establishmentDto.ApprovalStatus;
+        establishmentFromApi.LastModifiedDate = establishmentDto.LastModifiedDate;
 
         if (establishmentid == Guid.Empty || uprn != null || establishmentid == null)
         {
