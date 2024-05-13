@@ -74,7 +74,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         LogisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(
             TradePartyId, 
             false, 
-            string.Empty, 
+            searchTerm, 
             NI_GBFlag, 
             pageNumber, 
             pageSize);
@@ -147,9 +147,16 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
-    public async Task<IActionResult> OnPostSearchEstablishmentAsync()
+    public IActionResult OnPostSearchEstablishmentAsync()
     {
-        return await OnGetAsync(OrgId, SearchTerm);
+        //return await OnGetAsync(OrgId, 1, 50, SearchTerm);
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = OrgId, SearchTerm });
+    }
+
+    public IActionResult OnPostShowAllEstablishmentAsync(Guid orgId)
+    {
+        //return await OnGetAsync(orgId, 1, 50, null);
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = orgId });
     }
 
     public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
@@ -164,6 +171,6 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
-        else return await OnGetAsync(orgId, null);
+        else return await OnGetAsync(orgId, 1, 50, null);
     }
 }

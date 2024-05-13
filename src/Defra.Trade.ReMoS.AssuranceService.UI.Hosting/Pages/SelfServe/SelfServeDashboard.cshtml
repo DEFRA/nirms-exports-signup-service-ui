@@ -39,10 +39,9 @@
     <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
 }
 
-<form method="post">
+<form method="post" novalidate>
     <input type="hidden" asp-for="OrgId" />
     <input type="hidden" asp-for="NI_GBFlag" />
-    <input type="hidden" asp-for="SearchTerm" />
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
@@ -207,22 +206,22 @@
 
             <div class="govuk-grid-column-one-half govuk-form-group search-wrapper">
                 <div class="search-input-wrapper">
-                    <input type="search" id="filter" asp-for="SearchTerm" class="govuk-input">
+                    <input type="search" id="filter" asp-for="@Model.SearchTerm" class="govuk-input">
                     <div class="search-input-submit-wrapper">
                         <button class="search-submit" asp-page-handler="SearchEstablishment" id="Button-Search">Search</button>
                     </div>
                 </div>
             </div>
 
-
             @if (Model.SearchTerm != null)
             {
                 <div class="govuk-grid-column-one-half" id="show-filters-button-wrapper">
-                    <a asp-page=@Routes.Pages.Path.SelfServeDashboardPath asp-route-orgId="@Model.OrgId" class="govuk-button govuk-button--secondary" style="padding:12px">
-                    Show all establishments
-                </a>
-            </div>
+                    <a asp-page-handler="ShowAllEstablishments" asp-route-orgid="@Model.OrgId" class="govuk-button govuk-button--secondary" style="padding:12px">
+                        Show all establishments
+                    </a>
+                </div>
             }
+
 
             <div class="govuk-grid-column-full">
                 <table class="govuk-table" data-module="moj-sortable-table">  
