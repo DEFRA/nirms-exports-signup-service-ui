@@ -214,11 +214,14 @@
                 </div>
             </div>
 
-            <div class="govuk-grid-column-one-half" id="show-filters-button-wrapper">
-                <a asp-page-handler="SearchEstablishment" asp-route-orgId="@Model.OrgId" asp-route-searchTerm="@Model.SearchTerm" class="govuk-button govuk-button--secondary" style="padding:12px">
+            @if (Model.SearchTerm != null)
+            {
+                <div class="govuk-grid-column-one-half" id="show-filters-button-wrapper">
+                    <a asp-page-handler="SearchEstablishment" asp-route-orgId="@Model.OrgId" asp-route-searchTerm="@Model.SearchTerm" class="govuk-button govuk-button--secondary" style="padding:12px">
                     Show all establishments
                 </a>
             </div>
+            }
 
             <div class="govuk-grid-column-full">
                 <table class="govuk-table" data-module="moj-sortable-table">  

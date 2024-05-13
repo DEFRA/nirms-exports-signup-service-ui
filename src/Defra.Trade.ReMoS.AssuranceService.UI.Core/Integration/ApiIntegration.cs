@@ -381,7 +381,7 @@ public class ApiIntegration : IApiIntegration
     public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected, string? searchTerm)
     {
         var httpClient = CreateHttpClient();
-        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}?isRejected={isRejected}" + searchTerm != null ? $"&searchTerm={searchTerm}" : "");
+        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}?isRejected={isRejected}" + (searchTerm != null ? $"&searchTerm={searchTerm}" : ""));
 
         if (response.IsSuccessStatusCode)
         {
