@@ -67,6 +67,7 @@ public class EligibilityRegulationsModel : BasePageModel<EligibilityRegulationsM
         if (Location != null)
         {
             Location.ApprovalStatus = LogisticsLocationApprovalStatus.Approved;
+            Location.LastModifiedDate = DateTime.UtcNow;
             await _establishmentService.UpdateEstablishmentDetailsSelfServeAsync(Location);
         }
     }

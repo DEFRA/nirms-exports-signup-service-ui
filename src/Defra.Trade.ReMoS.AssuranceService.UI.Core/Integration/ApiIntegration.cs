@@ -2,6 +2,7 @@
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -378,19 +379,26 @@ public class ApiIntegration : IApiIntegration
     /// </summary>
     /// <param name="tradePartyId"></param>
     /// <returns>List of establishments</returns>
-    public async Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected, string? searchTerm)
+    public async Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
+        Guid tradePartyId, 
+        bool includeRejected,
+        string? searchTerm,
+        string? NI_GBFlag,
+        int pageNumber = 1,
+        int pageSize = 50)
     {
         var httpClient = CreateHttpClient();
-        var response = await httpClient.GetAsync($"Establishments/Party/{tradePartyId}?isRejected={isRejected}" + (searchTerm != null ? $"&searchTerm={searchTerm}" : ""));
+        var response = await httpClient.GetAsync(
+            $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&ni_gbFlag={NI_GBFlag}&pageNumber={pageNumber}&pageSize={pageSize}" + (searchTerm != null ? $"&searchTerm={searchTerm}" : ""));
 
         if (response.IsSuccessStatusCode)
         {
             using var contentStream = await response.Content.ReadAsStreamAsync();
             if (contentStream != null)
             {
-                return await JsonSerializer.DeserializeAsync<List<LogisticsLocationDto>>(
+                return await JsonSerializer.DeserializeAsync<PagedList<LogisticsLocationDto>>(
                 await response.Content.ReadAsStreamAsync(),
-                options: _jsonSerializerOptions) ?? new List<LogisticsLocationDto>();
+                options: _jsonSerializerOptions) ?? new PagedList<LogisticsLocationDto>();
             }
             else
             {

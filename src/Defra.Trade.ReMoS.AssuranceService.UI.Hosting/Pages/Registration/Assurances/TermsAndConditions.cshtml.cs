@@ -87,7 +87,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                         new { id = OrgId });
             }
 
-            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id, false, null);
+            var logisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id, false, string.Empty, string.Empty))?.Items;
 
             if (!_checkAnswersService.IsLogisticsLocationsDataPresent(dto, logisticsLocations!) || !_checkAnswersService.ReadyForCheckAnswers(dto))
             {
@@ -100,9 +100,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             dto.SignUpRequestSubmittedBy = _userService.GetUserContactId(User);
             dto.ApprovalStatus = TradePartyApprovalStatus.PendingApproval;
             dto.Contact!.SubmittedDate = DateTime.UtcNow;
-            dto.Contact!.LastModifiedDate = dto.Contact!.SubmittedDate;
             dto.AuthorisedSignatory!.SubmittedDate = DateTime.UtcNow;
-            dto.AuthorisedSignatory!.LastModifiedDate = dto.AuthorisedSignatory!.SubmittedDate;
 
             await _traderService.UpdateTradePartyAsync(dto);
 

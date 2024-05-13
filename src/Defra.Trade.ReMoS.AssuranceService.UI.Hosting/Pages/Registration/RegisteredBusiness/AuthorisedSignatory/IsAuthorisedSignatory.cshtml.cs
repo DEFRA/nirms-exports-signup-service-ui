@@ -74,7 +74,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         if (Convert.ToBoolean(IsAuthorisedSignatory))
         {
             var party = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, null);
+            var establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty))?.Items;
             string countryFlag = "GB";
 
             if (party?.Address?.TradeCountry == "NI")
@@ -167,7 +167,8 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
             Email = tradeParty?.Contact?.Email,
             Position = tradeParty?.Contact?.Position,
             TelephoneNumber = tradeParty?.Contact?.TelephoneNumber,
-            IsAuthorisedSignatory = isSignatory
+            IsAuthorisedSignatory = isSignatory,
+            LastModifiedDate = DateTime.UtcNow
         };
 
         if (tradeParty != null)
@@ -178,6 +179,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
                 authorisedSignatoryStub.EmailAddress = tradeParty.Contact?.Email;
                 authorisedSignatoryStub.Position = tradeParty.Contact?.Position;
                 authorisedSignatoryStub.TradePartyId = TradePartyId;
+                authorisedSignatoryStub.LastModifiedDate = DateTime.UtcNow;
 
                 return new TradePartyDto()
                 {

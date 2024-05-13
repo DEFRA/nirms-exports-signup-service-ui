@@ -240,7 +240,7 @@
                     </thead>
 
                     <tbody class="govuk-table__body">
-                        @foreach (var location in Model.LogisticsLocations!)
+                        @foreach (var location in Model.LogisticsLocations!.Items)
                         {
                             <tr class="govuk-table__row">
                                 <td class="govuk-table__header" data-sort-value="@location.Name">
