@@ -87,10 +87,10 @@ public class SelfServeDashboardTests : PageModelTestsBase
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), true).Result).Returns(logisticsLocations);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), true, null).Result).Returns(logisticsLocations);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), null);
 
         //Assert
 
@@ -125,7 +125,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(guid, null);
 
         //Assert
 
@@ -188,7 +188,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
     {
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
-        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), null);
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");

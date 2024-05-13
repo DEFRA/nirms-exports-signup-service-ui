@@ -47,11 +47,11 @@ public class EstablishmentServiceTests
 
         var logisticsLocationDto = new List<LogisticsLocationDto>();
 
-        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false)).Verifiable();
-        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false)).Returns(Task.FromResult(logisticsLocationDto)!);
+        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, null)).Verifiable();
+        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, null)).Returns(Task.FromResult(logisticsLocationDto)!);
 
         // Act
-        var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid, false);
+        var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid, false, null);
 
         // Assert
         _mockApiIntegration.Verify();
