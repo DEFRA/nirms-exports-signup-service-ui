@@ -8,7 +8,7 @@ public interface IEstablishmentService
         Guid partyId,
         LogisticsLocationDto logisticsLocationDTO);
     Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id);
-    Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected);
+    Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected, string? searchTerm);
     public Task<List<LogisticsLocationDto>?> GetEstablishmentByPostcodeAsync(string postcode);
     Task<bool> RemoveEstablishmentAsync(Guid establishmentId);
     Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto);

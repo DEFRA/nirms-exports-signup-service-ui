@@ -29,6 +29,8 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     [BindProperty]
+    public string? SearchTerm { get; set; } = string.Empty;
+    [BindProperty]
     public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
     public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
@@ -47,12 +49,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id)
+    public async Task<IActionResult> OnGetAsync(Guid Id, string? searchTerm)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+        SearchTerm = searchTerm;
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -66,7 +69,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             EstablishmentButtonText = "destination";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true, searchTerm))?
             .Where(x => x.NI_GBFlag == NI_GBFlag)
             .Where(x => x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected)
             .OrderBy(x => x.CreatedDate)
@@ -140,6 +143,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
+    public async Task<IActionResult> OnGetSearchEstablishment(Guid orgId, string searchTerm)
+    {
+        return await OnGetAsync(orgId, searchTerm);
+    }
+
     public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
     {
         if (status == LogisticsLocationApprovalStatus.Draft)
@@ -152,6 +160,6 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
-        else return await OnGetAsync(orgId);
+        else return await OnGetAsync(orgId, null);
     }
 }

@@ -63,7 +63,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             NI_GBFlag = TradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
             Purpose = TradeParty?.Address?.TradeCountry == "NI" ? "Receive Consignments" : "Send Consignments";
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false))?
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, null))?
                 .Where(x => x.NI_GBFlag == this.NI_GBFlag)
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
@@ -88,7 +88,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             logisticsLocation!.IsRemoved = true;
             await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false))?
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false, null))?
                 .OrderBy(x => x.CreatedDate)
                 .ToList();
 
@@ -118,7 +118,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
             TradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
-            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
+            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, null);
 
             if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!) &&
                 logisticsLocations != null &&

@@ -74,7 +74,7 @@ public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEm
             countryFlag = "NI";
         }
 
-        var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
+        var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, null);
 
         if ( establishments != null && establishments.Any())
         {

@@ -74,7 +74,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         if (Convert.ToBoolean(IsAuthorisedSignatory))
         {
             var party = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
+            var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, null);
             string countryFlag = "GB";
 
             if (party?.Address?.TradeCountry == "NI")
