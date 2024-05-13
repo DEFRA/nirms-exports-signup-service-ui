@@ -143,9 +143,9 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
-    public async Task<IActionResult> OnGetSearchEstablishment(Guid orgId, string searchTerm)
+    public async Task<IActionResult> OnPostSearchEstablishmentAsync()
     {
-        return await OnGetAsync(orgId, searchTerm);
+        return await OnGetAsync(OrgId, SearchTerm);
     }
 
     public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)

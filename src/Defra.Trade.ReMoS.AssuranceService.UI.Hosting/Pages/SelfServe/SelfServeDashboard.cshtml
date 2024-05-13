@@ -207,17 +207,18 @@
 
             <div class="govuk-grid-column-one-half govuk-form-group search-wrapper">
                 <div class="search-input-wrapper">
-                    <input type="search" id="filter" name="filter" title="Search" asp-for="SearchTerm" class="govuk-input">
+                    <input type="search" id="filter" asp-for="SearchTerm" class="govuk-input">
                     <div class="search-input-submit-wrapper">
-                        <button class="search-submit" asp-page-handler="SearchEstablishment" asp-route-orgId="@Model.OrgId" asp-route-searchTerm="@Model.SearchTerm" id="Button-Search">Search</button>
+                        <button class="search-submit" asp-page-handler="SearchEstablishment" id="Button-Search">Search</button>
                     </div>
                 </div>
             </div>
 
+
             @if (Model.SearchTerm != null)
             {
                 <div class="govuk-grid-column-one-half" id="show-filters-button-wrapper">
-                    <a asp-page-handler="SearchEstablishment" asp-route-orgId="@Model.OrgId" asp-route-searchTerm="@Model.SearchTerm" class="govuk-button govuk-button--secondary" style="padding:12px">
+                    <a asp-page=@Routes.Pages.Path.SelfServeDashboardPath asp-route-orgId="@Model.OrgId" class="govuk-button govuk-button--secondary" style="padding:12px">
                     Show all establishments
                 </a>
             </div>
@@ -273,3 +274,5 @@
         </div>
     </feature>
 </form>
+
+
