@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
@@ -11,7 +12,7 @@ public interface IApiIntegration
     public Task<Guid> UpdateTradePartyAddressAsync(TradePartyDto tradePartyToUpdate);
     public Task<Guid> UpdateTradePartyContactAsync(TradePartyDto tradePartyToUpdate);
     public Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid id);
-    Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected);
+    //Task<List<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected);
     Task<Guid?> AddEstablishmentToPartyAsync(Guid partyId, LogisticsLocationDto logisticsLocationDTO);
     public Task<List<LogisticsLocationDto>?> GetEstablishmentsByPostcodeAsync(string postcode);
     Task RemoveEstablishmentAsync(Guid locationId);
@@ -24,4 +25,6 @@ public interface IApiIntegration
     Task<Guid> UpdateTradePartyContactSelfServeAsync(TradePartyDto tradePartyToUpdate);
     Task<Guid> UpdateTradePartyAuthRepSelfServeAsync(TradePartyDto tradePartyToUpdate);
     Task<bool> UpdateEstablishmentSelfServeAsync(LogisticsLocationDto establishmentDto);
+    Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
+        Guid tradePartyId, bool includeRejected, string? searchTerm, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50);
 }

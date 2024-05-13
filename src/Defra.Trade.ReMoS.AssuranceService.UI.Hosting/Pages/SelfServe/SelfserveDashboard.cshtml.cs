@@ -1,9 +1,11 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.Mvc;
+using System.Drawing.Printing;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
@@ -31,7 +33,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     [BindProperty]
     public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
-    public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
+    public PagedList<LogisticsLocationDto>? LogisticsLocations { get; set; } = new PagedList<LogisticsLocationDto>();
     public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
@@ -47,7 +49,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id)
+    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 50)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
@@ -66,11 +68,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             EstablishmentButtonText = "destination";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
-            .Where(x => x.NI_GBFlag == NI_GBFlag)
-            .Where(x => x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected)
-            .OrderBy(x => x.CreatedDate)
-            .ToList();
+        LogisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(
+            TradePartyId, 
+            false, 
+            string.Empty, 
+            NI_GBFlag, 
+            pageNumber, 
+            pageSize);
 
         return Page();
     }

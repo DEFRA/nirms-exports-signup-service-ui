@@ -63,10 +63,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             NI_GBFlag = TradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
             Purpose = TradeParty?.Address?.TradeCountry == "NI" ? "Receive Consignments" : "Send Consignments";
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false))?
-                .Where(x => x.NI_GBFlag == this.NI_GBFlag)
-                .OrderBy(x => x.CreatedDate)
-                .ToList();
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, this.NI_GBFlag))?.Items;
 
             if (NI_GBFlag == "NI")
             {
@@ -88,9 +85,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             logisticsLocation!.IsRemoved = true;
             await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false))?
-                .OrderBy(x => x.CreatedDate)
-                .ToList();
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false, string.Empty, string.Empty))?.Items;
 
             if (LogisticsLocations?.Count > 0)
                 return await OnGetAsync(orgId);
@@ -118,7 +113,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
             TradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
-            var logisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
+            var logisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty))?.Items;
 
             if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!) &&
                 logisticsLocations != null &&
