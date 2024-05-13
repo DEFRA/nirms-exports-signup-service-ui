@@ -149,13 +149,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
 
     public IActionResult OnPostSearchEstablishmentAsync()
     {
-        //return await OnGetAsync(OrgId, 1, 50, SearchTerm);
-        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = OrgId, SearchTerm });
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId, SearchTerm }, "filter");
     }
 
     public IActionResult OnPostShowAllEstablishmentAsync(Guid orgId)
     {
-        //return await OnGetAsync(orgId, 1, 50, null);
         return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = orgId });
     }
 
