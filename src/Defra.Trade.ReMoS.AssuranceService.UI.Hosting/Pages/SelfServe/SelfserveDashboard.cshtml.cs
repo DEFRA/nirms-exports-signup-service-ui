@@ -49,7 +49,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 50)
+    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 2)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
@@ -157,5 +157,10 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
         else return await OnGetAsync(orgId);
+    }
+
+    public async Task<IActionResult> OnGetNavigateToPage(Guid orgId, int pageNumber)
+    {
+        return await OnGetAsync(orgId, pageNumber);
     }
 }
