@@ -222,6 +222,14 @@
                 </div>
             }
 
+            @if ((Model.LogisticsLocations!.TotalCount == 0) && (Model.SearchTerm != null))
+            {
+                <div class="govuk-grid-column-full">
+                    <h2 class="govuk-heading-s">
+                        No results for '@Model.SearchTerm'
+                    </h2>
+                </div>
+            }
 
             <div class="govuk-grid-column-full">
                 <table class="govuk-table" data-module="moj-sortable-table">  
@@ -334,6 +342,12 @@
                     {
                         <p class="moj-pagination__results">
                             Showing <b>1</b> establishment
+                        </p>
+                    }
+                    else if (Model.LogisticsLocations.TotalCount == 0)
+                    {
+                        <p class="moj-pagination__results">
+                            Showing <b>0</b> establishments
                         </p>
                     }
                     else if (Model.LogisticsLocations.TotalCount >= 2 && Model.LogisticsLocations.TotalCount <= Model.LogisticsLocations.PageSize)
