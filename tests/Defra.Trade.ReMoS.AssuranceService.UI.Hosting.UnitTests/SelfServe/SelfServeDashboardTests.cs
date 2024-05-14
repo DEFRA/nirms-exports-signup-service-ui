@@ -260,13 +260,14 @@ public class SelfServeDashboardTests : PageModelTestsBase
         redirectResult!.PageName.Should().Be(path);
     }
 
+    [Test]
     public void OnPostSearchEstablishmentAsync_Redirects()
     {
         // arrage
         var orgId = Guid.NewGuid();
         _systemUnderTest!.OrgId = orgId;
         _systemUnderTest.SearchTerm = "test";
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, searchTerm = "test" }, "filter");
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SearchTerm = "test" }, "filter");
 
         // act
         var result = _systemUnderTest!.OnPostSearchEstablishmentAsync();
@@ -278,12 +279,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
         Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
     }
 
+    [Test]
     public void OnPostShowAllEstablishmentsAsync_Redirects()
     {
         // arrage
         var orgId = Guid.NewGuid();
         _systemUnderTest!.OrgId = orgId;
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, searchTerm = "test" }, "filter");
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId }, "filter");
 
         // act
         var result = _systemUnderTest!.OnPostShowAllEstablishments();
