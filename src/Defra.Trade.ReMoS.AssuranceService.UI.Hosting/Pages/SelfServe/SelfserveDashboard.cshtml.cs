@@ -49,7 +49,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 2)
+    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 10)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
