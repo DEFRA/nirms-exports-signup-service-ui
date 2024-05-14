@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
@@ -20,9 +21,10 @@ public class EstablishmentService : IEstablishmentService
         return establishmentId;
     }
 
-    public async Task<IEnumerable<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(Guid tradePartyId, bool isRejected)
+    public async Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
+        Guid tradePartyId, bool includeRejected, string? searchTerm, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50)
     {
-        return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId, isRejected);
+        return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId, includeRejected, searchTerm, NI_GBFlag, pageNumber, pageSize);
     }
 
     public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id)
