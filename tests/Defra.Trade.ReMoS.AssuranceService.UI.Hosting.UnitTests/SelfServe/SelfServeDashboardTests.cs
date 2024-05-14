@@ -7,6 +7,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.ContainerRegistry.Fluent.Models;
+using Microsoft.Azure.Management.Monitor.Fluent.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Moq;
@@ -256,5 +258,40 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         var redirectResult = result as RedirectToPageResult;
         redirectResult!.PageName.Should().Be(path);
+    }
+
+    public void OnPostSearchEstablishmentAsync_Redirects()
+    {
+        // arrage
+        var orgId = Guid.NewGuid();
+        _systemUnderTest!.OrgId = orgId;
+        _systemUnderTest.SearchTerm = "test";
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, searchTerm = "test" }, "filter");
+
+        // act
+        var result = _systemUnderTest!.OnPostSearchEstablishmentAsync();
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+    }
+
+    public void OnPostShowAllEstablishmentsAsync_Redirects()
+    {
+        // arrage
+        var orgId = Guid.NewGuid();
+        _systemUnderTest!.OrgId = orgId;
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, searchTerm = "test" }, "filter");
+
+        // act
+        var result = _systemUnderTest!.OnPostShowAllEstablishments();
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
     }
 }
