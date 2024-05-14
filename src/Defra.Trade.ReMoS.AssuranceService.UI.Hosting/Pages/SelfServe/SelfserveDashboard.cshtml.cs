@@ -31,6 +31,8 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     [BindProperty]
+    public string? SearchTerm { get; set; } = string.Empty;
+    [BindProperty]
     public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
     public PagedList<LogisticsLocationDto>? LogisticsLocations { get; set; } = new PagedList<LogisticsLocationDto>();
@@ -49,12 +51,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 50, string? searchTerm = null)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+        SearchTerm = searchTerm;
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -71,7 +74,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         LogisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(
             TradePartyId, 
             false, 
-            string.Empty, 
+            searchTerm?.ToLower(), 
             NI_GBFlag, 
             pageNumber, 
             pageSize);
@@ -144,6 +147,16 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
+    public IActionResult OnPostSearchEstablishmentAsync()
+    {
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId, SearchTerm }, "filter");
+    }
+
+    public IActionResult OnPostShowAllEstablishments()
+    {
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId }, "filter");
+    }
+
     public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
     {
         if (status == LogisticsLocationApprovalStatus.Draft)
@@ -156,7 +169,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
-        else return await OnGetAsync(orgId);
+        else return await OnGetAsync(orgId, 1, 50, null);
     }
 
     public async Task<IActionResult> OnGetNavigateToPage(Guid orgId, int pageNumber)

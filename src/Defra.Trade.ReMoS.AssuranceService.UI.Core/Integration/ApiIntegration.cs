@@ -389,7 +389,7 @@ public class ApiIntegration : IApiIntegration
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync(
-            $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&searchTerm={searchTerm}&ni_gbFlag={NI_GBFlag}&pageNumber={pageNumber}&pageSize={pageSize}");
+            $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&ni_gbFlag={NI_GBFlag}&pageNumber={pageNumber}&pageSize={pageSize}" + (searchTerm != null ? $"&searchTerm={searchTerm}" : ""));
 
         if (response.IsSuccessStatusCode)
         {
