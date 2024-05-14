@@ -92,7 +92,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), true, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
             .Returns(logisticsLocations);
 
         //Act

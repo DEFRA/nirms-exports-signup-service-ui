@@ -58,7 +58,7 @@ public class EstablishmentServiceTests
 
         // Assert
         _mockApiIntegration.Verify();
-        returnedValue.Should().Equals(logisticsLocationDto);
+        returnedValue.Should().Be(logisticsLocationDto);
     }
 
 

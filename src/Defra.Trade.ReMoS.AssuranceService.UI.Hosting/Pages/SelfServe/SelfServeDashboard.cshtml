@@ -244,138 +244,74 @@
                     </tbody>
                 </table>
 
-                <!-- GOV UK Pagination -->
+                <!-- pagination -->
                 @if (Model.LogisticsLocations.TotalPages > 1)
                 {
-                    <nav class="govuk-pagination" aria-label="Pagination">
-
-                        @if (Model.LogisticsLocations.HasPrevious)
-                        {
-                            <div class="govuk-pagination__prev">
-                                <a class="govuk-link govuk-pagination__link" asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId" asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)" rel="prev">
-                                    <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                                        <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
-                                    </svg>
-                                    <span class="govuk-pagination__link-title">
-                                        Previous<span class="govuk-visually-hidden"> page</span>
-                                    </span>
-                                </a>
-                            </div>
-                        }
-
-                        <ul class="govuk-pagination__list">
-
-                            <!-- First page -->
-                            @if (Model.LogisticsLocations.CurrentPage > 2)
+                    <nav class="moj-pagination" id="pagination-label">
+                        <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
+                        <ul class="moj-pagination__list">
+                            
+                            @if (Model.LogisticsLocations.HasPrevious)
                             {
-                                <li class="govuk-pagination__item">
-                                    <a class="govuk-link govuk-pagination__link"
-                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                       asp-route-pageNumber="1" aria-label="Page 1">
-                                        1
+                                <li class="moj-pagination__item  moj-pagination__item--prev">
+                                    <a class="moj-pagination__link" 
+                                        asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId" 
+                                        asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)">
+                                        Previous
+                                        <span class="govuk-visually-hidden"> set of pages</span>
                                     </a>
                                 </li>
-
-                                @if (Model.LogisticsLocations.TotalPages > 3)
-                                {
-                                    <li class="govuk-pagination__item govuk-pagination__item--ellipses">
-                                        &ctdot;
-                                    </li>
-                                }
                             }
 
                             @for (int pageNumber = 1; pageNumber <= Model.LogisticsLocations.TotalPages; pageNumber++)
                             {
-                                <!-- Current page - 1 -->
-                                @if (pageNumber == Model.LogisticsLocations.CurrentPage - 1)
-                                {
-                                    <li class="govuk-pagination__item">
-                                        <a class="govuk-link govuk-pagination__link"
-                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                           asp-route-pageNumber="@pageNumber" aria-label="Page @pageNumber">
-                                            @pageNumber
-                                        </a>
-                                    </li>
-                                }
-                                <!-- Current page -->
                                 @if (pageNumber == Model.LogisticsLocations.CurrentPage)
                                 {
-                                    <li class="govuk-pagination__item govuk-pagination__item--current">
-                                        <a class="govuk-link govuk-pagination__link"
-                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                           asp-route-pageNumber="@pageNumber"
-                                           aria-label="Page @pageNumber" aria-current="page">
+                                    <li class="moj-pagination__item moj-pagination__item--active">
+                                        <a class="moj-pagination__link" 
+                                            asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                            asp-route-pageNumber="@pageNumber" 
+                                            style="color: black!important;font-weight: 700">
                                             @pageNumber
                                         </a>
                                     </li>
                                 }
-                                <!-- Current page + 1 -->
-                                @if (pageNumber == Model.LogisticsLocations.CurrentPage + 1)
+                                else
                                 {
-                                    <li class="govuk-pagination__item">
-                                        <a class="govuk-link govuk-pagination__link"
-                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                           asp-route-pageNumber="@pageNumber" aria-label="Page @pageNumber">
+                                    <li class="moj-pagination__item">
+                                        <a class="moj-pagination__link" 
+                                            asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                            asp-route-pageNumber="@pageNumber">
                                             @pageNumber
                                         </a>
                                     </li>
                                 }
-
                             }
 
-                            <!-- Last page -->
-                            @if (Model.LogisticsLocations.CurrentPage < Model.LogisticsLocations.TotalPages-1)
+                            @if (Model.LogisticsLocations.HasNext)
                             {
-                                <li class="govuk-pagination__item govuk-pagination__item--ellipses">
-                                    &ctdot;
-                                </li>
-
-                                <li class="govuk-pagination__item">
-                                    <a class="govuk-link govuk-pagination__link"
-                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                       asp-route-pageNumber="@Model.LogisticsLocations.TotalPages" aria-label="Page @Model.LogisticsLocations.TotalPages">
-                                        @Model.LogisticsLocations.TotalPages
+                                <li class="moj-pagination__item  moj-pagination__item--next">
+                                    <a class="moj-pagination__link" 
+                                        asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId" 
+                                        asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage+1)">
+                                        Next
+                                        <span class="govuk-visually-hidden"> set of pages</span>
                                     </a>
                                 </li>
                             }
 
                         </ul>
-
-                        @if (Model.LogisticsLocations.HasNext)
-                        {
-                            <div class="govuk-pagination__next">
-                                <a class="govuk-link govuk-pagination__link" asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId" asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage+1)" rel="next">
-                                    <span class="govuk-pagination__link-title">
-                                        Next<span class="govuk-visually-hidden"> page</span>
-                                    </span>
-                                    <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                                        <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        }
-
+                        <p class="moj-pagination__results">Showing 
+                            <b>@((Model.LogisticsLocations.CurrentPage - 1) * Model.LogisticsLocations.PageSize + 1)</b> 
+                            to
+                            <b>@((Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize) > Model.LogisticsLocations.TotalCount ? Model.LogisticsLocations.TotalCount : (Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize))</b>
+                            of 
+                            <b>@Model.LogisticsLocations.TotalCount</b> 
+                            establishments
+                        </p>
                     </nav>
                 }
-
-
-                <nav class="moj-pagination" id="pagination-label">
-                    <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
-                    <ul class="moj-pagination__list">
-                        <li class="moj-pagination__item  moj-pagination__item--prev">
-                            <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> set of pages</span></a>
-                        </li>
-                        <li class="moj-pagination__item moj-pagination__item--active"><a class="moj-pagination__link" href="#" style="color: black!important;font-weight: 700">1</a></li>
-                        <li class="moj-pagination__item"><a class="moj-pagination__link" href="#">2</a></li>
-                        <li class="moj-pagination__item"><a class="moj-pagination__link" href="#">3</a></li>
-                        <li class="moj-pagination__item"><a class="moj-pagination__link" href="#">4</a></li>
-                        <li class="moj-pagination__item"><a class="moj-pagination__link" href="#">5</a></li>
-                        <li class="moj-pagination__item  moj-pagination__item--next">
-                            <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> set of pages</span></a>
-                        </li>
-                    </ul>
-                    <p class="moj-pagination__results">Showing <b>1</b> to <b>10</b> of <b>47</b> establishments</p>
-                </nav>
+            
             </div>
         </div>
     </feature>

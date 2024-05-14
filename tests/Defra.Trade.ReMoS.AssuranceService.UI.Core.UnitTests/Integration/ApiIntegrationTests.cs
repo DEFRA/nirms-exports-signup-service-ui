@@ -1,6 +1,7 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -1010,19 +1011,20 @@ internal class ApiIntegrationTests
         {
             new LogisticsLocationDto()
             {
-
                 Name = "Test 2",
                 Id = Guid.NewGuid(),
                 TradePartyId = Guid.NewGuid(),
             }
         };
+        var pagedLocations = new PagedList<LogisticsLocationDto>() { Items = logisticsLocations };
+
         var appConfigurationSettings = new AppConfigurationService
         {
             SubscriptionKey = "testkey"
         };
         IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
-        var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        var jsonString = JsonConvert.SerializeObject(pagedLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
         var expectedResponse = new HttpResponseMessage
