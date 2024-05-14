@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Moq;
@@ -45,17 +46,19 @@ public class EstablishmentServiceTests
 
         var expectedGuid = Guid.Parse("c16eb7a7-2949-4880-b5d7-0405f4f7d188");
 
-        var logisticsLocationDto = new List<LogisticsLocationDto>();
+        var logisticsLocationDto = new PagedList<LogisticsLocationDto>();
 
-        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false)).Verifiable();
-        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false)).Returns(Task.FromResult(logisticsLocationDto)!);
+        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+        _mockApiIntegration
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Returns(Task.FromResult(logisticsLocationDto)!);
 
         // Act
-        var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid, false);
+        var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>());
 
         // Assert
         _mockApiIntegration.Verify();
-        returnedValue.Should().Equal(logisticsLocationDto);
+        returnedValue.Should().Equals(logisticsLocationDto);
     }
 
 
