@@ -216,9 +216,9 @@
             @if (Model.SearchTerm != null)
             {
                 <div class="govuk-grid-column-one-half" id="show-filters-button-wrapper">
-                    <a asp-page-handler="ShowAllEstablishments" asp-route-orgid="@Model.OrgId" class="govuk-button govuk-button--secondary" style="padding:12px">
+                    <button asp-page-handler="ShowAllEstablishments" class="govuk-button govuk-button--secondary" style="padding:12px">
                         Show all establishments
-                    </a>
+                    </button>
                 </div>
             }
 

@@ -152,9 +152,9 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId, SearchTerm }, "filter");
     }
 
-    public IActionResult OnPostShowAllEstablishmentAsync(Guid orgId)
+    public IActionResult OnPostShowAllEstablishments()
     {
-        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, new { id = orgId });
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId }, "filter");
     }
 
     public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
