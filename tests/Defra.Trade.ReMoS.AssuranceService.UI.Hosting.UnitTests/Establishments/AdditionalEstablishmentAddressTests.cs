@@ -1,5 +1,6 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Establishments;
@@ -263,7 +264,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetRemoveEstablishment_GivenExistingLocations_SubmitIsValid()
         {
             //Arrange
-            var list = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+            var list = new PagedList<LogisticsLocationDto>{ Items = new List<LogisticsLocationDto>() };
             _systemUnderTest!.AddAddressesComplete = "yes";
             var logisticsLocation = new LogisticsLocationDto()
             {
@@ -271,7 +272,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
             _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, null).Result).Returns(list);
+            _mockEstablishmentService
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Returns(list);
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid());
             var validation = ValidateModel(_systemUnderTest);
@@ -284,7 +287,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         public async Task OnGetRemoveEstablishment_GivenNoExistingLocations_Redirect()
         {
             //Arrange
-            var list = new List<LogisticsLocationDto> { };
+            var list = new PagedList<LogisticsLocationDto>{ };
             _systemUnderTest!.AddAddressesComplete = "yes";
             var logisticsLocation = new LogisticsLocationDto()
             {
@@ -292,7 +295,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             };
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
             _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, null).Result).Returns(list);
+            _mockEstablishmentService
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Returns(list);
 
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid());
@@ -416,7 +421,9 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             };
 
             _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
-            _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, null).Result).Returns(new List<LogisticsLocationDto>());
+            _mockEstablishmentService
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Returns(new PagedList<LogisticsLocationDto>());
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(tradeParty);
 
             //Act

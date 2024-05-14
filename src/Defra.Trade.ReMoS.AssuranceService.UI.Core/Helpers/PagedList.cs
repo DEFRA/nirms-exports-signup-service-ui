@@ -1,5 +1,8 @@
-﻿namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
+
+[ExcludeFromCodeCoverage]
 public class PagedList<T>
 {
     public List<T> Items { get; set; }

@@ -74,7 +74,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         LogisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(
             TradePartyId, 
             false, 
-            searchTerm, 
+            searchTerm?.ToLower(), 
             NI_GBFlag, 
             pageNumber, 
             pageSize);
@@ -170,5 +170,10 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
         else return await OnGetAsync(orgId, 1, 50, null);
+    }
+
+    public async Task<IActionResult> OnGetNavigateToPage(Guid orgId, int pageNumber)
+    {
+        return await OnGetAsync(orgId, pageNumber);
     }
 }

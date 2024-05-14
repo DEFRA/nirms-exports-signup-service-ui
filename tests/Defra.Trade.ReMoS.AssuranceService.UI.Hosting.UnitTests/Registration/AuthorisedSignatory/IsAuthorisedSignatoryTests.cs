@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.RegisteredBusiness.AuthorisedSignatory;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -290,12 +291,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 });
 
             _mockEstablishmentService
-                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), null).Result)
-                .Returns(new List<LogisticsLocationDto>()
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Returns(new PagedList<LogisticsLocationDto>()
                 {
-                    new LogisticsLocationDto()
+                    Items = new List<LogisticsLocationDto>()
                     {
-                        Id = new Guid()
+                        new LogisticsLocationDto()
+                        {
+                            Id = new Guid()
+                        }
                     }
                 });
 

@@ -269,6 +269,94 @@
                         }
                     </tbody>
                 </table>
+
+                <!-- pagination -->
+
+                <nav class="moj-pagination" id="pagination-label">
+                    @if (Model.LogisticsLocations.TotalPages > 1)
+                    {
+                        <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
+                        <ul class="moj-pagination__list">
+
+                            @if (Model.LogisticsLocations.HasPrevious)
+                            {
+                                <li class="moj-pagination__item  moj-pagination__item--prev">
+                                    <a class="moj-pagination__link"
+                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)">
+                                        Previous
+                                        <span class="govuk-visually-hidden"> set of pages</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int pageNumber = 1; pageNumber <= Model.LogisticsLocations.TotalPages; pageNumber++)
+                            {
+                                @if (pageNumber == Model.LogisticsLocations.CurrentPage)
+                                {
+                                    <li class="moj-pagination__item moj-pagination__item--active">
+                                        <a class="moj-pagination__link"
+                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                           asp-route-pageNumber="@pageNumber"
+                                           style="color: black!important;font-weight: 700">
+                                            @pageNumber
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="moj-pagination__item">
+                                        <a class="moj-pagination__link"
+                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                           asp-route-pageNumber="@pageNumber">
+                                            @pageNumber
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                            @if (Model.LogisticsLocations.HasNext)
+                            {
+                                <li class="moj-pagination__item  moj-pagination__item--next">
+                                    <a class="moj-pagination__link"
+                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage+1)">
+                                        Next
+                                        <span class="govuk-visually-hidden"> set of pages</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    }
+
+                    @if (Model.LogisticsLocations.TotalCount == 1)
+                    {
+                        <p class="moj-pagination__results">
+                            Showing <b>1</b> establishment
+                        </p>
+                    }
+                    else if (Model.LogisticsLocations.TotalCount >= 2 && Model.LogisticsLocations.TotalCount <= Model.LogisticsLocations.PageSize)
+                    {
+                        <p class="moj-pagination__results">
+                            Showing <b>@Model.LogisticsLocations.TotalCount</b> establishments
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="moj-pagination__results">
+                            Showing
+                            <b>@((Model.LogisticsLocations.CurrentPage - 1) * Model.LogisticsLocations.PageSize + 1)</b>
+                            to
+                            <b>@((Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize) > Model.LogisticsLocations.TotalCount ? Model.LogisticsLocations.TotalCount : (Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize))</b>
+                            of
+                            <b>@Model.LogisticsLocations.TotalCount</b>
+                            establishments
+                        </p>
+                    }
+                </nav>
+
+
             </div>
         </div>
     </feature>

@@ -6,6 +6,7 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.TaskList;
 
@@ -116,10 +117,13 @@ public class RegistratonTaskListTests : PageModelTestsBase
         {
             new LogisticsLocationDto() { NI_GBFlag = "NI"}
         };
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, null)).Returns(Task.FromResult(list.AsEnumerable())!);
+        _mockEstablishmentService
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Returns(Task.FromResult(pagedList)!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -220,10 +224,11 @@ public class RegistratonTaskListTests : PageModelTestsBase
         {
             new LogisticsLocationDto() { NI_GBFlag = "GB"}
         };
+        var pagedList = new PagedList<LogisticsLocationDto>() { Items = list };
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, null)).Returns(Task.FromResult(list.AsEnumerable())!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(pagedList)!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -274,14 +279,18 @@ public class RegistratonTaskListTests : PageModelTestsBase
             RegulationsConfirmed = true
         };
 
-        var list = new List<LogisticsLocationDto>
+        var list = new PagedList<LogisticsLocationDto>
         {
-            new LogisticsLocationDto() { NI_GBFlag = "NI"}, new LogisticsLocationDto() { NI_GBFlag = "GB"}
+            Items = new List<LogisticsLocationDto> {
+                new LogisticsLocationDto() { NI_GBFlag = "NI"}, new LogisticsLocationDto() { NI_GBFlag = "GB"}
+            }
         };
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, null)).Returns(Task.FromResult(list.AsEnumerable())!);
+        _mockEstablishmentService
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Returns(Task.FromResult(list)!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
