@@ -112,12 +112,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(EstablishmentNameAndAddressModel), nameof(OnPostSubmit));
 
+        IsPostCodeValid();
+
         if (!IsInputValid())
         {
             return OnGetAsync(OrgId, EstablishmentId, Uprn, BackPostcode, NI_GBFlag ?? string.Empty).Result;
         }
 
-        IsPostCodeValid();
+        
 
         Guid? establishmentId;
         try
@@ -186,11 +188,14 @@ public class EstablishmentNameAndAddressModel : BasePageModel<EstablishmentNameA
 
     private void IsPostCodeValid()
     {
-        if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
-            ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
+        if(PostCode != null)
+        {
+            if (PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "GB"))
+                ModelState.AddModelError(nameof(PostCode), "Enter a postcode in England, Scotland or Wales");
 
-        if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
-            ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
+            if (!PostCode!.ToUpper().StartsWith("BT") && (NI_GBFlag == "NI"))
+                ModelState.AddModelError(nameof(PostCode), "Enter a postcode in Northern Ireland");
+        }  
     }
 
     private string GenerateDuplicateError()
