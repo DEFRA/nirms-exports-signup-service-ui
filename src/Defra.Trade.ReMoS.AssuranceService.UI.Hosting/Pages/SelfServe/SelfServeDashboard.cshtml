@@ -303,12 +303,7 @@
                                 @if (pageNumber == Model.LogisticsLocations.CurrentPage)
                                 {
                                     <li class="moj-pagination__item moj-pagination__item--active">
-                                        <a class="moj-pagination__link"
-                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                           asp-route-pageNumber="@pageNumber"
-                                           style="color: black!important;font-weight: 700">
-                                            @pageNumber
-                                        </a>
+                                        @pageNumber.ToString()
                                     </li>
                                 }
                                 else
@@ -317,7 +312,7 @@
                                         <a class="moj-pagination__link"
                                            asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
                                            asp-route-pageNumber="@pageNumber">
-                                            @pageNumber
+                                            @pageNumber.ToString()
                                         </a>
                                     </li>
                                 }
@@ -342,19 +337,19 @@
                     @if (Model.LogisticsLocations.TotalCount == 1)
                     {
                         <p class="moj-pagination__results">
-                            Showing <b>1</b> establishment
+                            <b>Showing 1 establishment</b>
                         </p>
                     }
                     else if (Model.LogisticsLocations.TotalCount == 0)
                     {
                         <p class="moj-pagination__results">
-                            Showing <b>0</b> establishments
+                            <b>Showing 0 establishments</b>
                         </p>
                     }
                     else if (Model.LogisticsLocations.TotalCount >= 2 && Model.LogisticsLocations.TotalCount <= Model.LogisticsLocations.PageSize)
                     {
                         <p class="moj-pagination__results">
-                            Showing <b>@Model.LogisticsLocations.TotalCount</b> establishments
+                            <b>Showing @Model.LogisticsLocations.TotalCount establishments</b>
                         </p>
                     }
                     else
