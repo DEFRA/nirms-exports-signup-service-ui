@@ -303,12 +303,7 @@
                                 @if (pageNumber == Model.LogisticsLocations.CurrentPage)
                                 {
                                     <li class="moj-pagination__item moj-pagination__item--active">
-                                        <a class="moj-pagination__link"
-                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                           asp-route-pageNumber="@pageNumber"
-                                           style="color: black!important;font-weight: 700">
-                                            @pageNumber
-                                        </a>
+                                        @pageNumber.ToString()
                                     </li>
                                 }
                                 else
@@ -317,7 +312,7 @@
                                         <a class="moj-pagination__link"
                                            asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
                                            asp-route-pageNumber="@pageNumber">
-                                            @pageNumber
+                                            @pageNumber.ToString()
                                         </a>
                                     </li>
                                 }
