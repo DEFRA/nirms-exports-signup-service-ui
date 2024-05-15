@@ -337,19 +337,19 @@
                     @if (Model.LogisticsLocations.TotalCount == 1)
                     {
                         <p class="moj-pagination__results">
-                            <b>Showing 1 establishment</b>
+                            Showing <b>1</b> establishment
                         </p>
                     }
                     else if (Model.LogisticsLocations.TotalCount == 0)
                     {
                         <p class="moj-pagination__results">
-                            <b>Showing 0 establishments</b>
+                            Showing <b>0</b> establishments
                         </p>
                     }
                     else if (Model.LogisticsLocations.TotalCount >= 2 && Model.LogisticsLocations.TotalCount <= Model.LogisticsLocations.PageSize)
                     {
                         <p class="moj-pagination__results">
-                            <b>Showing @Model.LogisticsLocations.TotalCount establishments</b>
+                            Showing <b>@Model.LogisticsLocations.TotalCount</b> establishments
                         </p>
                     }
                     else
