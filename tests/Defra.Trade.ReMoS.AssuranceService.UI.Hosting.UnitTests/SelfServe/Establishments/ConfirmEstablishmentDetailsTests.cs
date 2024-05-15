@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
@@ -101,13 +102,14 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
     {
         //Arrange
         var list = new List<LogisticsLocationDto> { };
+        var pagedList = new PagedList<LogisticsLocationDto>() { Items = list };
         var logisticsLocation = new LogisticsLocationDto()
         {
             Id = new Guid()
         };
         _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
         _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
 
         //Act
         await _systemUnderTest!.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid(), It.IsAny<string>());

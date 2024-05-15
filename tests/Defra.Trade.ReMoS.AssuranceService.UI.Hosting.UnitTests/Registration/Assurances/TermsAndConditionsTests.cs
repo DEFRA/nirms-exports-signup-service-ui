@@ -1,4 +1,5 @@
-﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
+﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assurances;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -155,7 +156,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
             PartyName = "Test"
         };
         var assurance = true;
-        var logisticsLocationList = new List<LogisticsLocationDto> { new LogisticsLocationDto() };
+        var logisticsLocationList = new PagedList<LogisticsLocationDto> { Items = new List<LogisticsLocationDto>() };
 
         //act
         _systemUnderTest!.TandCs = assurance;
@@ -163,8 +164,9 @@ public class TermsAndConditionsTests : PageModelTestsBase
             .ReturnsAsync(tradeParty);
         _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
-           .ReturnsAsync(logisticsLocationList);
+        _mockEstablishmentService
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .ReturnsAsync(logisticsLocationList);
 
         await _systemUnderTest.OnPostSubmitAsync();
 

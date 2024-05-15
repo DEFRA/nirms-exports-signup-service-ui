@@ -138,7 +138,8 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
             {
                 Id = ContactId,
                 Position = Position,
-                IsAuthorisedSignatory = IsAuthorisedSignatory
+                IsAuthorisedSignatory = IsAuthorisedSignatory,
+                LastModifiedDate = DateTime.UtcNow
             }
         };
 
@@ -149,8 +150,9 @@ public class RegisteredBusinessContactPositionModel : BasePageModel<RegisteredBu
                 Id = AuthorisedSignatoryId,
                 EmailAddress = TradePartyDtoCurrent!.Contact!.Email,
                 Name = TradePartyDtoCurrent.Contact.PersonName,
-                Position = Position
-            };
+                Position = Position,
+				LastModifiedDate = DateTime.UtcNow
+			};
         }
 
         return tradePartyDto;

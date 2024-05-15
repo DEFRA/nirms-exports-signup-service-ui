@@ -39,9 +39,10 @@
     <a asp-page="@Routes.Pages.Path.BusinessListPath" class="govuk-back-link">Back</a>
 }
 
-<form method="post">
+<form method="post" novalidate>
     <input type="hidden" asp-for="OrgId" />
     <input type="hidden" asp-for="NI_GBFlag" />
+
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
@@ -193,9 +194,42 @@
         <div class="govuk-grid-row govuk-!-margin-top-7">
             <div class="govuk-grid-column-full">
                 <h2 class="govuk-heading-m" id="establishments">
-                    Places of @Model.EstablishmentButtonText that are operated by your business
+                    Places of @Model.EstablishmentButtonText signed-up by your business
                 </h2>
             </div>
+
+            <div class="govuk-grid-column-full">
+                <label for=filter class="govuk-label">
+                    Search by establishment name, postcode or RMS number
+                </label>
+            </div>
+
+            <div class="govuk-grid-column-one-half govuk-form-group search-wrapper">
+                <div class="search-input-wrapper">
+                    <input type="search" id="filter" asp-for="@Model.SearchTerm" class="govuk-input">
+                    <div class="search-input-submit-wrapper">
+                        <button class="search-submit" asp-page-handler="SearchEstablishment" id="Button-Search">Search</button>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.SearchTerm != null)
+            {
+                <div class="govuk-grid-column-one-half" id="show-filters-button-wrapper">
+                    <button asp-page-handler="ShowAllEstablishments" class="govuk-button govuk-button--secondary" style="padding:12px">
+                        Show all establishments
+                    </button>
+                </div>
+            }
+
+            @if ((Model.LogisticsLocations!.TotalCount == 0) && (Model.SearchTerm != null))
+            {
+                <div class="govuk-grid-column-full">
+                    <h2 class="govuk-heading-s">
+                        No results for '@Model.SearchTerm'
+                    </h2>
+                </div>
+            }
 
             <div class="govuk-grid-column-full">
                 <table class="govuk-table" data-module="moj-sortable-table">
@@ -213,7 +247,7 @@
                     </thead>
 
                     <tbody class="govuk-table__body">
-                        @foreach (var location in Model.LogisticsLocations!)
+                        @foreach (var location in Model.LogisticsLocations!.Items)
                         {
                             <tr class="govuk-table__row">
                                 <td class="govuk-table__header" data-sort-value="@location.Name">
@@ -243,7 +277,104 @@
                         }
                     </tbody>
                 </table>
+
+                <!-- pagination -->
+
+                <nav class="moj-pagination" id="pagination-label">
+                    <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
+                    <ul class="moj-pagination__list">
+                        
+                        @if (Model.LogisticsLocations.TotalPages > 1)
+                        {
+                            @if (Model.LogisticsLocations.HasPrevious)
+                            {
+                                <li class="moj-pagination__item  moj-pagination__item--prev">
+                                    <a class="moj-pagination__link"
+                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)">
+                                        Previous
+                                        <span class="govuk-visually-hidden"> set of pages</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int pageNumber = 1; pageNumber <= Model.LogisticsLocations.TotalPages; pageNumber++)
+                            {
+                                @if (pageNumber == Model.LogisticsLocations.CurrentPage)
+                                {
+                                    <li class="moj-pagination__item moj-pagination__item--active">
+                                        <a class="moj-pagination__link"
+                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                           asp-route-pageNumber="@pageNumber"
+                                           style="color: black!important;font-weight: 700">
+                                            @pageNumber
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="moj-pagination__item">
+                                        <a class="moj-pagination__link"
+                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                           asp-route-pageNumber="@pageNumber">
+                                            @pageNumber
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                            @if (Model.LogisticsLocations.HasNext)
+                            {
+                                <li class="moj-pagination__item  moj-pagination__item--next">
+                                    <a class="moj-pagination__link"
+                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
+                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage+1)">
+                                        Next
+                                        <span class="govuk-visually-hidden"> set of pages</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+
+
+                    @if (Model.LogisticsLocations.TotalCount == 1)
+                    {
+                        <p class="moj-pagination__results">
+                            Showing <b>1</b> establishment
+                        </p>
+                    }
+                    else if (Model.LogisticsLocations.TotalCount == 0)
+                    {
+                        <p class="moj-pagination__results">
+                            Showing <b>0</b> establishments
+                        </p>
+                    }
+                    else if (Model.LogisticsLocations.TotalCount >= 2 && Model.LogisticsLocations.TotalCount <= Model.LogisticsLocations.PageSize)
+                    {
+                        <p class="moj-pagination__results">
+                            Showing <b>@Model.LogisticsLocations.TotalCount</b> establishments
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="moj-pagination__results">
+                            Showing
+                            <b>@((Model.LogisticsLocations.CurrentPage - 1) * Model.LogisticsLocations.PageSize + 1)</b>
+                            -
+                            <b>@((Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize) > Model.LogisticsLocations.TotalCount ? Model.LogisticsLocations.TotalCount : (Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize))</b>
+                            of
+                            <b>@Model.LogisticsLocations.TotalCount</b>
+                            establishments
+                        </p>
+                    }
+                </nav>
+
+
             </div>
         </div>
     </feature>
 </form>
+
+

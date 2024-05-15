@@ -1,9 +1,11 @@
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Abstractions;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.Mvc;
+using System.Drawing.Printing;
 
 namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 
@@ -29,9 +31,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
     public DateTime AuthSignatorySubmittedDate { get; set; } = default!;
     public DateTime AuthSignatoryLastModifiedDate { get; set; } = default!;
     [BindProperty]
+    public string? SearchTerm { get; set; } = string.Empty;
+    [BindProperty]
     public string EstablishmentButtonText { get; set; } = "dispatch";
     public int ApprovalStatus { get; set; }
-    public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
+    public PagedList<LogisticsLocationDto>? LogisticsLocations { get; set; } = new PagedList<LogisticsLocationDto>();
     public string? NI_GBFlag { get; set; } = string.Empty;
     #endregion
 
@@ -47,12 +51,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id)
+    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 
         OrgId = Id;
         TradePartyId = _traderService.GetTradePartyByOrgIdAsync(OrgId).Result!.Id;
+        SearchTerm = searchTerm;
 
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
@@ -66,11 +71,13 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             EstablishmentButtonText = "destination";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, true))?
-            .Where(x => x.NI_GBFlag == NI_GBFlag)
-            .Where(x => x.ApprovalStatus != LogisticsLocationApprovalStatus.Rejected)
-            .OrderBy(x => x.CreatedDate)
-            .ToList();
+        LogisticsLocations = await _establishmentService.GetEstablishmentsForTradePartyAsync(
+            TradePartyId, 
+            false, 
+            searchTerm?.ToLower(), 
+            NI_GBFlag, 
+            pageNumber, 
+            pageSize);
 
         return Page();
     }
@@ -140,6 +147,16 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             new { id = orgId, NI_GBFlag });
     }
 
+    public IActionResult OnPostSearchEstablishmentAsync()
+    {
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId, SearchTerm }, "filter");
+    }
+
+    public IActionResult OnPostShowAllEstablishments()
+    {
+        return RedirectToPage(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = OrgId }, "filter");
+    }
+
     public async Task<IActionResult> OnGetViewEstablishment(Guid orgId, Guid locationId, string NI_GBFlag, LogisticsLocationApprovalStatus status)
     {
         if (status == LogisticsLocationApprovalStatus.Draft)
@@ -152,6 +169,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
-        else return await OnGetAsync(orgId);
+        else return await OnGetAsync(orgId, 1, 50, null);
+    }
+
+    public async Task<IActionResult> OnGetNavigateToPage(Guid orgId, int pageNumber)
+    {
+        return await OnGetAsync(orgId, pageNumber);
     }
 }

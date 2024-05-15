@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.UI.Core.Extensions;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
@@ -51,7 +52,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         //Arrange
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto>() { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.SaveEstablishmentDetails(It.IsAny<Guid?>(), It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>(), It.IsAny<string>(), It.IsAny<string?>()))
             .ThrowsAsync(new BadHttpRequestException("error message"));
@@ -80,7 +82,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -110,7 +113,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -139,7 +143,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -168,7 +173,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -197,7 +203,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -226,7 +233,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -255,7 +263,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -285,7 +294,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -315,7 +325,8 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
 
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false).Result).Returns(list);
+        var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));

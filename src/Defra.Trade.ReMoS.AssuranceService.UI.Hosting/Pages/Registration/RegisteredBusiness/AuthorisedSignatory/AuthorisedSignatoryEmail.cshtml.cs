@@ -74,7 +74,7 @@ public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEm
             countryFlag = "NI";
         }
 
-        var establishments = await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false);
+        var establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty))?.Items;
 
         if ( establishments != null && establishments.Any())
         {
@@ -135,7 +135,8 @@ public class AuthorisedSignatoryEmailModel : BasePageModel<AuthorisedSignatoryEm
                 Id = SignatoryId,
                 Name = tradeParty.AuthorisedSignatory?.Name,
                 Position = tradeParty.AuthorisedSignatory?.Position,
-                EmailAddress = Email
+                EmailAddress = Email,
+                LastModifiedDate = DateTime.UtcNow
             }
         };
     }

@@ -1,4 +1,5 @@
 ﻿using Defra.Trade.ReMoS.AssuranceService.Shared.Constants;
+using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Interfaces;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Services;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
@@ -6,6 +7,8 @@ using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.SelfServe;
 using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Management.ContainerRegistry.Fluent.Models;
+using Microsoft.Azure.Management.Monitor.Fluent.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Moq;
@@ -26,9 +29,9 @@ public class SelfServeDashboardTests : PageModelTestsBase
     public void TestCaseSetup()
     {
         _systemUnderTest = new SelfServeDashboardModel(
-            _mockLogger.Object, 
-            _mockTraderService.Object, 
-            _mockEstablishmentService.Object, 
+            _mockLogger.Object,
+            _mockTraderService.Object,
+            _mockEstablishmentService.Object,
             _checkAnswersService,
             _mockFeatureManager.Object)
         {
@@ -70,8 +73,10 @@ public class SelfServeDashboardTests : PageModelTestsBase
                 SubmittedDate = DateTime.Now,
             }
         };
-        var logisticsLocations = new List<LogisticsLocationDto>()
-        { new LogisticsLocationDto()
+        var logisticsLocations = new PagedList<LogisticsLocationDto>()
+        {
+            Items = new List<LogisticsLocationDto>() {
+            new LogisticsLocationDto()
             {
                 Id = Guid.NewGuid(),
                 NI_GBFlag = "GB",
@@ -82,36 +87,39 @@ public class SelfServeDashboardTests : PageModelTestsBase
                     Id = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cc")
                 }
             }
+            }
         };
 
         _mockTraderService
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), true).Result).Returns(logisticsLocations);
+        _mockEstablishmentService
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+            .Returns(logisticsLocations);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), 1, 50, null);
 
         //Assert
 
         _systemUnderTest.TradePartyId.Should().Be(guid);
         _systemUnderTest.BusinessName.Should().Be("TestPractice");
         _systemUnderTest.RmsNumber.Should().Be("RMS-GB-000002");
-        
+
         _systemUnderTest.ContactName.Should().Be("Joe Blogs");
         _systemUnderTest.ContactPosition.Should().Be("Sales rep");
         _systemUnderTest.ContactEmail.Should().Be("sd@sd.com");
         _systemUnderTest.ContactPhoneNumber.Should().Be("1234567890");
         _systemUnderTest.ContactLastModifiedDate.Should().Be(tradePartyDto.Contact.LastModifiedDate);
         _systemUnderTest.ContactSubmittedDate.Should().Be(tradePartyDto.Contact.SubmittedDate);
-        
+
         _systemUnderTest.AuthSignatoryName.Should().Be("John Doe");
         _systemUnderTest.AuthSignatoryPosition.Should().Be("Sales rep");
         _systemUnderTest.AuthSignatoryEmail.Should().Be("auth@sd.com");
         _systemUnderTest.AuthSignatoryLastModifiedDate.Should().Be(tradePartyDto.AuthorisedSignatory.LastModifiedDate);
         _systemUnderTest.AuthSignatorySubmittedDate.Should().Be(tradePartyDto.AuthorisedSignatory.SubmittedDate);
 
-        _systemUnderTest.LogisticsLocations!.FirstOrDefault()!.TradePartyId.Should().Be(guid);
+        _systemUnderTest.LogisticsLocations!.Items.FirstOrDefault()!.TradePartyId.Should().Be(guid);
     }
 
     [Test]
@@ -125,14 +133,14 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .Returns(Task.FromResult(tradePartyDto)!);
 
         //Act
-        await _systemUnderTest!.OnGetAsync(guid);
+        await _systemUnderTest!.OnGetAsync(guid, 1, 50, null);
 
         //Assert
 
         _systemUnderTest.TradePartyId.Should().Be(guid);
         _systemUnderTest.BusinessName.Should().BeNullOrEmpty();
         _systemUnderTest.RmsNumber.Should().BeNullOrEmpty();
-        
+
         _systemUnderTest.ContactName.Should().BeNullOrEmpty();
         _systemUnderTest.ContactPosition.Should().BeNullOrEmpty();
         _systemUnderTest.ContactEmail.Should().BeNullOrEmpty();
@@ -153,7 +161,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
         var orgId = Guid.NewGuid();
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.SelfServeUpdateContactPath,
-            new { id = orgId});
+            new { id = orgId });
 
         // Act
         var result = _systemUnderTest?.OnGetChangeContactDetails(orgId);
@@ -188,7 +196,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
     {
         _mockTraderService.Setup(x => x.ValidateOrgId(_systemUnderTest!.User.Claims, It.IsAny<Guid>())).Returns(false);
 
-        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
+        var result = await _systemUnderTest!.OnGetAsync(Guid.NewGuid(), 1, 50, null);
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
@@ -250,5 +258,42 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         var redirectResult = result as RedirectToPageResult;
         redirectResult!.PageName.Should().Be(path);
+    }
+
+    [Test]
+    public void OnPostSearchEstablishmentAsync_Redirects()
+    {
+        // arrage
+        var orgId = Guid.NewGuid();
+        _systemUnderTest!.OrgId = orgId;
+        _systemUnderTest.SearchTerm = "test";
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SearchTerm = "test" }, "filter");
+
+        // act
+        var result = _systemUnderTest!.OnPostSearchEstablishmentAsync();
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+    }
+
+    [Test]
+    public void OnPostShowAllEstablishmentsAsync_Redirects()
+    {
+        // arrage
+        var orgId = Guid.NewGuid();
+        _systemUnderTest!.OrgId = orgId;
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId }, "filter");
+
+        // act
+        var result = _systemUnderTest!.OnPostShowAllEstablishments();
+
+        // assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<RedirectToPageResult>();
+        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
     }
 }
