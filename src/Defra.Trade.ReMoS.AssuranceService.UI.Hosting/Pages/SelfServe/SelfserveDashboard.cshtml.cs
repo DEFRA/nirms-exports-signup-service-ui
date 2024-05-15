@@ -51,7 +51,7 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
         _featureManager = featureManager;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 50, string? searchTerm = null)
+    public async Task<IActionResult> OnGetAsync(Guid Id, int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
     {
         _logger.LogInformation("Entered {Class}.{Method}", nameof(SelfServeDashboardModel), nameof(OnGetAsync));
 

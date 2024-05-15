@@ -281,11 +281,11 @@
                 <!-- pagination -->
 
                 <nav class="moj-pagination" id="pagination-label">
-                    @if (Model.LogisticsLocations.TotalPages > 1)
-                    {
                         <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
-                        <ul class="moj-pagination__list">
 
+                        <ul class="moj-pagination__list">
+                        @if (Model.LogisticsLocations.TotalPages > 1)
+                        {
                             @if (Model.LogisticsLocations.HasPrevious)
                             {
                                 <li class="moj-pagination__item  moj-pagination__item--prev">
@@ -334,9 +334,9 @@
                                     </a>
                                 </li>
                             }
-
+                        }
                         </ul>
-                    }
+                    
 
                     @if (Model.LogisticsLocations.TotalCount == 1)
                     {
@@ -361,7 +361,7 @@
                         <p class="moj-pagination__results">
                             Showing
                             <b>@((Model.LogisticsLocations.CurrentPage - 1) * Model.LogisticsLocations.PageSize + 1)</b>
-                            to
+                            -
                             <b>@((Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize) > Model.LogisticsLocations.TotalCount ? Model.LogisticsLocations.TotalCount : (Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize))</b>
                             of
                             <b>@Model.LogisticsLocations.TotalCount</b>
