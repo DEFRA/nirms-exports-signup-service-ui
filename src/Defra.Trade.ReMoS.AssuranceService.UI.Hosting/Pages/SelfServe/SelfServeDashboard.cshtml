@@ -180,7 +180,7 @@
             </feature>
             <feature name="Nirms-Sus-SelfServeMvpPlus" negate="true">
                 <a class="govuk-button govuk-button--secondary"
-                   asp-page-handler="AddEstablishment" 
+                   asp-page-handler="AddEstablishment"
                    asp-route-orgid="@Model.OrgId"
                    asp-route-NI_GBFlag="@Model.NI_GBFlag">
                     Add a place of @Model.EstablishmentButtonText
@@ -199,7 +199,7 @@
             </div>
 
             <div class="govuk-grid-column-full">
-                <label for=filter class="govuk-label"> 
+                <label for=filter class="govuk-label">
                     Search by establishment name, postcode or RMS number
                 </label>
             </div>
@@ -232,7 +232,7 @@
             }
 
             <div class="govuk-grid-column-full">
-                <table class="govuk-table" data-module="moj-sortable-table">  
+                <table class="govuk-table" data-module="moj-sortable-table">
                     <caption class="govuk-table__caption  govuk-visually-hidden">
                         Places of @Model.EstablishmentButtonText signed-up by your business
                     </caption>
@@ -281,9 +281,9 @@
                 <!-- pagination -->
 
                 <nav class="moj-pagination" id="pagination-label">
-                        <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
-
-                        <ul class="moj-pagination__list">
+                    <p class="govuk-visually-hidden" aria-labelledby="pagination-label">Pagination navigation</p>
+                    <ul class="moj-pagination__list">
+                        
                         @if (Model.LogisticsLocations.TotalPages > 1)
                         {
                             @if (Model.LogisticsLocations.HasPrevious)
@@ -335,8 +335,9 @@
                                 </li>
                             }
                         }
-                        </ul>
-                    
+
+                    </ul>
+
 
                     @if (Model.LogisticsLocations.TotalCount == 1)
                     {
