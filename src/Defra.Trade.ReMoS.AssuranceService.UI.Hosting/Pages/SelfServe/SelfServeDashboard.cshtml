@@ -357,7 +357,7 @@
                         <p class="moj-pagination__results">
                             Showing
                             <b>@((Model.LogisticsLocations.CurrentPage - 1) * Model.LogisticsLocations.PageSize + 1)</b>
-                            -
+                            to
                             <b>@((Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize) > Model.LogisticsLocations.TotalCount ? Model.LogisticsLocations.TotalCount : (Model.LogisticsLocations.CurrentPage * Model.LogisticsLocations.PageSize))</b>
                             of
                             <b>@Model.LogisticsLocations.TotalCount</b>
