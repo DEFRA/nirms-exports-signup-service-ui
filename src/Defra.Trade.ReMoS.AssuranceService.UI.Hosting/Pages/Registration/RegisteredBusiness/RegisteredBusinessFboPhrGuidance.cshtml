@@ -13,10 +13,10 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-l">
-            You can still submit a sign-up request now
+            Your business must have an FBO or a PHR number to sign up for NIRMS
         </h1>
 
-        <p class="govuk-body">You can still submit a sign-up request for the NI Retail Movement Scheme, but you may also need to apply for an FBO or PHR number, depending on the goods that your business will move.</p>
+        <p class="govuk-body">Depending on the goods your business will move, you need to apply for an FBO or PHR number. When you've received the number, you can return to continue your sign-up request.</p>
 
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
@@ -27,8 +27,6 @@
             <div class="govuk-details__text">
                 <p class="govuk-body">Register for a PHR number by contacting the plant authority for the country where your business is based.</p>
 
-                <p class="govuk-body">When you receive it, you must provide your PHR number by contacting the Animal and Plant Health Agency (APHA) on 0300 1000 313.</p>
-
                 <p class="govuk-body">
                     For England or Wales, <a href="https://submit.forms.service.gov.uk/form/261/register-to-become-a-plant-health-professional-operator/498" target="_blank" rel="noopener noreferrer">
                         apply to become a plant
@@ -37,7 +35,7 @@
                 </p>
 
                 <p class="govuk-body">
-                    For Scotland, contact the Science and Advice for Scottish Agriculture (SASA) by email at <a href="mailto:hort.marketing@gov.sco">hort.marketing@gov.sco</a> or call them on 0131 244 8890.
+                    For Scotland, contact the Science and Advice for Scottish Agriculture (SASA) by email at <a href="mailto:hort.marketing@gov.sco">hort.marketing@gov.sco</a> or call SASA on 0131 244 8890.
                 </p>
 
                 <p class="govuk-body">For Northern Ireland, contact the Department of Agriculture, Environment and Rural Affairs (DAERA) on 0300 200 7847.</p>
@@ -53,25 +51,13 @@
             <div class="govuk-details__text">
                 <p class="govuk-body"><a href="https://www.gov.uk/food-business-registration" target="_blank" rel="noopener noreferrer">Register for an FBO number</a> with your local authority for free.</p>
 
-                <p class="govuk-body">When you receive it, you must provide your FBO number by contacting the Animal and Plant Health Agency (APHA) on 0300 1000 313.</p>
-            </div>
-        </details>
-
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    If your business is unable to get an FBO number or PHR number
-                </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">You can still submit a sign-up request for the NI Retail Movement Scheme.</p>
+                <p class="govuk-body">If your business cannot get an FBO number, call the Animal and Plant Health Agency (APHA) on 0300 1000 313.</p>
             </div>
         </details>
 
         <form method="post">
             <input type="hidden" asp-for="OrgId" />
             <div class="govuk-button-group">
-                <button class="govuk-button" data-module="govuk-button" asp-page-handler="submit" id="button-rbGuidanceSubmit">Continue</button>
                 <button class="govuk-button govuk-button--secondary" asp-page-handler="returntodashboard" id="btnReturnToDashboard">Return to dashboard</button>
             </div>
         </form>
