@@ -169,11 +169,11 @@ public class SelfServeDashboardModel : BasePageModel<SelfServeDashboardModel>
             return RedirectToPage(
                 Routes.Pages.Path.SelfServeViewEstablishmentPath, new { id = orgId, locationId, NI_GBFlag });
         }
-        else return await OnGetAsync(orgId, 1, 50, null);
+        else return await OnGetAsync(orgId, 1, 10, null);
     }
 
-    public async Task<IActionResult> OnGetNavigateToPage(Guid orgId, int pageNumber)
+    public async Task<IActionResult> OnGetNavigateToPage(Guid orgId, int pageNumber, string? searchTerm = null)
     {
-        return await OnGetAsync(orgId, pageNumber);
+        return await OnGetAsync(orgId, pageNumber, 10, searchTerm);
     }
 }

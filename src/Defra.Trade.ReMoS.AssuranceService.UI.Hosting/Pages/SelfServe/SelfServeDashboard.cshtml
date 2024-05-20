@@ -290,8 +290,10 @@
                             {
                                 <li class="moj-pagination__item  moj-pagination__item--prev">
                                     <a class="moj-pagination__link"
-                                       asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)">
+                                       asp-page-handler="NavigateToPage" 
+                                       asp-route-orgid="@Model.OrgId"
+                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)"
+                                       asp-route-searchTerm="@Model.SearchTerm">
                                         Previous
                                         <span class="govuk-visually-hidden"> set of pages</span>
                                     </a>
@@ -310,8 +312,10 @@
                                 {
                                     <li class="moj-pagination__item">
                                         <a class="moj-pagination__link"
-                                           asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                           asp-route-pageNumber="@pageNumber">
+                                           asp-page-handler="NavigateToPage" 
+                                           asp-route-orgid="@Model.OrgId"
+                                           asp-route-pageNumber="@pageNumber"
+                                           asp-route-searchTerm="@Model.SearchTerm">
                                             @pageNumber.ToString()
                                         </a>
                                     </li>
