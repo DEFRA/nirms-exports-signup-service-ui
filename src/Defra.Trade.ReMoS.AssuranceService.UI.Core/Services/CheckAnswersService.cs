@@ -140,7 +140,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.Services
 
         public string GetFboPhrProgress(TradePartyDto tradeParty)
         {
-            return string.IsNullOrEmpty(tradeParty.FboPhrOption) ? TaskListStatus.NOTSTART : TaskListStatus.COMPLETE;
+            return (string.IsNullOrEmpty(tradeParty.FboPhrOption) || tradeParty.FboPhrOption.ToUpper() == "NONE") ? TaskListStatus.NOTSTART : TaskListStatus.COMPLETE;
         }
     }
 }
