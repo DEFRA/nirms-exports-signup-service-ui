@@ -388,8 +388,8 @@ public class ApiIntegration : IApiIntegration
         int pageSize = 50)
     {
         var httpClient = CreateHttpClient();
-        var response = await httpClient.GetAsync(
-            $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&ni_gbFlag={NI_GBFlag}&pageNumber={pageNumber}&pageSize={pageSize}" + (searchTerm != null ? $"&searchTerm={searchTerm}" : ""));
+        var requestUrl = $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&ni_gbFlag={NI_GBFlag}&pageNumber={pageNumber}&pageSize={pageSize}" + (searchTerm != null ? $"&searchTerm={searchTerm.Replace("&", "%26")}" : "");
+        var response = await httpClient.GetAsync(requestUrl);
 
         if (response.IsSuccessStatusCode)
         {
