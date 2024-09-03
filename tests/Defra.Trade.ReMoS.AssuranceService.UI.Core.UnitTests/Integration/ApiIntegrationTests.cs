@@ -1,5 +1,6 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.Shared.DTO;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
@@ -285,7 +286,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_AddTradePartyAsync()
     {
         // Arrange
@@ -330,7 +330,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAsync()
     {
         // Arrange
@@ -421,7 +420,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAddressAsync()
     {
         // Arrange
@@ -512,7 +510,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Returns_BadHttpRequestException_When_Calling_AddAddressToPartyAsync_WithBadData()
     {
         // Arrange
@@ -693,7 +690,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactAsync()
     {
         // Arrange
@@ -738,7 +734,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactSelfServeAsync()
     {
         // Arrange
@@ -783,7 +778,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAuthRepSelfServeAsync()
     {
         // Arrange
@@ -873,7 +867,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "Establishment already exists")]
     public async Task Integration_Returns_Already_Exists_Calling_AddEstablishmentToPartyAsync()
     {
         // Arrange
@@ -919,7 +912,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_CreateEstablishmentAsync()
     {
         var logisticsLocationDto = new LogisticsLocationDto
@@ -1000,7 +992,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(NotImplementedException), "Work in Progress")]
     public async Task Integration_Returns_LogisticsLocations_When_Calling_GetEstablishmentsForTradePartyAsync()
     {
         // Arrange
@@ -1251,7 +1242,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateEstablishmentAsync()
     {
         // Arrange
@@ -1372,7 +1362,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Returns_BadHttpException_When_Calling_GetTradePartyByOrgIdAsync()
     {
         // Arrange
