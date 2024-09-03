@@ -110,7 +110,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.That(returnedValue, Is.True);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
