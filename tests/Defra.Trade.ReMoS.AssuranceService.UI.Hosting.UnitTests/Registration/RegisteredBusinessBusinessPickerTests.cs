@@ -19,7 +19,7 @@ public class RegisteredBusinessBusinessPickerTests
     protected Mock<ILogger<RegisteredBusinessBusinessPickerModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
     protected Mock<IUserService> _mockUserService = new();
-    Mock<HttpContext> _httpContextMock = new();
+    private Mock<HttpContext> _httpContextMock = new();
 
     [SetUp]
     public void TestCaseSetup()
@@ -61,12 +61,11 @@ public class RegisteredBusinessBusinessPickerTests
         .Setup(x => x.GetDefraOrgsForUser(It.IsAny<ClaimsPrincipal>()))
         .Returns(userOrgs);
 
-
         //Act
         _systemUnderTest!.OnGet();
 
         //Assert
-            // Includes choose business & Another business options
+        // Includes choose business & Another business options
         _systemUnderTest.BusinessSelectList.Count.Should().Be(10);
     }
 
@@ -85,7 +84,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -128,7 +127,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -164,7 +163,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -190,7 +189,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -215,7 +214,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -236,7 +235,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -257,7 +256,7 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -287,8 +286,9 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
+
     [Test]
     public async Task OnPostSubmitAsync_WhenOrgNotEnrolledAndUserIsNotAdmin_ReturnRegisterBusinessForExporterServiceNonAdminPage()
     {
@@ -316,8 +316,9 @@ public class RegisteredBusinessBusinessPickerTests
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
+
     [Test]
     public async Task OnPostSubmitAsync_WhenOrgNotEnrolledAndUserNotFoundInToken_ReturnModelError()
     {
@@ -428,6 +429,6 @@ public class RegisteredBusinessBusinessPickerTests
         var result = await _systemUnderTest!.OnGetRefreshBusinesses();
 
         // Assert
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 }

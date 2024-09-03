@@ -169,8 +169,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 
     [Test]
@@ -187,8 +187,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 
     [Test]
@@ -221,10 +221,9 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
-
 
     [TestCase(LogisticsLocationApprovalStatus.None)]
     [TestCase(LogisticsLocationApprovalStatus.Rejected)]
@@ -275,8 +274,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 
     [Test]
@@ -293,7 +292,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 }

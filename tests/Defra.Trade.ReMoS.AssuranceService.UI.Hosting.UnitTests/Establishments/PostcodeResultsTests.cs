@@ -14,7 +14,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
         private PostcodeResultModel? _systemUnderTest;
         protected Mock<ILogger<PostcodeResultModel>> _mockLogger = new();
         protected Mock<IEstablishmentService> _mockEstablishmentService = new();
-        protected Mock<ITraderService> _mockTraderService = new();        
+        protected Mock<ITraderService> _mockTraderService = new();
 
         [SetUp]
         public void TestCaseSetup()
@@ -33,7 +33,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             // arrange
             var logisticsLocations = new List<AddressDto>
             {
-                new AddressDto("1234", null, null, null, null, null, "TES1")
+                new AddressDto("1234", null, null, null, null, 0, null, 0, null, "TES1", null, null, null, null, "123", 0, 0)
                 {
                     Address = "Test 2, line 1, city, TES1"
                 }
@@ -50,7 +50,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _systemUnderTest.EstablishmentsList.Should().HaveCount(1);
             _systemUnderTest.EstablishmentsList![0].Text.Should().Be("Test 2, line 1, city, TES1");
             _systemUnderTest.EstablishmentsList[0].Value.Should().Be(logisticsLocations[0].Uprn);
-            }
+        }
 
         [Test]
         public async Task OnPostSubmitAsync_ShouldBeValid()

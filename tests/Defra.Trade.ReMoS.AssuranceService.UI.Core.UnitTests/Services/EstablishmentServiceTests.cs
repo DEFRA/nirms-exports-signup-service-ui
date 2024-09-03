@@ -61,7 +61,6 @@ public class EstablishmentServiceTests
         returnedValue.Should().Be(logisticsLocationDto);
     }
 
-
     [Test]
     public async Task Service_Returns_LogisticsLocationDTO_When_Calling_GetEstablishmentByIdAsync()
     {
@@ -111,8 +110,6 @@ public class EstablishmentServiceTests
         _mockApiIntegration.Verify();
         returnedValue.Should().BeSameAs(logisticsLocations);
     }
-
-
 
     [Test]
     public async Task Service_Returns_True_When_Calling_RemoveEstablishmentFromPartyAsync()
@@ -166,7 +163,7 @@ public class EstablishmentServiceTests
         // Arrange
         _establishmentService = new EstablishmentService(_mockApiIntegration.Object);
         var postcode = "TES1";
-        var addressDto = new AddressDto("123", null, null, null, null, null, postcode);
+        var addressDto = new AddressDto("1234", null, null, null, null, 0, null, 0, null, postcode, null, null, null, null, "123", 0, 0);
         var addressesDto = new List<AddressDto>()
         {
             addressDto
@@ -278,7 +275,6 @@ public class EstablishmentServiceTests
                 PostCode = "TES1"
             },
             ApprovalStatus = LogisticsLocationApprovalStatus.Draft,
-            
         };
         var establishmentDto = new LogisticsLocationDto()
         {
@@ -323,7 +319,6 @@ public class EstablishmentServiceTests
                 PostCode = "TES1"
             },
             ApprovalStatus = approvalStatus,
-
         };
         _mockApiIntegration.Setup(x => x.GetEstablishmentByIdAsync(It.IsAny<Guid>())).ReturnsAsync(establishmentFromApi);
 
@@ -333,6 +328,4 @@ public class EstablishmentServiceTests
         // assert
         result.Should().Be(isEstablishment);
     }
-
-
 }

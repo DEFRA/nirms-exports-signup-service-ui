@@ -22,7 +22,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsTrue(returnedValue);
+            Assert.That(returnedValue, Is.True);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.True);
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -285,7 +285,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -328,7 +328,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.GetAuthorisedSignatoryProgress(TradePartyDTO);
 
             // Assert
-            Assert.AreSame(TaskListStatus.CANNOTSTART, returnedValue);
+            Assert.That(returnedValue, Is.SameAs(TaskListStatus.CANNOTSTART));
         }
 
         [Test]
@@ -375,7 +375,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.GetAuthorisedSignatoryProgress(TradePartyDTO);
 
             // Assert
-            Assert.AreSame(TaskListStatus.COMPLETE, returnedValue);
+            Assert.That(returnedValue, Is.SameAs(TaskListStatus.COMPLETE));
         }
 
         [Test]
@@ -419,7 +419,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.GetAuthorisedSignatoryProgress(TradePartyDTO);
 
             // Assert
-            Assert.AreSame(TaskListStatus.INPROGRESS, returnedValue);
+            Assert.That(returnedValue, Is.SameAs(TaskListStatus.INPROGRESS));
         }
 
         [Test]
@@ -458,7 +458,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.GetEligibilityProgress(TradePartyDTO);
 
             // Assert
-            Assert.AreSame(TaskListStatus.NOTSTART, returnedValue);
+            Assert.That(returnedValue, Is.SameAs(TaskListStatus.NOTSTART));
         }
 
         [Test]
@@ -517,7 +517,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.IsLogisticsLocationsDataPresent(TradePartyDTO, logistics);
 
             // Assert
-            Assert.IsTrue(returnedValue);
+            Assert.That(returnedValue, Is.True);
         }
 
         [Test]
@@ -562,7 +562,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.IsLogisticsLocationsDataPresent(TradePartyDTO, logistics);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -607,7 +607,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.IsLogisticsLocationsDataPresent(TradePartyDTO, logistics);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -653,7 +653,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -695,7 +695,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
 
         [Test]
@@ -737,9 +737,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
-
 
         [Test]
         public void ReadyForCheckAnswers_Returns_False_When_GetAuthorisedSignatoryNotStarted()
@@ -754,7 +753,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 TradeCountry = "England"
             };
 
-            TradeContactDto TradeContactDTO = new TradeContactDto 
+            TradeContactDto TradeContactDTO = new TradeContactDto
             {
                 PersonName = "Test",
                 Email = "test@test.com",
@@ -780,7 +779,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var returnedValue = _checkAnswersService.ReadyForCheckAnswers(TradePartyDTO);
 
             // Assert
-            Assert.IsFalse(returnedValue);
+            Assert.That(returnedValue, Is.False);
         }
     }
 }

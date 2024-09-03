@@ -26,7 +26,7 @@ internal class ApiIntegrationTests
     private readonly Mock<IAuthenticationService> _mockAuthenticationService = new();
 
     [SetUp]
-    public void Setup() 
+    public void Setup()
     {
         var appConfigurationSettings = new AppConfigurationService
         {
@@ -40,7 +40,7 @@ internal class ApiIntegrationTests
     public async Task Integration_Returns_TradeParties_When_Calling_GetAllTradePartiesAsync()
     {
         // Arrange
-        var tradeParties = new List<TradePartyDto> {  new TradePartyDto(), new TradePartyDto() };
+        var tradeParties = new List<TradePartyDto> { new TradePartyDto(), new TradePartyDto() };
 
         var jsonString = JsonConvert.SerializeObject(tradeParties);
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -283,7 +283,6 @@ internal class ApiIntegrationTests
         _mockHttpClientFactory.Verify();
         returnedValue!.Should().Be(guid);
     }
-
 
     [Test]
     [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
@@ -693,7 +692,6 @@ internal class ApiIntegrationTests
         returnedValue!.Should().Be(guid);
     }
 
-
     [Test]
     [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactAsync()
@@ -867,7 +865,7 @@ internal class ApiIntegrationTests
         _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
 
         // Act
-        var returnedValue = await _apiIntegration.AddEstablishmentToPartyAsync(partyId,logisticsLocationDto);
+        var returnedValue = await _apiIntegration.AddEstablishmentToPartyAsync(partyId, logisticsLocationDto);
 
         // Assert
         _mockHttpClientFactory.Verify();
@@ -920,7 +918,6 @@ internal class ApiIntegrationTests
         _mockHttpClientFactory.Verify();
     }
 
-
     [Test]
     [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_CreateEstablishmentAsync()
@@ -957,7 +954,7 @@ internal class ApiIntegrationTests
         _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
 
         // Act
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddEstablishmentToPartyAsync(partyId,logisticsLocationDto));
+        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddEstablishmentToPartyAsync(partyId, logisticsLocationDto));
 
         // Assert
         _mockHttpClientFactory.Verify();
@@ -1078,7 +1075,7 @@ internal class ApiIntegrationTests
         };
         IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
-        var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver= new CamelCasePropertyNamesContractResolver() });
+        var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
         var expectedResponse = new HttpResponseMessage
@@ -1159,7 +1156,7 @@ internal class ApiIntegrationTests
 
         // Assert
         _mockHttpClientFactory.Verify();
-    }       
+    }
 
     [Test]
     public async Task Integration_Returns_TradePartyDTO_When_Calling_UpdateAuthorisedSignatoryAsync()
@@ -1289,7 +1286,6 @@ internal class ApiIntegrationTests
         // Act
         await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateEstablishmentAsync(logisticsLocationDto));
 
-
         // Assert
         _mockHttpClientFactory.Verify();
     }
@@ -1299,7 +1295,7 @@ internal class ApiIntegrationTests
     {
         // arrange
         var postcode = "TES1";
-        var addressDto = new AddressDto("123", null, null, null, null, null, postcode);
+        var addressDto = new AddressDto("1234", null, null, null, null, 0, null, 0, null, postcode, null, null, null, null, "123", 0, 0);
         var addressesDto = new List<AddressDto>()
         {
             addressDto
@@ -1347,7 +1343,7 @@ internal class ApiIntegrationTests
                 LineOne = "line 1",
                 CityName = "city",
                 PostCode = "TES1",
-            }    
+            }
         };
         var jsonString = JsonConvert.SerializeObject(logisticsLocation, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
