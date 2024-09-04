@@ -174,8 +174,8 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
+        Assert.That(((RedirectToPageResult)result!).RouteValues, Is.EqualTo(expected.RouteValues));
     }
 
     [Test]
@@ -210,7 +210,6 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         _systemUnderTest.ContentText.Should().Be(expectedContentText);
     }
 
-
     [Test]
     public async Task OnGetAsync_InvalidOrgId()
     {
@@ -236,5 +235,4 @@ public class ConfirmEstablishmentDetailsTests : PageModelTestsBase
         result.GetType().Should().Be(typeof(RedirectToPageResult));
         ((RedirectToPageResult)result).PageName.Should().Be(Routes.Pages.Path.EstablishmentErrorPath);
     }
-
 }

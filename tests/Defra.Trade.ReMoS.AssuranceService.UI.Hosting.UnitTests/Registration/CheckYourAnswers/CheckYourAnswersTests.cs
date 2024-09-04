@@ -52,7 +52,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // assert
 
             result.Should().BeOfType<RedirectToPageResult>();
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+            Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             var orgId = Guid.NewGuid();
             var tradePartyId = Guid.NewGuid();
             var NI_GBFlag = "NI";
-            var logisticsLocations = new Core.Helpers.PagedList<LogisticsLocationDto>{ };
+            var logisticsLocations = new Core.Helpers.PagedList<LogisticsLocationDto> { };
             var logisticsLocation = new LogisticsLocationDto()
             {
                 Id = Guid.NewGuid(),
@@ -120,8 +120,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             // assert
             var expected = new RedirectToPageResult(Routes.Pages.Path.RegistrationTaskListPath, new { id = orgId, NI_GBFlag });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+            Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
+            Assert.That(((RedirectToPageResult)result!).RouteValues, Is.EqualTo(expected.RouteValues));
         }
 
         [Test]
@@ -137,8 +137,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             // assert
             var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentNameAndAddressPath, new { id = orgId, establishmentId, NI_GBFlag });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+            Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
+            Assert.That(((RedirectToPageResult)result!).RouteValues, Is.EqualTo(expected.RouteValues));
         }
 
         [Test]
@@ -154,8 +154,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
 
             // assert
             var expected = new RedirectToPageResult(Routes.Pages.Path.EstablishmentContactEmailPath, new { id = orgId, locationId = establishmentId, NI_GBFlag });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+            Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
+            Assert.That(((RedirectToPageResult)result!).RouteValues, Is.EqualTo(expected.RouteValues));
         }
 
         [Test]
@@ -181,8 +181,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // assert
             var expected =
                 new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = tradePartyId });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+            Assert.That(((RedirectToPageResult)result.Result!).PageName, Is.EqualTo(expected.PageName));
+            Assert.That(((RedirectToPageResult)result.Result!).RouteValues, Is.EqualTo(expected.RouteValues));
         }
 
         [Test]
@@ -208,8 +208,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // assert
             var expected =
                 new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = tradePartyId });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+            Assert.That(((RedirectToPageResult)result.Result!).PageName, Is.EqualTo(expected.PageName));
+            Assert.That(((RedirectToPageResult)result.Result!).RouteValues, Is.EqualTo(expected.RouteValues));
         }
 
         [Test]
@@ -228,8 +228,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // assert
             var expected =
                 new RedirectToPageResult(Routes.Pages.Path.RegistrationTaskListPath, new { id = tradePartyId });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+            Assert.That(((RedirectToPageResult)result.Result!).PageName, Is.EqualTo(expected.PageName));
+            Assert.That(((RedirectToPageResult)result.Result!).RouteValues, Is.EqualTo(expected.RouteValues));
         }
 
         [Test]

@@ -89,8 +89,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             // assert
             var expected =
                 new RedirectToPageResult(Routes.Pages.Path.RegistrationTermsAndConditionsPath, new { id = orgId });
-            Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result.Result!).PageName);
-            Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result.Result!).RouteValues);
+            Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result.Result!).PageName));
+            Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result.Result!).RouteValues));
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         public void RetrieveGB_NIFLAG_TESTS(string remosNumber, string expectedResult)
         {
             var actualResult = _systemUnderTest!.RetrieveGB_NIFLAG(remosNumber);
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
     }
 }

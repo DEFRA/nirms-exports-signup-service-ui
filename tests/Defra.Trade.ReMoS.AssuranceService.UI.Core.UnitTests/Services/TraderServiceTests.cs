@@ -288,8 +288,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDto 
-            { 
+            var tradePartyDto = new TradePartyDto
+            {
                 Id = Guid.NewGuid(),
             };
             _mockApiIntegration
@@ -333,12 +333,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDto 
-            { 
-                Id = Guid.NewGuid(), 
+            var tradePartyDto = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
                 RegulationsConfirmed = true,
-                Address = new TradeAddressDto { TradeCountry = "GB" }, 
-                TermsAndConditionsSignedDate = DateTime.Now 
+                Address = new TradeAddressDto { TradeCountry = "GB" },
+                TermsAndConditionsSignedDate = DateTime.Now
             };
             _mockApiIntegration
                 .Setup(x => x.GetTradePartyByOrgIdAsync(It.IsAny<Guid>()))
@@ -358,8 +358,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             // Arrange
             _traderService = new TraderService(_mockApiIntegration.Object);
             var orgId = Guid.NewGuid();
-            var tradePartyDto = new TradePartyDto { Id = Guid.NewGuid(), 
-                Address = new TradeAddressDto { TradeCountry = "GB" }, 
+            var tradePartyDto = new TradePartyDto
+            {
+                Id = Guid.NewGuid(),
+                Address = new TradeAddressDto { TradeCountry = "GB" },
                 TermsAndConditionsSignedDate = DateTime.Now,
                 ApprovalStatus = TradePartyApprovalStatus.Rejected
             };
@@ -466,7 +468,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var result = _traderService!.ValidateOrgId(claims, guid);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -485,7 +487,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var result = _traderService!.ValidateOrgId(claims, guid);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -501,14 +503,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
                 NatureOfBusiness = "Wholesale Hamster Supplies",
                 CountryName = "United Kingdom",
                 OrgId = Guid.NewGuid(),
-                SignUpRequestSubmittedBy = Guid.NewGuid()                
+                SignUpRequestSubmittedBy = Guid.NewGuid()
             };
 
             // Act
             var result = _traderService!.IsTradePartySignedUp(tradePartyDTO);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -531,7 +533,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var result = _traderService!.IsTradePartySignedUp(tradePartyDTO);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -557,7 +559,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var result = await _traderService!.GetDefraOrgApprovalStatus(Guid.NewGuid());
 
             // Assert
-            Assert.AreEqual(TradePartyApprovalStatus.NotSignedUp, result);
+            Assert.That(TradePartyApprovalStatus.NotSignedUp, Is.EqualTo(result));
         }
 
         [Test]
@@ -581,7 +583,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var result = await _traderService!.GetDefraOrgApprovalStatus(tradePartyDTO.Id);
 
             // Assert
-            Assert.AreEqual(TradePartyApprovalStatus.SignupStarted, result);
+            Assert.That(result, Is.EqualTo(TradePartyApprovalStatus.SignupStarted));
         }
 
         [Test]
@@ -621,7 +623,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             var result = await _traderService.GetTradePartyByOrgIdAsync(orgId);
 
             // assert
-            Assert.AreEqual(tradePartyDTO, result);
+            Assert.That(tradePartyDTO, Is.EqualTo(result));
         }
 
         [Test]
@@ -645,6 +647,5 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Core.UnitTests.Services
             result.Should().NotBeNull();
             result.Should().Be(expected.PracticeName);
         }
-
     }
 }
