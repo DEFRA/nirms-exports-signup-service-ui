@@ -25,5 +25,5 @@ public interface IApiIntegration
     Task<Guid> UpdateTradePartyAuthRepSelfServeAsync(TradePartyDto tradePartyToUpdate);
     Task<bool> UpdateEstablishmentSelfServeAsync(LogisticsLocationDto establishmentDto);
     Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
-        Guid tradePartyId, bool includeRejected, string? searchTerm, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50);
+        Guid tradePartyId, bool includeRejected, string? searchTerm, string? sortColumn, string? sortDirection, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50);
 }

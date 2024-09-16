@@ -43,7 +43,7 @@ public class ApiIntegration : IApiIntegration
     {
         var httpClient = CreateHttpClient();
         var response = await httpClient.GetAsync("TradeParties");
-        
+
         response.EnsureSuccessStatusCode();
 
         return await JsonSerializer.DeserializeAsync<List<TradePartyDto>>(
@@ -94,7 +94,6 @@ public class ApiIntegration : IApiIntegration
             throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
         }
     }
-
 
     /// <summary>
     /// Adds a new trade party
@@ -285,7 +284,6 @@ public class ApiIntegration : IApiIntegration
         throw new BadHttpRequestException(ErrorMessages.NULLRETURNFROMAPI);
     }
 
-
     public async Task<Guid> UpdateTradePartyAuthRepSelfServeAsync(TradePartyDto tradePartyToUpdate)
     {
         Guid results = Guid.Empty;
@@ -380,15 +378,17 @@ public class ApiIntegration : IApiIntegration
     /// <param name="tradePartyId"></param>
     /// <returns>List of establishments</returns>
     public async Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
-        Guid tradePartyId, 
+        Guid tradePartyId,
         bool includeRejected,
         string? searchTerm,
+        string? sortColumn,
+        string? sortDirection,
         string? NI_GBFlag,
         int pageNumber = 1,
         int pageSize = 50)
     {
         var httpClient = CreateHttpClient();
-        var requestUrl = $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&ni_gbFlag={NI_GBFlag}&pageNumber={pageNumber}&pageSize={pageSize}" + (searchTerm != null ? $"&searchTerm={searchTerm.Replace("&", "%26")}" : "");
+        var requestUrl = $"Establishments/Party/{tradePartyId}?includeRejected={includeRejected}&ni_gbFlag={NI_GBFlag}&sortColumn={sortColumn}&sortDirection={sortDirection}&pageNumber={pageNumber}&pageSize={pageSize}" + (searchTerm != null ? $"&searchTerm={searchTerm.Replace("&", "%26")}" : "");
         var response = await httpClient.GetAsync(requestUrl);
 
         if (response.IsSuccessStatusCode)
@@ -478,7 +478,6 @@ public class ApiIntegration : IApiIntegration
         Application.Json);
 
         var response = await httpClient.PutAsync($"TradeParties/Authorised-Signatory/{tradePartyToUpdate.Id}", requestBody);
-
 
         response.EnsureSuccessStatusCode();
 

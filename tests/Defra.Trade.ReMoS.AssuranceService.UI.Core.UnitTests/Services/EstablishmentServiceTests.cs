@@ -48,13 +48,13 @@ public class EstablishmentServiceTests
 
         var logisticsLocationDto = new PagedList<LogisticsLocationDto>();
 
-        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+        _mockApiIntegration.Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
         _mockApiIntegration
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns(Task.FromResult(logisticsLocationDto)!);
 
         // Act
-        var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>());
+        var returnedValue = await _establishmentService.GetEstablishmentsForTradePartyAsync(expectedGuid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>());
 
         // Assert
         _mockApiIntegration.Verify();

@@ -272,7 +272,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
             _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
             _mockEstablishmentService
-                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
                 .Returns(list);
             //Act
             await _systemUnderTest.OnGetRemoveEstablishment(new Guid(), new Guid(), new Guid());
@@ -295,7 +295,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
             _mockEstablishmentService.Setup(x => x.GetEstablishmentByIdAsync(logisticsLocation.Id)).ReturnsAsync(logisticsLocation);
             _mockEstablishmentService.Setup(x => x.UpdateEstablishmentDetailsAsync(logisticsLocation));
             _mockEstablishmentService
-                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
                 .Returns(list);
 
             //Act
@@ -419,7 +419,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Establishments
 
             _mockTraderService.Setup(x => x.IsTradePartySignedUp(It.IsAny<TradePartyDto>())).Returns(false);
             _mockEstablishmentService
-                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
                 .Returns(new PagedList<LogisticsLocationDto>());
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>())).ReturnsAsync(tradeParty);
 

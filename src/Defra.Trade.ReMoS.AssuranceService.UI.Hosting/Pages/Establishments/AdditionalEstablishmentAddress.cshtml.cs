@@ -26,7 +26,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
         IEstablishmentService establishmentService,
         ITraderService traderService,
         ICheckAnswersService checkAnswersService) : base(logger, traderService, establishmentService, checkAnswersService)
-    {}
+    { }
 
     public async Task<IActionResult> OnGetAsync(Guid id, string NI_GBFlag = "GB")
     {
@@ -58,7 +58,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
             ContentText = "dispatch";
         }
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, this.NI_GBFlag))?.Items;
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty, string.Empty, this.NI_GBFlag))?.Items;
 
         PracticeName = (await _traderService.GetTradePartyByIdAsync(TradePartyId))?.PracticeName ?? string.Empty;
 
@@ -84,7 +84,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
         if (AddAddressesComplete != null && AddAddressesComplete.Equals("no", StringComparison.OrdinalIgnoreCase))
         {
             return RedirectToPage(
-                Routes.Pages.Path.EstablishmentPostcodeSearchPath, 
+                Routes.Pages.Path.EstablishmentPostcodeSearchPath,
                 new { id = OrgId, NI_GBFlag });
         }
         TradePartyDto? tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
@@ -130,7 +130,7 @@ public class AdditionalEstablishmentAddressModel : BasePageModel<AdditionalEstab
         logisticsLocation!.IsRemoved = true;
         await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false, string.Empty, string.Empty))?.Items;
+        LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false, string.Empty, string.Empty, string.Empty, string.Empty))?.Items;
 
         if (LogisticsLocations?.Count > 0)
             return await OnGetAsync(orgId, NI_GBFlag);

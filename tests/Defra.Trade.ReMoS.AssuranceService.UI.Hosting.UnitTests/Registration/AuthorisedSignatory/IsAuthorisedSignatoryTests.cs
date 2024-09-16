@@ -15,7 +15,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
         protected Mock<ILogger<IsAuthorisedSignatoryModel>> _mockLogger = new();
         protected Mock<ITraderService> _mockTraderService = new();
-        protected Mock<IEstablishmentService> _mockEstablishmentService = new();       
+        protected Mock<IEstablishmentService> _mockEstablishmentService = new();
 
         [SetUp]
         public void TestCaseSetup()
@@ -30,7 +30,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
         public async Task OnGet_PopulateModelProperties()
         {
             //Arrange
-            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");            
+            var tradePartyId = new Guid("50919f18-fb85-450a-81a9-a25e7cebc0ff");
 
             _mockTraderService
                 .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
@@ -44,7 +44,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
 
             //Assert
             _systemUnderTest.TradePartyId.Should().NotBeEmpty();
-            _systemUnderTest.SignatoryId.Should().BeEmpty();              
+            _systemUnderTest.SignatoryId.Should().BeEmpty();
             _systemUnderTest.IsAuthorisedSignatory.Should().Be(null);
         }
 
@@ -58,7 +58,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             //Act
             await _systemUnderTest.OnPostSubmitAsync();
 
-            //Assert            
+            //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
             _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select 'yes' if Joe Blogs is the authorised representative");
         }
@@ -73,11 +73,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             //Act
             await _systemUnderTest.OnPostSaveAsync();
 
-            //Assert            
+            //Assert
             _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
             _systemUnderTest.ModelState.Values.First().Errors[0].ErrorMessage.Should().Be($"Select 'yes' if Joe Blogs is the authorised representative");
         }
-
 
         [Test]
         public async Task OnPostSubmit_SignatoryTrue_RedirectToEstablishments()
@@ -291,7 +290,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
                 });
 
             _mockEstablishmentService
-                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+                .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
                 .Returns(new PagedList<LogisticsLocationDto>()
                 {
                     Items = new List<LogisticsLocationDto>()
@@ -312,7 +311,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.A
             var validation = ValidateModel(_systemUnderTest);
             validation.Count.Should().Be(0);
         }
-
 
         [Test]
         public async Task OnPostSave_SignatoryFalse_AuthorisedSignatoryNamePath()

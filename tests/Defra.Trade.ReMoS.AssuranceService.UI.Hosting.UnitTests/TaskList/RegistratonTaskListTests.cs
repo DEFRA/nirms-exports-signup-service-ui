@@ -122,7 +122,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns(Task.FromResult(pagedList)!);
 
         //Act
@@ -228,7 +228,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(pagedList)!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(pagedList)!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -289,7 +289,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns(Task.FromResult(list)!);
 
         //Act

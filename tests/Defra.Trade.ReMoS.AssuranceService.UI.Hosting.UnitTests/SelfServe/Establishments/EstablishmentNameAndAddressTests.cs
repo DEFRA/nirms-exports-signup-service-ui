@@ -53,11 +53,10 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto>() { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.SaveEstablishmentDetails(It.IsAny<Guid?>(), It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>(), It.IsAny<string>(), It.IsAny<string?>()))
             .ThrowsAsync(new BadHttpRequestException("error message"));
-
 
         _systemUnderTest!.EstablishmentName = "Test name";
         _systemUnderTest!.LineOne = "Line one";
@@ -67,7 +66,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.PostCode = "TES1";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -83,7 +82,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -98,7 +97,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -114,7 +113,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -129,7 +128,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -144,7 +143,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -159,7 +158,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -174,7 +173,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -189,7 +188,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -204,7 +203,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -219,7 +218,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -234,7 +233,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -249,7 +248,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
@@ -264,7 +263,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -279,13 +278,12 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         // Assert
         validation.Contains(new ValidationResult("County must be 100 characters or less"));
     }
-
 
     [Test]
     public void OnPostSubmit_SubmitInvalidCounty_PostcodeNICheckFailed()
@@ -295,7 +293,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -310,7 +308,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "NI";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -326,7 +324,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         var list = new List<LogisticsLocationDto> { new LogisticsLocationDto { Name = "Test name",
             Address = new TradeAddressDto { Id = Guid.Parse("00000000-0000-0000-0000-000000000000"), LineOne = "Line one", LineTwo = "Line two", CityName = "City", County = "Berkshire", PostCode = "TES1" } } };
         var pagedList = new PagedList<LogisticsLocationDto> { Items = list };
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(new Guid(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result).Returns(pagedList);
         _mockEstablishmentService
             .Setup(action => action.CreateEstablishmentForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<LogisticsLocationDto>()).Result)
             .Throws(new BadHttpRequestException("error message"));
@@ -341,7 +339,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.NI_GBFlag = "GB";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
 
         //Assert
         _systemUnderTest.ModelState.ErrorCount.Should().Be(1);
@@ -359,7 +357,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest!.PostCode = "";
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -378,7 +376,7 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
         _systemUnderTest.ModelState.AddModelError(string.Empty, "There is something wrong with input");
 
         //Act
-       _systemUnderTest.OnPostSubmit();
+        _systemUnderTest.OnPostSubmit();
         var validation = ValidateModel(_systemUnderTest);
 
         //Assert
@@ -512,13 +510,12 @@ public class EstablishmentNameAndAddressTests : PageModelTestsBase
             .ReturnsAsync(It.IsAny<Guid?>());
 
         // act
-        var result =_systemUnderTest.OnPostSubmit();
+        var result = _systemUnderTest.OnPostSubmit();
 
         // assert
         var redirectResult = result as RedirectToPageResult;
 
         redirectResult!.PageName.Should().Be(Routes.Pages.Path.SelfServeEstablishmentContactEmailPath);
-
     }
 
     [Test]

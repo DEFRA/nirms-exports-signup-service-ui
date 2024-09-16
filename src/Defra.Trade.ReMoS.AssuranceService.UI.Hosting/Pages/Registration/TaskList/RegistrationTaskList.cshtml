@@ -3,6 +3,10 @@
 @using Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Constants;
 @model Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList.RegistrationTaskListModel
 @{
+    ViewData["Title"] = "Sign up for the NI Retail Movement Scheme";
+}
+
+@{
     string GetStatusColour(string progressStatus)
     {
         switch(progressStatus)
