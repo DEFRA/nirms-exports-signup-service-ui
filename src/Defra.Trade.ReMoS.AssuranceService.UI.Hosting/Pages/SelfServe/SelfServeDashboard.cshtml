@@ -6,6 +6,7 @@
     ViewData["Title"] = "Self serve dashboard";
 }
 @{
+
     string GetStatusColour(string approvalStatus, int traderStatus)
     {
         if (traderStatus == 5)
@@ -40,8 +41,10 @@
 }
 
 <form method="post" novalidate>
-    <input type="hidden" asp-for="OrgId" />
-    <input type="hidden" asp-for="NI_GBFlag" />
+    <input type="hidden" id="Id" asp-for="OrgId" />
+    <input type="hidden" id ="NI_GBFlag" asp-for="NI_GBFlag" />
+    <input type="hidden" id="sortColumn" asp-for="SortColumn" />
+    <input type="hidden" id="sortDirection" asp-for="SortDirection" /> 
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
@@ -230,7 +233,7 @@
                     </h2>
                 </div>
             }
-
+            
             <div class="govuk-grid-column-full">
                 <table class="govuk-table" data-module="moj-sortable-table">
                     <caption class="govuk-table__caption  govuk-visually-hidden">
@@ -238,11 +241,70 @@
                     </caption>
                     <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
+                            @if ((Model.SortColumn == "0") && (Model.SortDirection == "ascending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="ascending">Establishment name</th>
+                            }
+                            @if ((Model.SortColumn == "0") && (Model.SortDirection == "descending"))
+                            {
+                                <th scope = "col" class="govuk-table__header" aria-sort="descending">Establishment name</th>
+                            }
+                            @if ((Model.SortColumn != "0"))
+                            {
                             <th scope="col" class="govuk-table__header" aria-sort="none">Establishment name</th>
-                            <th scope="col" class="govuk-table__header" aria-sort="none">Postcode</th>
-                            <th scope="col" class="govuk-table__header" aria-sort="none">RMS number</th>
-                            <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>
-                            <th scope="col" class="govuk-table__header" aria-sort="descending">Updated</th>
+                            }
+                            @if ((Model.SortColumn == "1") && (Model.SortDirection == "ascending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="ascending">Postcode</th>
+                            }
+                            @if ((Model.SortColumn == "1") && (Model.SortDirection == "descending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="descending">Postcode</th>
+                            }
+                            @if (Model.SortColumn != "1")
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="none">Postcode</th>
+                            }
+
+                            @if ((Model.SortColumn == "2") && (Model.SortDirection == "ascending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="ascending">RMS number</th>
+                            }
+                            @if ((Model.SortColumn == "2") && (Model.SortDirection == "descending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="descending">RMS number</th>
+                            }
+                            @if (Model.SortColumn != "2")
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="none">RMS number</th>
+                            }
+
+                            @if ((Model.SortColumn == "3") && (Model.SortDirection == "ascending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="ascending">Status</th>
+                            }
+                            @if ((Model.SortColumn == "3") && (Model.SortDirection == "descending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="descending">Status</th>
+                            }
+                            @if (Model.SortColumn != "3")
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>
+                            }
+
+
+                            @if ((Model.SortColumn == "4") && (Model.SortDirection == "ascending"))
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="ascending">Updated</th>
+                            }
+                            @if ((Model.SortColumn == "4") && (Model.SortDirection == "descending") || Model.SortColumn == null)
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="descending">Updated</th>
+                            }
+                            @if (Model.SortColumn != "4" && Model.SortColumn != null)
+                            {
+                                <th scope="col" class="govuk-table__header" aria-sort="none">Updated</th>
+                            }
                         </tr>
                     </thead>
 
@@ -289,11 +351,13 @@
                             @if (Model.LogisticsLocations.HasPrevious)
                             {
                                 <li class="moj-pagination__item  moj-pagination__item--prev">
-                                    <a class="moj-pagination__link"
-                                       asp-page-handler="NavigateToPage" 
-                                       asp-route-orgid="@Model.OrgId"
-                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)"
-                                       asp-route-searchTerm="@Model.SearchTerm">
+                                        <a class="moj-pagination__link"
+                                           asp-page-handler="NavigateToPage"
+                                           asp-route-orgid="@Model.OrgId"
+                                           asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage-1)"
+                                           asp-route-searchTerm="@Model.SearchTerm"
+                                           asp-route-sortColumn="@Model.SortColumn"
+                                           asp-route-sortDirection="@Model.SortDirection">
                                         Previous
                                         <span class="govuk-visually-hidden"> set of pages</span>
                                     </a>
@@ -315,6 +379,8 @@
                                            asp-page-handler="NavigateToPage" 
                                            asp-route-orgid="@Model.OrgId"
                                            asp-route-pageNumber="@pageNumber"
+                                           asp-route-sortColumn="@Model.SortColumn"
+                                           asp-route-sortDirection="@Model.SortDirection"
                                            asp-route-searchTerm="@Model.SearchTerm">
                                             @pageNumber.ToString()
                                         </a>
@@ -327,7 +393,10 @@
                                 <li class="moj-pagination__item  moj-pagination__item--next">
                                     <a class="moj-pagination__link"
                                        asp-page-handler="NavigateToPage" asp-route-orgid="@Model.OrgId"
-                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage+1)">
+                                       asp-route-pageNumber="@(Model.LogisticsLocations.CurrentPage+1)"
+                                       asp-route-searchTerm="@Model.SearchTerm"
+                                       asp-route-sortColumn="@Model.SortColumn"
+                                       asp-route-sortDirection="@Model.SortDirection">
                                         Next
                                         <span class="govuk-visually-hidden"> set of pages</span>
                                     </a>
@@ -375,5 +444,3 @@
         </div>
     </feature>
 </form>
-
-

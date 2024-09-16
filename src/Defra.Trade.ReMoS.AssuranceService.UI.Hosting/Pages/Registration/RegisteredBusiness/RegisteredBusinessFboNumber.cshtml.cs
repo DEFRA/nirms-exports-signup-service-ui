@@ -12,7 +12,6 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
     #region props and ctor
 
     [BindProperty]
-    //[Required(ErrorMessage = "Select if your business has an FBO or PHR number")]
     public string? OptionSelected { get; set; } = string.Empty;
 
     [BindProperty]
@@ -27,6 +26,7 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+
     [BindProperty]
     public Guid OrgId { get; set; }
 
@@ -87,7 +87,6 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
                 Routes.Pages.Path.RegisteredBusinessContactNamePath,
                 new { id = OrgId });
         }
-
     }
 
     public async Task<IActionResult> OnPostSaveAsync()
@@ -119,6 +118,14 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
 
     private void ValidateFboPhr()
     {
+        if (OptionSelected == "phr")
+        {
+            ModelState.Remove(nameof(FboNumber));
+        }
+        if (OptionSelected == "fbo")
+        {
+            ModelState.Remove(nameof(PhrNumber));
+        }
         if (ModelState.IsValid)
         {
             if (OptionSelected == "fbo" && string.IsNullOrEmpty(FboNumber))
@@ -152,7 +159,6 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
     {
         TradePartyDto? tradePartyDto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         return tradePartyDto;
-
     }
 
     private async Task SaveNumberToApiAsync(Guid TradePartyId)
@@ -161,12 +167,25 @@ public class RegisteredBusinessFboNumberModel : BasePageModel<RegisteredBusiness
         {
             throw new ArgumentNullException(nameof(TradePartyId));
         }
-        
+
         var tradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
         if (tradeParty != null)
         {
-            tradeParty.FboNumber = FboNumber;
-            tradeParty.PhrNumber = PhrNumber;
+            if (OptionSelected == "fbo")
+            {
+                tradeParty.FboNumber = FboNumber;
+                tradeParty.PhrNumber = null;
+            }
+            if (OptionSelected == "phr")
+            {
+                tradeParty.FboNumber = null;
+                tradeParty.PhrNumber = PhrNumber;
+            }
+            if (OptionSelected == "none")
+            {
+                tradeParty.FboNumber = null;
+                tradeParty.PhrNumber = null;
+            }
             tradeParty.FboPhrOption = OptionSelected;
             await _traderService.UpdateTradePartyAsync(tradeParty);
         }

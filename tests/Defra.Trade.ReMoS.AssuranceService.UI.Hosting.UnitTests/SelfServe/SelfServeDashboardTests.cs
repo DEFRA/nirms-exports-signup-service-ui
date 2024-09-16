@@ -94,7 +94,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
             .Returns(logisticsLocations);
 
         //Act
@@ -262,11 +262,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [Test]
     public void OnPostSearchEstablishmentAsync_Redirects()
     {
-        // arrage
+        // arrange
         var orgId = Guid.NewGuid();
         _systemUnderTest!.OrgId = orgId;
         _systemUnderTest.SearchTerm = "test";
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SearchTerm = "test" }, "filter");
+        _systemUnderTest.SortColumn = "0";
+        _systemUnderTest.SortDirection = "ascending";
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SearchTerm = "test", SortColumn = "0", SortDirection = "ascending" }, "filter");
 
         // act
         var result = _systemUnderTest!.OnPostSearchEstablishmentAsync();
@@ -284,7 +286,10 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // arrage
         var orgId = Guid.NewGuid();
         _systemUnderTest!.OrgId = orgId;
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId }, "filter");
+        _systemUnderTest.SortColumn = "0";
+        _systemUnderTest.SortDirection = "ascending";
+
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SortColumn = "0", SortDirection = "ascending" }, "filter");
 
         // act
         var result = _systemUnderTest!.OnPostShowAllEstablishments();

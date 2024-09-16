@@ -10,30 +10,38 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Regis
 public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusinessContactEmailModel>
 {
     #region UI Model
+
     [BindProperty]
     [StringLengthMaximum(100, ErrorMessage = "The email address cannot be longer than 100 characters")]
     [Required(ErrorMessage = "Enter an email address")]
     public string Email { get; set; } = string.Empty;
+
     [BindProperty]
     public Guid TradePartyId { get; set; }
+
     [BindProperty]
     public Guid OrgId { get; set; }
+
     [BindProperty]
     public Guid ContactId { get; set; }
+
     [BindProperty]
     public string? PracticeName { get; set; }
+
     [BindProperty]
     public string? ContactName { get; set; }
+
     public bool? IsAuthorisedSignatory { get; set; }
     public Guid AuthorisedSignatoryId { get; set; }
     public TradePartyDto TradePartyDto { get; set; } = new TradePartyDto();
     public TradePartyDto? TradePartyDtoCurrent { get; set; } = new TradePartyDto();
-    #endregion
+
+    #endregion UI Model
 
     public RegisteredBusinessContactEmailModel(
-    ILogger<RegisteredBusinessContactEmailModel> logger, 
+    ILogger<RegisteredBusinessContactEmailModel> logger,
         ITraderService traderService) : base(traderService, logger)
-    {}
+    { }
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
@@ -43,14 +51,24 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
         var tradeParty = await _traderService.GetTradePartyByOrgIdAsync(OrgId);
         TradePartyId = tradeParty!.Id;
 
+        
         if (!_traderService.ValidateOrgId(User.Claims, OrgId))
         {
             return RedirectToPage("/Errors/AuthorizationError");
         }
 
+
+
         if (_traderService.IsTradePartySignedUp(tradeParty))
         {
             return RedirectToPage("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
+        }
+
+        if (tradeParty.Contact == null)
+        {
+            return RedirectToPage(
+                 Routes.Pages.Path.RegisteredBusinessContactNamePath,
+                  new { id = OrgId });
         }
 
         _logger.LogInformation("Email OnGet");
@@ -91,6 +109,7 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
     }
 
     #region private methods
+
     private async Task SubmitEmail()
     {
         await GetIsAuthorisedSignatoryFromApiAsync();
@@ -148,11 +167,12 @@ public class RegisteredBusinessContactEmailModel : BasePageModel<RegisteredBusin
                 EmailAddress = Email,
                 Name = TradePartyDtoCurrent!.Contact!.PersonName,
                 Position = TradePartyDtoCurrent.Contact.Position,
-				LastModifiedDate = DateTime.UtcNow
-			};
+                LastModifiedDate = DateTime.UtcNow
+            };
         }
 
         return tradePartyDto;
     }
-    #endregion
+
+    #endregion private methods
 }

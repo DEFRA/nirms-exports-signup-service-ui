@@ -12,6 +12,7 @@ public class EstablishmentService : IEstablishmentService
     {
         _api = api;
     }
+
     public async Task<Guid?> CreateEstablishmentForTradePartyAsync(
         Guid partyId,
         LogisticsLocationDto logisticsLocationDTO)
@@ -22,15 +23,17 @@ public class EstablishmentService : IEstablishmentService
     }
 
     public async Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
-        Guid tradePartyId, bool includeRejected, string? searchTerm, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50)
+        Guid tradePartyId, bool includeRejected, string? searchTerm, string? sortColumn, string? sortDirection, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50)
     {
-        return await _api.GetEstablishmentsForTradePartyAsync(tradePartyId, includeRejected, searchTerm, NI_GBFlag, pageNumber, pageSize);
+        var res = await _api.GetEstablishmentsForTradePartyAsync(tradePartyId, includeRejected, searchTerm, sortColumn, sortDirection, NI_GBFlag, pageNumber, pageSize);
+        return res;
     }
 
     public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id)
     {
         return (Id != Guid.Empty) ? await _api.GetEstablishmentByIdAsync(Id) : null;
     }
+
     public async Task<List<LogisticsLocationDto>?> GetEstablishmentByPostcodeAsync(string postcode)
     {
         return await _api.GetEstablishmentsByPostcodeAsync(postcode);
@@ -63,11 +66,10 @@ public class EstablishmentService : IEstablishmentService
     }
 
     public async Task<Guid?> SaveEstablishmentDetails(Guid? establishmentid, Guid tradePartyId, LogisticsLocationDto establishmentDto, string NI_GBFlag, string? uprn)
-    {        
-        var establishmentFromApi = (establishmentid != Guid.Empty && establishmentid != null) ? 
-            await GetEstablishmentByIdAsync((Guid)establishmentid) : 
+    {
+        var establishmentFromApi = (establishmentid != Guid.Empty && establishmentid != null) ?
+            await GetEstablishmentByIdAsync((Guid)establishmentid) :
             new LogisticsLocationDto() { Address = new TradeAddressDto() };
-
 
         establishmentFromApi!.Name = establishmentDto.Name;
         establishmentFromApi.Address!.LineOne = establishmentDto.Address?.LineOne;

@@ -95,7 +95,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
             Id = tradePartyId,
             PartyName = "Test",
             ApprovalStatus = TradePartyApprovalStatus.PendingApproval,
-            Contact = new TradeContactDto() { Id = Guid.NewGuid()},
+            Contact = new TradeContactDto() { Id = Guid.NewGuid() },
             AuthorisedSignatory = new AuthorisedSignatoryDto() { Id = Guid.NewGuid() },
         };
         var assurance = true;
@@ -115,10 +115,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
         //assert
         _systemUnderTest!.ModelState.ErrorCount.Should().Be(0);
         result.Should().BeOfType<RedirectToPageResult>();
-
     }
-
-
 
     [Test]
     public async Task OnPost_TickedSuccessful_NullDto()
@@ -165,7 +162,7 @@ public class TermsAndConditionsTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.UpdateTradePartyAsync(It.IsAny<TradePartyDto>()))
             .ReturnsAsync(tradePartyId);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(logisticsLocationList);
 
         await _systemUnderTest.OnPostSubmitAsync();
