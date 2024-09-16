@@ -8,19 +8,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
     public class TermsAndConditions : BasePageModel<TermsAndConditions>
     {
         #region UI Model
-
         [BindProperty]
         public Guid TradePartyId { get; set; }
-
         [BindProperty]
         public Guid OrgId { get; set; }
-
         [BindProperty]
         public bool TandCs { get; set; }
-
         [BindProperty]
         public string? AuthorisedSignatoryName { get; set; } = string.Empty;
-
         [BindProperty]
         public string? PracticeName { get; set; } = string.Empty;
 

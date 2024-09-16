@@ -10,19 +10,15 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
     public class CheckYourAnswersModel : BasePageModel<CheckYourAnswersModel>
     {
         #region ui model variables
-
         [BindProperty]
         public Guid TradePartyId { get; set; }
-
         [BindProperty]
         public Guid OrgId { get; set; }
-
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
         public string Purpose { get; set; } = string.Empty;
         public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
-
         [BindProperty]
         public TradePartyDto? TradeParty { get; set; } = new TradePartyDto();
 

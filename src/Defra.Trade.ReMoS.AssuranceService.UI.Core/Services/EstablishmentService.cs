@@ -12,7 +12,6 @@ public class EstablishmentService : IEstablishmentService
     {
         _api = api;
     }
-
     public async Task<Guid?> CreateEstablishmentForTradePartyAsync(
         Guid partyId,
         LogisticsLocationDto logisticsLocationDTO)
@@ -21,14 +20,12 @@ public class EstablishmentService : IEstablishmentService
 
         return establishmentId;
     }
-
     public async Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
         Guid tradePartyId, bool includeRejected, string? searchTerm, string? sortColumn, string? sortDirection, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50)
     {
         var res = await _api.GetEstablishmentsForTradePartyAsync(tradePartyId, includeRejected, searchTerm, sortColumn, sortDirection, NI_GBFlag, pageNumber, pageSize);
         return res;
     }
-
     public async Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id)
     {
         return (Id != Guid.Empty) ? await _api.GetEstablishmentByIdAsync(Id) : null;
@@ -38,18 +35,15 @@ public class EstablishmentService : IEstablishmentService
     {
         return await _api.GetEstablishmentsByPostcodeAsync(postcode);
     }
-
     public async Task<bool> RemoveEstablishmentAsync(Guid establishmentId)
     {
         await _api.RemoveEstablishmentAsync(establishmentId);
         return true;
     }
-
     public async Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto)
     {
         return await _api.UpdateEstablishmentAsync(establishmentDto);
     }
-
     public async Task<List<AddressDto>> GetTradeAddressApiByPostcodeAsync(string postcode)
     {
         return await _api.GetTradeAddresApiByPostcodeAsync(postcode);
@@ -59,12 +53,10 @@ public class EstablishmentService : IEstablishmentService
     {
         return await _api.GetLogisticsLocationByUprnAsync(uprn);
     }
-
     public async Task<bool> UpdateEstablishmentDetailsSelfServeAsync(LogisticsLocationDto establishmentDto)
     {
         return await _api.UpdateEstablishmentSelfServeAsync(establishmentDto);
     }
-
     public async Task<Guid?> SaveEstablishmentDetails(Guid? establishmentid, Guid tradePartyId, LogisticsLocationDto establishmentDto, string NI_GBFlag, string? uprn)
     {
         var establishmentFromApi = (establishmentid != Guid.Empty && establishmentid != null) ?
@@ -91,7 +83,6 @@ public class EstablishmentService : IEstablishmentService
             return establishmentid;
         }
     }
-
     public async Task<bool> IsEstablishmentDraft(Guid? establishmentId)
     {
         var establishmentFromApi = (establishmentId != Guid.Empty && establishmentId != null) ?
