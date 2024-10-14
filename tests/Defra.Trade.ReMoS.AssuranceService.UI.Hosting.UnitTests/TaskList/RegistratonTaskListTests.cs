@@ -15,9 +15,9 @@ public class RegistratonTaskListTests : PageModelTestsBase
 {
     private RegistrationTaskListModel? _systemUnderTest;
     private readonly Mock<ITraderService> _mockTraderService = new();
-    private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();        
+    private readonly Mock<IEstablishmentService> _mockEstablishmentService = new();
     private readonly ICheckAnswersService _checkAnswersService = new CheckAnswersService();
-    protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();        
+    protected Mock<ILogger<RegistrationTaskListModel>> _mockLogger = new();
 
     [SetUp]
     public void TestCaseSetup()
@@ -33,7 +33,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     {
         //Arrange
         //TODO: Add setup for returning values when API referenced
-        Guid guid = Guid.NewGuid();          
+        Guid guid = Guid.NewGuid();
 
         //Act
         await _systemUnderTest!.OnGetAsync(guid);
@@ -87,7 +87,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
     public async Task OnGet_GivenLogisticsLocationDetailsProvided_MarkPlacesOfDispatchComplete()
     {
         //Arrange
-        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");            
+        Guid guid = Guid.Parse("73858931-5bc4-40ce-a735-fd8e82e145cf");
 
         var tradeContact = new TradeContactDto
         {
@@ -122,7 +122,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns(Task.FromResult(pagedList)!);
 
         //Act
@@ -228,7 +228,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
-        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(pagedList)!);
+        _mockEstablishmentService.Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(pagedList)!);
 
         //Act
         await _systemUnderTest!.OnGetAsync(Guid.NewGuid());
@@ -289,7 +289,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
         _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Returns(Task.FromResult(tradePartyDto)!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(guid, false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
             .Returns(Task.FromResult(list)!);
 
         //Act
@@ -360,7 +360,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [Test]
@@ -375,7 +375,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetBusinessDetailsProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [Test]
@@ -391,7 +391,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetContactDetailsProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [Test]
@@ -404,7 +404,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetContactDetailsProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [TestCase(false, "TestName", null, null, TaskListStatus.INPROGRESS)]
@@ -436,7 +436,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [TestCase(null, null, null, null, TaskListStatus.NOTSTART)]
@@ -464,7 +464,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [Test]
@@ -486,7 +486,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [Test]
@@ -499,7 +499,7 @@ public class RegistratonTaskListTests : PageModelTestsBase
 
         var status = _systemUnderTest!.GetAuthorisedSignatoryProgress(tradeParty);
 
-        Assert.AreEqual(expectedStatus, status);
+        Assert.That(status, Is.EqualTo(expectedStatus));
     }
 
     [Test]

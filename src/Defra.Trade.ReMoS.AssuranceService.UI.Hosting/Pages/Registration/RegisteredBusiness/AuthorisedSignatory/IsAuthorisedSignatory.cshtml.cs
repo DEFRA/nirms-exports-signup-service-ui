@@ -15,6 +15,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
 
     [BindProperty]
     public Guid TradePartyId { get; set; }
+
     [BindProperty]
     public Guid OrgId { get; set; }
 
@@ -28,10 +29,10 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
     public string? ContactName { get; set; } = string.Empty;
 
     public IsAuthorisedSignatoryModel(
-        ITraderService traderService, 
-        IEstablishmentService establishmentService, 
+        ITraderService traderService,
+        IEstablishmentService establishmentService,
         ILogger<IsAuthorisedSignatoryModel> logger) : base(traderService, establishmentService, logger)
-    {}
+    { }
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
@@ -65,7 +66,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         ValidateAttribute();
 
         if (!ModelState.IsValid)
-        {           
+        {
             return await OnGetAsync(OrgId);
         }
 
@@ -74,7 +75,7 @@ public class IsAuthorisedSignatoryModel : BasePageModel<IsAuthorisedSignatoryMod
         if (Convert.ToBoolean(IsAuthorisedSignatory))
         {
             var party = await _traderService.GetTradePartyByIdAsync(TradePartyId);
-            var establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty))?.Items;
+            var establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty, string.Empty, string.Empty))?.Items;
             string countryFlag = "GB";
 
             if (party?.Address?.TradeCountry == "NI")

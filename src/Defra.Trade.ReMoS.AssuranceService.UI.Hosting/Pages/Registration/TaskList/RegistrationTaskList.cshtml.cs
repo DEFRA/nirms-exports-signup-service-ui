@@ -9,32 +9,45 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
     public class RegistrationTaskListModel : BasePageModel<RegistrationTaskListModel>
     {
         #region ui model variables
+
         [BindProperty]
         public Guid TradePartyId { get; set; }
+
         [BindProperty]
         public Guid OrgId { get; set; }
+
         [BindProperty]
         public string SelectedBusinessName { get; set; } = default!;
+
         [BindProperty]
         public string EligibilityStatus { get; set; } = TaskListStatus.NOTSTART;
+
         public string PurposeOfBusinessStatus { get; set; } = TaskListStatus.NOTSTART;
         public string FboPhrStatus { get; set; } = TaskListStatus.NOTSTART;
+
         [BindProperty]
         public string BusinessDetails { get; set; } = TaskListStatus.NOTSTART;
+
         [BindProperty]
         public string ContactDetails { get; set; } = TaskListStatus.NOTSTART;
+
         [BindProperty]
         public string AuthorisedSignatoryDetails { get; set; } = TaskListStatus.NOTSTART;
+
         [BindProperty]
         public string PlacesOfDispatch { get; set; } = TaskListStatus.NOTSTART;
+
         [BindProperty]
         public string PlacesOfDestination { get; set; } = TaskListStatus.NOTSTART;
+
         [BindProperty]
         public string ReviewAnswers { get; set; } = TaskListStatus.CANNOTSTART;
+
         public string? Country { get; set; }
         public bool EstablishmentsAdded { get; set; }
         public int EstablishmentsCount { get; set; }
-        #endregion
+
+        #endregion ui model variables
 
         public RegistrationTaskListModel(
             ILogger<RegistrationTaskListModel> logger,
@@ -96,7 +109,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
 
         private async Task EstablishmentsStatuses()
         {
-            var establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty))?.Items;
+            var establishments = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty, string.Empty, string.Empty))?.Items;
             var gbEstablishments = establishments?.Where(x => x.NI_GBFlag == "GB");
             var niEstablishments = establishments?.Where(x => x.NI_GBFlag == "NI");
 
@@ -117,7 +130,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.TaskList
                 EstablishmentsCount = establishments!.Count(x => x.NI_GBFlag == "NI");
                 EstablishmentsAdded = true;
             }
-
         }
 
         private void CheckAnswersStatus()

@@ -33,7 +33,7 @@ public class PostcodeResultsTests : PageModelTestsBase
         // arrange
         var logisticsLocations = new List<AddressDto>
         {
-            new AddressDto("1234", null, null, null, null, null, "TES1")
+            new AddressDto("1234", null, null, null, null, 0, null, 0, null, "TES1", null, null, null, null, "123", 0, 0)
             {
                 Address = "Test 2, line 1, city, TES1"
             }
@@ -114,5 +114,4 @@ public class PostcodeResultsTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Errors/AuthorizationError");
     }
-
 }

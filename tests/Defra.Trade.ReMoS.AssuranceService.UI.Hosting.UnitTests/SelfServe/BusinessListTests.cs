@@ -51,7 +51,7 @@ public class BusinessListTests : PageModelTestsBase
         await _systemUnderTest!.OnGetAsync();
 
         // Assert
-        Assert.AreEqual(userOrgs, _systemUnderTest.Businesses);
+        Assert.That(_systemUnderTest.Businesses, Is.EqualTo(userOrgs));
     }
 
     [Test]
@@ -79,7 +79,7 @@ public class BusinessListTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -127,7 +127,7 @@ public class BusinessListTests : PageModelTestsBase
         _mockUserService
             .Setup(x => x.GetOrgDetailsById(_systemUnderTest!.User, It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("ffe013e4-79d7-4c3c-a96d-a17143525446")));
-            
+
         var expected = new RedirectToPageResult(
             Routes.Pages.Path.RegisterBusinessForExporterServicePath,
             new { id = tradePartyId });
@@ -138,7 +138,7 @@ public class BusinessListTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -170,7 +170,7 @@ public class BusinessListTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -192,7 +192,6 @@ public class BusinessListTests : PageModelTestsBase
             .Setup(x => x.GetOrgDetailsById(_systemUnderTest!.User, It.IsAny<Guid>()))
             .Returns(userOrgs.FirstOrDefault(o => o.OrganisationId == Guid.Parse("eb506178-ddd8-466d-abfd-99efc4e3a649")));
 
-
         // Act
         var result = await _systemUnderTest!.OnGetNavigateToSignup(orgId);
 
@@ -200,6 +199,7 @@ public class BusinessListTests : PageModelTestsBase
         _systemUnderTest.ModelState.Should().NotBeNull();
         _systemUnderTest.ModelState.Count.Should().Be(1);
     }
+
     [Test]
     public async Task OnGetRefreshBusinesses_ReturnRedirectToPageResult()
     {
@@ -232,7 +232,7 @@ public class BusinessListTests : PageModelTestsBase
         var result = await _systemUnderTest!.OnGetRefreshBusinesses();
 
         // Assert
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -265,7 +265,7 @@ public class BusinessListTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -299,7 +299,7 @@ public class BusinessListTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -335,7 +335,7 @@ public class BusinessListTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -371,7 +371,7 @@ public class BusinessListTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -407,7 +407,7 @@ public class BusinessListTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -443,6 +443,6 @@ public class BusinessListTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 }

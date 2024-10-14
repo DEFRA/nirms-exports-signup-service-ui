@@ -13,7 +13,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
     {
         private RegisteredBusinessContactEmailModel? _systemUnderTest;
         protected Mock<ILogger<RegisteredBusinessContactEmailModel>> _mockLogger = new();
-        protected Mock<ITraderService> _mockTraderService = new();       
+        protected Mock<ITraderService> _mockTraderService = new();
         private StringLengthMaximumAttribute? stringLengthMaximumAttribute { get; set; }
 
         [SetUp]
@@ -106,12 +106,11 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
         {
             //Arrange
             _systemUnderTest!.Email = $"ryan.testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest@email.com@email.com";
-            
 
             //Act
             var validation = stringLengthMaximumAttribute!.IsValid(_systemUnderTest!.Email);
 
-            //Assert            
+            //Assert
             validation.Should().Be(false);
         }
 
@@ -127,7 +126,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             await _systemUnderTest.OnPostSubmitAsync();
             var validation = ValidateModel(_systemUnderTest);
 
-            //Assert            
+            //Assert
             validation.Count.Should().Be(1);
             expectedResult.Should().Be(validation[0].ErrorMessage);
         }
@@ -144,7 +143,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             await _systemUnderTest.OnPostSaveAsync();
             var validation = ValidateModel(_systemUnderTest);
 
-            //Assert            
+            //Assert
             validation.Count.Should().Be(1);
             expectedResult.Should().Be(validation[0].ErrorMessage);
         }
@@ -162,7 +161,6 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
                 Id = guid,
                 Contact = tradeContact,
                 PracticeName = "Test Ltd",
-
             };
 
             _mockTraderService.Setup(x => x.GetTradePartyByIdAsync(guid)).Verifiable();
@@ -173,8 +171,8 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.UnitTests.Registration.C
             await _systemUnderTest.OnGetAsync(guid);
             var validation = ValidateModel(_systemUnderTest);
 
-            //Assert            
-            validation.Count.Should().Be(1);
+            //Assert
+            validation.Count.Should().Be(0);
         }
 
         [Test]

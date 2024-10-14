@@ -1,5 +1,6 @@
 ﻿using Defra.Trade.Address.V1.ApiClient.Model;
 using Defra.Trade.Common.Security.Authentication.Interfaces;
+using Defra.Trade.ReMoS.AssuranceService.Shared.DTO;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Configuration;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Helpers;
 using Defra.Trade.ReMoS.AssuranceService.UI.Core.Integration;
@@ -26,7 +27,7 @@ internal class ApiIntegrationTests
     private readonly Mock<IAuthenticationService> _mockAuthenticationService = new();
 
     [SetUp]
-    public void Setup() 
+    public void Setup()
     {
         var appConfigurationSettings = new AppConfigurationService
         {
@@ -40,7 +41,7 @@ internal class ApiIntegrationTests
     public async Task Integration_Returns_TradeParties_When_Calling_GetAllTradePartiesAsync()
     {
         // Arrange
-        var tradeParties = new List<TradePartyDto> {  new TradePartyDto(), new TradePartyDto() };
+        var tradeParties = new List<TradePartyDto> { new TradePartyDto(), new TradePartyDto() };
 
         var jsonString = JsonConvert.SerializeObject(tradeParties);
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -284,9 +285,7 @@ internal class ApiIntegrationTests
         returnedValue!.Should().Be(guid);
     }
 
-
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_AddTradePartyAsync()
     {
         // Arrange
@@ -331,7 +330,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAsync()
     {
         // Arrange
@@ -422,7 +420,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAddressAsync()
     {
         // Arrange
@@ -513,7 +510,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Returns_BadHttpRequestException_When_Calling_AddAddressToPartyAsync_WithBadData()
     {
         // Arrange
@@ -693,9 +689,7 @@ internal class ApiIntegrationTests
         returnedValue!.Should().Be(guid);
     }
 
-
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactAsync()
     {
         // Arrange
@@ -740,7 +734,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyContactSelfServeAsync()
     {
         // Arrange
@@ -785,7 +778,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateTradePartyAuthRepSelfServeAsync()
     {
         // Arrange
@@ -867,7 +859,7 @@ internal class ApiIntegrationTests
         _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
 
         // Act
-        var returnedValue = await _apiIntegration.AddEstablishmentToPartyAsync(partyId,logisticsLocationDto);
+        var returnedValue = await _apiIntegration.AddEstablishmentToPartyAsync(partyId, logisticsLocationDto);
 
         // Assert
         _mockHttpClientFactory.Verify();
@@ -875,7 +867,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "Establishment already exists")]
     public async Task Integration_Returns_Already_Exists_Calling_AddEstablishmentToPartyAsync()
     {
         // Arrange
@@ -920,9 +911,7 @@ internal class ApiIntegrationTests
         _mockHttpClientFactory.Verify();
     }
 
-
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_CreateEstablishmentAsync()
     {
         var logisticsLocationDto = new LogisticsLocationDto
@@ -957,7 +946,7 @@ internal class ApiIntegrationTests
         _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
 
         // Act
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddEstablishmentToPartyAsync(partyId,logisticsLocationDto));
+        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.AddEstablishmentToPartyAsync(partyId, logisticsLocationDto));
 
         // Assert
         _mockHttpClientFactory.Verify();
@@ -1003,7 +992,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(NotImplementedException), "Work in Progress")]
     public async Task Integration_Returns_LogisticsLocations_When_Calling_GetEstablishmentsForTradePartyAsync()
     {
         // Arrange
@@ -1045,7 +1033,7 @@ internal class ApiIntegrationTests
         _apiIntegration = new ApiIntegration(_mockHttpClientFactory.Object, appConfigurationSettingsOptions, _mockAuthenticationService.Object);
 
         // Act
-        var returnedValue = await _apiIntegration.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>());
+        var returnedValue = await _apiIntegration.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>());
 
         // Assert
         _mockHttpClientFactory.Verify();
@@ -1078,7 +1066,7 @@ internal class ApiIntegrationTests
         };
         IOptions<AppConfigurationService> appConfigurationSettingsOptions = Options.Create(appConfigurationSettings);
 
-        var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver= new CamelCasePropertyNamesContractResolver() });
+        var jsonString = JsonConvert.SerializeObject(logisticsLocations, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
         var expectedResponse = new HttpResponseMessage
@@ -1159,7 +1147,7 @@ internal class ApiIntegrationTests
 
         // Assert
         _mockHttpClientFactory.Verify();
-    }       
+    }
 
     [Test]
     public async Task Integration_Returns_TradePartyDTO_When_Calling_UpdateAuthorisedSignatoryAsync()
@@ -1254,7 +1242,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Throws_BadHttpRequestException_When_Calling_With_Bad_Data_UpdateEstablishmentAsync()
     {
         // Arrange
@@ -1289,7 +1276,6 @@ internal class ApiIntegrationTests
         // Act
         await Assert.ThrowsExceptionAsync<BadHttpRequestException>(async () => await _apiIntegration.UpdateEstablishmentAsync(logisticsLocationDto));
 
-
         // Assert
         _mockHttpClientFactory.Verify();
     }
@@ -1299,7 +1285,7 @@ internal class ApiIntegrationTests
     {
         // arrange
         var postcode = "TES1";
-        var addressDto = new AddressDto("123", null, null, null, null, null, postcode);
+        var addressDto = new AddressDto("1234", null, null, null, null, 0, null, 0, null, postcode, null, null, null, null, "123", 0, 0);
         var addressesDto = new List<AddressDto>()
         {
             addressDto
@@ -1347,7 +1333,7 @@ internal class ApiIntegrationTests
                 LineOne = "line 1",
                 CityName = "city",
                 PostCode = "TES1",
-            }    
+            }
         };
         var jsonString = JsonConvert.SerializeObject(logisticsLocation, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -1376,7 +1362,6 @@ internal class ApiIntegrationTests
     }
 
     [Test]
-    [ExpectedException(typeof(BadHttpRequestException), "null return from API")]
     public async Task Integration_Returns_BadHttpException_When_Calling_GetTradePartyByOrgIdAsync()
     {
         // Arrange

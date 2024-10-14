@@ -10,29 +10,26 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
     public class CheckYourAnswersModel : BasePageModel<CheckYourAnswersModel>
     {
         #region ui model variables
-
         [BindProperty]
         public Guid TradePartyId { get; set; }
         [BindProperty]
         public Guid OrgId { get; set; }
-
         public string? ContentHeading { get; set; } = string.Empty;
         public string? ContentText { get; set; } = string.Empty;
         public string NI_GBFlag { get; set; } = string.Empty;
         public string Purpose { get; set; } = string.Empty;
         public List<LogisticsLocationDto>? LogisticsLocations { get; set; } = new List<LogisticsLocationDto>();
-
         [BindProperty]
         public TradePartyDto? TradeParty { get; set; } = new TradePartyDto();
 
         #endregion ui model variables
 
         public CheckYourAnswersModel(
-            ILogger<CheckYourAnswersModel> logger, 
-            IEstablishmentService establishmentService, 
-            ITraderService traderService, 
+            ILogger<CheckYourAnswersModel> logger,
+            IEstablishmentService establishmentService,
+            ITraderService traderService,
             ICheckAnswersService checkAnswersService) : base(logger, traderService, establishmentService, checkAnswersService)
-        {}
+        { }
 
         public async Task<IActionResult> OnGetAsync(Guid Id)
         {
@@ -63,7 +60,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             NI_GBFlag = TradeParty?.Address?.TradeCountry == "NI" ? "NI" : "GB";
             Purpose = TradeParty?.Address?.TradeCountry == "NI" ? "Receive Consignments" : "Send Consignments";
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, this.NI_GBFlag))?.Items;
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty, string.Empty, this.NI_GBFlag))?.Items;
 
             if (NI_GBFlag == "NI")
             {
@@ -85,7 +82,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
             logisticsLocation!.IsRemoved = true;
             await _establishmentService.UpdateEstablishmentDetailsAsync(logisticsLocation);
 
-            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false, string.Empty, string.Empty))?.Items;
+            LogisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(tradePartyId, false, string.Empty, string.Empty, string.Empty, string.Empty))?.Items;
 
             if (LogisticsLocations?.Count > 0)
                 return await OnGetAsync(orgId);
@@ -113,7 +110,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Check
 
             TradeParty = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
-            var logisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty))?.Items;
+            var logisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(TradePartyId, false, string.Empty, string.Empty, string.Empty, string.Empty))?.Items;
 
             if (_checkAnswersService.ReadyForCheckAnswers(TradeParty!) &&
                 logisticsLocations != null &&

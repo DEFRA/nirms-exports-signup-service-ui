@@ -94,7 +94,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
             .Setup(x => x.GetTradePartyByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(tradePartyDto!);
         _mockEstablishmentService
-            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
+            .Setup(x => x.GetEstablishmentsForTradePartyAsync(It.IsAny<Guid>(), false, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()).Result)
             .Returns(logisticsLocations);
 
         //Act
@@ -169,8 +169,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 
     [Test]
@@ -187,8 +187,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 
     [Test]
@@ -221,10 +221,9 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
-
 
     [TestCase(LogisticsLocationApprovalStatus.None)]
     [TestCase(LogisticsLocationApprovalStatus.Rejected)]
@@ -263,11 +262,13 @@ public class SelfServeDashboardTests : PageModelTestsBase
     [Test]
     public void OnPostSearchEstablishmentAsync_Redirects()
     {
-        // arrage
+        // arrange
         var orgId = Guid.NewGuid();
         _systemUnderTest!.OrgId = orgId;
         _systemUnderTest.SearchTerm = "test";
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SearchTerm = "test" }, "filter");
+        _systemUnderTest.SortColumn = "0";
+        _systemUnderTest.SortDirection = "ascending";
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SearchTerm = "test", SortColumn = "0", SortDirection = "ascending" }, "filter");
 
         // act
         var result = _systemUnderTest!.OnPostSearchEstablishmentAsync();
@@ -275,8 +276,8 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 
     [Test]
@@ -285,7 +286,10 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // arrage
         var orgId = Guid.NewGuid();
         _systemUnderTest!.OrgId = orgId;
-        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId }, "filter");
+        _systemUnderTest.SortColumn = "0";
+        _systemUnderTest.SortDirection = "ascending";
+
+        var expected = new RedirectToPageResult(Routes.Pages.Path.SelfServeDashboardPath, "", new { id = orgId, SortColumn = "0", SortDirection = "ascending" }, "filter");
 
         // act
         var result = _systemUnderTest!.OnPostShowAllEstablishments();
@@ -293,7 +297,7 @@ public class SelfServeDashboardTests : PageModelTestsBase
         // assert
         result.Should().NotBeNull();
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
-        Assert.AreEqual(expected.RouteValues, ((RedirectToPageResult)result!).RouteValues);
+        Assert.That(expected.PageName, Is.EqualTo(((RedirectToPageResult)result!).PageName));
+        Assert.That(expected.RouteValues, Is.EqualTo(((RedirectToPageResult)result!).RouteValues));
     }
 }

@@ -8,12 +8,10 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
     public class TermsAndConditions : BasePageModel<TermsAndConditions>
     {
         #region UI Model
-
         [BindProperty]
         public Guid TradePartyId { get; set; }
         [BindProperty]
         public Guid OrgId { get; set; }
-
         [BindProperty]
         public bool TandCs { get; set; }
         [BindProperty]
@@ -24,12 +22,12 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
         #endregion UI Model
 
         public TermsAndConditions(
-            ITraderService traderService, 
-            IUserService userService, 
-            IEstablishmentService establishmentService, 
+            ITraderService traderService,
+            IUserService userService,
+            IEstablishmentService establishmentService,
             ICheckAnswersService checkAnswersService,
             ILogger<TermsAndConditions> logger) : base(traderService, establishmentService, checkAnswersService, userService, logger)
-        {}
+        { }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -52,7 +50,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                 AuthorisedSignatoryName = dto.AuthorisedSignatory?.Name ?? string.Empty;
 
                 PracticeName = dto.PracticeName ?? string.Empty;
-                
+
                 if (partyWithSignUpStatus.signupStatus == TradePartySignupStatus.Complete)
                 {
                     return RedirectToPage(
@@ -71,14 +69,14 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
             TradePartyDto? dto = await _traderService.GetTradePartyByIdAsync(TradePartyId);
 
             if (!TandCs)
-            {                
+            {
                 ModelState.AddModelError(nameof(TandCs), $"Confirm that the authorised representative - {dto?.AuthorisedSignatory?.Name} has read and understood the terms and conditions");
             }
-                
+
             if (!ModelState.IsValid)
             {
                 return await OnGetAsync(OrgId);
-            }            
+            }
 
             if (dto == null)
             {
@@ -87,7 +85,7 @@ namespace Defra.Trade.ReMoS.AssuranceService.UI.Hosting.Pages.Registration.Assur
                         new { id = OrgId });
             }
 
-            var logisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id, false, string.Empty, string.Empty))?.Items;
+            var logisticsLocations = (await _establishmentService.GetEstablishmentsForTradePartyAsync(dto.Id, false, string.Empty, string.Empty, string.Empty, string.Empty))?.Items;
 
             if (!_checkAnswersService.IsLogisticsLocationsDataPresent(dto, logisticsLocations!) || !_checkAnswersService.ReadyForCheckAnswers(dto))
             {

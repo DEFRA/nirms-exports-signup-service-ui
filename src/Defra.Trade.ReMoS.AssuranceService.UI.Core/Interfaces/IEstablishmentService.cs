@@ -11,7 +11,7 @@ public interface IEstablishmentService
         LogisticsLocationDto logisticsLocationDTO);
     Task<LogisticsLocationDto?> GetEstablishmentByIdAsync(Guid Id);
     Task<PagedList<LogisticsLocationDto>?> GetEstablishmentsForTradePartyAsync(
-        Guid tradePartyId, bool includeRejected, string? searchTerm, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50);
+        Guid tradePartyId, bool includeRejected, string? searchTerm, string? sortColumn, string? sortDirection, string? NI_GBFlag, int pageNumber = 1, int pageSize = 50);
     public Task<List<LogisticsLocationDto>?> GetEstablishmentByPostcodeAsync(string postcode);
     Task<bool> RemoveEstablishmentAsync(Guid establishmentId);
     Task<bool> UpdateEstablishmentDetailsAsync(LogisticsLocationDto establishmentDto);

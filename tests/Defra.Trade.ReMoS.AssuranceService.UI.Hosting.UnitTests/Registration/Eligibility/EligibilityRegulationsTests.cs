@@ -13,7 +13,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 {
     protected Mock<ILogger<EligibilityRegulationsModel>> _mockLogger = new();
     protected Mock<ITraderService> _mockTraderService = new();
-    private EligibilityRegulationsModel? _systemUnderTest;    
+    private EligibilityRegulationsModel? _systemUnderTest;
 
     [SetUp]
     public void TestCaseSetup()
@@ -36,7 +36,6 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 
         //assert
         result.Should().Be(expected);
-
     }
 
     [Test]
@@ -118,7 +117,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
     {
         // Arrange
         var traderId = Guid.NewGuid();
-        var tradePartyDto = new TradePartyDto { Id = traderId};
+        var tradePartyDto = new TradePartyDto { Id = traderId };
         _systemUnderTest!.Confirmed = true;
         _systemUnderTest!.TradePartyId = traderId;
         _mockTraderService
@@ -136,7 +135,7 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 
         // Assert
         result.Should().BeOfType<RedirectToPageResult>();
-        Assert.AreEqual(expected.PageName, ((RedirectToPageResult)result!).PageName);
+        Assert.That(((RedirectToPageResult)result!).PageName, Is.EqualTo(expected.PageName));
     }
 
     [Test]
@@ -160,5 +159,4 @@ public class EligibilityRegulationsTests : PageModelTestsBase
 
         redirectResult!.PageName.Should().Be("/Registration/RegisteredBusiness/RegisteredBusinessAlreadyRegistered");
     }
-
 }
