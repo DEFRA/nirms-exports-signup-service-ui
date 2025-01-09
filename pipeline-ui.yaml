@@ -110,7 +110,7 @@ extends:
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
           -ExternalLinks:ManageAccountPage "https://your-account.defra.gov.uk/account-management"
           -GoogleTagManager:ContainerId "GTM-MC2G8XZG"
-          -GoogleTagManager:MeasurementId "28HJ2C1M2C"
+          -GoogleTagManager:MeasurementId "7BLYSVXGQG"
           -GoogleTagManager:Domain ".gov.uk"
           -ReMoS:PasswordPage false
     runSonarScan: true
