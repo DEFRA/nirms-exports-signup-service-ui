@@ -87,28 +87,28 @@ extends:
     appSettingsEnv:
         dev: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -ExternalLinks:ManageAccountPage "https://idm-dev-public.azure.defra.cloud/account-management"
+          -ExternalLinks:ManageAccountPage "https://your-account.cpdev.cui.defra.gov.uk/management/account-management"
           -GoogleTagManager:ContainerId "GTM-PJBZ4J9H"
           -GoogleTagManager:MeasurementId "JHVKVL9M7R"
           -GoogleTagManager:Domain ".defra.cloud"
           -ReMoS:PasswordPage true
         tst: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -ExternalLinks:ManageAccountPage "https://idm-dev-public.azure.defra.cloud/account-management"
+          -ExternalLinks:ManageAccountPage "https://your-account.cpdev.cui.defra.gov.uk/management/account-management"
           -GoogleTagManager:ContainerId "GTM-PJBZ4J9H"
           -GoogleTagManager:MeasurementId "JHVKVL9M7R"
           -GoogleTagManager:Domain ".defra.cloud"
           -ReMoS:PasswordPage true
         pre: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -ExternalLinks:ManageAccountPage "https://idm-pre.azure.defra.cloud/account-management"
+          -ExternalLinks:ManageAccountPage "https://your-account.cppre.cui.defra.gov.uk/management/account-management"
           -GoogleTagManager:ContainerId "GTM-PJBZ4J9H"
           -GoogleTagManager:MeasurementId "JHVKVL9M7R"
           -GoogleTagManager:Domain ".defra.cloud"
           -ReMoS:PasswordPage true
         prd: >-
           -APISettings:APIUrl "https://$(internalAPIMUrl)/trade-remos/v1"
-          -ExternalLinks:ManageAccountPage "https://your-account.defra.gov.uk/account-management"
+          -ExternalLinks:ManageAccountPage "https://your-account.defra.gov.uk/management/account-management"
           -GoogleTagManager:ContainerId "GTM-MC2G8XZG"
           -GoogleTagManager:MeasurementId "7BLYSVXGQG"
           -GoogleTagManager:Domain ".gov.uk"
